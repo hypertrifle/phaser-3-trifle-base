@@ -20,6 +20,7 @@ function preload ()
 
 function create ()
 {
+    console.log("create");
     var logo = this.add.image(400, 150, 'logo');
 
     this.tweens.add({
