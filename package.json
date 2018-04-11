@@ -5,18 +5,14 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "dev": "npm run build && webpack-dev-server --port=8080"
+    "dev": "npm run build && webpack-dev-server -d --port=8080 --open-page webpack-dev-server/"
   },
   "repository": {
     "type": "git",
     "url": ""
   },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": ""
-  },
-  "homepage": "",
+  "author": "Rich Searle - Hypertrifle.com",
+  "license": "UNLICENCED",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
