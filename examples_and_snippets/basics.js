@@ -7,5 +7,8 @@
       context: this
    });
 
+
    //create a sprite / image / gameobject
    this.sprite1 = this.add.sprite();
+
+   

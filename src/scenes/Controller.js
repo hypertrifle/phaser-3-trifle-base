@@ -1,4 +1,6 @@
 
+var Avatar = require("../components/Avatar");
+
 //our Controller, is what used to be our game class, this is where we contain our global objects.
 var Controller = new Phaser.Class({
 
@@ -14,13 +16,15 @@ var Controller = new Phaser.Class({
    preload: function ()
    {
        //this is the first time the game will have a chance to load any assets.
-    //    this.load.
+       this.load.image('avatar', 'assets/logo.png');
    },
 
    create: function ()
    {
 
         //load our controllers into the global sys object. actual names tbc
+
+        this.av = new Avatar(this,0,0);
 
         //data controller
         this.sys._data = {name:"custom data model"};
@@ -37,13 +41,14 @@ var Controller = new Phaser.Class({
         // });
 
         //start which one we want.
-        this.state.start(this.sys._data.get("start_state"));        
+        // this.state.start(this.sys._data.get("start_state"));        
 
 
       //called on boot of game
       console.log("Scene:", this);
 
 
+      
 
       //boot first scene.
 
