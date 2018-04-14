@@ -37,8 +37,11 @@ var Controller = new Phaser.Class({
         // });
 
         //start which one we want.
-        this.state.start(this.sys._data.get("start_state"));        
+        // this.state.start(this.sys._data.get("start_state"));
 
+
+        //test reasons
+        this.scene.add(TemplateScene);
 
       //called on boot of game
       console.log("Scene:", this);

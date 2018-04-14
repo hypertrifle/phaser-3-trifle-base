@@ -13,9 +13,20 @@ var TemplateScene = new Phaser.Class({
 
    },
 
+   assets : {
+      atlas:[],
+      sounds:[],
+      spriteshhets:[],
+      text:[]
+   },
+
    preload: function ()
    { 
       //called to load assets before create.
+
+      //I want to do somthing like
+      this.sys._load(assets);
+
    },
 
    resetModel: function ()
@@ -61,6 +72,8 @@ var TemplateScene = new Phaser.Class({
    shutdown: function ()
    {
       //on exit of state - this is where we destroy / kill / removed anything the belongs to the view.
+      this.sys._unload(assets);
+      
 
    },
    update: function ()
