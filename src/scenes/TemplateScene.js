@@ -1,86 +1,67 @@
-
 var LabelButton = require("../components/LabelButton");
 
+class TemplateScene extends Phaser.Scene {
+    constructor() {
+        super();
+    }
 
-var TemplateScene = new Phaser.Class({
+    preload() {
+        //called to load assets before create.
 
-   Extends: Phaser.Scene,
+        //I want to do somthing like
+        this.sys._load(assets);
 
-   initialize:
-   function TemplateScene ()
-   {
-       Phaser.Scene.call(this, { key: 'flood' });
+    }
 
-   },
+    resetModel() {
+        this.flags = {
+            hasWon: false,
+            hasFailed: false,
+            isPaused: false,
+            shouldRemoveItem: false
+        };
 
-   assets : {
-      atlas:[],
-      sounds:[],
-      spriteshhets:[],
-      text:[]
-   },
+        this.score = 0;
+        this.lives = 3;
+    }
 
-   preload: function ()
-   { 
-      //called to load assets before create.
+    create() {
+        //called on open of this scene.
+        this.resetModel();
+        this.createView();
+        console.log("TemplateScene::Create");
 
-      //I want to do somthing like
-      this.sys._load(assets);
+    }
 
-   },
+    createView() {
+        //where we add visual items to scene.
 
-   resetModel: function ()
-   {
-      this.flags = {
-         hasWon: false,
-         hasFailed: false,
-         isPaused: false,
-         shouldRemoveItem: false
-      };
-
-      this.score = 0;
-      this.lives = 3;
-   },
-
-   create: function ()
-   {
-      this.createView();
-      this.resetModel();
-      console.log("TemplateScene::Create");
-
-  
-      
-      //called on open of this scene.
-   },
-
-   createView: function(){
-         //where we add visual items to scene.
-
-          //example of how to construct classes, see the labelbutton class for simple class extension.
-          this.button1 = new LabelButton({
+        //example of how to construct classes, see the labelbutton class for simple class extension.
+        this.button1 = new LabelButton({
             width: 100,
             height: 50,
             label: "CLick Me",
             callback: this.onButtonOnePress,
             context: this
-         });
-   
-         //sprites
-         this.sprite1 = this.add.sprite();
-   
-   },
-   shutdown: function ()
-   {
-      //on exit of state - this is where we destroy / kill / removed anything the belongs to the view.
-      this.sys._unload(assets);
-      
+        });
 
-   },
-   update: function ()
-   {
-      //update loop.
-   }
+        //sprites
+        this.sprite1 = this.add.sprite();
 
-});
+    }
+    shutdown() {
+        //on exit of state - this is where we destroy / kill / removed anything the belongs to the view.
 
-module.exports = TemplateScene;
+
+
+    }
+    update() {
+        //update loop.
+    }
+
+}
+
+export {
+    TemplateScene as
+    default
+}

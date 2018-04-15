@@ -19,6 +19,15 @@ module.exports = {
             test: [ /\.vert$/, /\.frag$/ ],
             use: 'raw-loader'
           }
+        ],
+        loaders: [
+            {
+                test: /\.es6$/,
+                loader: 'babel-loader',
+                query: {
+                    presets: ['es2015']
+                }
+            }
         ]
     },
 

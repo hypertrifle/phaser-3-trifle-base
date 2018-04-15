@@ -7,5 +7,28 @@
       context: this
    });
 
+
    //create a sprite / image / gameobject
    this.sprite1 = this.add.sprite();
+
+
+
+
+
+
+   //a class structure
+   var ClassName = new Phaser.Class({
+   
+      //Extends: Phaser.Scene, //if this class extends another you can use this.
+      initialize:
+      function ClassName(){
+         console.log("ClassName::constructor");
+      },
+
+      destroy: function(){
+
+      }
+   });
+   
+   //if using require you can export the class with
+   module.exports = ClassName;

@@ -1,7 +1,5 @@
 import 'phaser';
-
-var TemplateScene = require("./scenes/TemplateScene");
-var Controller = require("./scenes/Controller");
+import Controller from './scenes/Controller.js'
 
 var config = {
     type: Phaser.WEBGL,

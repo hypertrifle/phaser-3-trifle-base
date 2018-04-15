@@ -6,7 +6,7 @@ A Phaser 3 Project Template
 
 ## todo
 
-- quick setsup
+- quick setup
 - links to dev logs
 - introduction to webpack and the npm commands [quickstart](https://medium.com/javascript-training/beginner-s-guide-to-webpack-b1f1a3638460)
 - breif overview of folder / package structure.

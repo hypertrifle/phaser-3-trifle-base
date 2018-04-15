@@ -1,0 +1,12 @@
+{
+   "assets": {
+      "svg": [""],
+      "json": [""]
+   },
+
+   "save": {
+      "identifier" : "nameOfGame",
+      "version" : "0.0.1",
+      "shouldPersistData": false
+   }
+}

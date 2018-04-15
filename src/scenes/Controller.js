@@ -1,35 +1,51 @@
+import Avatar from '../components/Avatar.js'
+import DataController from '../controllers/DataController.js';
+import HTMLController from '../controllers/HTMLController.js';
+import TrackingController from '../controllers/TrackingController.js';
 
-//our Controller, is what used to be our game class, this is where we contain our global objects.
-var Controller = new Phaser.Class({
+class Controller extends Phaser.Scene {
 
-   Extends: Phaser.Scene,
-
-   initialize:
-
-   function Controller ()
-   {
-       Phaser.Scene.call(this, { key: 'controller' });
-   },
-
-   preload: function ()
-   {
-       //this is the first time the game will have a chance to load any assets.
-    //    this.load.
-   },
-
-   create: function ()
+   constructor()
    {
 
-        //load our controllers into the global sys object. actual names tbc
+        //super the scene class
+        super({ key: 'controller' });    
 
         //data controller
-        this.sys._data = {name:"custom data model"};
+        this.sys._data = new DataController();
 
         //tracking controller
-        this.sys._tracking = {name:"class relating to tracking / recording progress"};
+        this.sys._tracking = new TrackingController();
 
         //HTML controller
-        this.sys._html = {name:"class to manipulate html objects"};
+        this.sys._html = new HTMLController();
+        
+       
+   }
+
+   preload()
+   {
+       //this is the first time the game will have a chance to load any assets.
+       this.load.image('avatar', 'assets/logo.png');
+       this.load.svg('test', 'assets/svg/test.svg');
+       this.load.json("settings", "assets/json/settings.json");
+       this.load.json("content", "assets/json/content.json");
+
+
+   }
+
+   create()
+   {
+        //now that we have assets avalilible we can load the settings files
+        this.sys._data.loadModel(this.cache.json.get("settings"));
+
+        //see if we have any save data
+        try {
+            this.sys._tracking.loadModel(this.sys._data.save);
+        } catch(e){
+            console.warn("error initilising tracking controller");
+        }
+
 
         //load our Scenes from config
         // this.sys._data.get("states").forEach(element => {
@@ -41,17 +57,36 @@ var Controller = new Phaser.Class({
 
 
         //test reasons
-        this.scene.add(TemplateScene);
+        // this.scene.add(TemplateScene);
 
       //called on boot of game
       console.log("Scene:", this);
 
+      this.testSVG();
 
+
+      
 
       //boot first scene.
 
    }
 
-});
+   update(t,dt){
 
-module.exports = Controller;
+    if(this.svg){
+        // this.svg.setScale(Math.sin(t/1000)*3,Math.sin(t/1000)*3);
+    }
+       
+   }
+
+   testSVG(){
+    console.log("testing svg featureset");
+
+    this.svg = this.add.image(this.cameras.main.width/2, this.cameras.main.height/2, 'test');
+    this.svg.setScale(2,2);
+    console.log(this.svg);
+   }
+
+}
+
+export { Controller as default}
