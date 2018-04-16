@@ -3,13 +3,25 @@ import {SaveModel} from '../models/Global';
 export default class DataController {
 
    private _data:any; //we really dont want to ever use any but for ease of use lets do this.
-   private save:SaveModel;
+   save:SaveModel;
+   
+   //this allows this class to act as a singleton.
+   private static _instance: DataController;
+   public static get Instance()
+   {
+       // Do you need arguments? Make it a regular method instead.
+       return this._instance || (this._instance = new this());
+   }
+   //end singlton functionality.
+   
 
    constructor() {
       console.log("DataController::constructor");
-
       this._data = {};
    }
+
+   
+
 
    loadModel(model:Object){
       if(model && model !== undefined && model !== null){

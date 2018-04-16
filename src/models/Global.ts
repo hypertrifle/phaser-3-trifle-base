@@ -3,3 +3,8 @@ export class SaveModel {
    version:String;
    shouldPersistData:Boolean;
 }
+
+export class StateModel {
+   id:String = "";
+   assets:Array<any> =  [];
+}
