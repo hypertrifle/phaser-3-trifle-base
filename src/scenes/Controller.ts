@@ -1,9 +1,10 @@
-import Avatar from '../components/Avatar.js'
 import DataController from '../controllers/DataController.js';
 import HTMLController from '../controllers/HTMLController.js';
 import TrackingController from '../controllers/TrackingController.js';
 
-class Controller extends Phaser.Scene {
+export default class Controller extends Phaser.Scene {
+
+   private svg:Phaser.GameObjects.Image;
 
    constructor()
    {
@@ -12,13 +13,13 @@ class Controller extends Phaser.Scene {
         super({ key: 'controller' });    
 
         //data controller
-        this.sys._data = new DataController();
+      //   this.sys._data = new DataController();
 
-        //tracking controller
-        this.sys._tracking = new TrackingController();
+      //   //tracking controller
+      //   this.sys._tracking = new TrackingController();
 
-        //HTML controller
-        this.sys._html = new HTMLController();
+      //   //HTML controller
+      //   this.sys._html = new HTMLController();
         
        
    }
@@ -26,10 +27,10 @@ class Controller extends Phaser.Scene {
    preload()
    {
        //this is the first time the game will have a chance to load any assets.
-       this.load.image('avatar', 'assets/logo.png');
-       this.load.svg('test', 'assets/svg/test.svg');
-       this.load.json("settings", "assets/json/settings.json");
-       this.load.json("content", "assets/json/content.json");
+      //  this.load.image('avatar', 'assets/logo.png');
+      //  this.load.svg('test', 'assets/svg/test.svg');
+      //  this.load.json("settings", "assets/json/settings.json");
+      //  this.load.json("content", "assets/json/content.json");
 
 
    }
@@ -37,14 +38,14 @@ class Controller extends Phaser.Scene {
    create()
    {
         //now that we have assets avalilible we can load the settings files
-        this.sys._data.loadModel(this.cache.json.get("settings"));
+      //   this.sys._data.loadModel(this.cache.json.get("settings"));
 
-        //see if we have any save data
-        try {
-            this.sys._tracking.loadModel(this.sys._data.save);
-        } catch(e){
-            console.warn("error initilising tracking controller");
-        }
+      //   //see if we have any save data
+      //   try {
+      //       this.sys._tracking.loadModel(this.sys._data.save);
+      //   } catch(e){
+      //       console.warn("error initilising tracking controller");
+      //   }
 
 
         //load our Scenes from config
@@ -71,15 +72,12 @@ class Controller extends Phaser.Scene {
 
    }
 
-   update(t,dt){
+   update(t:integer,dt:number){
 
-    if(this.svg){
-        // this.svg.setScale(Math.sin(t/1000)*3,Math.sin(t/1000)*3);
-    }
-       
+   
    }
 
-   testSVG(){
+   testSVG():void{
     console.log("testing svg featureset");
 
     this.svg = this.add.image(this.cameras.main.width/2, this.cameras.main.height/2, 'test');
@@ -88,5 +86,3 @@ class Controller extends Phaser.Scene {
    }
 
 }
-
-export { Controller as default}

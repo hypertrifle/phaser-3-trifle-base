@@ -1,4 +1,4 @@
-class HTMLController {
+export default class HTMLController {
 
    constructor() {
       console.log("HTMLController::constructor");
@@ -8,10 +8,4 @@ class HTMLController {
 
    }
 
-}
-
-//export
-export {
-   HTMLController as
-   default
 }

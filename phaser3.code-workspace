@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+            // Docs and release notes
+            "name": "Phaser",
+            "path": "node_modules\\phaser\\src"
+        },
+		{
+            // Docs and release notes
+            "name": "Phaser Examples",
+            "path": "C:\\dev\\phaser\\phaser3-examples\\public\\src"
+        },
+		{
+			"path": ""
+		}
+	],
+	"settings": {}
+}

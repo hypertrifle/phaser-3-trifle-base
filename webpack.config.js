@@ -2,10 +2,12 @@
 
 const webpack = require('webpack');
 const path = require('path');
+var phaserModule = path.join(__dirname, '/node_modules/phaser/')
+var phaser = path.join(phaserModule, 'src/phaser.js');
 
 module.exports = {
 
-    entry: './src/index.js',
+    entry: './src/index.ts',
 
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -13,11 +15,23 @@ module.exports = {
         filename: 'project.bundle.js'
     },
 
+    resolve: {
+        extensions: ['.ts', '.js'],
+        alias: {
+            'phaser': phaser,
+        }
+    },
+
     module: {
         rules: [
           {
             test: [ /\.vert$/, /\.frag$/ ],
             use: 'raw-loader'
+          },
+          {
+            test: /\.ts?$/,
+            use: 'ts-loader',
+            exclude: /node_modules/
           }
         ],
         loaders: [

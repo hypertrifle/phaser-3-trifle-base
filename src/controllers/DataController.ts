@@ -1,4 +1,9 @@
-class DataController {
+import {SaveModel} from '../models/Global';
+
+export default class DataController {
+
+   private _data:any; //we really dont want to ever use any but for ease of use lets do this.
+   private save:SaveModel;
 
    constructor() {
       console.log("DataController::constructor");
@@ -6,7 +11,7 @@ class DataController {
       this._data = {};
    }
 
-   loadModel(model){
+   loadModel(model:Object){
       if(model && model !== undefined && model !== null){
          this._data = model;
          this.save = JSON.parse(JSON.stringify(this._data.save));
@@ -18,12 +23,12 @@ class DataController {
 
    }
 
-   get(key, clone) {
-      shouldClone = clone || true;
-      obb = this._data;
+   get(key:String, clone:Boolean) {
+      let shouldClone = clone || true;
+      var obb:any = this._data;
 
       if (key !== undefined) {
-         parts = key.split(".");
+         let parts = key.split(".");
          for (var i = 0; i < parts.length; i++) {
             obb = obb[parts[i]];
 
@@ -51,6 +56,3 @@ class DataController {
    }
 
 }
-
-//export
-export { DataController as default }
