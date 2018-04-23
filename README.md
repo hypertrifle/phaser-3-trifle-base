@@ -11,10 +11,16 @@ A Phaser 3 Project Template
 - introduction to webpack and the npm commands [quickstart](https://medium.com/javascript-training/beginner-s-guide-to-webpack-b1f1a3638460)
 - breif overview of folder / package structure.
 - design principles
+  - typescript
+  - singletons / the Splene class
+  - nice itterators
+  - the Contoller class.
+  - EVENTS (will alieviate a lot of problemos!)
+  - models as interfaces
+  - models and the data controller
+  - updates to the html and tacking controller
+  - migration of utils
   - (objects as params)
-  - macros
-  - static libraries
-  - Class() and its useage
 
 ## Requirements
 
