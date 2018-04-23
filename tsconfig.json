@@ -7,7 +7,7 @@
      "allowJs": true
    },
    "files": [
-		"../phaser.d.ts",
+		"../phaser3-docs/typescript/phaser.d.ts",
   ],
   "include": [
         "src/**/*"

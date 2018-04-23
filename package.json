@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "build": "webpack",
-    "dev": "npm run build && webpack-dev-server -d --port=8080 --open-page webpack-dev-server/"
+    "dev": "npm run build && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/"
   },
   "repository": {
     "type": "git",
@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "babel-loader": "^7.1.4",
-    "phaser": "^3.3.0",
+    "phaser": "^3.6.0",
     "ts-loader": "^3.5.0"
   }
 }

@@ -18,7 +18,7 @@ const config: GameConfig = {
   width: 800,
   height: 600,
   zoom: 1,
-  type: Phaser.AUTO,
+  type: Phaser.WEBGL,
   parent: "game",
   scene: [Controller],
   input: {

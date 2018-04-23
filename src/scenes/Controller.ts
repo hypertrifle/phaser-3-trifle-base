@@ -1,3 +1,4 @@
+import PlanningScene from "./PlanningScene";
 import Splene from "./Splene";
 import {StateModel} from "../models/Global";
 
@@ -46,14 +47,12 @@ export default class Controller extends Splene {
 
 
         //test reasons
-        // this.scene.add(TemplateScene);
+        this.scene.add("PlanningScene",PlanningScene,true);
 
       //called on boot of game
-      console.log("Scene:", this);
+    //   console.log("Scene:", this);
 
-      this.testSVG();
-
-
+    //   this.testSVG();
       
 
       //boot first scene.
@@ -64,6 +63,8 @@ export default class Controller extends Splene {
 
    
    }
+
+
 
    testSVG():void{
     console.log("testing svg featureset");
