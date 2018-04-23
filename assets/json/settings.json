@@ -1,12 +1,3 @@
 {
-   "assets": {
-      "svg": [""],
-      "json": [""]
-   },
-
-   "save": {
-      "identifier" : "nameOfGame",
-      "version" : "0.0.1",
-      "shouldPersistData": false
-   }
+   "_comment": "currently not in use, please see content.json"
 }

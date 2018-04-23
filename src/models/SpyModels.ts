@@ -1,8 +1,17 @@
 export interface Member {
    name:string;
-   rank:number;
    speed:number;
-   _id:int;
+   movement_speed:number;
+   cost:int;
+   abilities:string[];
+   bio:string;
+}
+
+export interface Mission {
+   name:string;
+   map:TilemapConfig;
+   type:string;
+   budget:int;
 }
 
 export interface Tile {

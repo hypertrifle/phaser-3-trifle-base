@@ -1,77 +1,57 @@
 import PlanningScene from "./PlanningScene";
 import Splene from "./Splene";
-import {StateModel} from "../models/Global";
+import { StateModel } from "../models/Global";
+
+
+// this is sort of an bootstate, there probably is a more elegant way that this, but I cannot keep up with all this hipster code
+// its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere.
 
 export default class Controller extends Splene {
 
-   private svg:Phaser.GameObjects.Image;
+    private svg: Phaser.GameObjects.Image;
 
-   constructor()
-   {
+    constructor() {
 
-        super({ key: 'controller' });    
+        super({ key: 'controller' });
         console.log(this);
 
-   }
+    }
 
-   preload()
-   {
-      //  this.load.image('avatar', 'assets/logo.png');
-      //  this.load.svg('test', 'assets/svg/test.svg');
-      //  this.load.json("settings", "assets/json/settings.json");
-      //  this.load.json("content", "assets/json/content.json");
+    preload() {
+        // this.load.svg('test', 'assets/svg/test.svg');
+        this.load.json("content", "assets/json/content.json");
 
+    }
 
-   }
-
-   create()
-   {
+    create() {
         //now that we have assets avalilible we can load the settings files
-      this._data.loadModel(this.cache.json.get("settings"));
+        this._data.loadModel(this.cache.json.get("content"));
 
         //see if we have any save data
         try {
             this._tracking.loadModel(this._data.save);
-        } catch(e){
+        } catch (e) {
             console.warn("error initilising tracking controller");
         }
 
-
-        // load our Scenes from config
-        // this._data.get("states",true).forEach(e:StateModel => {
-            // this.scene.add()
-        // });
-
-        //start which one we want.
-        // this.scene.start(this._data.get("start_state", true));
+        //here we may eventually load our scenes, or figure our a better / more pragmatic way to load the states.
 
 
-        //test reasons
-        this.scene.add("PlanningScene",PlanningScene,true);
+        //add our planning scene and auto start.
+        this.scene.add("PlanningScene", PlanningScene, true);
+    }
 
-      //called on boot of game
-    //   console.log("Scene:", this);
+    update(t: integer, dt: number) {
+        //I would really like an update even if this /scene/ is paused.
 
-    //   this.testSVG();
-      
+    }
 
-      //boot first scene.
+    testSVG(): void {
+        console.log("testing svg featureset");
 
-   }
-
-   update(t:integer,dt:number){
-
-   
-   }
-
-
-
-   testSVG():void{
-    console.log("testing svg featureset");
-
-    this.svg = this.add.image(this.cameras.main.width/2, this.cameras.main.height/2, 'test');
-    this.svg.setScale(2,2);
-    console.log(this.svg);
-   }
+        this.svg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'test');
+        this.svg.setScale(2, 2);
+        console.log(this.svg);
+    }
 
 }

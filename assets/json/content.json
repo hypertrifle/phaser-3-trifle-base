@@ -1,3 +1,126 @@
 {
+   "save": {
+      "identifier" : "spygame",
+      "version" : "0.0.1",
+      "shouldPersistData": false
+   },
+
+   "teamMembers": [
+      {
+         "name":"Gonzo Parchae",
+         "speed":10,
+         "movement_speed":10,
+         "abilities": ["attack","hack", "steal"],
+         "cost": 30,
+         "bio": "no-one knows how he does what he does, but the dev just make him do"
+      },
+      {
+         "name":"Janet Hozgaad",
+         "speed":2,
+         "movement_speed":4,
+         "abilities": ["attack"],
+         "cost": 4,
+         "bio": "3 Times Nascar Champion"
+      },
+      {
+         "name":"Benny Vandelay",
+         "speed":2,
+         "movement_speed":3,
+         "abilities": ["attack"],
+         "cost": 3,
+         "bio": "Champion squash drinker"
+      },
+      {
+         "name":"Crissy Clay",
+         "speed":1,
+         "movement_speed":3,
+         "abilities": ["attack"],
+         "cost": 2,
+         "bio": "Was an extra in the bill"
+      },
+      {
+         "name":"Giddy Hanson",
+         "speed":2,
+         "movement_speed":4,
+         "abilities": ["hack"],
+         "cost": 4,
+         "bio": "Really doesn't like the whole espionage gig"
+      },
+      {
+         "name":"Pepper Dance",
+         "speed":3,
+         "movement_speed":2,
+         "abilities": ["hack"],
+         "cost": 3,
+         "bio":""
+      },
+      {
+         "name":"H.E. Pennypacker",
+         "speed":2,
+         "movement_speed":2,
+         "abilities": ["hack"],
+         "cost": 2,
+         "bio":""
+      },
+      {
+         "name":"Teddy Tickell",
+         "speed":2,
+         "movement_speed":3,
+         "abilities": ["steal"],
+         "cost": 4,
+         "bio":""
+      },
+      {
+         "name":"Winston White",
+         "speed":2,
+         "movement_speed":2,
+         "abilities": ["steal"],
+         "cost": 3,
+         "bio":""
+      },
+      {
+         "name":"Salvatrice Jekyll",
+         "speed":3,
+         "movement_speed":1,
+         "abilities": ["steal"],
+         "cost": 2,
+         "bio":""
+      },
+      {
+         "name":"Natalia Sweet",
+         "speed":2,
+         "movement_speed":2,
+         "abilities": ["attack","hack"],
+         "cost": 9,
+         "bio":""
+      },
+      {
+         "name":"Fabiana Lyon",
+         "speed":1,
+         "movement_speed":3,
+         "abilities": ["attack","steal"],
+         "cost": 11,
+         "bio":""
+      },
+      {
+         "name":"Sheila Maçon",
+         "speed":3,
+         "movement_speed":1,
+         "abilities": ["hack", "steal"],
+         "cost": 10,
+         "bio":""
+      }
+   ],
+
+   "missions": [
+      {
+         "name": "test_level",
+         "file": "map.json",
+         "type": "test",
+         "budget": 19
+      }
+   ]
+
    
+
 }
