@@ -37,3 +37,6 @@ node, npm
 
 ## thing to ask community
 
+
+## ideas on spy games
+

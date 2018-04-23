@@ -12,7 +12,8 @@
          "movement_speed":10,
          "abilities": ["attack","hack", "steal"],
          "cost": 30,
-         "bio": "no-one knows how he does what he does, but the dev just make him do"
+         "bio": "no-one knows how he does what he does, but the dev just make him do",
+         "hidden_name":"Alpha"
       },
       {
          "name":"Janet Hozgaad",
@@ -20,7 +21,8 @@
          "movement_speed":4,
          "abilities": ["attack"],
          "cost": 4,
-         "bio": "3 Times Nascar Champion"
+         "bio": "3 Times Nascar Champion",
+         "hidden_name":"Beta"
       },
       {
          "name":"Benny Vandelay",
@@ -28,7 +30,8 @@
          "movement_speed":3,
          "abilities": ["attack"],
          "cost": 3,
-         "bio": "Champion squash drinker"
+         "bio": "Champion squash drinker",
+         "hidden_name":"gamma"
       },
       {
          "name":"Crissy Clay",
@@ -36,7 +39,8 @@
          "movement_speed":3,
          "abilities": ["attack"],
          "cost": 2,
-         "bio": "Was an extra in the bill"
+         "bio": "Was an extra in the bill",
+         "hidden_name":"Delta"
       },
       {
          "name":"Giddy Hanson",
@@ -44,7 +48,8 @@
          "movement_speed":4,
          "abilities": ["hack"],
          "cost": 4,
-         "bio": "Really doesn't like the whole espionage gig"
+         "bio": "Really doesn't like the whole espionage gig",
+         "hidden_name":"Epsilon"
       },
       {
          "name":"Pepper Dance",
@@ -52,7 +57,8 @@
          "movement_speed":2,
          "abilities": ["hack"],
          "cost": 3,
-         "bio":""
+         "bio":"",
+         "hidden_name":"Zeta"
       },
       {
          "name":"H.E. Pennypacker",
@@ -60,7 +66,8 @@
          "movement_speed":2,
          "abilities": ["hack"],
          "cost": 2,
-         "bio":""
+         "bio":"",
+         "hidden_name":"Eta"
       },
       {
          "name":"Teddy Tickell",
@@ -68,7 +75,8 @@
          "movement_speed":3,
          "abilities": ["steal"],
          "cost": 4,
-         "bio":""
+         "bio":"",
+         "hidden_name":"Theta"
       },
       {
          "name":"Winston White",
@@ -76,7 +84,8 @@
          "movement_speed":2,
          "abilities": ["steal"],
          "cost": 3,
-         "bio":""
+         "bio":"",
+         "hidden_name":"Iota"
       },
       {
          "name":"Salvatrice Jekyll",
@@ -84,7 +93,8 @@
          "movement_speed":1,
          "abilities": ["steal"],
          "cost": 2,
-         "bio":""
+         "bio":"",
+         "hidden_name":"Kappa"
       },
       {
          "name":"Natalia Sweet",
@@ -92,7 +102,8 @@
          "movement_speed":2,
          "abilities": ["attack","hack"],
          "cost": 9,
-         "bio":""
+         "bio":"",
+         "hidden_name":"Lambda"
       },
       {
          "name":"Fabiana Lyon",
@@ -100,7 +111,8 @@
          "movement_speed":3,
          "abilities": ["attack","steal"],
          "cost": 11,
-         "bio":""
+         "bio":"",
+         "hidden_name":"Mu"
       },
       {
          "name":"Sheila Maçon",
@@ -108,7 +120,8 @@
          "movement_speed":1,
          "abilities": ["hack", "steal"],
          "cost": 10,
-         "bio":""
+         "bio":"",
+         "hidden_name":"Nu"
       }
    ],
 
