@@ -2,7 +2,7 @@ export interface Member {
    name:string;
    speed:number;
    movement_speed:number;
-   cost:int;
+   cost:number;
    abilities:string[];
    bio:string;
 }
@@ -11,7 +11,7 @@ export interface Mission {
    name:string;
    map:TilemapConfig;
    type:string;
-   budget:int;
+   budget:number;
 }
 
 export interface Tile {
@@ -36,15 +36,15 @@ export enum Side {
 }
 
 export interface SpyTimedAction {
-   owner:int;
-   startTime:int;
-   hasError:int;
+   owner:number;
+   startTime:number;
+   hasError:number;
    action:Action;
    target:Tile;
    targetSide:Side;
 
-   startUpTime:int; //walking to target location
-   coolDownTime:int;
+   startUpTime:number; //walking to target location
+   coolDownTime:number;
 }
 
 

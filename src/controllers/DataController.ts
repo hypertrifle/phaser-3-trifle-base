@@ -72,7 +72,7 @@ export default class DataController {
 
                 //for each ability
                 for(let j in this.members[i].abilities){
-                    var indexToRemove:int = requredMembers.indexOf(this.members[i].abilities[j]);
+                    var indexToRemove:number = requredMembers.indexOf(this.members[i].abilities[j]);
                     if(indexToRemove > -1){
                         //mark as aquired
                         requredMembers.splice(indexToRemove, 1);

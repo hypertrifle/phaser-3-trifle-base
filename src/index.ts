@@ -5,10 +5,8 @@
  * @license      Hypertrifle
  */
 
-/// <reference path="../../phaser.d.ts"/>
-
 import "phaser";
-import Controller from "./scenes/Controller";
+import Boot from "./scenes/Boot";
 
 // main game configuration
 const config: GameConfig = {
@@ -20,14 +18,14 @@ const config: GameConfig = {
   zoom: 1,
   type: Phaser.WEBGL,
   parent: "game",
-  scene: [Controller],
+  scene: [Boot],
   input: {
     keyboard: true,
     mouse: true,
     touch: false,
     gamepad: false
   },
-  backgroundColor: "#000000",
+  backgroundColor: "#aaaaaa",
   pixelArt: false,
   antialias: true
 };
