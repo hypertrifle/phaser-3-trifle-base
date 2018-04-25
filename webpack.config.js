@@ -2,8 +2,10 @@
 
 const webpack = require('webpack');
 const path = require('path');
+
 var phaserModule = path.join(__dirname, '/node_modules/phaser/')
 var phaser = path.join(phaserModule, 'src/phaser.js');
+
 
 module.exports = {
 
