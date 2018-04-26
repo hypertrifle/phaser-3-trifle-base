@@ -32,6 +32,5 @@ const config: GameConfig = {
 
 // when the page is loaded, create our game instance
 window.onload = () => {
-  
   var game = new Phaser.Game(config);
 };

@@ -12,7 +12,8 @@ export default class Boot extends Splene {
 
     constructor() {
 
-        super({ key: 'Boot' });
+        //active true means the state always runs. :D
+        super({ key: 'Boot', active:true });
         console.log(this);
 
     }
@@ -42,7 +43,7 @@ export default class Boot extends Splene {
     }
 
     update(t: integer, dt: number) {
-        //I would really like an update even if this /scene/ is paused.
+        //this is run every frame, regardless of loaded scene.
 
     }
 
