@@ -30,24 +30,31 @@ export default class Controller extends Splene {
       console.log("Planning Scene:: Create");
 
       let test = new Button(this, {
-         x:101,
-         y:51,
+         x:150,
+         y:100,
          label: "\f01", 
+
          roundedCorners: { sw: true },
          width:200,
          height: 100,
          color:[0xFF0000, 0xee0000, 0xaa0000],
-         onClick:"buttonclick",
-         radius:10
+         onClick:"ui.buttons.close",
+         radius:10,
+         shadow: {
+             x:5,
+             y:10,
+             color:0x000000,
+             opacity:0.4
+         }
       });
 
 
       // this._map = new SpyMap(this, {});
-      this._gant = new SpyGant(this, {});
-      this._playController = new SpyGameplayController(this, {
-         members: [0, 1, 2, 3, 4],
-         level: 0
-      });
+    //   this._gant = new SpyGant(this, {});
+    //   this._playController = new SpyGameplayController(this, {
+    //      members: [0, 1, 2, 3, 4],
+    //      level: 0
+    //   });
 
       this.events.emit("spy.recalculate", {test:true});
       this.events.emit("spy.redraw");

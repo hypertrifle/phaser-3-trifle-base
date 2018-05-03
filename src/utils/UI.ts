@@ -61,12 +61,17 @@ export class CanvasTools {
       canvas.fillPath();
 
 
-
       
    }
 
 }
 
+interface DropShadow {
+    x:number,
+    y:number,
+    color:number,
+    opacity:number
+}
 
 
 interface ButtonOptions {
@@ -75,10 +80,13 @@ interface ButtonOptions {
    width:number,
    height:number,
    color:number[], // assuming that we will work with #
-   roundedCorners:Corners,
+   
    radius:number,
    label:string,
-   onClick:string //we are gonna ditch callback functions for events, -- more protection agaist destroyed objects, getting caught up in shit.
+   onClick?:string //we are gonna ditch callback functions for events, -- more protection agaist destroyed objects, getting caught up in shit.
+   roundedCorners?:Corners,
+   shadow?:DropShadow
+
 }
 
 export class Button extends Phaser.GameObjects.Image {
@@ -86,27 +94,43 @@ export class Button extends Phaser.GameObjects.Image {
    _clickEventString:string;
    _key:string;
 
+   _drop:DropShadow;
+
    constructor(scene:Scene, config:ButtonOptions){
 
       console.log("UI::Button", config);
 
+
+   
+
       //anything we use in creating this button we should use in out key.
       let key = JSON.stringify({w:config.width,h:config.height,c:config.color, corns:config.roundedCorners, r:config.radius});
 
-      //this this key doesn't exist, let go ahead and create the spritesheet
+      //todo: if this key doesn't exist, let go ahead and create the idividual frames
 
-      if(true){
+      if(true){ 
 
           // now we are going to create meat and veg of this button, the shapes and sterf 
           // i usually would try and make this a sprite sheet but seems phaser3 doesn't have 
           // ability to save graphics object to the cache with spritesheet options.
          
-          let canvas = scene.make.graphics({x: 100, y: 100, /*add: false*/}); //todo:where we xy
+          let canvas = scene.make.graphics({add: false}); //todo:where we xy
 
-          //we now want to draw each frame to the graphics object.          
+          //we now want to draw each frame to the graphics object.    
+
+          let shadowX = (config.shadow)? config.shadow.x :0;
+          let shadowY = (config.shadow)? config.shadow.y :0;
+          
+          
+          if(shadowX !== 0 || shadowY !== 0){
+
+            CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[0], radius:config.radius});
+         
+        }
+          
           CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[0], radius:config.radius});
           //and save that texture to cache.
-          canvas.generateTexture(key+"-up", config.width, config.height);
+          canvas.generateTexture(key+"-up", config.width+shadowX, config.height+shadowY);
 
           //over
           CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[1], radius:config.radius});
@@ -123,6 +147,7 @@ export class Button extends Phaser.GameObjects.Image {
       // passing the key generated as above, and assuming the first from for de
       super(scene,config.x, config.y,key+"-up",0);
 
+
       this._key = key;
 
       //save the event we want to use for the callback - again we will use events to avoid callbacks that doen't exist.
@@ -136,21 +161,21 @@ export class Button extends Phaser.GameObjects.Image {
 
       //our input events
       this.on('pointerover', function (e:any) {
-         this.setTexture(key+"-over");
+         this.setTexture(this._key+"-over");
      });
 
       this.on('pointerout', function (e:any) {
-         this.setTexture(key+"-up");
+         this.setTexture(this._key+"-up");
          
      });
 
       this.on('pointerdown', function (e:any) {
-         this.setTexture(key+"-down");
+         this.setTexture(this._key+"-down");
          
      });
 
       this.on('pointerup', function (e:any) {
-         this.setTexture(key+"-up");
+         this.setTexture(this._key+"-up");
 
          //callback on up :)
          this.scene.events.emit(this._clickEventString);         
