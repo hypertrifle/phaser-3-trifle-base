@@ -1,4 +1,4 @@
-import { SaveModel } from '../models/Global';
+import { SaveModel, UISettings } from '../models/Global';
 import { Member, Mission } from '../models/SpyModels';
 
 export default class DataController {
@@ -14,7 +14,6 @@ export default class DataController {
 
     public members: Member[];
     public missions: Mission[];
-
 
     public static get Instance() {
         // Do you need arguments? Make it a regular method instead.

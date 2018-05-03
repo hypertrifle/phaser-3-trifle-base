@@ -1,10 +1,70 @@
 import { Scene, GameObjects } from "phaser";
+import { Corners } from "../models/Global";
 
-interface Corners {
-   sw?:boolean, //question marks mean optional paramaters 
-   se?:boolean,
-   nw?:boolean,
-   ne?:boolean
+
+export class CanvasTools {
+
+   static rectangle(canvas:GameObjects.Graphics, config:any){
+
+      //default values
+      let w = config.width;
+      let h = config.height;
+      let r = config.radius || 0;
+      let x = config.x;
+      let y = config.y;
+     
+      console.log(r);
+      //if radius is greater than height / width lets set radius to max possible value
+      if (w < 2 * r) r = w / 2;
+      if (h < 2 * r) r = h / 2;
+
+      //start path
+      canvas.beginPath();
+
+      canvas.fillStyle(config.color, 1.0);
+
+
+      canvas.moveTo(x+r, y);
+
+     
+
+      // //top side
+      canvas.lineTo(x+w-r,y);
+
+      //NE corner
+      // arc: function (x, y, radius, startAngle, endAngle, anticlockwise, close)
+       canvas.arc(x+w-r,y+r, r, Phaser.Math.DegToRad(270), Phaser.Math.DegToRad(360), false);
+
+      //right side
+      canvas.lineTo(x+w,y+h-r);
+
+      //SE corner
+      canvas.arc(x+w-r,y+h-r, r, Phaser.Math.DegToRad(0), Phaser.Math.DegToRad(90), false);
+
+      
+      //bottom
+      canvas.lineTo(x,y+h);
+
+
+      //SW corner
+      canvas.arc(x+r,y+h-r, r, Phaser.Math.DegToRad(90), Phaser.Math.DegToRad(180), false);
+
+
+      //left
+      canvas.lineTo(x,y+r);
+
+      //NW corner
+      canvas.arc(x+r,y+r, r, Phaser.Math.DegToRad(180), Phaser.Math.DegToRad(270), false);
+
+
+      canvas.closePath();
+      canvas.fillPath();
+
+
+
+      
+   }
+
 }
 
 
@@ -14,8 +74,9 @@ interface ButtonOptions {
    y:number,
    width:number,
    height:number,
-   colour:string, // assuming that we will work with #
+   color:number[], // assuming that we will work with #
    roundedCorners:Corners,
+   radius:number,
    label:string,
    onClick:string //we are gonna ditch callback functions for events, -- more protection agaist destroyed objects, getting caught up in shit.
 }
@@ -23,56 +84,76 @@ interface ButtonOptions {
 export class Button extends Phaser.GameObjects.Image {
 
    _clickEventString:string;
+   _key:string;
 
    constructor(scene:Scene, config:ButtonOptions){
 
       console.log("UI::Button", config);
 
       //anything we use in creating this button we should use in out key.
-      let key = JSON.stringify({w:config.width,h:config.height,c:config.colour, corns:config.roundedCorners});
+      let key = JSON.stringify({w:config.width,h:config.height,c:config.color, corns:config.roundedCorners, r:config.radius});
 
       //this this key doesn't exist, let go ahead and create the spritesheet
+
       if(true){
-          //now we are going to create meat and veg of this button, the shapes and sterf
+
+          // now we are going to create meat and veg of this button, the shapes and sterf 
+          // i usually would try and make this a sprite sheet but seems phaser3 doesn't have 
+          // ability to save graphics object to the cache with spritesheet options.
          
-          let canvas = scene.make.graphics({x: 0, y: 0, add: false}); //todo:where we xy
+          let canvas = scene.make.graphics({x: 100, y: 100, /*add: false*/}); //todo:where we xy
 
-          //we now want to draw each frame to the graphics object.
+          //we now want to draw each frame to the graphics object.          
+          CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[0], radius:config.radius});
+          //and save that texture to cache.
+          canvas.generateTexture(key+"-up", config.width, config.height);
 
-
-
+          //over
+          CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[1], radius:config.radius});
+          canvas.generateTexture(key+"-over", config.width, config.height);
+         
+         //down
+          CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[2], radius:config.radius});
+          canvas.generateTexture(key+"-down", config.width, config.height);
+          
       }
       
       // super (as an image) which gives us the basis of our button
       // image gives us enough visual flexability along with not inheriting functionallity associated with moving objects
-      // passing the key generated as above, and assuming the first from for default.
-      super(scene,0,0,key,0);
+      // passing the key generated as above, and assuming the first from for de
+      super(scene,config.x, config.y,key+"-up",0);
+
+      this._key = key;
 
       //save the event we want to use for the callback - again we will use events to avoid callbacks that doen't exist.
       this._clickEventString = config.onClick;
 
-      //this game object will be interactive. (use the rectangle of our wh)
-      this.setInteractive(new Phaser.Geom.Rectangle(0,0,config.width, config.height));
+      //this game object will be interactive.
+      this.setInteractive();
+
+      console.log(this);
 
 
       //our input events
       this.on('pointerover', function (e:any) {
-         this.setFrame(1); 
+         this.setTexture(key+"-over");
      });
 
       this.on('pointerout', function (e:any) {
-         this.setFrame(0); 
+         this.setTexture(key+"-up");
+         
      });
 
       this.on('pointerdown', function (e:any) {
-         this.setFrame(2); 
+         this.setTexture(key+"-down");
+         
      });
 
       this.on('pointerup', function (e:any) {
-         this.setFrame(0); 
+         this.setTexture(key+"-up");
+
          //callback on up :)
-         this.scene.events.emit(this._clickEventString)
-         
+         this.scene.events.emit(this._clickEventString);         
      });
 
       //add to the scene?
@@ -80,4 +161,6 @@ export class Button extends Phaser.GameObjects.Image {
 
 
    }
+
+ 
 }

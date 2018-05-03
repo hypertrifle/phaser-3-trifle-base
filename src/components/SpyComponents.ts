@@ -44,7 +44,6 @@ export class SpyGameplayController {
 
    constructor(owner:Scene, config:SpyGameControllerSettings){
       this.scene = owner;
-
       this.resgisterEvents();
    }
 

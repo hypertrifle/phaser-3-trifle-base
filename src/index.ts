@@ -19,12 +19,12 @@ const config: GameConfig = {
   type: Phaser.WEBGL,
   parent: "game",
   scene: [Boot],
-  input: {
-    keyboard: true,
-    mouse: true,
-    touch: false,
-    gamepad: false
-  },
+  // input: {
+  //   keyboard: true,
+  //   mouse: true,
+  //   touch: false,
+  //   gamepad: false
+  // },
   backgroundColor: "#aaaaaa",
   pixelArt: false,
   antialias: true

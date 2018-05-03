@@ -1,6 +1,7 @@
 import Splene from "./Splene";
 import { SpyGameplayController, SpyGant, SpyMap } from "../components/SpyComponents";
 import { Button } from "../utils/UI";
+import { UISettings } from "../models/Global";
 
 export default class Controller extends Splene {
 
@@ -29,28 +30,29 @@ export default class Controller extends Splene {
       console.log("Planning Scene:: Create");
 
       let test = new Button(this, {
-         x:0,
-         y:0,
+         x:101,
+         y:51,
          label: "\f01", 
          roundedCorners: { sw: true },
-         width:300,
-         height: 50,
-         colour:"#ff00a",
-         onClick:"buttonclick"
+         width:200,
+         height: 100,
+         color:[0xFF0000, 0xee0000, 0xaa0000],
+         onClick:"buttonclick",
+         radius:10
       });
 
 
-      this._map = new SpyMap(this, {});
+      // this._map = new SpyMap(this, {});
       this._gant = new SpyGant(this, {});
       this._playController = new SpyGameplayController(this, {
          members: [0, 1, 2, 3, 4],
          level: 0
       });
 
-      this.events.emit("spy.recalculate");
+      this.events.emit("spy.recalculate", {test:true});
       this.events.emit("spy.redraw");
 
-
+      console.log("test", UISettings.radius);
    }
 
    update() {
