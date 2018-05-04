@@ -18,13 +18,14 @@ export default class Controller extends Splene {
 
    preload() {
 
-      //we can populate our models here, our data controller shold have loaded our data in by now.
+    //we can populate our models here, our data controller shold have loaded our data in by now.
       this.load.image('tiles', 'assets/img/tiles.png');
       this.load.tilemapTiledJSON('map', 'assets/json/map.json');
 
-
-
    }
+
+
+
 
    create() {
       console.log("Planning Scene:: Create");
@@ -32,20 +33,23 @@ export default class Controller extends Splene {
       let test = new Button(this, {
          x:150,
          y:100,
-         label: "\f01", 
+         label: "\uf028", 
+         font: {
+          fontFamily: "Font Awesome 5 Free"
+         },
 
          roundedCorners: { sw: true },
          width:200,
          height: 100,
          color:[0xFF0000, 0xee0000, 0xaa0000],
-         onClick:"ui.buttons.close",
+         onClick:"ui.buttons.action",
          radius:10,
-         shadow: {
-             x:5,
-             y:10,
-             color:0x000000,
-             opacity:0.4
-         }
+        //  shadow: {
+        //      x:5,
+        //      y:10,
+        //      color:0x000000,
+        //      opacity:0.4
+        //  }
       });
 
 
@@ -61,6 +65,8 @@ export default class Controller extends Splene {
 
       console.log("test", UISettings.radius);
    }
+
+
 
    update() {
 

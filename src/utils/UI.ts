@@ -82,17 +82,22 @@ interface ButtonOptions {
    color:number[], // assuming that we will work with #
    
    radius:number,
-   label:string,
+   label?:string,
+   font?:any, // a basic font configuration object
    onClick?:string //we are gonna ditch callback functions for events, -- more protection agaist destroyed objects, getting caught up in shit.
    roundedCorners?:Corners,
-   shadow?:DropShadow
+   shadow?:DropShadow,
+
+   bevel?:number
 
 }
 
 export class Button extends Phaser.GameObjects.Image {
 
-   _clickEventString:string;
-   _key:string;
+   private _clickEventString:string;
+   private _key:string;
+
+   private _label:Phaser.GameObjects.Text;
 
    _drop:DropShadow;
 
@@ -118,19 +123,17 @@ export class Button extends Phaser.GameObjects.Image {
 
           //we now want to draw each frame to the graphics object.    
 
-          let shadowX = (config.shadow)? config.shadow.x :0;
-          let shadowY = (config.shadow)? config.shadow.y :0;
+        //   let shadowX = (config.shadow)? config.shadow.x :0;
+        //   let shadowY = (config.shadow)? config.shadow.y :0;
           
           
-          if(shadowX !== 0 || shadowY !== 0){
-
-            CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[0], radius:config.radius});
-         
-        }
+        //   if(config.shadow){
+        //     CanvasTools.rectangle(canvas, {x:shadowX,y:shadowY, width:config.width, height:config.height, color:config.shadow.color, radius:config.radius});      
+        //     }
           
           CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[0], radius:config.radius});
           //and save that texture to cache.
-          canvas.generateTexture(key+"-up", config.width+shadowX, config.height+shadowY);
+          canvas.generateTexture(key+"-up", config.width, config.height);
 
           //over
           CanvasTools.rectangle(canvas, {x:0,y:0, width:config.width, height:config.height, color:config.color[1], radius:config.radius});
@@ -153,8 +156,13 @@ export class Button extends Phaser.GameObjects.Image {
       //save the event we want to use for the callback - again we will use events to avoid callbacks that doen't exist.
       this._clickEventString = config.onClick;
 
+
+
       //this game object will be interactive.
       this.setInteractive();
+
+
+   
 
       console.log(this);
 
@@ -184,7 +192,13 @@ export class Button extends Phaser.GameObjects.Image {
       //add to the scene?
       this.scene.add.existing(this);
 
+      if(config.label){
+        //we need to add a label to this button
 
+        console.log("label plz");
+      this._label = scene.add.text(this.x,this.y,config.label, config.font);
+
+    }
    }
 
  

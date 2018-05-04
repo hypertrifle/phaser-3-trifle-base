@@ -11,7 +11,7 @@
 		{
             // Docs and release notes
             "name": "Phaser Examples",
-            "path": "C:\\dev\\phaser\\phaser3-examples\\public\\src"
+            "path": "..\\phaser3-examples\\public\\src"
         },
 		{
 			"path": ""
