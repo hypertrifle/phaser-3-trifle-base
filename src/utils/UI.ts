@@ -3,6 +3,7 @@ import { Corners } from "../models/Global";
 
 
 export class CanvasTools {
+    
 
    static rectangle(canvas:GameObjects.Graphics, config:any){
 
@@ -59,9 +60,6 @@ export class CanvasTools {
 
       canvas.closePath();
       canvas.fillPath();
-
-
-      
    }
 
 }
@@ -80,17 +78,19 @@ interface ButtonOptions {
    width:number,
    height:number,
    color:number[], // assuming that we will work with #
-   
    radius:number,
    label?:string,
    font?:any, // a basic font configuration object
    onClick?:string //we are gonna ditch callback functions for events, -- more protection agaist destroyed objects, getting caught up in shit.
    roundedCorners?:Corners,
    shadow?:DropShadow,
-
    bevel?:number
+}
+
+export class Make {
 
 }
+
 
 export class Button extends Phaser.GameObjects.Image {
 
@@ -106,8 +106,6 @@ export class Button extends Phaser.GameObjects.Image {
       console.log("UI::Button", config);
 
 
-   
-
       //anything we use in creating this button we should use in out key.
       let key = JSON.stringify({w:config.width,h:config.height,c:config.color, corns:config.roundedCorners, r:config.radius});
 
@@ -118,7 +116,6 @@ export class Button extends Phaser.GameObjects.Image {
           // now we are going to create meat and veg of this button, the shapes and sterf 
           // i usually would try and make this a sprite sheet but seems phaser3 doesn't have 
           // ability to save graphics object to the cache with spritesheet options.
-         
           let canvas = scene.make.graphics({add: false}); //todo:where we xy
 
           //we now want to draw each frame to the graphics object.    

@@ -6,6 +6,8 @@ import { StateModel } from "../models/Global";
 // this is sort of an bootstate, there probably is a more elegant way that this, but I cannot keep up with all this hipster code
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere.
 
+
+
 export default class Boot extends Splene {
 
     private svg: Phaser.GameObjects.Image;

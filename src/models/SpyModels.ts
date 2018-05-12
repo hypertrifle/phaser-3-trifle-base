@@ -51,6 +51,6 @@ export interface SpyTimedAction {
 export interface SpyTimeline {
    members:Member[];
    entries:SpyTimedAction[];
-   draft:SpyTimedAction;
-
+   draft?:SpyTimedAction;
+   turns:number;
 }

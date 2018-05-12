@@ -26,8 +26,8 @@ const config: GameConfig = {
   //   gamepad: false
   // },
   backgroundColor: "#aaaaaa",
-  pixelArt: false,
-  antialias: true
+  // pixelArt: false,
+  // antialias: true
 };
 
 // when the page is loaded, create our game instance

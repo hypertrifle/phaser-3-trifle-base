@@ -20,7 +20,8 @@ A Phaser 3 Project Template
   - models and the data controller
   - updates to the html and tacking controller
   - migration of utils
-  - (objects as params)
+  - (typed objects as params of optional configuration)
+  
 
 ## Requirements
 

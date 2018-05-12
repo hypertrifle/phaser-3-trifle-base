@@ -1,5 +1,4 @@
 // font style options.
-
 fontFamily: [ 'fontFamily', 'Courier' ],
 fontSize: [ 'fontSize', '16px' ],
 fontStyle: [ 'fontStyle', '' ],
@@ -25,3 +24,4 @@ wordWrapWidth: [ 'wordWrap.width', null ],
 wordWrapCallback: [ 'wordWrap.callback', null ],
 wordWrapCallbackScope: [ 'wordWrap.callbackScope', null ],
 wordWrapUseAdvanced: [ 'wordWrap.useAdvancedWrap', false ]
+

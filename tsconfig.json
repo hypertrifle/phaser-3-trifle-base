@@ -4,7 +4,8 @@
      "noImplicitAny": true,
      "module": "commonjs",
      "target": "es5",
-     "allowJs": true
+     "allowJs": true,
+     "lib": ["es5", "es6", "dom"],
    },
    "files": [
 		"../phaser3-docs/typescript/phaser.d.ts",

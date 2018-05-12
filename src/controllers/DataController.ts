@@ -15,6 +15,8 @@ export default class DataController {
     public members: Member[];
     public missions: Mission[];
 
+    public iconLookup: Map<string, string>; //maps are nice in es6!
+
     public static get Instance() {
         // Do you need arguments? Make it a regular method instead.
         return this._instance || (this._instance = new this());
@@ -45,6 +47,13 @@ export default class DataController {
             this.missions = [];
             for (let i in model.missions) {
                 this.missions.push(model.missions[i] as Mission);
+            }
+
+
+            this.iconLookup = new Map<string,string>();
+
+            for (let i in model.icons ){
+                this.iconLookup.set(i,model.icons[i]);
             }
 
 
