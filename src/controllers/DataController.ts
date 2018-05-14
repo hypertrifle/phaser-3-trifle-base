@@ -33,6 +33,11 @@ export default class DataController {
 
 
     loadModel(model: any) {
+
+        console.log("DataController::loadModel", model);
+
+
+
         try {
             this._data = model;
             this.save = JSON.parse(JSON.stringify(this._data.save));

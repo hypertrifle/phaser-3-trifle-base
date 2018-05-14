@@ -1,5 +1,5 @@
 import { Scene } from "phaser";
-import { CanvasTools } from "../utils/UI";
+import { CanvasTools, Button } from "../utils/UI";
 import { SpyTimeline } from "../models/SpyModels";
 
 export class SpyMap {
@@ -36,10 +36,10 @@ export class SpyGant {
 
    background:Phaser.GameObjects.Image;
    tl:Phaser.Geom.Point;
-
    model:SpyTimeline;
-
    draftContainer:Phaser.GameObjects.Container;
+
+   memberDisplayItems:Map<string, any>;
 
    private _config:any;
 
@@ -50,7 +50,7 @@ export class SpyGant {
       this._config = config;
 
       //we might want to pass in some sort of bounds object through the configuration object.
-      this.container = this.scene.add.container(config.x+config.width/2, config.y+config.height/2);
+      this.container = this.scene.add.container(config.x + config.width/2, config.y + config.height/2);
     //   this.tl = new Phaser.Geom.Point(config.x/2, config.y/2);
 
     this.model = {
@@ -60,24 +60,41 @@ export class SpyGant {
     };
 
       this.initDisplay();
-      this.redraw();
-
-      
+      this.setupEvents();
 
 
 
+
+
+   }
+
+   absInContainer(x:number,y:number,w:number,h:number, img:Phaser.GameObjects.Image) {
+
+        //we are scaling based on desired size.
+        img.setScale(w/img.width,h/img.height);
+
+        //we are moving the anchor from top left to center.
+        img.setPosition(x - this._config.width/2 + w/2, y - this._config.height/2 + h/2);
+
+
+   }
+
+   setupEvents() {
+       this.scene.events.on("spy.redraw",this.redraw,this);
    }
 
    initDisplay(){
 
        //background
        let g = this.scene.make.graphics({x:0,y:0,add: false});
-       CanvasTools.rectangle(g,{x:0,y:0, width:this._config.width, height:this._config.height, color:0xff0000, radius:0});
-       g.generateTexture('panelKey',this._config.w, this._config.h);
-       this.background = this.scene.add.image(0,0, "panelKey");
-       this.container.add(this.background);
+       CanvasTools.rectangle(g,{x:-this._config.width/2,y:-this._config.height/2, width:this._config.width, height:this._config.height, color:0xffffff, radius:0});
+       this.container.add(g);
 
        //render the 'turn' seperation markers.
+
+
+       //create our maps of groups of items
+       this.memberDisplayItems = new Map<string, any>();
        
    }
 
@@ -89,12 +106,14 @@ export class SpyGant {
        //some mesurements for our display objects.
 
        let row_height = this._config.height/this.model.members.length;
-       let ability_display_size = Math.max(...this.model.members.map(o => o.abilities.length)); //this is an ice es6 function - https://stackoverflow.com/questions/4020796/finding-the-max-value-of-an-attribute-in-an-array-of-objects?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+       let ability_display_size = row_height / Math.max(...this.model.members.map(o => o.abilities.length)); //this is an nice es6 function - https://stackoverflow.com/questions/4020796/finding-the-max-value-of-an-attribute-in-an-array-of-objects?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
        //but if there is one we should only display one fat boy.
        
        
-       ability_display_size = Math.min(ability_display_size,this._config.height);
+       ability_display_size = Math.min(ability_display_size,row_height);
+
+       console.warn("ADS", ability_display_size);
        
        //this size of our draggable items (minus the avatars and UI items)
        let gant_size = this._config.width - row_height - ability_display_size;
@@ -109,17 +128,91 @@ export class SpyGant {
 
 
     // lets render each member
-    for (let i in this.model.members) {
+    for (let i = 0; i  < this.model.members.length; i++) {
 
         
+        let memeber = this.model.members[i];
 
-        //render avatar
+        let dsp = this.memberDisplayItems.get(memeber.name);
+
+        //if we dont not have a display object for this member lets render it.
+        if(dsp === undefined){
+            dsp = {}
+            this.memberDisplayItems.set(memeber.name, dsp);
+            
+            //render avatar
+            dsp.avatar = this.scene.add.image(0,0,memeber.avatar);
+            this.absInContainer(0,row_height*i,row_height,row_height,dsp.avatar);
+            
+            this.container.add(dsp.avatar);
+            
+            dsp.abilityButtons = [];
+            //render ability buttons
+            for(let j = 0; j < memeber.abilities.length; j ++){
+
+               let abilitySettings = [
+                   {
+                       id:"attack",
+                       colors: [0xe78815, 0xa9691b, 0x6e4717],
+                       icon:"\uf255"
+                   },
+                   {
+                    id:"steal",
+                    colors: [0x7fc423, 0x446814, 0x20310a],
+                    icon:"\uf256"
+                },
+                {
+                    id:"hack",
+                    colors: [0x23ade5, 0x056caf, 0x013b60],
+                    icon:"\uf109"
+                }
+               ]
+
+               let ability = null;
+               for(let k in abilitySettings){
+                   if(abilitySettings[k].id === memeber.abilities[j]){
+                       ability = abilitySettings[k];
+                       break;
+                   }
+               }
+
+              let btn = new Button(this.scene, {
+                       x:0,
+                       y:0,
+                       label: ability.icon, 
+                       font: {
+                        fontFamily: "fontawesome",
+                        fontSize: "64px",
+                        align: "center"
+                       },
+                       roundedCorners: { sw: true },
+                       width:100,
+                       height: 100,
+                       color:ability.colors,
+                       onClick:"ui.buttons.action",
+                       radius:0,
+                    });
+
+                //postion it
+                 this.absInContainer(row_height,row_height*i + (ability_display_size*j),ability_display_size,ability_display_size,btn);
+
+                //add to our container
+                this.container.add(btn);
+                this.container.add(btn._label);
+
+                //and save to our obj
+                dsp.abilityButtons.push(btn);
+            }
 
 
-        //render ability buttons
+
+            // render timeline background maybe?
 
 
-        // render timeline background maybe?
+        }
+
+
+       
 
       
 

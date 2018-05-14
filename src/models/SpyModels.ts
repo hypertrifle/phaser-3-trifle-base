@@ -5,6 +5,7 @@ export interface Member {
    cost:number;
    abilities:string[];
    bio:string;
+   avatar:string;
 }
 
 export interface Mission {

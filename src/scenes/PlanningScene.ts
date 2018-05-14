@@ -1,6 +1,6 @@
 import Splene from "./Splene";
 import { SpyGameplayController, SpyGant, SpyMap } from "../components/SpyComponents";
-import { Button } from "../utils/UI";
+import { Button, CanvasTools } from "../utils/UI";
 import { UISettings } from "../models/Global";
 
 export default class Controller extends Splene {
@@ -54,13 +54,16 @@ export default class Controller extends Splene {
       // });
 
 
-       this._map = new SpyMap(this, {x: 10, y:10, height:600-15, width:790});
-       this._gant = new SpyGant(this, {x: 10, y:400+5, height:200-15, width:790});
+      this._map = new SpyMap(this, {x: 10, y:10, height:600-15, width:790});
+      this._gant = new SpyGant(this, {x: 10, y:400+5, height:200-15, width:780});
 
 
 
-
-
+      //some test data
+      this._gant.model.members.push(this._data.members[1]);
+      this._gant.model.members.push(this._data.members[12]);
+      // this._gant.model.members.push(this._data.members[0]);
+     
 
     //   this._playController = new SpyGameplayController(this, {
     //      members: [0, 1, 2, 3, 4],

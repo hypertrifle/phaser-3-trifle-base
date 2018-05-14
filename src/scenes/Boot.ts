@@ -23,10 +23,13 @@ export default class Boot extends Splene {
     preload() {
         // this.load.svg('test', 'assets/svg/test.svg');
         this.load.json("content", "assets/json/content.json");
+        this.load.image("avatar.png", "assets/img/avatar.png");
+
 
     }
 
     create() {
+
         //now that we have assets avalilible we can load the settings files
         this._data.loadModel(this.cache.json.get("content"));
 
