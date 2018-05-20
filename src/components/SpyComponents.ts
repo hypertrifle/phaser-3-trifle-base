@@ -1,16 +1,13 @@
 import { Scene } from "phaser";
 import { CanvasTools, Button } from "../utils/UI";
 import { SpyTimeline } from "../models/SpyModels";
+import { BaseComponent } from "./BaseComponent";
 
-export class SpyMap {
-   scene:Scene;
-   container:Phaser.GameObjects.Container;
-
+export class SpyMap extends BaseComponent {
 
    constructor(owner:Scene, config:any){
-      this.scene = owner;
-      this.container = this.scene.add.container(config.x+config.width/2, config.y+config.height/2);
-
+       super(owner,config);
+       
       var map = this.scene.make.tilemap({ key: 'map' });
 
       // The first parameter is the name of the tileset in Tiled and the second parameter is the key
@@ -30,10 +27,7 @@ export class SpyMap {
    
 }
 
-export class SpyGant {
-   scene:Scene;
-   container:Phaser.GameObjects.Container;
-
+export class SpyGant extends BaseComponent {
    background:Phaser.GameObjects.Image;
    tl:Phaser.Geom.Point;
    model:SpyTimeline;
@@ -41,17 +35,11 @@ export class SpyGant {
 
    memberDisplayItems:Map<string, any>;
 
-   private _config:any;
-
 
 
    constructor(owner:Scene, config:any){
-      this.scene = owner;
-      this._config = config;
 
-      //we might want to pass in some sort of bounds object through the configuration object.
-      this.container = this.scene.add.container(config.x + config.width/2, config.y + config.height/2);
-    //   this.tl = new Phaser.Geom.Point(config.x/2, config.y/2);
+        super(owner, config);
 
     this.model = {
         members : [],
@@ -61,23 +49,8 @@ export class SpyGant {
 
       this.initDisplay();
       this.setupEvents();
-
-
-
-
-
    }
 
-   absInContainer(x:number,y:number,w:number,h:number, img:Phaser.GameObjects.Image) {
-
-        //we are scaling based on desired size.
-        img.setScale(w/img.width,h/img.height);
-
-        //we are moving the anchor from top left to center.
-        img.setPosition(x - this._config.width/2 + w/2, y - this._config.height/2 + h/2);
-
-
-   }
 
    setupEvents() {
        this.scene.events.on("spy.redraw",this.redraw,this);
