@@ -1,3 +1,4 @@
+import { GameObjects } from "phaser";
 
 export interface BaseComponentConfig {
    x?:number,
@@ -34,6 +35,12 @@ export class BaseComponent {
 
 
       this._config = config;
+   }
+
+
+   add(child:Phaser.GameObjects.GameObject | Phaser.GameObjects.GameObject[]):Phaser.GameObjects.Container{
+
+      return this.container.add(child);
    }
 
    absInContainer(x:number,y:number,w:number,h:number, img:Phaser.GameObjects.Image) {

@@ -76,11 +76,28 @@ body {
   font-weight: normal;
 }
 
+#content, #orientation {
+    top:0; left:0; right:0; bottom: 0;
+    position: absolute;
+}
+
+#orientation {
+    font-size:10em;
+    background: rgba(0,0,0,0.5);
+    color: #FFFFFF;
+    padding-top: 25%;
+    text-align: center;
+    display: none;
+
+}
+
     </style>
 </head>
 
 <body>
     <script src="build/project.bundle.js" charset="utf-8"></script>
+    <div id="content"></div>
+    <div id="orientation">&#xf021;</div>
 </body>
 
 </html>

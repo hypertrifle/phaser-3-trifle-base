@@ -7,7 +7,9 @@
 
 import "phaser";
 import Boot from "./scenes/Boot";
+import ScaleManager from './Plugins/ScaleManager';
 
+var game: Phaser.Game;
 // main game configuration
 const config: GameConfig = {
   title: "Game",
@@ -17,8 +19,14 @@ const config: GameConfig = {
   height: 600,
   zoom: 1,
   type: Phaser.WEBGL,
-  parent: "game",
+  parent: "content",
   scene: [Boot],
+  callbacks: {
+    postBoot: () => {
+      console.log(this.game.canvas);
+      new ScaleManager(this.game.canvas, (!this.game.device.os.windows && !this.game.device.os.linux && !this.game.device.os.macOs), true);
+    }
+  },
   // input: {
   //   keyboard: true,
   //   mouse: true,
@@ -32,5 +40,5 @@ const config: GameConfig = {
 
 // when the page is loaded, create our game instance
 window.onload = () => {
-  var game = new Phaser.Game(config);
+  this.game = new Phaser.Game(config);
 };

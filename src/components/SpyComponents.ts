@@ -77,17 +77,15 @@ export class SpyGant extends BaseComponent {
 
 
        //some mesurements for our display objects.
-
        let row_height = this._config.height/this.model.members.length;
+       
        let ability_display_size = row_height / Math.max(...this.model.members.map(o => o.abilities.length)); //this is an nice es6 function - https://stackoverflow.com/questions/4020796/finding-the-max-value-of-an-attribute-in-an-array-of-objects?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 
        //but if there is one we should only display one fat boy.
        
        
        ability_display_size = Math.min(ability_display_size,row_height);
-
-       console.warn("ADS", ability_display_size);
-       
+      
        //this size of our draggable items (minus the avatars and UI items)
        let gant_size = this._config.width - row_height - ability_display_size;
 
@@ -102,8 +100,7 @@ export class SpyGant extends BaseComponent {
 
     // lets render each member
     for (let i = 0; i  < this.model.members.length; i++) {
-
-        
+       
         let memeber = this.model.members[i];
 
         let dsp = this.memberDisplayItems.get(memeber.name);

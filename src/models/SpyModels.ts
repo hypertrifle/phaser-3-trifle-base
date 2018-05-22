@@ -1,3 +1,11 @@
+import { Button } from "../utils/UI";
+
+export interface MemberDisplay {
+   avatar:Phaser.GameObjects.Image;
+   abilityButtons:Button[];
+   timelineItems:Phaser.GameObjects.Image;
+}
+
 export interface Member {
    name:string;
    speed:number;
@@ -6,6 +14,7 @@ export interface Member {
    abilities:string[];
    bio:string;
    avatar:string;
+   display:MemberDisplay;
 }
 
 export interface Mission {

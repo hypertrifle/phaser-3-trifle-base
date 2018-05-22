@@ -30,38 +30,14 @@ export default class Controller extends Splene {
    create() {
       console.log("Planning Scene:: Create");
 
-      // let test = new Button(this, {
-      //    x:150,
-      //    y:100,
-      //    label: "\uf028", 
-      //    font: {
-      //     fontFamily: "fontawesome",
-      //     fontSize: "32px"
-      //    },
-
-      //    roundedCorners: { sw: true },
-      //    width:200,
-      //    height: 100,
-      //    color:[0xFF0000, 0xee0000, 0xaa0000],
-      //    onClick:"ui.buttons.action",
-      //    radius:10,
-      //   //  shadow: {
-      //   //      x:5,
-      //   //      y:10,
-      //   //      color:0x000000,
-      //   //      opacity:0.4
-      //   //  }
-      // });
-
-
       this._map = new SpyMap(this, {x: 10, y:10, height:600-15, width:790});
       this._gant = new SpyGant(this, {x: 10, y:400+5, height:200-15, width:780});
-
 
 
       //some test data
       this._gant.model.members.push(this._data.members[1]);
       this._gant.model.members.push(this._data.members[12]);
+      this._gant.model.members.push(this._data.members[8]);
       // this._gant.model.members.push(this._data.members[0]);
      
 
@@ -81,6 +57,10 @@ export default class Controller extends Splene {
    update() {
 
      this.events.emit("spy.update");
+   }
+
+   shutdown(){
+     
    }
 
 }
