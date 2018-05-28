@@ -4,8 +4,11 @@ const webpack = require('webpack');
 const path = require('path');
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const filewatcherPlugin = require("filewatcher-webpack-plugin");
-var phaserModule = path.join(__dirname, '/node_modules/phaser/')
-var phaser = path.join(phaserModule, 'src/phaser.js');
+const phaserModule = path.join(__dirname, '/node_modules/phaser/')
+const phaser = path.join(phaserModule, 'src/phaser.js');
+
+const texturePackerString = "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img"
+
 const {
     exec
 } = require('child_process');
@@ -53,17 +56,20 @@ module.exports = {
             'CANVAS_RENDERER': JSON.stringify(true),
             'WEBGL_RENDERER': JSON.stringify(true)
         }),
-        new WebpackShellPlugin({
-            onBuildExit: [''] ,//shell commpands on end of each compile.
-            onBuildStart: ['TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img'] //shell commands on start up
+         new WebpackShellPlugin({
+            onBuildExit: [''], //shell commpands on end of each compile.
+            onBuildStart: [texturePackerString] //shell commands on start up
 
         }),
 
+        // Seems to halt the other webpack functionallity working.
         new filewatcherPlugin({
             watchFileRegex: ['./assets/img'],
-            onAddCallback: function (path, wut, two) {
-                // console.log(path);
-
+            onAddDirCallback: function (path, wut, two) {
+                //a file has changed
+                exec(texturePackerString);
+                console.log("rebuilt spritesheets");
+                return null;
             },
 
             onRawCallback: function (event, path, details) {
@@ -71,12 +77,10 @@ module.exports = {
 
                 if (event === "change") {
                     //a file has changed
-                    exec('TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img'), (err, stdout, stderr) => {
-                        // console.log(stdout, stderr);
-                    };
-
+                    exec(texturePackerString);
+                    console.log("rebuilt spritesheets");
                 }
-
+                return null;
             }
 
         })

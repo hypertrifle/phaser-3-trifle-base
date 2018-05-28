@@ -101,26 +101,23 @@ export class Button extends Phaser.GameObjects.Image {
     _drop: DropShadow;
 
 
-    setScale(x?: number, y?: number): Phaser.GameObjects.GameObject {
+    setScale(x: number, y?: number): this {
 
-        super.setScale(x, y);
+        
         if (this._label) {
             this._label.setScale(x, y);
         }
-        return this;
+
+        return super.setScale(x, y);
     }
 
-    setPosition(x?: number, y?: number): Phaser.GameObjects.GameObject {
-
-
-        //call our standard positioning
-        super.setPosition(x, y);
-
+    setPosition(x: number, y?: number): this {
 
         if (this._label) {
             this._label.setPosition(x - (this.width*0.3*this.scaleX), y- (this.height*0.3*this.scaleY));
         }
-        return this;
+
+        return super.setPosition(x, y);
     }
 
     constructor(scene: Scene, config: ButtonOptions) {
@@ -129,6 +126,7 @@ export class Button extends Phaser.GameObjects.Image {
 
 
         //anything we use in creating this button we should use in out key.
+
         let key = JSON.stringify({ w: config.width, h: config.height, c: config.color, corns: config.roundedCorners, r: config.radius });
 
         //todo: if this key doesn't exist, let go ahead and create the idividual frames
