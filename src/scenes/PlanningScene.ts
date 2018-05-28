@@ -26,7 +26,6 @@ export default class Controller extends Splene {
 
 
 
-
    create() {
       console.log("Planning Scene:: Create");
 
