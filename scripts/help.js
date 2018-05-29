@@ -8,7 +8,8 @@ const descriptions = {
    dev:"\t\t - load up development enviroment and watch for changes",
    upgrade:"\t\t - upgrade libraries like phaser to the latest",
    "export-assets":"\t - export the assest to artboards for design",
-   "new-asset":"\t - build a new placeholder asset"
+   "new-asset":"\t - build a new placeholder asset",
+   "generate-atlas":"\t - Re generate the main game Atlas with default settings"
 }
 
 
