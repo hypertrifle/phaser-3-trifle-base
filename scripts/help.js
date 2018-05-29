@@ -15,7 +15,7 @@ const descriptions = {
 for(let i in pkg.scripts ){
    script  = pkg.scripts[i];
    let des = descriptions[i] || "";
-   console.log(i + des);
+   console.log("npm run "+ i + des);
 }
 
 // console.log(pkg);

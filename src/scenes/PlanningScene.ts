@@ -29,6 +29,8 @@ export default class Controller extends Splene {
    create() {
       console.log("Planning Scene:: Create");
 
+      
+
       this._map = new SpyMap(this, {x: 10, y:10, height:600-15, width:790});
       this._gant = new SpyGant(this, {x: 10, y:400+5, height:200-15, width:780});
 
@@ -37,6 +39,8 @@ export default class Controller extends Splene {
       this._gant.model.members.push(this._data.members[1]);
       this._gant.model.members.push(this._data.members[12]);
       this._gant.model.members.push(this._data.members[8]);
+
+
       // this._gant.model.members.push(this._data.members[0]);
      
 

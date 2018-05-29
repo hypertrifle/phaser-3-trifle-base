@@ -3,10 +3,22 @@ import { CanvasTools, Button } from "../utils/UI";
 import { SpyTimeline } from "../models/SpyModels";
 import { BaseComponent } from "./BaseComponent";
 
+export class InteractableTile {
+    x:number;
+    y:number;
+    index:number;
+    button:Button;
+}
+
 export class SpyMap extends BaseComponent {
 
+    model:SpyTimeline;
+    layer:Phaser.Tilemaps.StaticTilemapLayer;
+    buttons:Map<string, InteractableTile>;
+
    constructor(owner:Scene, config:any){
-       super(owner,config);
+      
+        super(owner,config);
        
       var map = this.scene.make.tilemap({ key: 'map' });
 
@@ -16,12 +28,42 @@ export class SpyMap extends BaseComponent {
   
       // You can load a layer from the map using the layer name from Tiled, or by using the layer
       // index (0 in this case).
-      var layer = map.createStaticLayer(0, tiles, 0, 0);
+      this.layer = map.createStaticLayer(0, tiles, 0, 0);
+      this.layer.setScale(0.25,0.25);
+      this.layer.setPosition(140,0);
+      this.container.add(this.layer);
 
-      layer.setScale(0.25,0.25);
-      layer.setPosition(140,0);
-      this.container.add(layer);
+      this.buttons = new Map<string , InteractableTile>();
+      this.setupInteractables();
 
+      this.setupEvents();
+
+   }
+
+   setupEvents(){
+       this.scene.events.on("state:action", this.highlightButtons);
+   }
+
+   setupInteractables(){
+    console.warn(this.layer.tilemap.getTileAt(5,1));
+
+    // let button = new Button(this.scene,{x:0,y:0});
+    // //we essentially want to add buttons to our components property
+    // this.buttons.set(button.x+"x"+button.y,button);
+
+   }
+
+   enableButtons(){
+        this.buttons.forEach(function(button,key){
+            
+        },this);
+   }
+
+   disableButtons(){
+
+   }
+
+   highlightButtons(){
 
    }
    

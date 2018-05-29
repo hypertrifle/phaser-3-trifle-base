@@ -15,6 +15,7 @@ export interface Member {
    bio:string;
    avatar:string;
    display:MemberDisplay;
+
 }
 
 export interface Mission {
@@ -45,7 +46,7 @@ export enum Side {
    RIGHT,
 }
 
-export interface SpyTimedAction {
+export class SpyTimedAction {
    owner:number;
    startTime:number;
    hasError:number;
@@ -55,6 +56,8 @@ export interface SpyTimedAction {
 
    startUpTime:number; //walking to target location
    coolDownTime:number;
+
+   
 }
 
 

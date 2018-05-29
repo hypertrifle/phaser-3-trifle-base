@@ -60,30 +60,30 @@ module.exports = {
             onBuildExit: [''], //shell commpands on end of each compile.
             onBuildStart: [texturePackerString] //shell commands on start up
 
-        }),
-
-        // Seems to halt the other webpack functionallity working.
-        new filewatcherPlugin({
-            watchFileRegex: ['./assets/img'],
-            onAddDirCallback: function (path, wut, two) {
-                //a file has changed
-                exec(texturePackerString);
-                console.log("rebuilt spritesheets");
-                return null;
-            },
-
-            onRawCallback: function (event, path, details) {
-                // console.log(event, path);
-
-                if (event === "change") {
-                    //a file has changed
-                    exec(texturePackerString);
-                    console.log("rebuilt spritesheets");
-                }
-                return null;
-            }
-
         })
+
+        // // Seems to halt the other webpack functionallity working.
+        // new filewatcherPlugin({
+        //     watchFileRegex: ['./assets/img'],
+        //     onAddDirCallback: function (path, wut, two) {
+        //         //a file has changed
+        //         exec(texturePackerString);
+        //         console.log("rebuilt spritesheets");
+        //         return null;
+        //     },
+
+        //     onRawCallback: function (event, path, details) {
+        //         // console.log(event, path);
+
+        //         if (event === "change") {
+        //             //a file has changed
+        //             exec(texturePackerString);
+        //             console.log("rebuilt spritesheets");
+        //         }
+        //         return null;
+        //     }
+
+        // })
 
     ]
 
