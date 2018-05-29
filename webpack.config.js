@@ -57,7 +57,7 @@ module.exports = {
             'WEBGL_RENDERER': JSON.stringify(true)
         }),
          new WebpackShellPlugin({
-            onBuildExit: [''], //shell commpands on end of each compile.
+            // onBuildExit: [''], //shell commpands on end of each compile.
             onBuildStart: [texturePackerString] //shell commands on start up
 
         })

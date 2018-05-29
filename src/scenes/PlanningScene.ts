@@ -40,19 +40,14 @@ export default class Controller extends Splene {
       this._gant.model.members.push(this._data.members[12]);
       this._gant.model.members.push(this._data.members[8]);
 
-
-      // this._gant.model.members.push(this._data.members[0]);
-     
-
-    //   this._playController = new SpyGameplayController(this, {
-    //      members: [0, 1, 2, 3, 4],
-    //      level: 0
-    //   });
-
       this.events.emit("spy.recalculate", {test:true});
       this.events.emit("spy.redraw");
 
       console.log("test", UISettings.radius);
+
+
+      this.events.emit("state:action", this._gant.model);
+
    }
 
 
