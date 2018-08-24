@@ -3,7 +3,7 @@ import GameData from "../plugins/global/GameData";
 
 export default class TitleScreen extends Phaser.Scene {
 
-    game_data: TitleScreenModel;
+    sceneDataModel: TitleScreenModel;
 
     constructor() {
         super({
@@ -25,8 +25,7 @@ export default class TitleScreen extends Phaser.Scene {
     create() {
         console.log("titleScene:: Create");
         // this.events.emit("state:action", this._gant.model);
-
-        this.game_data = (this.sys.plugins.get("_data") as GameData).getDataFor("titleScreen", true);
+        this.sceneDataModel = (this.sys.plugins.get("_data") as GameData).getDataFor("titleScreen", true); //true is a clone.
 
 
 
