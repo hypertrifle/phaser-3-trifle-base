@@ -1,5 +1,6 @@
 import TitleScreen from "./TitleScreen";
 import GameData from "../plugins/global/GameData";
+import HTMLUtils from "../plugins/global/HTMLUtils";
 
 
 // this is sort of an bootstate, there probably is a more elegant way that this,
@@ -54,16 +55,19 @@ export default class Boot extends Phaser.Scene {
 
         //install out data controller, this is going to be both data models, and anything to do with Learning Content Tracking.
         this.sys.plugins.install("_data", GameData, true, "_data");
-
         //load it with the data from our content.json
         (this.sys.plugins.get("_data") as GameData).loadData(this.cache.json.get("content"));
             
 
+        //boot up out HTMLUtils plugin and make it accessible, this is used for popups, forms as well as other non canvas / webGL content.
+        this.sys.plugins.install("_html", HTMLUtils, true, "_html");
+
+
         //add all our scenes, due to the importation approach to this new boilerplate, we will manually need to add these from now on...
-        this.scene.add("TitleScreen", TitleScreen, false);
+        this.scene.add("TitleScreen", TitleScreen, false); //false is to stop it launching now (but init will be called I think!)
         
 
-
+        //load out first state, hopefully always a title screen.
         this.scene.start('TitleScene');
 
     }

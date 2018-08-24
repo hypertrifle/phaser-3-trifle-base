@@ -1,6 +1,20 @@
 import GameModel from "../../models/GameModel";
 import SaveModel from "../../models/SaveModel";
 
+
+/**
+ * An ENUM to keep track of different Tracking modes that we can connect to.
+ *
+ * @enum {number}
+ */
+enum TrackingMode {
+    Off = 0,
+    OfflineStoage,
+    Scorm,
+    Adapt,
+}
+
+
 /*
  * A Plugin that handles common Data models for spronge projects, 
  * these are automatically loaded from json files and typed cast on boot.
@@ -20,6 +34,15 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      * @memberof GameData
      */
     private raw: GameModel;
+
+    /**
+     * the tracking mode this current project is set up to work with.
+     *
+     * @private
+     * @type {TrackingMode}
+     * @memberof GameData
+     */
+    private trackingMode: TrackingMode = TrackingMode.Off;
 
 
     /**
@@ -52,6 +75,16 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     loadData(contentJSONObject: any) {
         this.raw = contentJSONObject; // this should through errors if we try and load data to our raw models that doesn't fit in with those defined above.
         console.log("loaded content to _data plugin", this.raw);
+
+
+        //detect any tracking type
+        this.trackingMode = TrackingMode.Scorm;
+
+
+        //load any persistent storage we have in tranking system back into our game.
+        this.persistantStorageLoad();
+
+
     }
 
     /**
@@ -111,11 +144,19 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
         this.raw.save = newSave;
 
-        this.persistStorage();
+        this.persistantStorageSave();
 
     }
 
-    persistStorage() {
+    persistantStorageLoad() {
+        if (this.getDataFor("save.shouldPersistData")) {
+            console.log("persisting storage loading to: ", this.save);
+
+        }
+
+    }
+
+    persistantStorageSave() {
         if (this.getDataFor("save.shouldPersistData")) {
             console.log("persisting storage for", this.save);
             
