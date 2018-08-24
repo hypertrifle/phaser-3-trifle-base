@@ -1,5 +1,5 @@
 import { Scene, GameObjects } from "phaser";
-import { Corners } from "../models/Global";
+import { Corners } from "../models/UIModels";
 
 
 export class CanvasTools {

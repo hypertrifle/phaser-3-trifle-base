@@ -1,5 +1,4 @@
-
-import { SaveModel } from '../models/Global';
+import GameModel from "../models/GameModel";
 
 enum TrackingMode {
    Offline = 1,
@@ -18,7 +17,7 @@ class TrackingController {
    //end singlton functionality.
 
 
-   private _save: SaveModel;
+   private _save: GameModel;
 
    constructor() {
       console.log("TrackingController::constructor");

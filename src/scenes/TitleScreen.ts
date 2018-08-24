@@ -1,4 +1,5 @@
-import GlobalGameData, { DataModel, TitleScreenModel } from "../plugins/GlobalGameData";
+import TitleScreenModel from "../models/TitleScreenModel";
+import GameData from "../plugins/global/GameData";
 
 export default class TitleScreen extends Phaser.Scene {
 
@@ -6,12 +7,9 @@ export default class TitleScreen extends Phaser.Scene {
 
     constructor() {
         super({
-            key:"TitleScreen"
+            key: "TitleScreen", active: true
         });
-
-        console.log("TitleSceeen::constructor",this);
-
-        this.game_data = (this.sys.plugins.get("_data") as GlobalGameData).getDataFor("titleScreen", true);
+        console.log("TitleSceeen::constructor");
 
     }
 
@@ -28,7 +26,8 @@ export default class TitleScreen extends Phaser.Scene {
         console.log("titleScene:: Create");
         // this.events.emit("state:action", this._gant.model);
 
-        
+        this.game_data = (this.sys.plugins.get("_data") as GameData).getDataFor("titleScreen", true);
+
 
 
     }

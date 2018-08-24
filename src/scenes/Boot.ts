@@ -1,5 +1,5 @@
-import GlobalGameData from "../plugins/GlobalGameData";
 import TitleScreen from "./TitleScreen";
+import GameData from "../plugins/global/GameData";
 
 
 // this is sort of an bootstate, there probably is a more elegant way that this,
@@ -7,7 +7,7 @@ import TitleScreen from "./TitleScreen";
 export default class Boot extends Phaser.Scene {
 
     private svg: Phaser.GameObjects.Image;
-    private _data: GlobalGameData;
+    private _data: GameData;
 
     constructor() {
         //active true means the state always runs. :D#
@@ -47,16 +47,24 @@ export default class Boot extends Phaser.Scene {
     create() {
         console.log("Boot::create", this);
 
-        (this.sys.plugins.get("_data") as GlobalGameData).loadData(this.cache.json.get("content"));
+
+        /* ------------------------------------------------------ */
+        //lets let up our global plugins that we use across scenes.
+        /* ------------------------------------------------------ */
+
+        //install out data controller, this is going to be both data models, and anything to do with Learning Content Tracking.
+        this.sys.plugins.install("_data", GameData, true, "_data");
+
+        //load it with the data from our content.json
+        (this.sys.plugins.get("_data") as GameData).loadData(this.cache.json.get("content"));
             
 
-        //here we may eventually load our scenes, or figure our a better / more pragmatic way to load the states.
+        //add all our scenes, due to the importation approach to this new boilerplate, we will manually need to add these from now on...
+        this.scene.add("TitleScreen", TitleScreen, false);
+        
 
 
-        //add our planning scene and auto start.
-        this.scene.add("PlanningScene",TitleScreen, true);
-
-        // this.scene.start('TitleScene',);
+        this.scene.start('TitleScene');
 
     }
 
