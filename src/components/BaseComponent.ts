@@ -1,4 +1,3 @@
-import { GameObjects } from "phaser";
 
 export interface BaseComponentConfig {
    x?:number,
@@ -9,8 +8,10 @@ export interface BaseComponentConfig {
 
 export class BaseComponent {
    
-   public position:Phaser.Geom.Point;
-   public scene:Phaser.Scene;
+    public position: Phaser.Geom.Point;
+    
+    public scene: Phaser.Scene;
+    
    protected container:Phaser.GameObjects.Container;
    
    protected _config:any;
@@ -31,10 +32,7 @@ export class BaseComponent {
       //we might want to pass in some sort of bounds object through the configuration object, I'm going to assume we want top left anchoring. TODO: anchor point.
       this.container = this.scene.add.container(config.x + config.width/2, config.y + config.height/2);
 
-
-
-
-      this._config = config;
+       this._config = config;
    }
 
 

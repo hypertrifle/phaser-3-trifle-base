@@ -13,9 +13,6 @@
 
 
 
-
-
-
    //a class structure
    var ClassName = new Phaser.Class({
    

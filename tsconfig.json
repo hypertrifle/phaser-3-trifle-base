@@ -5,16 +5,19 @@
      "module": "commonjs",
      "target": "es5",
      "allowJs": true,
-     "lib": ["es5", "es6", "dom"],
+     "lib": ["es5", "es6", "dom"]
    },
    "files": [
-		"../phaser3-docs/typescript/phaser.d.ts",
+		"./phaser.d.ts"
   ],
   "include": [
         "src/**/*"
     ],
     "exclude": [
         "node_modules",
-        "**/*.spec.ts"
+        "**/*.spec.ts",
+        "scripts",
+        "examples_and_snippets",
+        "assets"
     ]
  }

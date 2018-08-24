@@ -1,23 +1,24 @@
 {
-  "name": "hypertrifle-phaser3-project-template",
-  "version": "1.0.9",
-  "description": "a phaser boilerplate for common projects",
+  "name": "sponge-phaser-3.0-luigi",
+  "version": "1.0.1",
+  "description": "A Phaser 3 Typescript Setup with useful common funtionallity",
   "main": "src/index.js",
   "scripts": {
     "help": "node scripts/help.js",
     "build": "webpack",
     "dev": "npm run build && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/",
-    "upgrade": "npm i --save phaser@latest ",
+    "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "export-assets": "estoolkit.exe -run ./scripts/make_assets_illustrator.jsx",
     "generate-atlas": "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
     "new-asset": "node scripts/make_asset.js"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git@git.spongeuk.com:sponge/boilerplates/sponge-phaser-3.0-luigi.git"
   },
   "author": "Rich Searle - Hypertrifle.com",
   "license": "UNLICENCED",
+  "private":true,
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
@@ -32,11 +33,10 @@
     "webpack-dev-server": "^2.11.0",
     "webpack-shell-plugin": "^0.5.0",
     "readline-sync": "^1.4.9"
-
   },
   "dependencies": {
     "babel-loader": "^7.1.4",
-    "phaser": "^3.8.0",
+    "phaser": "^3.11.0",
     "ts-loader": "^3.5.0"
   }
 }

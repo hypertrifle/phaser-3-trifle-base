@@ -1,6 +1,24 @@
+<aside class="warning">
+THIS REPOSITORY IS A WORK IN PROGRESS AND IS NOT A CLEAN START -IT CONAINS THE REMAINS OF THE SPYMASTER PROTOTYPE WHICH I'M MOPRTING TO ANOTHER REPO.
+</aside>
+
 # Phaser 3 Webpack Project Template
 
-Based off of Richard Davey's Phaser 3 Webpack Project Template - url
+Based off of [Richard Davey's Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template) - And Sponge's previous Phaser boiler plate.
+
+
+## Whats new
+
+- Typescript - yay
+- Webpack for bundling / packaging
+- Importing / requiring
+- States -> scenes
+- Controllers -> Plugins
+
+## File Structure
+
+- assets ()
+
 
 A Phaser 3 Project Template
 
@@ -23,18 +41,7 @@ A Phaser 3 Project Template
   - (typed objects as params of optional configuration)
   
 
-## Requirements
 
-node, npm
-
-## Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install dependencies and launch browser with examples.|
-| `npm dev` | Compile, watch and server development version. |
-| `npm build` | Production version. |
-=======
 
 ## thing to ask community
 

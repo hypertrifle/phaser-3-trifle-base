@@ -2,11 +2,12 @@
 
 const webpack = require('webpack');
 const path = require('path');
+
 const WebpackShellPlugin = require('webpack-shell-plugin');
 const filewatcherPlugin = require("filewatcher-webpack-plugin");
+
 const phaserModule = path.join(__dirname, '/node_modules/phaser/')
 const phaser = path.join(phaserModule, 'src/phaser.js');
-
 const texturePackerString = "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img"
 
 const {

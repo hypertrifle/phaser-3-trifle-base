@@ -1,3 +1,14 @@
+import Boot from "../scenes/Boot";
+
+export class GameModel {
+    scenes: Array<Class> = 
+        [
+            Boot,
+        ];
+
+}
+
+
 export class SaveModel {
    identifier:String;
    version:String;

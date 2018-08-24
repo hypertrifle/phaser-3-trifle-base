@@ -7,24 +7,34 @@
 
 import "phaser";
 import Boot from "./scenes/Boot";
-import ScaleManager from './Plugins/ScaleManager';
+import GlobalGameData from "./plugins/GlobalGameData";
+import TitleScreen from "./scenes/TitleScreen";
 
 var game: Phaser.Game;
-// main game configuration
-const config: GameConfig = {
-  title: "Game",
-  url: "https://github.com/hypertrifle/phaser3-template.git",
+
+// main game configuration // I would hope that this would rarely change.
+
+const config: any = {
+  title: "Game", //apart from this
   version: "1.0",
   width: 800,
   height: 600,
   zoom: 1,
-  type: Phaser.WEBGL,
-  parent: "content",
-  scene: [Boot],
+  type: Phaser.AUTO, 
+  parent: "content", //this div to be loaded into
+  scene: [Boot], //list all states required here, unfortunatly we need to load any that may be required here.
+  plugins: {
+    global: [
+      { key: "_data", plugin: GlobalGameData, start:true, mapping:"_data"}
+    ]
+  },
+
+
+  //these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.
   callbacks: {
     postBoot: () => {
-      console.log(this.game.canvas);
-      new ScaleManager(this.game.canvas, (!this.game.device.os.windows && !this.game.device.os.linux && !this.game.device.os.macOs), true);
+      //enable our scale manager.
+
     }
   },
   // input: {
