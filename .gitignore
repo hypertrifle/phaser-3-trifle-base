@@ -12,6 +12,3 @@ node_modules/
 # Build
 build/
 /npm-debug.log
-
-#phaser
-phaser.d.ts
