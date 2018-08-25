@@ -6,6 +6,11 @@ THIS REPOSITORY IS A WORK IN PROGRESS AND IS NOT A CLEAN START -IT CONAINS THE R
 
 Based off of [Richard Davey's Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template) - And Sponge's previous Phaser boiler plate.
 
+## To discusses with Design.
+
+- standardise Loading Screen
+- standardise & devise UI settings.
+- standardise 
 
 ## Whats new
 

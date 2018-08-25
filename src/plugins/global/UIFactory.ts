@@ -10,12 +10,10 @@ export default class UIFactory extends Phaser.Plugins.BasePlugin {
         
         super(pluginManager);
         
-        console.log("UIFactory::constructor");
+        console.log("UIFactory::constructor"); //
         //so this should be where we can define out methods and options for UI based element generation
 
         
-
-
     }
 
      

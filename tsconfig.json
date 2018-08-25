@@ -16,8 +16,8 @@
     "exclude": [
         "node_modules",
         "**/*.spec.ts",
-        "scripts",
-        "examples_and_snippets",
-        "assets"
+        "scripts/*.*",
+        "examples_and_snippets/*.*",
+        "assets/*.*"
     ]
  }

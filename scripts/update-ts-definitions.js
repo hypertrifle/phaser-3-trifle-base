@@ -1,4 +1,9 @@
-https://github.com/user/repository/raw/branch/filename
+/*
+ updates the latest typescript definitions for Phaser 3
+ should be used in conjunction with npm run update, whuch will update phaser aswell.
+
+*/
+
 
 var https = require('https');
 var fs = require('fs');

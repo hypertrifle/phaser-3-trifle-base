@@ -1,13 +1,13 @@
 import GameData from "../plugins/global/GameData";
 import HUDModel from "../models/HUDModel";
 
-export default class TitleScreen extends Phaser.Scene {
+export default class HUDOverlay extends Phaser.Scene {
 
     sceneDataModel: HUDModel;
 
     constructor() {
         super({
-            key: "TitleScreen", active: true
+            key: "HUDOverlay", active: true
         });
         console.log("TitleSceeen::constructor");
 
@@ -25,7 +25,9 @@ export default class TitleScreen extends Phaser.Scene {
     create() {
         console.log("titleScene:: Create");
         // this.events.emit("state:action", this._gant.model);
-        this.sceneDataModel = (this.sys.plugins.get("_data") as GameData).getDataFor("titleScreen", true); //true is a clone.
+        this.sceneDataModel = (this.sys.plugins.get("_data") as GameData).getDataFor("HUDOverlay", true); //true is a clone.
+
+
 
     }
 

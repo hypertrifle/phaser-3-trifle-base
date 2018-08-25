@@ -59,7 +59,8 @@ module.exports = {
         }),
          new WebpackShellPlugin({
             // onBuildExit: [''], //shell commpands on end of each compile.
-            onBuildStart: [texturePackerString] //shell commands on start up
+            onBuildStart: [texturePackerString], //shell commands on start up
+            //  onBuildExit: [texturePackerString, "echo 'Webpack Start'"],// shell commands after each build? trexture packaer sting seems to 
 
         })
 

@@ -53,8 +53,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     constructor(pluginManager: Phaser.Plugins.PluginManager) {
         super(pluginManager);
 
-        console.log("GameData::contstuct");
-
+        this.init();
     }
 
     /**
@@ -64,6 +63,21 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      */
     init() {
         console.log("GameData::init");
+
+        this.detectTrackingVersion();
+    }
+
+
+    /**
+     * Detect and store the type of trackign system we want to use.
+     *
+     * @memberof GameData
+     */
+    detectTrackingVersion() {
+
+        // temp
+        this.trackingMode = TrackingMode.OfflineStoage;
+    
     }
 
     /**
