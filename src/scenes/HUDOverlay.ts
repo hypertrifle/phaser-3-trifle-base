@@ -3,31 +3,25 @@ import HUDModel from "../models/HUDModel";
 
 export default class HUDOverlay extends Phaser.Scene {
 
-    sceneDataModel: HUDModel;
+    private _model: HUDModel;
 
     constructor() {
         super({
             key: "HUDOverlay", active: true
         });
-        console.log("TitleSceeen::constructor");
+        console.log("HUD BOOT");
 
     }
 
     preload() {
-        console.log("titleScene::preload");
 
         //we can populate our models here, our data controller shold have loaded our data in by now.
-        this.load.image('tiles', 'assets/img/tiles.png');
-        this.load.tilemapTiledJSON('map', 'assets/json/map.json');
+        //this.load.image('tiles', 'assets/img/tiles.png');
 
     }
 
     create() {
-        console.log("titleScene:: Create");
-        // this.events.emit("state:action", this._gant.model);
-        this.sceneDataModel = (this.sys.plugins.get("_data") as GameData).getDataFor("HUDOverlay", true); //true is a clone.
-
-
+        this._model = (this.sys.plugins.get("_data") as GameData).getDataFor("HUDOverlay", true); //true is a clone.
 
     }
 

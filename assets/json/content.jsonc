@@ -1,0 +1,18 @@
+{
+
+   "titleScreen": {
+         "title": "My Game",
+         "Body": "This is a game lol"
+   },
+
+   "HUDOverlay": {
+      "titleInGame": "Paused",
+      "titleInMenu": "Settings",
+      "disclaimer": "this is for test purposes only"
+   },
+
+
+   "test":{
+      "priority": "content"
+}
+}

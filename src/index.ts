@@ -11,13 +11,14 @@ var game: Phaser.Game;
 
 // main game configuration // I would hope that this would rarely change.
 
-const config: any = {
+
+const config: GameConfig = {
   title: "Game", //apart from this
   version: "1.0",
   width: 800,
   height: 600,
   zoom: 1,
-  type: Phaser.AUTO, 
+  type: Phaser.WEBGL, 
   parent: "content", //this div to be loaded into
   scene: Boot, //list all states required here, unfortunatly we need to load any that may be required here.
 
@@ -25,6 +26,7 @@ const config: any = {
   callbacks: {
     postBoot: () => {
       //any functions to call post boot?.
+      // new ScaleManager(this.game.canvas, (!this.game.device.os.windows && !this.game.device.os.linux && !this.game.device.os.macOs), true);
     }
   },
   // input: {

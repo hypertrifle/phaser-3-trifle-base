@@ -1,3 +1,4 @@
+
 {
    "save": {
       "identifier": "spygame",
@@ -5,9 +6,9 @@
       "shouldPersistData": false
    },
 
-   "titleScreen": {
-         "title": "My Game",
-         "Body": "This is a game lol"
+   "HUDOverlay": {
+      "shouldShowSettings": true,
+      "hideDelay":1
    },
 
    "icons": {
@@ -742,4 +743,11 @@
       "youtube-play": "\uf16a",
       "youtube-square": "\uf166"
    }
+   ,
+
+
+   "test":{
+      "priority": "settings"
+}
+
 }

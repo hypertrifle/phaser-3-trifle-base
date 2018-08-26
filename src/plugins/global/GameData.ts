@@ -52,8 +52,8 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      */
     constructor(pluginManager: Phaser.Plugins.PluginManager) {
         super(pluginManager);
+        console.log("GameData::constructor");
 
-        this.init();
     }
 
     /**
@@ -62,7 +62,15 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      * @memberof GameData
      */
     init() {
+
+        // we now want to merge our settings, and our content for a single model, we will prefer settings over content but try and warn over overites.
         console.log("GameData::init");
+
+
+
+        this.loadData([this.game.cache.json.get("settings"),this.game.cache.json.get("content")]);
+
+
 
         this.detectTrackingVersion();
     }
@@ -86,14 +94,39 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      * @param {*} contentJSONObject
      * @memberof GameData
      */
-    loadData(contentJSONObject: any) {
-        this.raw = contentJSONObject; // this should through errors if we try and load data to our raw models that doesn't fit in with those defined above.
-        console.log("loaded content to _data plugin", this.raw);
+    loadData(contentJSONObject: any|Array<any>) {
+
+        let data:any = {};
+
+        //lets get this into an array of json objest, we are going to 
+        let contentJSONObjects =(Array.isArray(contentJSONObject))? contentJSONObject.reverse() : [contentJSONObject];
 
 
-        //detect any tracking type
-        this.trackingMode = TrackingMode.Scorm;
+        //for each model
+        for(let i in contentJSONObjects){
 
+            //for each top level object.
+            for (let j in contentJSONObject[i]){
+
+                //if the key doesn't exists.
+                    if(data[j] === undefined){
+                        data[j] = contentJSONObject[i][j];
+                    } else {
+                        data[j] = Object.assign(data[j],contentJSONObject[i][j]);
+                    }
+
+
+            }
+
+
+        }
+
+        
+        console.warn(this.raw = data);
+
+
+
+        // this.raw = contentJSONObject; // this should through errors if we try and load data to our raw models that doesn't fit in with those defined above.
 
         //load any persistent storage we have in tranking system back into our game.
         this.persistantStorageLoad();
@@ -163,6 +196,17 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     }
 
     persistantStorageLoad() {
+            
+
+        switch(this.trackingMode){
+            case TrackingMode.OfflineStoage:
+            default: 
+
+            // let 
+        }
+
+
+
         if (this.getDataFor("save.shouldPersistData")) {
             console.log("persisting storage loading to: ", this.save);
 
