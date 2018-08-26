@@ -102,7 +102,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         let contentJSONObjects =(Array.isArray(contentJSONObject))? contentJSONObject.reverse() : [contentJSONObject];
 
 
-        //for each model
+        //for each model file loaded.
         for(let i in contentJSONObjects){
 
             //for each top level object.
@@ -110,21 +110,27 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
                 //if the key doesn't exists.
                     if(data[j] === undefined){
+                        //just assign
                         data[j] = contentJSONObject[i][j];
                     } else {
+
+                        // we are goining to merge properties here, maybe we should check for overwrites and inform console.
+                        for(let k in data[j] ){
+                            if(contentJSONObject[i][j][k] !== undefined){
+                                console.warn("json file conflict, data for '"+j+"."+k+"' has multiple definitions, will use: "+contentJSONObject[i][j][k]);
+                            }
+                        }
+
+                        //merge objects, but with priority of current
                         data[j] = Object.assign(data[j],contentJSONObject[i][j]);
                     }
-
-
             }
-
-
         }
 
+        //finally assign our data to raw.
+        this.raw = data as GameModel;
         
-        console.warn(this.raw = data);
-
-
+        console.log(this.raw);
 
         // this.raw = contentJSONObject; // this should through errors if we try and load data to our raw models that doesn't fit in with those defined above.
 
@@ -144,8 +150,6 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      * @memberof GameData
      */
     getDataFor(path?: string, clone?: boolean): any {
-
-        console.log(this);
 
         let shouldClone = clone || true;
         let obb:any = this.raw;

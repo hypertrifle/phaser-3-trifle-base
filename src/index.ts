@@ -13,7 +13,7 @@ var game: Phaser.Game;
 
 
 const config: GameConfig = {
-  title: "Game", //apart from this
+  title: "", //apart from this
   version: "1.0",
   width: 800,
   height: 600,
@@ -21,6 +21,7 @@ const config: GameConfig = {
   type: Phaser.WEBGL, 
   parent: "content", //this div to be loaded into
   scene: Boot, //list all states required here, unfortunatly we need to load any that may be required here.
+  
 
   //these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.
   callbacks: {

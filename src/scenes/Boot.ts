@@ -20,7 +20,22 @@ export default class Boot extends Phaser.Scene {
     }
 
     preload() {
-        console.group();
+        if (!this.game.device.browser.ie)
+        {
+            let args = [
+                '%c %c %c Sponge UK - Luigi 1.0.1 %c %c ',
+                'font-size: 12px; background: #d8dd0b;',
+                'font-size: 12px; background: #0044ff;',
+                'color: #fff; font-size: 12px; background: #45b245;',
+                'font-size: 12px; background: #0044ff;',
+                'font-size: 12px; background: #d8dd0b;'
+              ];
+        
+              console.log.apply( console, args );
+        
+        }
+
+        console.groupCollapsed("BOOT DATA");
         console.log("Boot::preload::start");
 
         //a graphics element to track our load progress.
@@ -104,10 +119,12 @@ export default class Boot extends Phaser.Scene {
         this.scene.add("HUD", HUDOverlay, true); //true as we always want that badboy running in the forground.
 
         //lets just do some tests.
-        this.testSVG();
+       
 
         console.log("Boot::create::end");
-        console.groupEnd();        
+        console.groupEnd();    
+        
+        this.testSVG();
     }
 
     update(t: integer, dt: number) {
@@ -119,15 +136,8 @@ export default class Boot extends Phaser.Scene {
         console.log("testing svg featureset");
 
         //so can we resize SVGs and generate games at differnet resolutions dependand on device?
-
-        console.log(this.cache);
-
-        // (this.sys.plugins.get("_utils") as Utils).display.resizeSVGAsset((this.cache.
-
-
         this.svg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'test.svg');
         this.svg.setScale(1, 1);
-        console.log(this.svg);
     }
 
 }

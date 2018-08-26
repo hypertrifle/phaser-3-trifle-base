@@ -6,6 +6,11 @@
       "shouldPersistData": false
    },
 
+   "game": {
+      "artboardWidth": 960,
+      "artboardHeight": 540
+   },
+
    "HUDOverlay": {
       "shouldShowSettings": true,
       "hideDelay":1
