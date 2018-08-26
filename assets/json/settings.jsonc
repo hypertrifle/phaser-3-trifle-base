@@ -6,7 +6,7 @@
       "shouldPersistData": false
    },
 
-   "game": {
+   "scaling": {
       "artboardWidth": 960,
       "artboardHeight": 540
    },

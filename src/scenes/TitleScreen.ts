@@ -17,8 +17,8 @@ export default class TitleScreen extends Phaser.Scene {
         console.log("titleScene::preload");
 
         //we can populate our models here, our data controller shold have loaded our data in by now.
-        this.load.image('tiles', 'assets/img/tiles.png');
-        this.load.tilemapTiledJSON('map', 'assets/json/map.json');
+        // this.load.image('tiles', 'assets/img/tiles.png');
+        // this.load.tilemapTiledJSON('map', 'assets/json/map.json');
 
     }
 

@@ -1,18 +1,42 @@
+import GameData from "./GameData";
+
 export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    /**
       * @constructor Creates an instance of the ScaleManager plugin (that handles resizing, and density options)
+      * the idea behind this scale manager is not only will it resize the content but aslo be able to apply scaling to SVG content so we can either imporvie visual fedlity, or performance.
+     
+      * 
       * @param {Phaser.Plugins.PluginManager} pluginManager
       * @memberof GameData
       */
 
-   public originalArtboardSize:Phaser.Geom.Point;
+   /**
+    * the custom scale we are using for this width / height setup of the game, this can be used to tweak performance for lower machines, to render svgs at
+    * smaller textures
+    *
+    * @type {number}
+    * @memberof ScaleManager
+    */
+   public scale:number;
 
 
    constructor(pluginManager: Phaser.Plugins.PluginManager) {
-       super(pluginManager);
+      
+      super(pluginManager);
        console.log("ScaleManger::constructor");
+       this.game.scene
 
-       
+
+       let settings:any = (this.pluginManager.get("_data") as GameData).getDataFor("scaling", true); //true is a clone.
+
+       this.originalArtboardSize = new Phaser.Geom.Point(settings.artboardWidth, settings.artboardHeight);
+    
+
+   }
+
+   public setSVGSizeConfig(s:Phaser.Loader.FileTypes.SVGSizeConfig) {
+      this.scale = s.scale;
+   
    }
 
 

@@ -27,7 +27,6 @@ const config: GameConfig = {
   callbacks: {
     postBoot: () => {
       //any functions to call post boot?.
-      // new ScaleManager(this.game.canvas, (!this.game.device.os.windows && !this.game.device.os.linux && !this.game.device.os.macOs), true);
     }
   },
   // input: {

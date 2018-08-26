@@ -4,6 +4,7 @@ import HTMLUtils from "../plugins/global/HTMLUtils";
 import HUDOverlay from "./HUDOverlay";
 import Utils from "../plugins/utils/Utils";
 import ScaleManger from "../plugins/global/ScaleManager";
+import ScaleManager from "../plugins/global/ScaleManager";
 
 
 // this is sort of an bootstate, there probably is a more elegant way that this,
@@ -11,6 +12,7 @@ import ScaleManger from "../plugins/global/ScaleManager";
 export default class Boot extends Phaser.Scene {
 
     private svg: Phaser.GameObjects.Image;
+    
 
     constructor() {
         //active true means the state always runs. :D#
@@ -61,22 +63,25 @@ export default class Boot extends Phaser.Scene {
         //settings.
         this.load.json("settings", "assets/json/settings.jsonc");
 
+        //image files
+        // this.load.image("avatar.png", "assets/img/avatar.png");
 
 
+        /* with SVGs we now want to start thinking about makeing games that we can scale up if required. *
+         * to start, we can determine a scale for SVG assets, this way when converted to textures they are enlarged / reduced based on our game size
+         * note - this doesn't redraw on resize, its whats used as width / height at game entry.
+         */
 
-        /* Test stuff below here */
+        this.svgScalar = {
+            scale: (this.game.config.width as number) / 500
+         } //960 is our usual artboard size for design?
 
 
-        this.load.image("avatar.png", "assets/img/avatar.png");
-        // this.load.svg("test.svg", "assets/svg/test.svg");
-
+         //we now have an SVGScale 
         this.load.svg({
             key: 'test.svg',
             url: 'assets/svg/test.svg',
-            svgConfig: {
-                width: 100,
-                height: 100
-            }
+            svgConfig: this.svgScalar
         });
 
         console.log("Boot::preload::end");
