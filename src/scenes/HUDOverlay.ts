@@ -1,5 +1,5 @@
-import GameData from "../plugins/global/GameData";
-import HUDModel from "../models/HUDModel";
+import GameData from '../plugins/global/GameData';
+import HUDModel from '../models/HUDModel';
 
 export default class HUDOverlay extends Phaser.Scene {
 
@@ -7,21 +7,21 @@ export default class HUDOverlay extends Phaser.Scene {
 
     constructor() {
         super({
-            key: "HUDOverlay", active: true
+            key: 'HUDOverlay', active: true
         });
-        console.log("HUD BOOT");
+        console.log('HUD BOOT');
 
     }
 
     preload() {
 
-        //we can populate our models here, our data controller shold have loaded our data in by now.
-        //this.load.image('tiles', 'assets/img/tiles.png');
+        // we can populate our models here, our data controller shold have loaded our data in by now.
+        // this.load.image('tiles', 'assets/img/tiles.png');
 
     }
 
     create() {
-        this._model = (this.sys.plugins.get("_data") as GameData).getDataFor("HUDOverlay", true); //true is a clone.
+        this._model = (this.sys.plugins.get('_data') as GameData).getDataFor('HUDOverlay', true); // true is a clone.
 
     }
 
@@ -29,7 +29,7 @@ export default class HUDOverlay extends Phaser.Scene {
 
     update() {
 
-        this.events.emit("spy.update");
+        this.events.emit('spy.update');
     }
 
     shutdown() {

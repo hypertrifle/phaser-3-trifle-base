@@ -1,6 +1,6 @@
 enum HUDFeatures {
-   
-   ToggleSound = 0, //commone features first to keep in same postition when launching.
+
+   ToggleSound = 0, // commone features first to keep in same postition when launching.
    ToggleMusic,
    ReturnToMenu,
    RestartLevel,
@@ -25,7 +25,7 @@ class HUDModel {
 
    menuPostion: Phaser.Geom.Point;
 
-   popOutOnHover: boolean; //mobile will need to be considered.
+   popOutOnHover: boolean; // mobile will need to be considered.
 
    /**
     * A list of features to disaply on menus, events will be set up to be listened for, unnessicery features will be ommited.
@@ -33,7 +33,7 @@ class HUDModel {
     * @type {Array<HUDFeatures>}
     * @memberof HUDModel
     */
-   avalibleFeatures:Array<HUDFeatures>;
+   avalibleFeatures: Array<HUDFeatures>;
 
 
    /**
@@ -42,9 +42,9 @@ class HUDModel {
     * @type {string}
     * @memberof HUDModel
     */
-   assetPrefix: string = "HUD";
+   assetPrefix: string = 'HUD';
 
-   
+
 }
 
 export default HUDModel;

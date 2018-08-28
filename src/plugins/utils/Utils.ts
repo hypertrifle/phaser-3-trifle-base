@@ -1,7 +1,7 @@
-import MathUtils from "./MathUtils";
-import DataUtils from "./DataUtils";
-import DisplayUtils from "./DisplayUtils";
-import { DataUtls } from "../../utils/DataUtls";
+import MathUtils from './MathUtils';
+import DataUtils from './DataUtils';
+import DisplayUtils from './DisplayUtils';
+import { DataUtls } from '../../utils/DataUtls';
 
 export default class Utils extends Phaser.Plugins.BasePlugin {
    /**
@@ -10,9 +10,9 @@ export default class Utils extends Phaser.Plugins.BasePlugin {
       * @memberof GameData
       */
    constructor(pluginManager: Phaser.Plugins.PluginManager) {
-      //attach ourself to the global plugin manager.
+      // attach ourself to the global plugin manager.
        super(pluginManager);
-       console.log("Utils::constructor");
+       console.log('Utils::constructor');
 
        this.data = new DataUtls();
        this.math = new MathUtils();
@@ -28,14 +28,14 @@ export default class Utils extends Phaser.Plugins.BasePlugin {
     * @type {MathUtils}
     * @memberof Utils
     */
-   public math : MathUtils;
+   public math: MathUtils;
    /**
     * referencfe to our Data utilities
     *
     * @type {DataUtils}
     * @memberof Utils
     */
-   public data : DataUtils;
+   public data: DataUtils;
 
 
    /**
@@ -44,13 +44,13 @@ export default class Utils extends Phaser.Plugins.BasePlugin {
     * @type {DisplayUtils}
     * @memberof Utils
     */
-   public display : DisplayUtils;
+   public display: DisplayUtils;
 
 
    /* we can still define util functions here if they don't belong anywhere specific.*/
 
-   static poop():string {
-      return "poop";
+   static poop(): string {
+      return 'poop';
    }
 
 }

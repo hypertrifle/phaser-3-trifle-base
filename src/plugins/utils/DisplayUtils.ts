@@ -4,9 +4,9 @@
  * @class DisplayUtils
  */
 export default class DisplayUtils {
-   constructor(){
+   constructor() {
    }
-   resizeSVGAsset( asset: Phaser.Loader.FileTypes.SVGFile){
+   resizeSVGAsset( asset: Phaser.Loader.FileTypes.SVGFile) {
     console.log(asset);
   }
 }

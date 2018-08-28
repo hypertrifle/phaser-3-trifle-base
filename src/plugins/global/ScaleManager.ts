@@ -1,11 +1,11 @@
-import GameData from "./GameData";
+import GameData from './GameData';
 
 export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     /**
        * @constructor Creates an instance of the ScaleManager plugin (that handles resizing, and density options)
        * the idea behind this scale manager is not only will it resize the content but aslo be able to apply scaling to SVG content so we can either imporvie visual fedlity, or performance.
-      
-       * 
+
+       *
        * @param {Phaser.Plugins.PluginManager} pluginManager
        * @memberof GameData
        */
@@ -19,29 +19,29 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      */
     public scale: number;
 
-    private _data:GameData;
+    private _data: GameData;
 
 
     constructor(pluginManager: Phaser.Plugins.PluginManager) {
 
         super(pluginManager);
-        console.log("ScaleManger::constructor");
+        console.log('ScaleManger::constructor');
 
-        this._data = (this.pluginManager.get("_data") as GameData);
-        let settings: any = this._data.getDataFor("scaling", true);
+        this._data = (this.pluginManager.get('_data') as GameData);
+        let settings: any = this._data.getDataFor('scaling', true);
 
     }
 
 
     public init(s: Phaser.Loader.FileTypes.SVGSizeConfig) {
-        console.log("ScaleManger::constructor", s);
+        console.log('ScaleManger::constructor', s);
         this.scale = s.scale;
 
-        //lets edit anything we need to do with the data.
+        // lets edit anything we need to do with the data.
 
-        let fonts = this._data.getDataFor("fonts");
+        let fonts = this._data.getDataFor('fonts');
 
-        for(var i in fonts){
+        for (let i in fonts) {
             this.applyFontScalar(fonts[i]);
         }
 
@@ -50,21 +50,21 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     }
 
-    public boot(){
-        //this is where this.system and this.scene are now avaailible.
+    public boot() {
+        // this is where this.system and this.scene are now avaailible.
 
     }
 
 
     // a  getter for gnereic svg scaler object based on game design / render size.
-    get svgSizeConfig():Phaser.Loader.FileTypes.SVGSizeConfig{
-        return {scale:this.scale};
+    get svgSizeConfig(): Phaser.Loader.FileTypes.SVGSizeConfig {
+        return {scale: this.scale};
     }
 
 
 
 
-private applyFontScalar(fontObject:any){
+private applyFontScalar(fontObject: any) {
 
 }
 
@@ -74,7 +74,7 @@ private applyFontScalar(fontObject:any){
 //ScaleManager.js
 class ScaleManager {
    constructor(canvas, isMobile, isLandscape) {
-       
+
        this.canvas = canvas;
        this.mobile = isMobile;
        this.landscape= isLandscape;
@@ -84,12 +84,12 @@ class ScaleManager {
 
            if (this.mobile) {
                if (window.innerWidth < window.innerHeight) {
-                
+
                 if (this.landscape)
                     this.enterIncorrectOrientation();
                 else
                     this.leaveIncorrectOrientation();
-                
+
             } else {
                 if (this.landscape)
                     this.leaveIncorrectOrientation();

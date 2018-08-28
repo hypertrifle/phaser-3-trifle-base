@@ -37,12 +37,12 @@ export default class SaveModel {
      * @type {number}
      * @memberof SaveModel
      */
-    progress: number
+    progress: number;
 
 
     /**
      * This is a more elegant way of determining information from data
-     * we already have, This examines if the leaner is past the first 
+     * we already have, This examines if the leaner is past the first
      * level, in which we are assuming they have seen the tutorial
      *
      * @readonly
@@ -60,7 +60,7 @@ export default class SaveModel {
      * @memberof SaveModel
      */
     set seenTutorial(val) {
-        //if progressed passed tutorial used that or level 1, else reset to tutorial
+        // if progressed passed tutorial used that or level 1, else reset to tutorial
         this.progress = (val) ? Math.max(this.progress, 1) : 0;
     }
 

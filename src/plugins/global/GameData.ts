@@ -1,5 +1,5 @@
-import GameModel from "../../models/GameModel";
-import SaveModel from "../../models/SaveModel";
+import GameModel from '../../models/GameModel';
+import SaveModel from '../../models/SaveModel';
 
 
 /**
@@ -16,7 +16,7 @@ enum TrackingMode {
 
 
 /*
- * A Plugin that handles common Data models for spronge projects, 
+ * A Plugin that handles common Data models for spronge projects,
  * these are automatically loaded from json files and typed cast on boot.
  *
  * @export
@@ -52,7 +52,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      */
     constructor(pluginManager: Phaser.Plugins.PluginManager) {
         super(pluginManager);
-        console.log("GameData::constructor");
+        console.log('GameData::constructor');
 
     }
 
@@ -64,11 +64,11 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     init() {
 
         // we now want to merge our settings, and our content for a single model, we will prefer settings over content but try and warn over overites.
-        console.log("GameData::init");
+        console.log('GameData::init');
 
 
 
-        this.loadData([this.game.cache.json.get("settings"),this.game.cache.json.get("content")]);
+        this.loadData([this.game.cache.json.get('settings'), this.game.cache.json.get('content')]);
 
 
 
@@ -85,7 +85,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
         // temp
         this.trackingMode = TrackingMode.OfflineStoage;
-    
+
     }
 
     /**
@@ -96,45 +96,45 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      */
     loadData(contentJSONObject: any|Array<any>) {
 
-        let data:any = {};
+        let data: any = {};
 
-        //lets get this into an array of json objest, we are going to 
-        let contentJSONObjects =(Array.isArray(contentJSONObject))? contentJSONObject.reverse() : [contentJSONObject];
+        // lets get this into an array of json objest, we are going to
+        let contentJSONObjects = (Array.isArray(contentJSONObject)) ? contentJSONObject.reverse() : [contentJSONObject];
 
 
-        //for each model file loaded.
-        for(let i in contentJSONObjects){
+        // for each model file loaded.
+        for (let i in contentJSONObjects) {
 
-            //for each top level object.
-            for (let j in contentJSONObject[i]){
+            // for each top level object.
+            for (let j in contentJSONObject[i]) {
 
-                //if the key doesn't exists.
-                    if(data[j] === undefined){
-                        //just assign
+                // if the key doesn't exists.
+                    if (data[j] === undefined) {
+                        // just assign
                         data[j] = contentJSONObject[i][j];
                     } else {
 
                         // we are goining to merge properties here, maybe we should check for overwrites and inform console.
-                        for(let k in data[j] ){
-                            if(contentJSONObject[i][j][k] !== undefined){
-                                console.warn("json file conflict, data for '"+j+"."+k+"' has multiple definitions, will use: "+contentJSONObject[i][j][k]);
+                        for (let k in data[j] ) {
+                            if (contentJSONObject[i][j][k] !== undefined) {
+                                console.warn('json file conflict, data for \'' + j + '.' + k + '\' has multiple definitions, will use: ' + contentJSONObject[i][j][k]);
                             }
                         }
 
-                        //merge objects, but with priority of current
-                        data[j] = Object.assign(data[j],contentJSONObject[i][j]);
+                        // merge objects, but with priority of current
+                        data[j] = Object.assign(data[j], contentJSONObject[i][j]);
                     }
             }
         }
 
-        //finally assign our data to raw.
+        // finally assign our data to raw.
         this.raw = data as GameModel;
-        
+
         console.log(this.raw);
 
         // this.raw = contentJSONObject; // this should through errors if we try and load data to our raw models that doesn't fit in with those defined above.
 
-        //load any persistent storage we have in tranking system back into our game.
+        // load any persistent storage we have in tranking system back into our game.
         this.persistantStorageLoad();
 
 
@@ -142,7 +142,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
     /**
      * get data from the loaded data model, a string can be used to access nested objects ie fonts.h1 would access "me" from { fonts : { h1 : "me" } }
-     * 
+     *
      *
      * @param {string} [path] - the path of data property to retrieve.
      * @param {boolean} [clone] - should we refernece this object or clone it
@@ -152,25 +152,25 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     getDataFor(path?: string, clone?: boolean): any {
 
         let shouldClone = clone || true;
-        let obb:any = this.raw;
+        let obb: any = this.raw;
 
-        //if we have a path to find
-        if (path !== undefined && path.trim() !== "") {
+        // if we have a path to find
+        if (path !== undefined && path.trim() !== '') {
 
-            //recurse down (with . seperation) until we find the 
-            let parts = path.split(".");
-            for (var i = 0; i < parts.length; i++) {
+            // recurse down (with . seperation) until we find the
+            let parts = path.split('.');
+            for (let i = 0; i < parts.length; i++) {
                 obb = obb[parts[i]];
 
                 if (obb === undefined) {
 
-                    var errObj = parts[length];
-                    console.warn("game.data.get, tried to request key of: " + path + " but failed at getting: ", errObj);
+                    let errObj = parts[length];
+                    console.warn('game.data.get, tried to request key of: ' + path + ' but failed at getting: ', errObj);
                     return null;
                 }
-            };
-        } 
-        
+            }
+        }
+
         return (shouldClone) ? JSON.parse(JSON.stringify(obb)) : obb;
 
     }
@@ -200,28 +200,28 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     }
 
     persistantStorageLoad() {
-            
 
-        switch(this.trackingMode){
+
+        switch (this.trackingMode) {
             case TrackingMode.OfflineStoage:
-            default: 
+            default:
 
-            // let 
+            // let
         }
 
 
 
-        if (this.getDataFor("save.shouldPersistData")) {
-            console.log("persisting storage loading to: ", this.save);
+        if (this.getDataFor('save.shouldPersistData')) {
+            console.log('persisting storage loading to: ', this.save);
 
         }
 
     }
 
     persistantStorageSave() {
-        if (this.getDataFor("save.shouldPersistData")) {
-            console.log("persisting storage for", this.save);
-            
+        if (this.getDataFor('save.shouldPersistData')) {
+            console.log('persisting storage for', this.save);
+
         }
 
     }
