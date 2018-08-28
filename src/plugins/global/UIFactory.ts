@@ -1,4 +1,10 @@
+import GameData from "./GameData";
+import UIModel from "../../models/UIModels";
+
 export default class UIFactory extends Phaser.Plugins.BasePlugin {
+
+
+    private _model:UIModel;
    
     /**
        * @constructor Creates an instance of the UIFactory plugin (that handles UI Elements, buttons, sliders and toggles).
@@ -14,28 +20,28 @@ export default class UIFactory extends Phaser.Plugins.BasePlugin {
         //so this should be where we can define out methods and options for UI based element generation
 
         
+    } 
+    
+    init(){
+        //this is always called by a plugin right?
+        this._model = (this.pluginManager.get("_data") as GameData).getDataFor("UI");
     }
 
+   
      
 
-    button(scene:Phaser.Scene, settings:ButtonSettings):Phaser.GameObjects.Container {
+    button(_conf:ButtonConfig):Phaser.GameObjects.Container {
+        let button = this.scene.add.container(_conf.x, _conf.y);
 
-        let c = new Phaser.GameObjects.Container(scene,settings.x,settings.y);
-        return c;
-
-
+        //generate a button and return it.
+        
+        return button;
     }
 
 }
 
-interface ButtonSettings {
-    x: number,
-    y: number,
-    color_up: number,
-    color_hover:number,
-    color_down:number,
-    colour_disabled:number,
-    opacity: number,
-    radius:number,
-    eventString:string
+interface ButtonConfig {
+    x:number,
+    y:number,
+
 }

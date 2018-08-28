@@ -7,8 +7,7 @@
    },
 
    "scaling": {
-      "artboardWidth": 960,
-      "artboardHeight": 540
+      "expandToParent": false
    },
 
    "HUDOverlay": {
@@ -747,8 +746,17 @@
       "youtube": "\uf167",
       "youtube-play": "\uf16a",
       "youtube-square": "\uf166"
-   }
-   ,
+   },
+
+   "userInterface": {
+         "settings" : {
+
+         },
+         "buttons": {
+
+         }
+
+   },
 
 
    "test":{
