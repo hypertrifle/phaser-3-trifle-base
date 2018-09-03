@@ -11,7 +11,8 @@
     "export-assets": "estoolkit.exe -run ./scripts/make_assets_illustrator.jsx",
     "generate-atlas": "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
     "new-asset": "node scripts/make_asset.js",
-    "tslint": "tslint -- src/**/*.ts"
+    "lint": "tslint -- src/**/*.ts",
+    "fixlint": "tslint --fix src/**/*.ts"
   },
   "repository": {
     "type": "git",

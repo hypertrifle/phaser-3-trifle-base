@@ -65,8 +65,8 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
         super(pluginManager);
 
-        //grab our settings configuration object.
-        this._scaleConfig = (this.pluginManager.get('_data') as GameData).getDataFor("scaling") as ScaleConfig;
+        // grab our settings configuration object.
+        this._scaleConfig = (this.pluginManager.get('_data') as GameData).getDataFor('scaling') as ScaleConfig;
     }
 
 
@@ -79,7 +79,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     public init(s: Phaser.Loader.FileTypes.SVGSizeConfig) {
         console.log('ScaleManger::constructor', s);
 
-        //our scalar (design size / render size ratio)
+        // our scalar (design size / render size ratio)
         this.scale = s.scale;
 
         this.boot();
@@ -107,13 +107,13 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     /**
      * is this device on mobile or not.
-     * 
+     *
      * @default false
      * @type {boolean}
      * @memberof ScaleManager
      */
     public mobile: boolean = false;
-    
+
     /**
      * is the game displayed in landscape.
      *
@@ -129,36 +129,36 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      */
     public boot() {
 
-        console.log("ScaleManager::boot")
-        //when everything is ready :)
+        console.log('ScaleManager::boot');
+        // when everything is ready :)
 
-     
-        //asign our canvas.
+
+        // asign our canvas.
         this.canvas = this.game.canvas;
 
-        //decide if we are on a mobile device.
+        // decide if we are on a mobile device.
         this.mobile = (!this.game.device.os.windows && !this.game.device.os.linux && !this.game.device.os.macOS);
-        
-        //decide our desired layout size.
+
+        // decide our desired layout size.
         this.landscape = (this.canvas.width >= this.canvas.height) ? true : false;
 
         // generate our "overlay" dom element container, used for HTML items, but use the same scaling as the game
         this.forgroundHTML = document.createElement('div');
-        this.forgroundHTML.setAttribute("id", "phaser_overlay");
+        this.forgroundHTML.setAttribute('id', 'phaser_overlay');
 
-        //here we are goign to append the overlay HTML element over the top of the canvas object of the game
+        // here we are goign to append the overlay HTML element over the top of the canvas object of the game
         this.canvas.parentElement.appendChild(this.forgroundHTML);
 
 
-        //lets listen to when the browser is resized and if so re-apply any scaling we require to.
+        // lets listen to when the browser is resized and if so re-apply any scaling we require to.
         window.addEventListener('resize', () => {
             this.resizeCanvas();
         });
 
-        //force a reload on initial build
+        // force a reload on initial build
         this.resizeCanvas();
     }
-            
+
 
 
     /**
@@ -181,11 +181,11 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     handleFontResizing(): void {
 
-        //we will need to scale fonts based on our scale.
-        let fonts = (this.pluginManager.get('_data') as GameData).getDataFor("fonts"); //grab the fotns.
+        // we will need to scale fonts based on our scale.
+        let fonts = (this.pluginManager.get('_data') as GameData).getDataFor('fonts'); // grab the fotns.
 
 
-        //apply scalar to each font.
+        // apply scalar to each font.
         for (let i in fonts) {
             this.applyFontScalar(fonts[i]);
         }
@@ -193,7 +193,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
 
     /**
-     * handle any orientational mode in game, ususally reserved for mobile specific notifications for forced portrait / landcase 
+     * handle any orientational mode in game, ususally reserved for mobile specific notifications for forced portrait / landcase
      *
      * @private
      * @returns {void}
@@ -227,17 +227,17 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @memberof ScaleManager
      */
     handleCanvasScale(canvas: HTMLCanvasElement) {
-        console.log("canvas rescale");
+        console.log('canvas rescale');
 
 
-        //get the container our both our game canvas and any extra content to be supplied over the top.
+        // get the container our both our game canvas and any extra content to be supplied over the top.
         let parent = this.game.canvas.parentElement.parentElement;
 
-        //work out a ratio that will allow use to show all our cotnent within the parted viewport.
-        let requiredScaling = Math.min(parent.clientWidth / canvas.width, Math.min(window.innerHeight, parent.clientHeight) / canvas.height); 
-      
+        // work out a ratio that will allow use to show all our cotnent within the parted viewport.
+        let requiredScaling = Math.min(parent.clientWidth / canvas.width, Math.min(window.innerHeight, parent.clientHeight) / canvas.height);
+
         // TODO: we want to restrict the game to any mini max size? this will tie in the tih
-        //if we are bigger than the max width or height defined in our configuration we need to re calculated the scale to fit all content
+        // if we are bigger than the max width or height defined in our configuration we need to re calculated the scale to fit all content
         if (canvas.width * requiredScaling > this._scaleConfig.maxWidth || canvas.height * requiredScaling > this._scaleConfig.maxHeight) {
             requiredScaling = Math.min(this._scaleConfig.maxHeight / canvas.height, this._scaleConfig.maxWidth / canvas.width);
 
@@ -247,10 +247,10 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
             ' -moz-transform-origin: left top; -o-transform-origin: left top; transform-origin: left top;' +
             ' -ms-transform: scale(' + requiredScaling + '); -webkit-transform: scale3d(' + requiredScaling + ', 1);' +
             ' -moz-transform: scale(' + requiredScaling + '); -o-transform: scale(' + requiredScaling + '); transform: scale(' + requiredScaling + ');' +
-            'height:' + canvas.height + ";" +
+            'height:' + canvas.height + ';' +
             ' display: block; margin: 0;';
 
-        
+
         this.canvas.setAttribute('style', styleString);
         this.forgroundHTML.setAttribute('style', styleString);
     }
@@ -261,8 +261,8 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @memberof ScaleManager
      */
     enterIncorrectOrientation() {
-        document.getElementById("orientation").style.display = "block";
-        document.getElementById("content").style.display = "none";
+        document.getElementById('orientation').style.display = 'block';
+        document.getElementById('content').style.display = 'none';
     }
 
     /**
@@ -270,8 +270,8 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @memberof ScaleManager
      */
     leaveIncorrectOrientation() {
-        document.getElementById("orientation").style.display = "none";
-        document.getElementById("content").style.display = "block";
+        document.getElementById('orientation').style.display = 'none';
+        document.getElementById('content').style.display = 'block';
     }
 
 
@@ -286,21 +286,21 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @param {*} fontObject
      * @memberof ScaleManager
      */
-    private applyFontScalar(fontObject:ScaledTextStyle) {
+    private applyFontScalar(fontObject: ScaledTextStyle) {
 
-        //store our base scaling for later
+        // store our base scaling for later
         if (fontObject.originalFontSize === undefined) {
             fontObject.originalFontSize = parseInt(fontObject.fontSize); // we define our fonts always in pixels.
         }
 
-        //apply our scale.
+        // apply our scale.
         fontObject.setFontSize(Math.round(fontObject.originalFontSize * this.scale));
     }
-    
+
 
 }
 
-//extend the standard font object with some properties we 
+// extend the standard font object with some properties we
 interface ScaledTextStyle extends Phaser.GameObjects.Text.TextStyle {
     originalFontSize: number;
 }

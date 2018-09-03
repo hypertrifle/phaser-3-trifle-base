@@ -69,26 +69,26 @@ const config: GameConfig = {
 // when the page is loaded, create our game instance (entry point, this is what will change per tech)
 window.onload = () => {
 
-  // before we load the game into the page we are going to setup some items 
+  // before we load the game into the page we are going to setup some items
   // that we are going to need to intergrate a Phaser3 game into various HTML based tech.
   // depending on the tech, we may wish to have these DOM elements in different locations or orders.
   // I'm hoping this is the section we can re-write to embed games into different techs.
 
-  let containingDivID: string = "somthingUnique";
-  let domContainer:Element = document.getElementById(containingDivID); //the #ID of the container we wish to put the game into.
+  let containingDivID: string = 'somthingUnique';
+  let domContainer: Element = document.getElementById(containingDivID); // the #ID of the container we wish to put the game into.
 
-  //create our content container.
+  // create our content container.
   let c: Element = document.createElement('div');
-  c.setAttribute("id", "phaser-content"); //IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
+  c.setAttribute('id', 'phaser-content'); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
 
-  //create our overlay container.
-  let o:Element = document.createElement('div');
-  o.setAttribute("id", "phaser-overlay"); //IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
+  // create our overlay container.
+  let o: Element = document.createElement('div');
+  o.setAttribute('id', 'phaser-overlay'); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
 
-  //append both to the domContainer that was defined above
+  // append both to the domContainer that was defined above
   domContainer.appendChild(c);
   domContainer.appendChild(o);
 
-  //boot the game.
-  let game:Phaser.Game = new Phaser.Game(config); // finally launch our game.
+  // boot the game.
+  let game: Phaser.Game = new Phaser.Game(config); // finally launch our game.
 };

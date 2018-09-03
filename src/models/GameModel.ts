@@ -18,13 +18,13 @@ export default class GameModel {
     scaling: ScalingOptions;
     icons: Array<string>;
     userInterface: UIModel;
-    
+
     fonts: Array<Phaser.GameObjects.Text.TextStyle>;
 }
 
 export class ScalingOptions {
     expandToPartent: boolean = true;
-    shouldForceOrientationOnMobile:boolean = true;
+    shouldForceOrientationOnMobile: boolean = true;
     shouldForceLandscaprOnMobile: boolean = true;
 
 }

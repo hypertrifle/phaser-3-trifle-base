@@ -26,7 +26,7 @@ export default class TitleScreen extends Phaser.Scene {
         console.log('titleScene:: Create');
         // this.events.emit("state:action", this._gant.model);
         this.sceneDataModel = (this.sys.plugins.get('_data') as GameData).getDataFor('titleScreen', true); // true is a clone.
-        
+
     }
 
 
