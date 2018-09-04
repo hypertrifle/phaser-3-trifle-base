@@ -1,4 +1,5 @@
 import GameData from './GameData';
+import 'phaser';
 
 /**
  * the scale manager handles any in-game scaling and positioning, booth zooming within the game and resizing of SVG cotnent for better fedelity
@@ -25,6 +26,9 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @memberof ScaleManager
      */
     public scale: number;
+
+
+    public position: PositionManager;
 
 
     /**
@@ -303,4 +307,37 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 // extend the standard font object with some properties we
 interface ScaledTextStyle extends Phaser.GameObjects.Text.TextStyle {
     originalFontSize: number;
+}
+
+export class PositionManager {
+
+    /**
+     * our default scale that our Position manager will us for positioning from edges.
+     *
+     * @private
+     * @type {number}
+     * @memberof PositionManager
+     */
+    private scale: number;
+
+    constructor() {
+
+    }
+
+    setScale(newScale: number): number {
+        return this.scale = newScale;
+    }
+
+    fromTop(v: number): number {
+        return 0 + v;
+    }
+    fromBottom(v: number): number {
+        return 0 + v;
+    }
+    fromLeft(v: number): number {
+        return 0 + v;
+    }
+    fromRight(v: number): number {
+        return 0 + v;
+    }
 }

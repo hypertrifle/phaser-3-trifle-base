@@ -5,6 +5,7 @@ import HUDOverlay from './HUDOverlay';
 import Utils from '../plugins/utils/Utils';
 import ScaleManger from '../plugins/global/ScaleManager';
 import ScaleManager from '../plugins/global/ScaleManager';
+import SpongeUtils from '../plugins/utils/SpongeUtils';
 
 
 // this is sort of an bootstate, there probably is a more elegant way that this,
@@ -13,6 +14,17 @@ export default class Boot extends Phaser.Scene {
 
     private svg: Phaser.GameObjects.Image;
     private svgScalar: Phaser.Loader.FileTypes.SVGSizeConfig;
+
+
+    /**
+     * because of importing and typescripts, heres where we will manually add states,
+     * we can still add configuration to the setting.json but this is to produce nice ol bundles.
+     *
+     * @memberof Boot
+     */
+    loadStates() {
+        this.scene.add('TitleScreen', TitleScreen, false); // false is to stop it launching now we'll choose to launch it when we need.
+    }
 
     constructor() {
         // active true means the state always runs. :D#
@@ -104,6 +116,8 @@ export default class Boot extends Phaser.Scene {
         // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
         this.sys.plugins.install('_scale', ScaleManger, true, '_scale', {scale: this.game.config.zoom});
 
+        // finally add our sponge helper class
+        this.sys.plugins.install('sponge', SpongeUtils, true, 'sponge');
 
         // add all our scenes, we are going to have to do this pragmatically now with webpack and ts,
         // it means better bundle size but requuires a re-compile on changing orders.
@@ -111,7 +125,8 @@ export default class Boot extends Phaser.Scene {
         console.log('Boot::Initilising all required states');
 
 
-        this.scene.add('TitleScreen', TitleScreen, false); // false is to stop it launching now we'll choose to launch it when we need.
+        this.loadStates();
+
 
         // finallly add our on top / HUD layer.
         this.scene.add('HUD', HUDOverlay, true); // true as we always want that badboy running in the forground.

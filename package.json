@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "babel-loader": "^7.1.4",
+    "path-override-webpack-plugin": "^0.1.2",
     "phaser": "^3.12.0-beta3",
     "ts-loader": "^3.5.0",
     "tslint": "^5.11.0"

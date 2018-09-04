@@ -1,9 +1,12 @@
 import TitleScreenModel from '../models/TitleScreenModel';
 import GameData from '../plugins/global/GameData';
+import SpongeUtils from '../plugins/utils/SpongeUtils';
 
 export default class TitleScreen extends Phaser.Scene {
 
     sceneDataModel: TitleScreenModel;
+
+    sponge: SpongeUtils;
 
     constructor() {
         super({
@@ -25,8 +28,7 @@ export default class TitleScreen extends Phaser.Scene {
     create() {
         console.log('titleScene:: Create');
         // this.events.emit("state:action", this._gant.model);
-        this.sceneDataModel = (this.sys.plugins.get('_data') as GameData).getDataFor('titleScreen', true); // true is a clone.
-
+        this.sceneDataModel = this.sponge.data.getDataFor('titleScreen', true); // true is a clone.
     }
 
 

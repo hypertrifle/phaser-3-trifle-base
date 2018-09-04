@@ -1,5 +1,6 @@
 import GameModel from '../../models/GameModel';
 import SaveModel from '../../models/SaveModel';
+import { Scorm } from '../../libs/Scorm';
 
 
 /**
@@ -25,6 +26,14 @@ enum TrackingMode {
  */
 
 export default class GameData extends Phaser.Plugins.BasePlugin {
+
+    /**
+     * a referemce our pipworks wrapper.
+     *
+     * @private
+     * @memberof GameData
+     */
+    private scorm = Scorm;
 
     /**
      * A raw representation of the current data model loaded into the game.
@@ -66,11 +75,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         // we now want to merge our settings, and our content for a single model, we will prefer settings over content but try and warn over overites.
         console.log('GameData::init');
 
-
-
         this.loadData([this.game.cache.json.get('settings'), this.game.cache.json.get('content')]);
-
-
 
         this.detectTrackingVersion();
     }
@@ -82,6 +87,8 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      * @memberof GameData
      */
     detectTrackingVersion() {
+
+        if (this)
 
         // temp
         this.trackingMode = TrackingMode.OfflineStoage;
