@@ -1,0 +1,1 @@
+Remember that this framework is geared towards responsive design, as SVGs can be scaled infinatly, we can optimsie our visuals by using these.

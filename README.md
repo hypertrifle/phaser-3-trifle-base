@@ -1,7 +1,3 @@
-<aside class="warning">
-THIS REPOSITORY IS A WORK IN PROGRESS AND IS NOT A CLEAN START -IT CONAINS THE REMAINS OF THE SPYMASTER PROTOTYPE WHICH I'M MOPRTING TO ANOTHER REPO.
-</aside>
-
 # Phaser 3 Webpack Project Template
 
 Based off of [Richard Davey's Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template)
@@ -9,6 +5,8 @@ Based off of [Richard Davey's Phaser 3 Webpack Project Template](https://github.
 Originally planed & written by [Rich Searle](//hypertrifle.com) - But Modified and tailored for Sponge UK.
 
 ## quick setup
+
+`npm i`
 
 ## links to dev logs
 
@@ -58,8 +56,3 @@ Originally planed & written by [Rich Searle](//hypertrifle.com) - But Modified a
 ## File Structure
 
 - assets ()
-
-
-A Phaser 3 Project Template
-
-
