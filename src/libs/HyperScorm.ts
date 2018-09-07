@@ -28,10 +28,20 @@ export default class HyperScorm {
 
 
 
+    /**
+     * the version of scorm we are connected to, either 1.2 or 2004
+     *
+     * @type {ScormVersion}
+     * @memberof HyperScorm
+     */
     public version: ScormVersion;
 
 
 
+    /**
+     * Creates an instance of HyperScorm, should be accessed via HyperScorm.Instance -> this will call the contructor if it needs to.
+     * @memberof HyperScorm
+     */
     private constructor() {
         // should only be allow to be called by our get instance method.
         this._scorm = new Scorm();
@@ -43,6 +53,14 @@ export default class HyperScorm {
         }
     }
 
+    /**
+     * Get the current, or create and instance of our scorm connection class.
+     *
+     * @readonly
+     * @static
+     * @type {HyperScorm}
+     * @memberof HyperScorm
+     */
     public static get Instance(): HyperScorm {
 
         if (!this._instance) {
@@ -52,11 +70,24 @@ export default class HyperScorm {
         return this._instance;
     }
 
+    /**
+     * get wether the system is connected to a scorm system.
+     *
+     * @readonly
+     * @type {boolean}
+     * @memberof HyperScorm
+     */
     get connected(): boolean {
         return this._scorm.isActive;
     }
 
 
+    /**
+     * mark this course as complete with an optional score
+     *
+     * @param {number} [scoreAsDecimal] an @optional decimal value of the score scaled bwtween 0 and 1, 0.5 => 50%
+     * @memberof HyperScorm
+     */
     public complete(scoreAsDecimal?: number) {
         if (this.version === ScormVersion.ONE_POINT_TWO) {
 
@@ -70,10 +101,22 @@ export default class HyperScorm {
         }
     }
 
+    /**
+     * mark this course as passed, with an optional score
+     *
+     * @param {number} [scoreAsDecimal] an @optional decimal value of the score scaled bwtween 0 and 1, 0.5 => 50%
+     * @memberof HyperScorm
+     */
     public passed(scoreAsDecimal?: number) {
 
     }
 
+    /**
+     * mark this course as failed, with optional score.
+     *
+     * @param {number} [scoreAsDecimal] an @optional decimal value of the score scaled bwtween 0 and 1, 0.5 => 50%
+     * @memberof HyperScorm
+     */
     public failed(scoreAsDecimal?: number) {
         if (this.version === ScormVersion.ONE_POINT_TWO) {
 
@@ -87,8 +130,23 @@ export default class HyperScorm {
         }
     }
 
+    /**
+     * track an interaction, 
+     *
+     * @param {number} id
+     * @param {boolean} result
+     * @param {string} learner_response
+     * @returns {InteractionObject} - an object of all the data saved with this interaction, everything should be as passed, apart from index which is supplied by the LMS
+     * @memberof HyperScorm
+     */
     public trackInteraction(id: number, result: boolean, learner_response: string): InteractionObject {
 
+        if (!this.connected) {
+            console.warn("interaction tracking disabled as not connected to scorm");
+            return;
+        }
+
+        //is interactions 2004 only?
         // if (this.version !== ScormVersion.TWO_THOUSAND_AND_FOUR) {
         //     console.warn("atempting to record a CMI interaction but not connected to SCORM 2004")
         // }
@@ -96,6 +154,13 @@ export default class HyperScorm {
         // lets get the next avalible interaction
         let index = parseInt(this._scorm.get('cmi.interactions._count'));
 
+        if (typeof index !== "number") {
+            console.warn("cmi.interactions._count returned NaN so skipping this interaction tracking");
+            return;
+
+        }
+
+        //build our interaction object.
         let interaction: InteractionObject = {
             index: index,
             learner_response: learner_response,
@@ -103,10 +168,12 @@ export default class HyperScorm {
             id: id
         };
 
+        //quick debug trace.
         console.log('setting cmi.interaction: ', interaction);
 
 
 
+        //standard stuffs.
         if (interaction.correct !== undefined) {
             // lets format this so it better suits an LMS
             let formattedResult = (interaction.correct) ? 'correct' : 'wrong';
@@ -127,6 +194,7 @@ export default class HyperScorm {
 
         }
 
+        //return the interaction we recorded.
         return interaction;
     }
 
@@ -135,6 +203,12 @@ export default class HyperScorm {
 
 }
 
+/**
+ * an object that contains all the information about the interction stored on scorm.
+ *
+ * @export
+ * @interface InteractionObject
+ */
 export interface InteractionObject {
     index: number;
     learner_response: string;
@@ -144,11 +218,21 @@ export interface InteractionObject {
 
 
 
+/**
+ * Scorm version type
+ *
+ * @enum {number}
+ */
 enum ScormVersion {
     ONE_POINT_TWO = '1.2',
     TWO_THOUSAND_AND_FOUR = '2004'
 }
 
+/**
+ * lesson status type (SCORM 1.2)
+ *
+ * @enum {number}
+ */
 enum LessonStatus {
     PASSED = 'passed',
     FAILED = 'failed',
@@ -158,16 +242,37 @@ enum LessonStatus {
     NOT_ATTEMPTED = 'not attempted',
 }
 
+/**
+ * completeion status type SCORM 2004
+ *
+ * @enum {number}
+ */
 enum CompletionStatus {
     COMPLETED = 'completed',
     INCOMPLETE = 'incomplete'
 }
 
+/**
+ * Success stsus tyle SCORM 2004
+ *
+ * @enum {number}
+ */
 enum SuccessStatus {
     PASSED = 'passed',
     FAILED = 'failed'
 
 }
+
+
+
+
+/**
+ * the main pipwerks code, mostly converted to typescript.  hopefully 
+ * any usefuly code this class can supply us with is now avalible via HyperScorm, 
+ * so direct access to this class should not be required. (I'm also not gonna export this.)
+ *
+ * @class Scorm
+ */
 
 class Scorm {
     version: string;
