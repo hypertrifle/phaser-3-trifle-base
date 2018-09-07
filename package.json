@@ -6,7 +6,7 @@
   "scripts": {
     "help": "node scripts/help.js",
     "build": "webpack",
-    "dev": "npm run build && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/",
+    "dev": "npm run build && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/build/",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "export-assets": "estoolkit.exe -run ./scripts/make_assets_illustrator.jsx",
     "generate-atlas": "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
