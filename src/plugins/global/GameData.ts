@@ -1,6 +1,6 @@
 import GameModel from '../../models/GameModel';
 import SaveModel from '../../models/SaveModel';
-import { Scorm } from '../../libs/Scorm';
+import HyperScorm from '../../libs/HyperScorm';
 
 
 /**
@@ -27,15 +27,7 @@ enum TrackingMode {
 
 export default class GameData extends Phaser.Plugins.BasePlugin {
 
-    /**
-     * a referemce our pipworks wrapper.
-     *
-     * @private
-     * @memberof GameData
-     */
-    private scorm = Scorm;
-
-    /**
+     /**
      * A raw representation of the current data model loaded into the game.
      *
      * @private
@@ -65,6 +57,9 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
     }
 
+
+    public scorm: HyperScorm;
+
     /**
      * any unitilise function
      *
@@ -76,7 +71,6 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         console.log('GameData::init');
 
         this.loadData([this.game.cache.json.get('settings'), this.game.cache.json.get('content')]);
-
         this.detectTrackingVersion();
     }
 
@@ -88,10 +82,20 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      */
     detectTrackingVersion() {
 
-        if (this)
+        //boot up our instance of HyperScorm.
+        this.scorm = HyperScorm.Instance;
 
-        // temp
-        this.trackingMode = TrackingMode.OfflineStoage;
+        if (this.scorm.connected) {
+            this.trackingMode = TrackingMode.Scorm;
+            
+        } else {
+            this.trackingMode = TrackingMode.OfflineStoage;
+        }
+
+        console.log("tracking enabled with: ", this.trackingMode);
+
+
+
 
     }
 

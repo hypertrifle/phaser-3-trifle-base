@@ -348,7 +348,7 @@ declare type RenderConfig = {
      */
     pixelArt?: boolean;
     /**
-     * [description]
+     * Automatically resize the Game Canvas if you resize the renderer.
      */
     autoResize?: boolean;
     /**
@@ -2944,33 +2944,6 @@ declare type KeyComboConfig = {
     deleteOnMatch?: boolean;
 };
 
-declare type CursorKeys = {
-    /**
-     * A Key object mapping to the UP arrow key.
-     */
-    up?: Phaser.Input.Keyboard.Key;
-    /**
-     * A Key object mapping to the DOWN arrow key.
-     */
-    down?: Phaser.Input.Keyboard.Key;
-    /**
-     * A Key object mapping to the LEFT arrow key.
-     */
-    left?: Phaser.Input.Keyboard.Key;
-    /**
-     * A Key object mapping to the RIGHT arrow key.
-     */
-    right?: Phaser.Input.Keyboard.Key;
-    /**
-     * A Key object mapping to the SPACE BAR key.
-     */
-    space?: Phaser.Input.Keyboard.Key;
-    /**
-     * A Key object mapping to the SHIFT key.
-     */
-    shift?: Phaser.Input.Keyboard.Key;
-};
-
 declare type FileConfig = {
     /**
      * The file type string (image, json, etc) for sorting within the Loader.
@@ -3842,6 +3815,13 @@ declare namespace Phaser {
             nextFrame(component: Phaser.GameObjects.Components.Animation): void;
 
             /**
+             * Handle the yoyo functionality in nextFrame and previousFrame methods.
+             * @param component The Animation Component to advance.
+             * @param isReverse Is animation in reverse mode? (Default: false)
+             */
+            _handleYoyoFrame(component: Phaser.GameObjects.Components.Animation, isReverse: bool): void;
+
+            /**
              * Returns the animation last frame.
              */
             getLastFrame(): Phaser.Animations.AnimationFrame;
@@ -4581,7 +4561,7 @@ declare namespace Phaser {
             readonly fps: FPSConfig;
 
             /**
-             * [description]
+             * Automatically resize the Game Canvas if you resize the renderer.
              */
             readonly autoResize: boolean;
 
@@ -5814,6 +5794,8 @@ declare namespace Phaser {
 
                 /**
                  * Sets the Camera to render to a texture instead of to the main display.
+                 * 
+                 * Make sure that you resize the camera first if you're going to use this feature.
                  * 
                  * This is an experimental feature and should be expected to change in the future.
                  * @param pipeline An optional WebGL Pipeline to render with.
@@ -10425,8 +10407,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -11308,8 +11291,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -11939,8 +11923,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -13124,8 +13109,9 @@ declare namespace Phaser {
                 /**
                  * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
+                 * @param parentMatrix A temporary matrix to hold parent values during the calculations.
                  */
-                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
             }
 
             /**
@@ -13349,6 +13335,17 @@ declare namespace Phaser {
                 applyITRS(x: number, y: number, rotation: number, scaleX: number, scaleY: number): this;
 
                 /**
+                 * Takes the `x` and `y` values and returns a new position in the `output` vector that is the inverse of
+                 * the current matrix with its transformation applied.
+                 * 
+                 * Can be used to translate points from world to local space.
+                 * @param x The x position to translate.
+                 * @param y The y position to translate.
+                 * @param output A Vector2, or point-like object, to store the results in.
+                 */
+                applyInverse(x: number, y: number, output?: Phaser.Math.Vector2): Phaser.Math.Vector2;
+
+                /**
                  * Returns the X component of this matrix multiplied by the given values.
                  * This is the same as `x * a + y * c + e`.
                  * @param x The x value.
@@ -13546,6 +13543,7 @@ declare namespace Phaser {
 
             /**
              * Returns the world transform matrix as used for Bounds checks.
+             * 
              * The returned matrix is temporal and shouldn't be stored.
              */
             getBoundsTransformMatrix(): Phaser.GameObjects.Components.TransformMatrix;
@@ -14262,8 +14260,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -14793,8 +14792,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -16429,8 +16429,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -17668,8 +17669,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -18616,8 +18618,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -20215,8 +20218,9 @@ declare namespace Phaser {
                 /**
                  * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
+                 * @param parentMatrix A temporary matrix to hold parent values during the calculations.
                  */
-                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
                 /**
                  * The visible state of the Game Object.
@@ -21293,8 +21297,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -22068,8 +22073,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -23070,8 +23076,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -23933,8 +23940,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -24973,8 +24981,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -25854,8 +25863,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -26307,8 +26317,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The horizontal scroll factor of this Game Object.
@@ -27450,6 +27461,22 @@ declare namespace Phaser {
             static GetNumberArray<O extends number[]>(polygon: Phaser.Geom.Polygon, output?: O): O;
 
             /**
+             * Returns an array of Point objects containing the coordinates of the points around the perimeter of the Polygon,
+             * based on the given quantity or stepRate values.
+             * @param polygon The Polygon to get the points from.
+             * @param quantity The amount of points to return. If a falsey value the quantity will be derived from the `stepRate` instead.
+             * @param stepRate Sets the quantity by getting the perimeter of the Polygon and dividing it by the stepRate.
+             * @param output An array to insert the points in to. If not provided a new array will be created.
+             */
+            static GetPoints(polygon: Phaser.Geom.Polygon, quantity: integer, stepRate?: number, output?: any[]): Phaser.Geom.Point[];
+
+            /**
+             * Returns the perimeter of the given Polygon.
+             * @param polygon The Polygon to get the perimeter of.
+             */
+            static Perimeter(polygon: Phaser.Geom.Polygon): number;
+
+            /**
              * The area of this Polygon.
              */
             area: number;
@@ -27485,6 +27512,15 @@ declare namespace Phaser {
              * Calculates the area of the Polygon. This is available in the property Polygon.area
              */
             calculateArea(): number;
+
+            /**
+             * Returns an array of Point objects containing the coordinates of the points around the perimeter of the Polygon,
+             * based on the given quantity or stepRate values.
+             * @param quantity The amount of points to return. If a falsey value the quantity will be derived from the `stepRate` instead.
+             * @param stepRate Sets the quantity by getting the perimeter of the Polygon and dividing it by the stepRate.
+             * @param output An array to insert the points in to. If not provided a new array will be created.
+             */
+            getPoints(quantity: integer, stepRate?: number, output?: any[]): Phaser.Geom.Point[];
 
             /**
              * [description]
@@ -30063,6 +30099,33 @@ declare namespace Phaser {
                 checkDown(key: Phaser.Input.Keyboard.Key, duration?: number): boolean;
 
             }
+
+            type CursorKeys = {
+                /**
+                 * A Key object mapping to the UP arrow key.
+                 */
+                up?: Phaser.Input.Keyboard.Key;
+                /**
+                 * A Key object mapping to the DOWN arrow key.
+                 */
+                down?: Phaser.Input.Keyboard.Key;
+                /**
+                 * A Key object mapping to the LEFT arrow key.
+                 */
+                left?: Phaser.Input.Keyboard.Key;
+                /**
+                 * A Key object mapping to the RIGHT arrow key.
+                 */
+                right?: Phaser.Input.Keyboard.Key;
+                /**
+                 * A Key object mapping to the SPACE BAR key.
+                 */
+                space?: Phaser.Input.Keyboard.Key;
+                /**
+                 * A Key object mapping to the SHIFT key.
+                 */
+                shift?: Phaser.Input.Keyboard.Key;
+            };
 
             /**
              * Returns `true` if the Key was pressed down within the `duration` value given, or `false` if it either isn't down,
@@ -36907,6 +36970,11 @@ declare namespace Phaser {
                 constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | integer);
 
                 /**
+                 * This Game Object's Physics Body.
+                 */
+                body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
+
+                /**
                  * Clears all alpha values associated with this Game Object.
                  * 
                  * Immediately sets the alpha levels back to 1 (fully opaque).
@@ -37702,8 +37770,9 @@ declare namespace Phaser {
                 /**
                  * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
+                 * @param parentMatrix A temporary matrix to hold parent values during the calculations.
                  */
-                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
                 /**
                  * The visible state of the Game Object.
@@ -38164,9 +38233,9 @@ declare namespace Phaser {
                 constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | integer);
 
                 /**
-                 * If this Game Object is enabled for physics then this property will contain a reference to a Physics Body.
+                 * This Game Object's Physics Body.
                  */
-                body: Phaser.Physics.Arcade.Body;
+                body: Phaser.Physics.Arcade.Body | Phaser.Physics.Arcade.StaticBody;
 
                 /**
                  * Clears all alpha values associated with this Game Object.
@@ -38964,8 +39033,9 @@ declare namespace Phaser {
                 /**
                  * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
+                 * @param parentMatrix A temporary matrix to hold parent values during the calculations.
                  */
-                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
                 /**
                  * The visible state of the Game Object.
@@ -39600,7 +39670,7 @@ declare namespace Phaser {
                  * Resets the width and height to match current frame, if no width and height provided and a frame is found.
                  * @param width The width of the Body in pixels. Cannot be zero. If not given, and the parent Game Object has a frame, it will use the frame width.
                  * @param height The height of the Body in pixels. Cannot be zero. If not given, and the parent Game Object has a frame, it will use the frame height.
-                 * @param center Modify the Body's `offset`, placing the Body's center on its Game Object's center. Default true.
+                 * @param center Modify the Body's `offset`, placing the Body's center on its Game Object's center. Only works if the Game Object has the `getCenter` method. Default true.
                  */
                 setSize(width?: integer, height?: integer, center?: boolean): Phaser.Physics.Arcade.Body;
 
@@ -40779,6 +40849,11 @@ declare namespace Phaser {
                  * @param y [description]
                  */
                 hitTest(x: number, y: number): boolean;
+
+                /**
+                 * NOOP
+                 */
+                postUpdate(): void;
 
                 /**
                  * [description]
@@ -43428,8 +43503,9 @@ declare namespace Phaser {
                 /**
                  * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
+                 * @param parentMatrix A temporary matrix to hold parent values during the calculations.
                  */
-                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
                 /**
                  * The visible state of the Game Object.
@@ -44596,8 +44672,9 @@ declare namespace Phaser {
                 /**
                  * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
+                 * @param parentMatrix A temporary matrix to hold parent values during the calculations.
                  */
-                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
                 /**
                  * The visible state of the Game Object.
@@ -46783,8 +46860,9 @@ declare namespace Phaser {
                 /**
                  * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
+                 * @param parentMatrix A temporary matrix to hold parent values during the calculations.
                  */
-                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
                 /**
                  * The visible state of the Game Object.
@@ -47953,8 +48031,9 @@ declare namespace Phaser {
                 /**
                  * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
                  * @param tempMatrix The matrix to populate with the values from this Game Object.
+                 * @param parentMatrix A temporary matrix to hold parent values during the calculations.
                  */
-                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+                getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
                 /**
                  * The visible state of the Game Object.
@@ -55499,8 +55578,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
@@ -57129,8 +57209,9 @@ declare namespace Phaser {
             /**
              * Gets the world transform matrix for this Game Object, factoring in any parent Containers.
              * @param tempMatrix The matrix to populate with the values from this Game Object.
+             * @param parentMatrix A temporary matrix to hold parent values during the calculations.
              */
-            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
+            getWorldTransformMatrix(tempMatrix?: Phaser.GameObjects.Components.TransformMatrix, parentMatrix?: Phaser.GameObjects.Components.TransformMatrix): Phaser.GameObjects.Components.TransformMatrix;
 
             /**
              * The visible state of the Game Object.
