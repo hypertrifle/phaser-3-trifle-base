@@ -99,10 +99,11 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
     }
 
+
     /**
-     * Load a untyped data model into this DataController so we can parse and access later.
      *
-     * @param {*} contentJSONObject
+     *
+     * @param {(any|Array<any>)} contentJSONObject - either a json object to load, or an array of objects, later in the array will be prioritised.
      * @memberof GameData
      */
     loadData(contentJSONObject: any|Array<any>) {
@@ -210,29 +211,33 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
     }
 
+    /**
+     * loads persistent save data from current tracking system.
+     *
+     * @memberof GameData
+     */
     persistantStorageLoad() {
-
+        if (!this.getDataFor('save.shouldPersistData')) {
+            console.warn("ommititing load of persistent storage as we have it disabled");
+            return;
+        }
 
         switch (this.trackingMode) {
             case TrackingMode.OfflineStoage:
             default:
 
-            // let
         }
-
-
-
-        if (this.getDataFor('save.shouldPersistData')) {
-            console.log('persisting storage loading to: ', this.save);
-
-        }
-
     }
 
+    /**
+     * save persistent save data into current tracking system
+     *
+     * @memberof GameData
+     */
     persistantStorageSave() {
-        if (this.getDataFor('save.shouldPersistData')) {
-            console.log('persisting storage for', this.save);
-
+        if (!this.getDataFor('save.shouldPersistData')) {
+            console.warn("ommititing save of persistent storage as we have it disabled");
+            return;
         }
 
     }
