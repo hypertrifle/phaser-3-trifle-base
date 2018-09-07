@@ -81,6 +81,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      * @memberof GameData
      */
     detectTrackingVersion() {
+        
 
         // boot up our instance of HyperScorm.
         this.scorm = HyperScorm.Instance;

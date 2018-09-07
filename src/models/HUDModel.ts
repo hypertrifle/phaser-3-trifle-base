@@ -1,9 +1,24 @@
 enum HUDFeatures {
 
+   /**
+    * Toggle Sound button if availible
+    */
    ToggleSound = 0, // commone features first to keep in same postition when launching.
+   /**
+    * toggle music button if availible
+    */
    ToggleMusic,
+   /**
+    * show return to menu button if avaailible.
+    */
    ReturnToMenu,
+   /**
+    * show restart level button if avalible.
+    */
    RestartLevel,
+   /**
+    * show launch settings button if avalible.
+    */
    LaunchSettings
 
 }
