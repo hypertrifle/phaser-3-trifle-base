@@ -68,10 +68,10 @@ export default class Boot extends Phaser.Scene {
         });
 
         // load content.
-        this.load.json('content', 'assets/json/content.jsonc');
+        this.load.json('content', 'assets/json/content.json');
 
         // settings.
-        this.load.json('settings', 'assets/json/settings.jsonc');
+        this.load.json('settings', 'assets/json/settings.json');
 
         // image files
         // this.load.image("avatar.png", "assets/img/avatar.png");

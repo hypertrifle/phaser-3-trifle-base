@@ -1,4 +1,5 @@
 {
+      /* our save object is what will be persistent between sessions. */
       "save": {
             "identifier": "spygame",
             "version": "0.0.1",
