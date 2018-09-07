@@ -1,4 +1,5 @@
 /**
+ * Can be used as a standalone library, due to the nature of scorm this is built as a singleton, and should be accessed via `HyperScorm.Instance`
  * A CLeaned up and more appealing Typescript port of the SCORM API wrapper
  * probably lots stolen from pipwerks : https://github.com/pipwerks/scorm-api-wrapper
  * @author hypertrifle - Rich Searle
@@ -29,15 +30,15 @@ export default class HyperScorm {
 
     public version: ScormVersion;
 
-   
+
 
     private constructor() {
-        //should only be allow to be called by our get instance method.
+        // should only be allow to be called by our get instance method.
         this._scorm = new Scorm();
         this._scorm.initialize();
 
         if (this._scorm.isActive) {
-            console.log("SCORM ACTIVATED AND CONNECTED");
+            console.log('SCORM ACTIVATED AND CONNECTED');
             this.version = this._scorm.version as ScormVersion;
         }
     }
@@ -51,7 +52,7 @@ export default class HyperScorm {
         return this._instance;
     }
 
-    get connected():boolean {
+    get connected(): boolean {
         return this._scorm.isActive;
     }
 
@@ -59,28 +60,28 @@ export default class HyperScorm {
     public complete(scoreAsDecimal?: number) {
         if (this.version === ScormVersion.ONE_POINT_TWO) {
 
-            this._scorm.set("", "passed");
-            
+            this._scorm.set('', 'passed');
+
         } else if (this.version === ScormVersion.TWO_THOUSAND_AND_FOUR) {
 
-            this._scorm.set("", "passed");
+            this._scorm.set('', 'passed');
 
-            
+
         }
     }
 
     public passed(scoreAsDecimal?: number) {
-        
+
     }
 
     public failed(scoreAsDecimal?: number) {
         if (this.version === ScormVersion.ONE_POINT_TWO) {
 
-            this._scorm.set("", "passed");
+            this._scorm.set('', 'passed');
 
         } else if (this.version === ScormVersion.TWO_THOUSAND_AND_FOUR) {
 
-            this._scorm.set("", "passed");
+            this._scorm.set('', 'passed');
 
 
         }
@@ -91,44 +92,44 @@ export default class HyperScorm {
         // if (this.version !== ScormVersion.TWO_THOUSAND_AND_FOUR) {
         //     console.warn("atempting to record a CMI interaction but not connected to SCORM 2004")
         // }
-           
-        //lets get the next avalible interaction
-        var index = parseInt(this._scorm.get("cmi.interactions._count"));
-      
+
+        // lets get the next avalible interaction
+        let index = parseInt(this._scorm.get('cmi.interactions._count'));
+
         let interaction: InteractionObject = {
             index: index,
             learner_response: learner_response,
             correct: result,
             id: id
-        }
-        
-        console.log("setting cmi.interaction: ", interaction);
+        };
+
+        console.log('setting cmi.interaction: ', interaction);
 
 
 
         if (interaction.correct !== undefined) {
-            //lets format this so it better suits an LMS
-            var formattedResult = (interaction.correct) ? "correct" : "wrong";
-            this._scorm.set("cmi.interactions." + interaction.index + ".result", formattedResult);
+            // lets format this so it better suits an LMS
+            let formattedResult = (interaction.correct) ? 'correct' : 'wrong';
+            this._scorm.set('cmi.interactions.' + interaction.index + '.result', formattedResult);
         }
 
         if (interaction.learner_response !== undefined) {
-            
-            //we are going to use fill in as this seems the best to store data.
-            this._scorm.set("cmi.interactions." + interaction.index + ".type", "fill-in");
 
-            this._scorm.set("cmi.interactions." + interaction.index + ".student_response", encodeURI(interaction.learner_response).toString());
+            // we are going to use fill in as this seems the best to store data.
+            this._scorm.set('cmi.interactions.' + interaction.index + '.type', 'fill-in');
+
+            this._scorm.set('cmi.interactions.' + interaction.index + '.student_response', encodeURI(interaction.learner_response).toString());
             }
 
 
         if (interaction.id !== undefined) {
-            this._scorm.set("cmi.interactions." + interaction.index + ".id", interaction.id);
+            this._scorm.set('cmi.interactions.' + interaction.index + '.id', interaction.id);
 
         }
-    
+
         return interaction;
     }
-    
+
 
 
 
@@ -144,27 +145,27 @@ export interface InteractionObject {
 
 
 enum ScormVersion {
-    ONE_POINT_TWO = "1.2",
-    TWO_THOUSAND_AND_FOUR = "2004"
+    ONE_POINT_TWO = '1.2',
+    TWO_THOUSAND_AND_FOUR = '2004'
 }
 
 enum LessonStatus {
-    PASSED = "passed",
-    FAILED = "failed",
-    COMPLETED = "completed",
-    INCOMPLETE = "incomplete",
-    BROWSED = "browsed",
-    NOT_ATTEMPTED = "not attempted",
+    PASSED = 'passed',
+    FAILED = 'failed',
+    COMPLETED = 'completed',
+    INCOMPLETE = 'incomplete',
+    BROWSED = 'browsed',
+    NOT_ATTEMPTED = 'not attempted',
 }
 
 enum CompletionStatus {
-    COMPLETED = "completed",
-    INCOMPLETE = "incomplete"
+    COMPLETED = 'completed',
+    INCOMPLETE = 'incomplete'
 }
 
 enum SuccessStatus {
-    PASSED = "passed",
-    FAILED = "failed"
+    PASSED = 'passed',
+    FAILED = 'failed'
 
 }
 
@@ -278,7 +279,7 @@ class Scorm {
         return API;
     }
 
-    getAPI():any {
+    getAPI(): any {
         let API = null,
             win = window;
 
@@ -303,7 +304,7 @@ class Scorm {
         } else {
             this.debug('getAPI failed: Can\'t find the API!');
         }
-        console.log("getAPI, returning: ", API);
+        console.log('getAPI, returning: ', API);
 
         return API;
     }
@@ -334,7 +335,7 @@ class Scorm {
      * @returns {boolean}
      * @memberof Scorm
      */
-    initialize():boolean {
+    initialize(): boolean {
         let success = false,
             traceMsgPrefix = 'this.initialize ';
 
@@ -421,7 +422,7 @@ class Scorm {
             this.debug(traceMsgPrefix + 'aborted: Connection already active.');
         }
 
-        return this.isActive; 
+        return this.isActive;
     }
 
     terminate() {

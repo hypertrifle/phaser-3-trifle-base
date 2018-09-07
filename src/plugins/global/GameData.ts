@@ -82,17 +82,17 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      */
     detectTrackingVersion() {
 
-        //boot up our instance of HyperScorm.
+        // boot up our instance of HyperScorm.
         this.scorm = HyperScorm.Instance;
 
         if (this.scorm.connected) {
             this.trackingMode = TrackingMode.Scorm;
-            
+
         } else {
             this.trackingMode = TrackingMode.OfflineStoage;
         }
 
-        console.log("tracking enabled with: ", this.trackingMode);
+        console.log('tracking enabled with: ', this.trackingMode);
 
 
 
