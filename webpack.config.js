@@ -10,10 +10,31 @@ const phaserModule = path.join(__dirname, '/node_modules/phaser/');
 const phaser = path.join(phaserModule, 'src/phaser.js');
 // const texturePackerString = "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img"
 
+
+const pkg = require("./package.json");
+
 const {
     exec
 } = require('child_process');
 
+
+
+//used to replace certain strings within out supporting files.
+const replacements = [
+    {from: "$title$", to:pkg.name}
+]
+
+//this sessentially replaces the above replacements in supporting files such as index.html, imsmanefest etc.
+function applyPackageVars(content){
+
+    let string = content.toString('utf8');
+
+    for(let i in replacements){
+        string = string.replace(replacements[i].from, replacements[i].to);
+    }
+  
+   return new Buffer(string);
+}
 
 module.exports = {
 
@@ -64,10 +85,37 @@ module.exports = {
 
         // new CleanWebpackPlugin(['dist']),
 
+
+
+
         new CopyWebpackPlugin(   
             [ 
+                //standard assets, - this will be changed to Texture packer eventually
                 { from: 'assets', to: 'assets' },
-                { from: 'supporting/*.*', to: './', flatten:true }
+
+                //index, flatten it so its in the root and apply our package.json varibles.
+                { from: 'supporting/index.html', to: './index.html', flatten:true, 
+                transform (content, path) {
+                    return Promise.resolve(applyPackageVars(content));}
+                },
+
+                //indexlms - used by some LMSs
+                { from: 'supporting/index.html', to: './indexlms.html', flatten:true, 
+                transform (content, path) {
+                    return Promise.resolve(applyPackageVars(content));}
+                },
+
+                //story.html - used by some LMSs
+                { from: 'supporting/index.html', to: './story.html', flatten:true, 
+                transform (content, path) {
+                    return Promise.resolve(applyPackageVars(content));}
+                },
+                //IMSManifest - required for valid scorm package.
+                { from: 'supporting/imsmanifest.xml', to: './imsmanifest.xml', flatten:true, 
+                transform (content, path) {
+                    return Promise.resolve(applyPackageVars(content));}
+                }
+                
             ], {}
     ),
 
