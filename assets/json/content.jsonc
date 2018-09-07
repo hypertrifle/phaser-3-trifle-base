@@ -1,4 +1,8 @@
-/* some comments in ere*/
+/* Feel free to add comments to a .jsonc file.
+ * These will be stripped on build so will never been seen apart from in the source files
+ * REMEMEBER - this file is for translatable content, text mainly, but used for translations.
+ */
+
 
 {
 
