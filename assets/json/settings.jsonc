@@ -26,7 +26,7 @@
             "hideDelay": 1 //in seconds.
       },
       /* settings for our test / debug screen */
-      "testScreen": {
+      "testScene": {
             "showBrowserSpecificion": true,
             "showLinksToStates": true,
             "showScormDebugOptions": true,

@@ -3,7 +3,6 @@ import GameData from '../plugins/global/GameData';
 import HTMLUtils from '../plugins/global/HTMLUtils';
 import HUDOverlay from './HUDOverlay';
 import Utils from '../plugins/utils/Utils';
-import ScaleManger from '../plugins/global/ScaleManager';
 import ScaleManager from '../plugins/global/ScaleManager';
 import SpongeUtils from '../plugins/utils/SpongeUtils';
 import GameModel from '../models/GameModel';
@@ -33,7 +32,7 @@ export default class Boot extends Phaser.Scene {
         this.scene.add('TitleScreen', TitleScreen, false); // false is to stop it launching now we'll choose to launch it when we need.
 
 
-        if(this._data.getDataFor("gobal.debugMode")){
+        if(this._data.getDataFor("global.debugMode")){
             console.warn("!!! GLOBAL DEBUG MODE IS ACTIVE !!!");
             this.scene.add('debug', TestScene, true);
         }
@@ -63,7 +62,7 @@ export default class Boot extends Phaser.Scene {
         this.sys.plugins.install('_utils', Utils, true, '_utls');
 
         // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
-        this.sys.plugins.install('_scale', ScaleManger, true, '_scale', { scale: this.game.config.zoom });
+        this.sys.plugins.install('_scale', ScaleManager, true, '_scale', { scale: this.game.config.zoom });
 
         // finally add our sponge helper class - this allows us access to all the above.
         this.sys.plugins.install('sponge', SpongeUtils, true, 'sponge');
@@ -72,7 +71,7 @@ export default class Boot extends Phaser.Scene {
     }
 
     constructor() {
-        // active true means the state always runs. :D#
+        // active true means the state always runs. from experience with Phaser2CE, best to keep this contructor free and used pleload / boot and creat for custom fucntionallity/.
         super(
             { key: 'Boot', active: true }
         );
@@ -146,14 +145,18 @@ export default class Boot extends Phaser.Scene {
     create() {
         console.log('Boot::create::start');
 
+        //load our sponge plugins.
         this.loadPlugins();
         console.log('Boot::Initilising all required states');
 
+        //load our states for this experience.
         this.loadStates();
         console.log('Boot::create::end');
 
+        //we are ending the console group here as any subsequent logs should be visible.
         console.groupEnd();
 
+        
         //TODO: Entry Point.
         this.testSVG();
     }

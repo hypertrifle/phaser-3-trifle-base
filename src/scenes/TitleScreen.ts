@@ -14,6 +14,8 @@ export default class TitleScreen extends Phaser.Scene {
         });
         console.log('TitleSceeen::constructor');
 
+    
+
     }
 
     preload() {
@@ -26,9 +28,12 @@ export default class TitleScreen extends Phaser.Scene {
     }
 
     create() {
-        console.log('titleScene:: Create');
-        // this.events.emit("state:action", this._gant.model);
-        this.sceneDataModel = this.sponge.data.getDataFor('titleScreen', true); // true is a clone.
+        //grab our utils
+        this.sponge = this.sys.plugins.get("sponge") as SpongeUtils; //cas
+        //grab our data for this model.
+        this.sceneDataModel = this.sponge.data.getDataFor("titleScreen") as TitleScreenModel; //cast
+
+
     }
 
 

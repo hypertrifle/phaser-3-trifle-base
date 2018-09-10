@@ -51,7 +51,7 @@ const config: GameConfig = {
   // these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.
   callbacks: {
     postBoot: () => {
-      console.warn('post callback', this);
+      // console.warn('post callback', this);
     },
 
   },

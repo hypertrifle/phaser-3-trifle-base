@@ -13,12 +13,6 @@ export default class TestScene extends Phaser.Scene {
         });
         console.log('TitleSceeen::constructor');
 
-        //grab our utils
-        this.sponge = this.sys.plugins.get("sponge") as SpongeUtils; //cast
-
-        //grab our data for this model.
-        this.testSceneModel = this.sponge.data.getDataFor("testScene") as TestSceneModel; //cast
-
         
     }
 
@@ -28,6 +22,13 @@ export default class TestScene extends Phaser.Scene {
     }
 
     create() {
+        //grab our utils
+        this.sponge = this.sys.plugins.get("sponge") as SpongeUtils; //cast
+
+        //grab our data for this model.
+        this.testSceneModel = this.sponge.data.getDataFor("testScene") as TestSceneModel; //cast
+
+
 
     }
 
@@ -37,6 +38,9 @@ export default class TestScene extends Phaser.Scene {
     }
 
     shutdown() {
+        //drop references to anything we have in create
+        this.sponge = null; 
+        this.testSceneModel = null;
 
     }
 
