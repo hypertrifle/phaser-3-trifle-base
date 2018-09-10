@@ -131,7 +131,7 @@ export default class HyperScorm {
     }
 
     /**
-     * track an interaction, 
+     * track an interaction,
      *
      * @param {number} id
      * @param {boolean} result
@@ -142,11 +142,11 @@ export default class HyperScorm {
     public trackInteraction(id: number, result: boolean, learner_response: string): InteractionObject {
 
         if (!this.connected) {
-            console.warn("interaction tracking disabled as not connected to scorm");
+            console.warn('interaction tracking disabled as not connected to scorm');
             return;
         }
 
-        //is interactions 2004 only?
+        // is interactions 2004 only?
         // if (this.version !== ScormVersion.TWO_THOUSAND_AND_FOUR) {
         //     console.warn("atempting to record a CMI interaction but not connected to SCORM 2004")
         // }
@@ -154,13 +154,13 @@ export default class HyperScorm {
         // lets get the next avalible interaction
         let index = parseInt(this._scorm.get('cmi.interactions._count'));
 
-        if (typeof index !== "number") {
-            console.warn("cmi.interactions._count returned NaN so skipping this interaction tracking");
+        if (typeof index !== 'number') {
+            console.warn('cmi.interactions._count returned NaN so skipping this interaction tracking');
             return;
 
         }
 
-        //build our interaction object.
+        // build our interaction object.
         let interaction: InteractionObject = {
             index: index,
             learner_response: learner_response,
@@ -168,12 +168,12 @@ export default class HyperScorm {
             id: id
         };
 
-        //quick debug trace.
+        // quick debug trace.
         console.log('setting cmi.interaction: ', interaction);
 
 
 
-        //standard stuffs.
+        // standard stuffs.
         if (interaction.correct !== undefined) {
             // lets format this so it better suits an LMS
             let formattedResult = (interaction.correct) ? 'correct' : 'wrong';
@@ -194,8 +194,21 @@ export default class HyperScorm {
 
         }
 
-        //return the interaction we recorded.
+        // return the interaction we recorded.
         return interaction;
+    }
+
+
+    get(path: string) {
+        return this._scorm.get(path);
+    }
+
+    set(path: string, value: string) {
+        return this._scorm.set(path, value);
+    }
+
+    save(): boolean {
+        return this._scorm.commit();
     }
 
 
@@ -267,8 +280,8 @@ enum SuccessStatus {
 
 
 /**
- * the main pipwerks code, mostly converted to typescript.  hopefully 
- * any usefuly code this class can supply us with is now avalible via HyperScorm, 
+ * the main pipwerks code, mostly converted to typescript.  hopefully
+ * any usefuly code this class can supply us with is now avalible via HyperScorm,
  * so direct access to this class should not be required. (I'm also not gonna export this.)
  *
  * @class Scorm

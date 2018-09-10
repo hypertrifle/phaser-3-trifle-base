@@ -1,6 +1,7 @@
 import SaveDataModel from './SaveModel';
 import  TitleScreenModel  from './TitleScreenModel';
 import UIModel from './UIModels';
+import TestSceneModel from './TestSceneModel';
 
 /**
  * Data Model - this holds all information that has been imported from the
@@ -15,16 +16,24 @@ export default class GameModel {
 
     save: SaveDataModel; // add we will add functionallity to the model class, we will include but we can always type some of the code we are expecting.
     title_screen: TitleScreenModel;
-    scaling: ScalingOptions;
-    icons: Array<string>;
+   
+    scaling: ScalingModel;
     userInterface: UIModel;
+    testScreen: TestSceneModel;
+    global: GlobalModel;
 
+    icons: Array<string>;
     fonts: Array<Phaser.GameObjects.Text.TextStyle>;
+
 }
 
-export class ScalingOptions {
+export class ScalingModel {
     expandToPartent: boolean = true;
     shouldForceOrientationOnMobile: boolean = true;
     shouldForceLandscaprOnMobile: boolean = true;
 
+}
+
+export class GlobalModel {
+    isDebug: boolean = true;
 }

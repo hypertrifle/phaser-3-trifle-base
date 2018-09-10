@@ -58,14 +58,20 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     }
 
 
-    public scorm: HyperScorm;
+     /**
+      * our instnace of the pipwreks-esque scorm wrapper
+      *
+      * @type {HyperScorm}
+      * @memberof GameData
+      */
+     _scorm: HyperScorm;
 
     /**
      * any unitilise function
      *
      * @memberof GameData
      */
-    init() {
+    public init() {
 
         // we now want to merge our settings, and our content for a single model, we will prefer settings over content but try and warn over overites.
         console.log('GameData::init');
@@ -76,38 +82,12 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
 
     /**
-     * Detect and store the type of trackign system we want to use.
-     *
-     * @memberof GameData
-     */
-    detectTrackingVersion() {
-        
-
-        // boot up our instance of HyperScorm.
-        this.scorm = HyperScorm.Instance;
-
-        if (this.scorm.connected) {
-            this.trackingMode = TrackingMode.Scorm;
-
-        } else {
-            this.trackingMode = TrackingMode.OfflineStoage;
-        }
-
-        console.log('tracking enabled with: ', this.trackingMode);
-
-
-
-
-    }
-
-
-    /**
      *
      *
      * @param {(any|Array<any>)} contentJSONObject - either a json object to load, or an array of objects, later in the array will be prioritised.
      * @memberof GameData
      */
-    loadData(contentJSONObject: any|Array<any>) {
+    private loadData(contentJSONObject: any|Array<any>) {
 
         let data: any = {};
 
@@ -162,7 +142,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      * @returns {*} - returns an untyped object - to be validated yourself.
      * @memberof GameData
      */
-    getDataFor(path?: string, clone?: boolean): any {
+    public getDataFor(path?: string, clone?: boolean): any {
 
         let shouldClone = clone || true;
         let obb: any = this.raw;
@@ -198,7 +178,6 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         return this.raw.save;
     }
 
-
     /**
      * set the save model value and persist data if required.
      *
@@ -206,28 +185,105 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      */
     set save(newSave: SaveModel) {
 
+        // assign the save model
         this.raw.save = newSave;
 
+        // make it persistent if required.
         this.persistantStorageSave();
 
     }
+
+
+// ================================================
+//
+//   ####   ####   #####   #####    ###    ###
+//  ##     ##     ##   ##  ##  ##   ## #  # ##
+//   ###   ##     ##   ##  #####    ##  ##  ##
+//     ##  ##     ##   ##  ##  ##   ##      ##
+//  ####    ####   #####   ##   ##  ##      ##
+//
+// ================================================
+
+    /**
+   * Detect and store the type of trackign system we want to use.
+   *
+   * @memberof GameData
+   */
+    private detectTrackingVersion() {
+
+        // if our tracking is explicitly disabled, lets jus set it off and return
+        if (!this.raw.save.shouldPersistData) {
+            this.trackingMode = TrackingMode.Off;
+            return;
+        }
+
+        // try our instance of HyperScorm.
+        this._scorm = HyperScorm.Instance;
+
+        // if connected used that
+        if (this._scorm.connected) {
+            this.trackingMode = TrackingMode.Scorm;
+        } else {
+            // if not use offline storage.
+            this._scorm = null; // drop an instance of if for MM
+            this.trackingMode = TrackingMode.OfflineStoage;
+
+        }
+
+        console.log('tracking enabled with: ', this.trackingMode);
+    }
+
+    private getScorm(modelPath: string): string {
+        let ret = this._scorm.get(modelPath);
+        this.saveScorm();
+        return ret;
+    }
+
+    private setScorm(modelPath: string, value: string) {
+        this._scorm.set(modelPath, value);
+        return this.saveScorm();
+
+    }
+
+    private saveScorm() {
+        this.game.events.emit('systems.scorm.save', this.save);
+        return this._scorm.save();
+    }
+
 
     /**
      * loads persistent save data from current tracking system.
      *
      * @memberof GameData
      */
-    persistantStorageLoad() {
-        if (!this.getDataFor('save.shouldPersistData')) {
-            console.warn("ommititing load of persistent storage as we have it disabled");
-            return;
-        }
+    private persistantStorageLoad() {
+
+        let raw: string = '';
 
         switch (this.trackingMode) {
+            case TrackingMode.Off:
+                console.warn('ommititing load of persistent storage as we have it disabled');
+                return;
             case TrackingMode.OfflineStoage:
+                raw = localStorage.getItem(this.save.identifier);
+                break;
+            case TrackingMode.Scorm:
+                raw = this.getScorm('cmi.suspend_data');
             default:
-
+                break;
         }
+
+
+        // convert to a Javascript Object and do any error checking required.
+        let rawObj;
+        try {
+            rawObj = JSON.parse(raw);
+        } catch (e) {
+            console.warn('error trying to parse load, bu wit suspend data object, errors, roaw strong loaded: ', raw);
+        }
+
+        // finally assign to our global save.
+        this.save = rawObj;
     }
 
     /**
@@ -235,11 +291,34 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
      *
      * @memberof GameData
      */
-    persistantStorageSave() {
-        if (!this.getDataFor('save.shouldPersistData')) {
-            console.warn("ommititing save of persistent storage as we have it disabled");
-            return;
+    private persistantStorageSave() {
+
+        let serilized = (this.trackingMode === TrackingMode.Off) ? '' : JSON.stringify(this.save);
+
+        switch (this.trackingMode) {
+            case TrackingMode.Off:
+                console.warn('ommititing save of persistent storage as we have it disabled');
+                return;
+
+            case TrackingMode.OfflineStoage:
+                // set the loacal storage item.
+                localStorage.setItem(this.save.identifier, serilized);
+                break;
+
+            case TrackingMode.Scorm:
+                // set the scorm suspend_data Item
+                let raw = this.setScorm('cmi.suspend_data', serilized );
+                break;
+
+            default:
+                console.warn("Attempting to persist storage but no tracking system selected");
+                break;
+
         }
+
+        // Any errorchecking on the save model now that it has restored?
+        // possibly itterate through the keys and add any extas in that are in our models, but are not in the
+
 
     }
 

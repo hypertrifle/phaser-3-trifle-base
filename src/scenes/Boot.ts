@@ -6,6 +6,8 @@ import Utils from '../plugins/utils/Utils';
 import ScaleManger from '../plugins/global/ScaleManager';
 import ScaleManager from '../plugins/global/ScaleManager';
 import SpongeUtils from '../plugins/utils/SpongeUtils';
+import GameModel from '../models/GameModel';
+import TestScene from './TestScene';
 
 
 // this is sort of an bootstate, there probably is a more elegant way that this,
@@ -14,6 +16,7 @@ export default class Boot extends Phaser.Scene {
 
     private svg: Phaser.GameObjects.Image;
     private svgScalar: Phaser.Loader.FileTypes.SVGSizeConfig;
+    private _data: GameData;
 
 
     /**
@@ -22,8 +25,50 @@ export default class Boot extends Phaser.Scene {
      *
      * @memberof Boot
      */
-    loadStates() {
+    private loadStates() {
+        // add all our scenes, we are going to have to do this pragmatically now with webpack and ts,
+        // it means better bundle size but requuires a re-compile on changing orders.
+
+
         this.scene.add('TitleScreen', TitleScreen, false); // false is to stop it launching now we'll choose to launch it when we need.
+
+
+        if(this._data.getDataFor("gobal.debugMode")){
+            console.warn("!!! GLOBAL DEBUG MODE IS ACTIVE !!!");
+            this.scene.add('debug', TestScene, true);
+        }
+        
+
+        // finallly add our on top / HUD layer.
+        this.scene.add('HUD', HUDOverlay, true); // true as we always want that badboy running in the forground.
+    }
+
+    private loadPlugins() {
+        /* ------------------------------------------------------
+               lets boot up our global plugins that we use across scenes.
+               We are going to do this in the create state as we daependant
+               on a lot of the settings from json files which are now availible.
+               ------------------------------------------------------ */
+
+        // first install out data controller, this is going to be both data models, and anything to do with content Tracking.
+        this.sys.plugins.install('_data', GameData, true, '_data');
+        
+        //we might need this in the boot / controller class.
+        this._data = this.sys.plugins.get("_data") as GameData;
+
+        // boot up out HTMLUtils plugin and make it accessible, this is used for popups, forms as well as other non canvas / webGL content.
+        this.sys.plugins.install('_html', HTMLUtils, true, '_html');
+
+        // boot up out generic utilitty classes
+        this.sys.plugins.install('_utils', Utils, true, '_utls');
+
+        // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
+        this.sys.plugins.install('_scale', ScaleManger, true, '_scale', { scale: this.game.config.zoom });
+
+        // finally add our sponge helper class - this allows us access to all the above.
+        this.sys.plugins.install('sponge', SpongeUtils, true, 'sponge');
+
+
     }
 
     constructor() {
@@ -47,6 +92,8 @@ export default class Boot extends Phaser.Scene {
             console.log.apply(console, args);
 
         }
+
+        //we are going to colapse any log messages here unitl we are fully booted.
         console.groupCollapsed('BOOT DATA');
         console.log('Boot::preload::start');
 
@@ -68,13 +115,14 @@ export default class Boot extends Phaser.Scene {
         });
 
         // load content.
-        this.load.json('content', 'assets/json/content.json');
+        this.load.json('content', 'assets/json/content.json'); //required
 
         // settings.
-        this.load.json('settings', 'assets/json/settings.json');
+        this.load.json('settings', 'assets/json/settings.json'); // required
 
-        // image files
+        // image files //TODO: how are we to load image assets. (Maybe perstate from now on?)
         // this.load.image("avatar.png", "assets/img/avatar.png");
+
 
 
         /* with SVGs we now want to start thinking about making games that we can scale up if required. *
@@ -98,53 +146,19 @@ export default class Boot extends Phaser.Scene {
     create() {
         console.log('Boot::create::start');
 
-        /* ------------------------------------------------------
-        lets boot up our global plugins that we use across scenes.
-        We are going to do this in the create state as we daependant
-        on a lot of the settings from json files which are now availible.
-        ------------------------------------------------------ */
-
-        // first install out data controller, this is going to be both data models, and anything to do with content Tracking.
-        this.sys.plugins.install('_data', GameData, true, '_data');
-
-        // boot up out HTMLUtils plugin and make it accessible, this is used for popups, forms as well as other non canvas / webGL content.
-        this.sys.plugins.install('_html', HTMLUtils, true, '_html');
-
-        // boot up out generic utilitty classes
-        this.sys.plugins.install('_utils', Utils, true, '_utls');
-
-        // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
-        this.sys.plugins.install('_scale', ScaleManger, true, '_scale', {scale: this.game.config.zoom});
-
-        // finally add our sponge helper class
-        this.sys.plugins.install('sponge', SpongeUtils, true, 'sponge');
-
-        // add all our scenes, we are going to have to do this pragmatically now with webpack and ts,
-        // it means better bundle size but requuires a re-compile on changing orders.
-
+        this.loadPlugins();
         console.log('Boot::Initilising all required states');
 
-
         this.loadStates();
-
-
-        // finallly add our on top / HUD layer.
-        this.scene.add('HUD', HUDOverlay, true); // true as we always want that badboy running in the forground.
-
-        // load out first state, hopefully always a title screen.
-        // this.scene.start('TitleScene');
-
-
-        // lets just do some tests.
-
-
         console.log('Boot::create::end');
+
         console.groupEnd();
 
+        //TODO: Entry Point.
         this.testSVG();
     }
 
-    update(t: integer, dt: number) {
+    update(t: number, dt: number) {
         // this is run every frame, regardless of loaded scene.
 
     }
