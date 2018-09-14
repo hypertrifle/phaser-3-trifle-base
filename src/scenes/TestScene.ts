@@ -1,6 +1,6 @@
 import TestSceneModel from '../models/TestSceneModel';
 import GameData from '../plugins/global/GameData';
-import SpongeUtils from '../plugins/utils/SpongeUtils';
+import SpongeUtils from '../plugins/global/Sponge';
 
 export default class TestScene extends Phaser.Scene {
 

@@ -23,8 +23,6 @@ export default class GameModel {
     userInterface: UIModel;
     testScreen: TestSceneModel;
     global: GlobalModel;
-
-
     icons: Array<string>;
     fonts: Array<Phaser.GameObjects.Text.TextStyle>;
 
@@ -32,10 +30,11 @@ export default class GameModel {
 
 /* small so just whack it here */
 export class ScalingModel {
-    expandToPartent: boolean = true;
+    expandToParent: boolean = true;
     shouldForceOrientationOnMobile: boolean = true;
     shouldForceLandscaprOnMobile: boolean = true;
-
+    maxWidth: number = 99999999;
+    maxHeight: number = 999999999;
 }
 
 /* small so just whack it here */

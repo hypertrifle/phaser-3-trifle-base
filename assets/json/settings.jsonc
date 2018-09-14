@@ -12,6 +12,7 @@
       "global": {
             "debugMode":true
       },
+
       /*scaling options used for changing size etc*/
       "scaling": {
             "expandToParent": false,
@@ -20,11 +21,13 @@
             "maxWidth": 1280,
             "maxHeight": 800
       },
+
       /* Heads Up / in game UI settings.*/
       "HUDOverlay": {
             "shouldShowSettings": true,
             "hideDelay": 1 //in seconds.
       },
+      
       /* settings for our test / debug screen */
       "testScene": {
             "showBrowserSpecificion": true,
@@ -36,7 +39,15 @@
             "resetSaveModel":true
       },
       "userInterface": {
-            "settings": {},
+            "settings": {
+                  "radius": 0,
+                  "colors": {
+                        "primary": "#F34939",
+                        "secondary": "#FEBD19",
+                        "hover":  "#F25F52",
+                        "disabled": "#AAAAAA"
+                  }
+            },
             "buttons": {}
       },
       "test": {

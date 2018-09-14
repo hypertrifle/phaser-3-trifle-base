@@ -4,7 +4,7 @@ import HTMLUtils from '../plugins/global/HTMLUtils';
 import HUDOverlay from './HUDOverlay';
 import Utils from '../plugins/utils/Utils';
 import ScaleManager from '../plugins/global/ScaleManager';
-import SpongeUtils from '../plugins/utils/SpongeUtils';
+import SpongeUtils from '../plugins/global/Sponge';
 import GameModel from '../models/GameModel';
 import TestScene from './TestScene';
 
@@ -31,6 +31,7 @@ export default class Boot extends Phaser.Scene {
 
         this.scene.add('TitleScreen', TitleScreen, false); // false is to stop it launching now we'll choose to launch it when we need.
 
+        console.log(this._data);
 
         if(this._data.getDataFor("global.debugMode")){
             console.warn("!!! GLOBAL DEBUG MODE IS ACTIVE !!!");
@@ -43,31 +44,12 @@ export default class Boot extends Phaser.Scene {
     }
 
     private loadPlugins() {
-        /* ------------------------------------------------------
-               lets boot up our global plugins that we use across scenes.
-               We are going to do this in the create state as we daependant
-               on a lot of the settings from json files which are now availible.
-               ------------------------------------------------------ */
-
         // first install out data controller, this is going to be both data models, and anything to do with content Tracking.
         this.sys.plugins.install('_data', GameData, true, '_data');
-        
-        //we might need this in the boot / controller class.
         this._data = this.sys.plugins.get("_data") as GameData;
 
-        // boot up out HTMLUtils plugin and make it accessible, this is used for popups, forms as well as other non canvas / webGL content.
-        this.sys.plugins.install('_html', HTMLUtils, true, '_html');
-
-        // boot up out generic utilitty classes
-        this.sys.plugins.install('_utils', Utils, true, '_utls');
-
-        // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
-        this.sys.plugins.install('_scale', ScaleManager, true, '_scale', { scale: this.game.config.zoom });
-
-        // finally add our sponge helper class - this allows us access to all the above.
+        //we are going to load all our related sponge helpers in the sponge class now.
         this.sys.plugins.install('sponge', SpongeUtils, true, 'sponge');
-
-
     }
 
     constructor() {
@@ -145,6 +127,8 @@ export default class Boot extends Phaser.Scene {
     create() {
         console.log('Boot::create::start');
 
+
+
         //load our sponge plugins.
         this.loadPlugins();
         console.log('Boot::Initilising all required states');
@@ -156,9 +140,13 @@ export default class Boot extends Phaser.Scene {
         //we are ending the console group here as any subsequent logs should be visible.
         console.groupEnd();
 
+
+
+        this.scene.start("TitleScreen");
+
         
         //TODO: Entry Point.
-        this.testSVG();
+        // this.testSVG();
     }
 
     update(t: number, dt: number) {

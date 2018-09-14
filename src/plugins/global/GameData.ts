@@ -64,7 +64,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
       * @type {HyperScorm}
       * @memberof GameData
       */
-     _scorm: HyperScorm;
+     private _scorm: HyperScorm;
 
     /**
      * any unitilise function
@@ -76,13 +76,17 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         // we now want to merge our settings, and our content for a single model, we will prefer settings over content but try and warn over overites.
         console.log('GameData::init');
 
+        //this is hard coded now, we will always boot pur plugins after preload so jason's files will be availible.
         this.loadData([this.game.cache.json.get('settings'), this.game.cache.json.get('content')]);
+
+        //get tracking mode.
         this.detectTrackingVersion();
     }
 
 
     /**
-     *
+     * loads a set of json objects into one main model, earlier items in the array have priority and merging only happens at 1 level deep.
+     * eventually cast into our data model.
      *
      * @param {(any|Array<any>)} contentJSONObject - either a json object to load, or an array of objects, later in the array will be prioritised.
      * @memberof GameData

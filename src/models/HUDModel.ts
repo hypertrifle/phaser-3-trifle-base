@@ -29,7 +29,7 @@ enum HUDFeatures {
  * @export
  * @interface HUDModel
  */
-class HUDModel {
+export class HUDModel {
    /**
     * Should the game always show a pause / menu button
     *

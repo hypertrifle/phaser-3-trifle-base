@@ -1,5 +1,6 @@
 import GameData from './GameData';
 import 'phaser';
+import { ScalingModel } from '../../models/GameModel';
 
 /**
  * the scale manager handles any in-game scaling and positioning, booth zooming within the game and resizing of SVG cotnent for better fedelity
@@ -38,7 +39,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @type {ScaleConfig}
      * @memberof ScaleManager
      */
-    private _scaleConfig: ScaleConfig;
+    private _scaleConfig: ScalingModel;
 
 
     /**
@@ -68,9 +69,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     constructor(pluginManager: Phaser.Plugins.PluginManager) {
 
         super(pluginManager);
-
-        // grab our settings configuration object.
-        this._scaleConfig = (this.pluginManager.get('_data') as GameData).getDataFor('scaling') as ScaleConfig;
+      
     }
 
 
@@ -84,7 +83,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         console.log('ScaleManger::constructor', s);
 
         // our scalar (design size / render size ratio)
-        this.scale = s.scale;
+        this.scale = 1/s.scale;
 
         this.boot();
 
@@ -126,6 +125,10 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      */
     public landscape: boolean = true;
 
+    private gameSize: Phaser.Geom.Point;
+
+
+
     /**
      * initial moot of the scale magager, this sets up our scaling as well as alters font sizes in place.
      *
@@ -133,8 +136,15 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      */
     public boot() {
 
+        this.gameSize = new Phaser.Geom.Point(this.game.config.width as number * this.game.config.zoom, this.game.config.height as number * this.game.config.zoom);
+
         console.log('ScaleManager::boot');
         // when everything is ready :)
+        // grab our settings configuration object.
+        this._scaleConfig = (this.pluginManager.get('_data') as GameData).getDataFor('scaling') as ScalingModel;
+
+        //initilise our position manager
+        this.position = new PositionManager(new Phaser.Geom.Point(this.game.config.width as number / 2, this.game.config.height as number / 2));
 
 
         // asign our canvas.
@@ -154,13 +164,16 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         this.canvas.parentElement.appendChild(this.forgroundHTML);
 
 
-        // lets listen to when the browser is resized and if so re-apply any scaling we require to.
-        window.addEventListener('resize', () => {
-            this.resizeCanvas();
-        });
+        // if (this._scaleConfig.expandToParent) {
+        //     // lets listen to when the browser is resized and if so re-apply any scaling we require to.
+        //     window.addEventListener('resize', () => {
+        //         this.resizeCanvas();
+        //     });
 
-        // force a reload on initial build
-        this.resizeCanvas();
+        //     // force a reload on initial build
+        //     this.resizeCanvas();
+            
+        // }
     }
 
 
@@ -173,13 +186,15 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      */
     public resizeCanvas() {
 
-        this.handleCanvasScale(this.canvas);
 
         if (this.mobile) {
             this.handleOrientationMode();
         }
+        
+        this.handleCanvasScale(this.canvas);
 
-        // this.handleFontResizing();
+        //emit a global event incase anyone wants to hook into a resize the canvas.
+        this.game.events.emit("game.resize", new Phaser.Geom.Point(this.canvas.width, this.canvas.height));
 
     }
 
@@ -302,6 +317,71 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     }
 
 
+    percentX(percent: number): number {
+        if (percent === 1) {
+            console.warn("A PercentX was calculated of value 1, assuming 100%");
+        }
+
+        return (percent <= 1) ? this.game.config.width as number * percent : this.game.config.width as number * (percent / 100);
+    }
+
+    percentY(percent: number): number {
+        if (percent === 1) {
+            console.warn("A PercentY was calculated of value 1, assuming 100%");
+        }
+
+        console.log("calculatiing percent of", percent);
+        console.log("returning", (percent <= 1) ? this.game.config.height as number * percent : this.game.config.height as number * (percent / 100))
+
+
+        return (percent <= 1) ? this.game.config.height as number * percent : this.game.config.height as number * (percent / 100);
+    }
+
+    dToR(designDimension: number): number {
+        return designDimension * this.scale;
+    }
+
+    fromTop(designfromTop: number|string):number {
+        
+        if (typeof designfromTop === "string") {
+            if (designfromTop.indexOf("%")) {
+                return this.percentY(parseInt(designfromTop));
+            }
+        }
+        return this.dToR(designfromTop as number / this.scale);
+    }
+
+    fromBottom(designFromBottom: number|string):number {
+        
+        if (typeof designFromBottom === "string") {
+            if (designFromBottom.indexOf("%")) {
+                return this.percentY(100 - parseInt(designFromBottom));
+            }
+        }
+        return this.game.config.height as number - this.dToR(designFromBottom as number);
+    }
+
+    fromLeft(designfromLeft: number|string):number {
+        
+        if (typeof designfromLeft === "string") {
+            if (designfromLeft.indexOf("%")) {
+                return this.percentX(parseInt(designfromLeft));
+            }
+        }
+        return this.dToR(designfromLeft as number);
+    }
+
+    fromRight(designFromRight: number|string):number {
+        
+        if (typeof designFromRight === "string") {
+            if (designFromRight.indexOf("%")) {
+                return this.percentY(100 - parseInt(designFromRight));
+            }
+        }
+        return this.game.config.width as number - this.dToR(designFromRight as number);
+    }
+
+
 }
 
 // extend the standard font object with some properties we
@@ -320,8 +400,10 @@ export class PositionManager {
      */
     private scale: number;
 
-    constructor() {
+    private gameSize: Phaser.Geom.Point;
 
+    constructor(gameSize:Phaser.Geom.Point) {
+        this.gameSize = gameSize;
     }
 
     setScale(newScale: number): number {
@@ -340,4 +422,6 @@ export class PositionManager {
     fromRight(v: number): number {
         return 0 + v;
     }
+
+  
 }

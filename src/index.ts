@@ -15,22 +15,23 @@ console.clear();
 
 // what the designer artboard was sized to
 const designDimensions = {
-  width: 960,
-  height: 540
+  width: 300,
+  height: 100
 };
 
 // what size we want to render the game at (note that we can still zoom the canvas),
 // but this is the dimensions that the textures are rendererd at.
 const renderDimensions = {
-  width: 1280,
-  height: 800
+  width: 600,
+  height: 200
 };
 
 // work out some ratio stuff.
-let ratio_w = renderDimensions.width / designDimensions.width;
-let ratio_h = renderDimensions.height / designDimensions.height;
+let ratio_w =  designDimensions.width / renderDimensions.width;
+let ratio_h =  designDimensions.height / renderDimensions.height ;
 
 // TODO: we should workout
+
 
 if (ratio_w !== ratio_h) {
   console.warn('Design and render dimension have mismatching ratio, prioritising width ratio');
@@ -38,11 +39,13 @@ if (ratio_w !== ratio_h) {
 
 let ratio = ratio_w;
 
+console.warn("SYS::Ratio Set", ratio);
+
 const config: GameConfig = {
   title: 'Game', // apart from this
   version: '1.0',
-  width: designDimensions.width,
-  height: designDimensions.height,
+  width: renderDimensions.width,
+  height: renderDimensions.height,
   zoom: ratio,
   resolution: ratio,
   type: Phaser.WEBGL,

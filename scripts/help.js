@@ -10,6 +10,7 @@ const descriptions = {
    "export-assets":"\t - export the assest to artboards for design",
    "new-asset":"\t - build a new placeholder asset",
    "generate-atlas":"\t - Re generate the main game Atlas with default settings"
+   "generate-schema":"\t - Re generate the json Schema files for src/models/"
 }
 
 

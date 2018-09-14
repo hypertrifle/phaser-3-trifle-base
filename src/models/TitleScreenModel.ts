@@ -4,7 +4,7 @@
  * @export
  * @interface TitleScreenModel
  */
-interface TitleScreenModel {
+export class TitleScreenModel {
     /**
      * this title to of the game
      *

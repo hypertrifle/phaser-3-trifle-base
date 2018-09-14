@@ -1,5 +1,6 @@
 import GameData from './GameData';
 import UIModel from '../../models/UIModels';
+import { PositionManager } from './ScaleManager';
 
 export default class UIFactory extends Phaser.Plugins.BasePlugin {
 
@@ -13,18 +14,15 @@ export default class UIFactory extends Phaser.Plugins.BasePlugin {
        */
 
     constructor(pluginManager: Phaser.Plugins.PluginManager) {
-
         super(pluginManager);
-
         console.log('UIFactory::constructor');
         // so this should be where we can define out methods and options for UI based element generation
-
-
     }
 
     init() {
         // this is always called by a plugin right?
-        this._model = (this.pluginManager.get('_data') as GameData).getDataFor('UI');
+        this._model = (this.pluginManager.get('_data') as GameData).getDataFor('userInterface');
+        
     }
 
 

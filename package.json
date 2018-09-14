@@ -13,7 +13,8 @@
     "generate-atlas": "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
     "new-asset": "node scripts/make_asset.js",
     "lint": "tslint -- src/**/*.ts",
-    "fixlint": "tslint --fix src/**/*.ts"
+    "fixlint": "tslint --fix src/**/*.ts",
+    "generate-schema": "typescript-json-schema src/models/**/*.ts * --titles --aliasRefs --ignoreErrors -o json.schema"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
     "strip-json-comments": "^2.0.1",
     "ts-loader": "^3.5.0",
     "tslint": "^5.11.0",
-    "typedoc": "^0.12.0"
+    "typedoc": "^0.12.0",
+    "typescript-json-schema": "^0.32.0"
   }
 }
