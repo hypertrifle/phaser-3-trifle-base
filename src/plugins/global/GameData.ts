@@ -76,10 +76,10 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         // we now want to merge our settings, and our content for a single model, we will prefer settings over content but try and warn over overites.
         console.log('GameData::init');
 
-        //this is hard coded now, we will always boot pur plugins after preload so jason's files will be availible.
+        // this is hard coded now, we will always boot pur plugins after preload so jason's files will be availible.
         this.loadData([this.game.cache.json.get('settings'), this.game.cache.json.get('content')]);
 
-        //get tracking mode.
+        // get tracking mode.
         this.detectTrackingVersion();
     }
 
@@ -315,7 +315,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
                 break;
 
             default:
-                console.warn("Attempting to persist storage but no tracking system selected");
+                console.warn('Attempting to persist storage but no tracking system selected');
                 break;
 
         }

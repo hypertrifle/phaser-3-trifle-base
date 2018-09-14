@@ -69,7 +69,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     constructor(pluginManager: Phaser.Plugins.PluginManager) {
 
         super(pluginManager);
-      
+
     }
 
 
@@ -83,7 +83,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         console.log('ScaleManger::constructor', s);
 
         // our scalar (design size / render size ratio)
-        this.scale = 1/s.scale;
+        this.scale = 1 / s.scale;
 
         this.boot();
 
@@ -143,7 +143,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         // grab our settings configuration object.
         this._scaleConfig = (this.pluginManager.get('_data') as GameData).getDataFor('scaling') as ScalingModel;
 
-        //initilise our position manager
+        // initilise our position manager
         this.position = new PositionManager(new Phaser.Geom.Point(this.game.config.width as number / 2, this.game.config.height as number / 2));
 
 
@@ -172,7 +172,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
         //     // force a reload on initial build
         //     this.resizeCanvas();
-            
+
         // }
     }
 
@@ -190,11 +190,11 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         if (this.mobile) {
             this.handleOrientationMode();
         }
-        
+
         this.handleCanvasScale(this.canvas);
 
-        //emit a global event incase anyone wants to hook into a resize the canvas.
-        this.game.events.emit("game.resize", new Phaser.Geom.Point(this.canvas.width, this.canvas.height));
+        // emit a global event incase anyone wants to hook into a resize the canvas.
+        this.game.events.emit('game.resize', new Phaser.Geom.Point(this.canvas.width, this.canvas.height));
 
     }
 
@@ -319,7 +319,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     percentX(percent: number): number {
         if (percent === 1) {
-            console.warn("A PercentX was calculated of value 1, assuming 100%");
+            console.warn('A PercentX was calculated of value 1, assuming 100%');
         }
 
         return (percent <= 1) ? this.game.config.width as number * percent : this.game.config.width as number * (percent / 100);
@@ -327,11 +327,11 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     percentY(percent: number): number {
         if (percent === 1) {
-            console.warn("A PercentY was calculated of value 1, assuming 100%");
+            console.warn('A PercentY was calculated of value 1, assuming 100%');
         }
 
-        console.log("calculatiing percent of", percent);
-        console.log("returning", (percent <= 1) ? this.game.config.height as number * percent : this.game.config.height as number * (percent / 100))
+        console.log('calculatiing percent of', percent);
+        console.log('returning', (percent <= 1) ? this.game.config.height as number * percent : this.game.config.height as number * (percent / 100));
 
 
         return (percent <= 1) ? this.game.config.height as number * percent : this.game.config.height as number * (percent / 100);
@@ -341,40 +341,40 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         return designDimension * this.scale;
     }
 
-    fromTop(designfromTop: number|string):number {
-        
-        if (typeof designfromTop === "string") {
-            if (designfromTop.indexOf("%")) {
+    fromTop(designfromTop: number|string): number {
+
+        if (typeof designfromTop === 'string') {
+            if (designfromTop.indexOf('%')) {
                 return this.percentY(parseInt(designfromTop));
             }
         }
         return this.dToR(designfromTop as number / this.scale);
     }
 
-    fromBottom(designFromBottom: number|string):number {
-        
-        if (typeof designFromBottom === "string") {
-            if (designFromBottom.indexOf("%")) {
+    fromBottom(designFromBottom: number|string): number {
+
+        if (typeof designFromBottom === 'string') {
+            if (designFromBottom.indexOf('%')) {
                 return this.percentY(100 - parseInt(designFromBottom));
             }
         }
         return this.game.config.height as number - this.dToR(designFromBottom as number);
     }
 
-    fromLeft(designfromLeft: number|string):number {
-        
-        if (typeof designfromLeft === "string") {
-            if (designfromLeft.indexOf("%")) {
+    fromLeft(designfromLeft: number|string): number {
+
+        if (typeof designfromLeft === 'string') {
+            if (designfromLeft.indexOf('%')) {
                 return this.percentX(parseInt(designfromLeft));
             }
         }
         return this.dToR(designfromLeft as number);
     }
 
-    fromRight(designFromRight: number|string):number {
-        
-        if (typeof designFromRight === "string") {
-            if (designFromRight.indexOf("%")) {
+    fromRight(designFromRight: number|string): number {
+
+        if (typeof designFromRight === 'string') {
+            if (designFromRight.indexOf('%')) {
                 return this.percentY(100 - parseInt(designFromRight));
             }
         }
@@ -402,7 +402,7 @@ export class PositionManager {
 
     private gameSize: Phaser.Geom.Point;
 
-    constructor(gameSize:Phaser.Geom.Point) {
+    constructor(gameSize: Phaser.Geom.Point) {
         this.gameSize = gameSize;
     }
 
@@ -423,5 +423,5 @@ export class PositionManager {
         return 0 + v;
     }
 
-  
+
 }

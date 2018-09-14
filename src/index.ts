@@ -39,7 +39,7 @@ if (ratio_w !== ratio_h) {
 
 let ratio = ratio_w;
 
-console.warn("SYS::Ratio Set", ratio);
+console.warn('SYS::Ratio Set', ratio);
 
 const config: GameConfig = {
   title: 'Game', // apart from this

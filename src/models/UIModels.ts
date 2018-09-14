@@ -9,7 +9,7 @@ export class Corners {
 export class UISettings {
     radius: number = 0;
     colors: ColorPalette;
-    
+
 }
 
 export class ColorPalette {

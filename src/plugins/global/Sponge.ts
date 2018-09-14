@@ -14,26 +14,26 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
         super(pluginManager);
         console.log('Sponge::constructor');
 
-        //we might need this in the boot / controller class.
-        this.data = pluginManager.get("_data") as GameData;
+        // we might need this in the boot / controller class.
+        this.data = pluginManager.get('_data') as GameData;
 
         // boot up out HTMLUtils plugin and make it accessible, this is used for popups, forms as well as other non canvas / webGL content.
         pluginManager.install('_html', HTMLUtils, true, '_html');
-        this.html = pluginManager.get("_html") as HTMLUtils;
+        this.html = pluginManager.get('_html') as HTMLUtils;
 
         // boot up out generic utilitty classes
         pluginManager.install('_utils', Utils, true, '_utls');
-        this.utils = pluginManager.get("_utils") as Utils;
+        this.utils = pluginManager.get('_utils') as Utils;
 
 
         // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
         pluginManager.install('_scale', ScaleManager, true, '_scale', { scale: this.game.config.zoom });
-        this.scale = pluginManager.get("_scale") as ScaleManager;
+        this.scale = pluginManager.get('_scale') as ScaleManager;
 
     }
 
     public boot() {
-        console.log("SPONGE::BOOT");
+        console.log('SPONGE::BOOT');
 
         /* ------------------------------------------------------
             lets boot up our global plugins that we use across scenes.

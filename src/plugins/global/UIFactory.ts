@@ -22,7 +22,7 @@ export default class UIFactory extends Phaser.Plugins.BasePlugin {
     init() {
         // this is always called by a plugin right?
         this._model = (this.pluginManager.get('_data') as GameData).getDataFor('userInterface');
-        
+
     }
 
 

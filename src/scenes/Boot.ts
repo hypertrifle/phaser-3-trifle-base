@@ -33,11 +33,11 @@ export default class Boot extends Phaser.Scene {
 
         console.log(this._data);
 
-        if(this._data.getDataFor("global.debugMode")){
-            console.warn("!!! GLOBAL DEBUG MODE IS ACTIVE !!!");
+        if (this._data.getDataFor('global.debugMode')) {
+            console.warn('!!! GLOBAL DEBUG MODE IS ACTIVE !!!');
             this.scene.add('debug', TestScene, true);
         }
-        
+
 
         // finallly add our on top / HUD layer.
         this.scene.add('HUD', HUDOverlay, true); // true as we always want that badboy running in the forground.
@@ -46,9 +46,9 @@ export default class Boot extends Phaser.Scene {
     private loadPlugins() {
         // first install out data controller, this is going to be both data models, and anything to do with content Tracking.
         this.sys.plugins.install('_data', GameData, true, '_data');
-        this._data = this.sys.plugins.get("_data") as GameData;
+        this._data = this.sys.plugins.get('_data') as GameData;
 
-        //we are going to load all our related sponge helpers in the sponge class now.
+        // we are going to load all our related sponge helpers in the sponge class now.
         this.sys.plugins.install('sponge', SpongeUtils, true, 'sponge');
     }
 
@@ -74,7 +74,7 @@ export default class Boot extends Phaser.Scene {
 
         }
 
-        //we are going to colapse any log messages here unitl we are fully booted.
+        // we are going to colapse any log messages here unitl we are fully booted.
         console.groupCollapsed('BOOT DATA');
         console.log('Boot::preload::start');
 
@@ -96,7 +96,7 @@ export default class Boot extends Phaser.Scene {
         });
 
         // load content.
-        this.load.json('content', 'assets/json/content.json'); //required
+        this.load.json('content', 'assets/json/content.json'); // required
 
         // settings.
         this.load.json('settings', 'assets/json/settings.json'); // required
@@ -129,23 +129,23 @@ export default class Boot extends Phaser.Scene {
 
 
 
-        //load our sponge plugins.
+        // load our sponge plugins.
         this.loadPlugins();
         console.log('Boot::Initilising all required states');
 
-        //load our states for this experience.
+        // load our states for this experience.
         this.loadStates();
         console.log('Boot::create::end');
 
-        //we are ending the console group here as any subsequent logs should be visible.
+        // we are ending the console group here as any subsequent logs should be visible.
         console.groupEnd();
 
 
 
-        this.scene.start("TitleScreen");
+        this.scene.start('TitleScreen');
 
-        
-        //TODO: Entry Point.
+
+        // TODO: Entry Point.
         // this.testSVG();
     }
 
