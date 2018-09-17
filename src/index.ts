@@ -2,7 +2,7 @@
  * @author       Hypertrifle <ricardo.searle@gmail.com>
  * @copyright    2018 Hypertrifle
  * @description  Phaser3 Boilerplate
- * @license      Hypertrifle
+ * @license      UNLICENCED
  */
 
 import 'phaser';
@@ -15,20 +15,20 @@ console.clear();
 
 // what the designer artboard was sized to
 const designDimensions = {
-  width: 300,
-  height: 100
+  width: 960,
+  height: 540
 };
 
 // what size we want to render the game at (note that we can still zoom the canvas),
 // but this is the dimensions that the textures are rendererd at.
 const renderDimensions = {
-  width: 600,
-  height: 200
+  width: 960,
+  height: 540
 };
 
 // work out some ratio stuff.
 let ratio_w =  designDimensions.width / renderDimensions.width;
-let ratio_h =  designDimensions.height / renderDimensions.height ;
+let ratio_h =  designDimensions.height / renderDimensions.height;
 
 // TODO: we should workout
 
@@ -37,19 +37,19 @@ if (ratio_w !== ratio_h) {
   console.warn('Design and render dimension have mismatching ratio, prioritising width ratio');
 }
 
-let ratio = ratio_w;
+let ratio = Math.min(ratio_w, ratio_h);
 
 console.warn('SYS::Ratio Set', ratio);
 
 const config: GameConfig = {
   title: 'Game', // apart from this
   version: '1.0',
-  width: renderDimensions.width,
-  height: renderDimensions.height,
+  width: designDimensions.width * (1/ratio),
+  height: designDimensions.height * (1/ratio),
   zoom: ratio,
   resolution: ratio,
   type: Phaser.WEBGL,
-  parent: 'phaser-content', // this div to be loaded into
+  parent: 'phaser-content', // this div to be loaded into - LEAVE AS IS!
   scene: Boot, // we are going to use boot as our main controller, we can add / control scenes from within there.
   // these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.
   callbacks: {
@@ -64,8 +64,7 @@ const config: GameConfig = {
   //   touch: false,
   //   gamepad: false
   // },
-  backgroundColor: '#aaaaaa',
-  // pixelArt: false,
+  backgroundColor: '#aaaaaa'
   // antialias: true
 };
 

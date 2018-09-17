@@ -330,10 +330,6 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
             console.warn('A PercentY was calculated of value 1, assuming 100%');
         }
 
-        console.log('calculatiing percent of', percent);
-        console.log('returning', (percent <= 1) ? this.game.config.height as number * percent : this.game.config.height as number * (percent / 100));
-
-
         return (percent <= 1) ? this.game.config.height as number * percent : this.game.config.height as number * (percent / 100);
     }
 

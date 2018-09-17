@@ -2,6 +2,7 @@ import SaveDataModel from './SaveModel';
 import  TitleScreenModel  from './TitleScreenModel';
 import UIModel from './UIModels';
 import TestSceneModel from './TestSceneModel';
+import DebugOverlayModel from './TestSceneModel';
 
 /**
  * Data Model - this holds all information that has been imported from the
@@ -12,20 +13,33 @@ import TestSceneModel from './TestSceneModel';
  * @class DataModel
  *
  */
+/* These are defined in src/models/*.ts and unless they are small settings objects its a good place to abstract them to... */
+
 export default class GameModel {
-
+    /**
+     * reference to our sae data model
+     *
+     * @type {SaveDataModel}
+     * @memberof GameModel
+     */
     save: SaveDataModel; // add we will add functionallity to the model class, we will include but we can always type some of the code we are expecting.
-    title_screen: TitleScreenModel;
-
-
-    /* These are defined in src/models/*.ts and unless they are small settings objects its a good place to abstract them to... */
     scaling: ScalingModel;
-    userInterface: UIModel;
-    testScreen: TestSceneModel;
-    global: GlobalModel;
-    icons: Array<string>;
-    fonts: Array<Phaser.GameObjects.Text.TextStyle>;
 
+    userInterface: UIModel;
+
+    debugOverlay: DebugOverlayModel;
+
+    global: GlobalModel;
+
+    icons: Array<string>;
+
+    fonts: Array<Phaser.GameObjects.Text.TextStyle>;
+    
+
+
+
+    //custom state models need to be added below here
+    title_screen: TitleScreenModel;
 }
 
 /* small so just whack it here */
@@ -33,8 +47,8 @@ export class ScalingModel {
     expandToParent: boolean = true;
     shouldForceOrientationOnMobile: boolean = true;
     shouldForceLandscaprOnMobile: boolean = true;
-    maxWidth: number = 99999999;
-    maxHeight: number = 999999999;
+    maxWidth: number = 1280;
+    maxHeight: number = 720;
 }
 
 /* small so just whack it here */
