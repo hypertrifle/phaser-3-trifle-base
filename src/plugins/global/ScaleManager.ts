@@ -26,7 +26,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @type {number}
      * @memberof ScaleManager
      */
-    public scale: number;
+    public scale: number = 1;
 
 
     public position: PositionManager;
@@ -49,7 +49,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @type {Element}
      * @memberof ScaleManager
      */
-    private gameContainer: Element;
+    private gameContainer: HTMLElement;
 
     /**
      * A reference to our DOM element that contains any non-phaser overlay elements.
@@ -58,7 +58,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
      * @type {Element}
      * @memberof ScaleManager
      */
-    private overlayContent: Element;
+    private overlayContent: HTMLElement;
 
 
     /**
@@ -69,6 +69,8 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     constructor(pluginManager: Phaser.Plugins.PluginManager) {
 
         super(pluginManager);
+
+        this.position = null;
 
     }
 
@@ -83,8 +85,9 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         console.log('ScaleManger::constructor', s);
 
         // our scalar (design size / render size ratio)
+        if (s.scale) { 
         this.scale = 1 / s.scale;
-
+    }
         this.boot();
 
     }
