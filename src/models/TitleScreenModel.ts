@@ -19,6 +19,15 @@ export class TitleScreenModel {
      * @memberof TitleScreenModel
      */
     body?: string;
+
+
+    /**
+     * background colour of this state.
+     *
+     * @type {number}
+     * @memberof TitleScreenModel
+     */
+    backgroundColor?: string;
 }
 
 export default TitleScreenModel;

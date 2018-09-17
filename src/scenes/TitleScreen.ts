@@ -48,12 +48,15 @@ export default class
         // grab our data for this model.
         this.sceneDataModel = this.sponge.data.getDataFor('titleScene') as TitleScreenModel; // cast
 
+
+
+
         // create a background layer for objects that exist in BG.
         this.backgroundLayer = new Phaser.GameObjects.Container(this);
 
         // create a sprite that we can apply our pipline to.
         let g: Phaser.GameObjects.Graphics = this.make.graphics({ x: 0, y: 0, add: false });
-        g.fillStyle(0x000000, 1);
+        g.fillStyle(parseInt(this.sceneDataModel.backgroundColor), 1);
         g.fillRect(0, 0, this.sponge.scale.percentX(100), this.sponge.scale.percentY(100));
         g.generateTexture('titlescreen_texture');
 
@@ -61,6 +64,9 @@ export default class
         // background.setPipeline("custom_background");
         background.x = 0;
         background.setOrigin(0, 0);
+
+
+        this.add.image(this.game.config.width as number / 2, this.game.config.height as number / 2, "test.svg");
 
     }
 

@@ -13,6 +13,10 @@
             "debugMode":true
       },
 
+      "titleScene": {
+            "backgroundColor": "0xff00aa"
+      },
+
       /*scaling options used for changing size etc*/
       "scaling": {
             "expandToParent": false,

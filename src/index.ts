@@ -23,8 +23,8 @@ enum PreformanceIndex {
 
 // what the designer artboard was sized to
 const designDimensions = {
-  width: 1280,
-  height: 720
+  width: 960,
+  height: 540
 };
 
 // what size we want to render the game at (note that we can still zoom the canvas),
@@ -45,15 +45,15 @@ if (ratio_w !== ratio_h) {
   console.warn('Design and render dimension have mismatching ratio, prioritising width ratio');
 }
 
-let ratio = Math.min(ratio_w, ratio_h);
+let ratio = 1/ Math.min(ratio_w, ratio_h);
 
 console.warn('SYS::Ratio Set', ratio);
 
 const config: GameConfig = {
   title: 'Game', // apart from this
   version: '1.0',
-  width: designDimensions.width * (1 / ratio),
-  height: designDimensions.height * (1 / ratio),
+  width: designDimensions.width * ratio,
+  height: designDimensions.height * ratio,
   zoom: ratio,
   resolution: ratio,
   type: Phaser.WEBGL,
