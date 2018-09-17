@@ -1,6 +1,6 @@
 import GameData from '../plugins/global/GameData';
 import HUDModel from '../models/HUDModel';
-import DebugOverlayModel from '../models/TestSceneModel';
+import DebugOverlayModel from '../models/DebugOverlayModel';
 
 export default class DebugOverlay extends Phaser.Scene {
 
