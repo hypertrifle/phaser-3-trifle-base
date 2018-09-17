@@ -16,6 +16,7 @@
     "exclude": [
         "node_modules",
         "**/*.spec.ts",
+        "phaser.d.ts",
         "scripts/*.*",
         "examples_and_snippets/*.*",
         "assets/*.*"
