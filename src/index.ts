@@ -10,6 +10,14 @@ import Boot from './scenes/Boot';
 
 console.clear();
 
+
+
+enum PreformanceIndex {
+  Low = 0,
+  Medium,
+  High
+}
+
 // main game configuration, maybe these should be moved to one of the callbacks.
 
 
@@ -77,20 +85,21 @@ window.onload = () => {
   // I'm hoping this is the section we can re-write to embed games into different techs.
 
   let containingDivID: string = 'somthingUnique';
-  let domContainer: Element = document.getElementById(containingDivID); // the #ID of the container we wish to put the game into.
+  let domContainer: HTMLElement|null = document.getElementById(containingDivID); // the #ID of the container we wish to put the game into.
 
   // create our content container.
-  let c: Element = document.createElement('div');
+  let c: HTMLElement = document.createElement('div');
   c.setAttribute('id', 'phaser-content'); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
 
   // create our overlay container.
-  let o: Element = document.createElement('div');
+  let o: HTMLElement = document.createElement('div');
   o.setAttribute('id', 'phaser-overlay'); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
 
   // append both to the domContainer that was defined above
-  domContainer.appendChild(c);
-  domContainer.appendChild(o);
-
+  if (domContainer) {
+    domContainer.appendChild(c);
+    domContainer.appendChild(o);
+  }
   // boot the game.
   let game: Phaser.Game = new Phaser.Game(config); // finally launch our game.
 };
