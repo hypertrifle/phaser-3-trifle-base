@@ -95,7 +95,6 @@ module.exports = {
         new CopyWebpackPlugin(   
             [ 
                 //standard assets, - this will be changed to Texture packer eventually
-                { from: 'assets/fonts', to: 'assets/fonts' },
                 { from: 'assets/svg', to: 'assets/svg' },
 
                 //our JSON files, we want to strip comments essentially and convert to stadard json files (avoid mime type issues.)
