@@ -1,6 +1,6 @@
-import TitleScreenModel from '../models/TitleScreenModel';
 import GameData from '../plugins/global/GameData';
 import Sponge from '../plugins/global/Sponge';
+import { TitleSceneModel } from '../models/TitleSceneModel';
 
 
 export default class
@@ -12,7 +12,7 @@ export default class
      * @type {TitleScreenModel}
      * @memberof TitleScreen
      */
-    sceneDataModel: TitleScreenModel;
+    sceneDataModel: TitleSceneModel;
 
     /**
      * reference to our spong tools.
@@ -25,9 +25,9 @@ export default class
 
     constructor() {
         super({
-            key: 'TitleScreen', active: true
+            key: 'TitleScene', active: true
         });
-        console.log('TitleSceeen::constructor');
+        console.log('TitleScene::constructor');
     }
 
     preload() {
@@ -46,7 +46,7 @@ export default class
 
     create() {
         // grab our data for this model.
-        this.sceneDataModel = this.sponge.data.getDataFor('titleScene') as TitleScreenModel; // cast
+        this.sceneDataModel = this.sponge.data.getDataFor('titleScene') as TitleSceneModel; // cast
 
 
 

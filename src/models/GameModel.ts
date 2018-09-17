@@ -1,8 +1,7 @@
 import SaveDataModel from './SaveModel';
-import  TitleScreenModel  from './TitleScreenModel';
+import { TitleSceneModel }  from './TitleSceneModel';
 import UIModel from './UIModels';
-import TestSceneModel from './TestSceneModel';
-import DebugOverlayModel from './TestSceneModel';
+import DebugOverlayModel from './DebugOverlayModel';
 
 /**
  * Data Model - this holds all information that has been imported from the
@@ -35,11 +34,8 @@ export default class GameModel {
 
     fonts: Array<Phaser.GameObjects.Text.TextStyle>;
 
-
-
-
     // custom state models need to be added below here
-    title_screen: TitleScreenModel;
+    titleScene: TitleSceneModel;
 }
 
 /* small so just whack it here */

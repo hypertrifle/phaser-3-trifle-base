@@ -2,21 +2,21 @@
  * Data that is used for the title screen.
  *
  * @export
- * @interface TitleScreenModel
+ * @interface TitleSceneModel
  */
-export class TitleScreenModel {
+export class TitleSceneModel {
     /**
      * this title to of the game
      *
      * @type {string}
-     * @memberof TitleScreenModel
+     * @memberof TitleSceneModel
      */
     title: string;
     /**
      * Optional body text to show on title screen.
      *
      * @type {string}
-     * @memberof TitleScreenModel
+     * @memberof TitleSceneModel
      */
     body?: string;
 
@@ -25,9 +25,9 @@ export class TitleScreenModel {
      * background colour of this state.
      *
      * @type {number}
-     * @memberof TitleScreenModel
+     * @memberof TitleSceneModel
      */
     backgroundColor?: string;
 }
 
-export default TitleScreenModel;
+export default TitleSceneModel;

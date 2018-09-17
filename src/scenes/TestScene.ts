@@ -1,4 +1,4 @@
-import TestSceneModel from '../models/TestSceneModel';
+import TestSceneModel from '../models/DebugOverlayModel';
 import GameData from '../plugins/global/GameData';
 import SpongeUtils from '../plugins/global/Sponge';
 

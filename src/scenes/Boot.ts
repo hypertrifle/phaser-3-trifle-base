@@ -1,4 +1,4 @@
-import TitleScreen from './TitleScreen';
+import TitleScene from './TitleScene';
 import GameData from '../plugins/global/GameData';
 import HTMLUtils from '../plugins/global/HTMLUtils';
 import HUDOverlay from './HUDOverlay';
@@ -30,7 +30,8 @@ export default class Boot extends Phaser.Scene {
         // it means better bundle size but requuires a re-compile on changing orders.
 
 
-        this.scene.add('TitleScreen', TitleScreen, false); // false is to stop it launching now we'll choose to launch it when we need.
+        this.scene.add('TitleScreen', TitleScene, false); // false is to stop it launching now we'll choose to launch it when we need.
+      
 
         console.log(this._data);
 
