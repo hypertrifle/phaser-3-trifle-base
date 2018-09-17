@@ -29,7 +29,7 @@
       },
       
       /* settings for our test / debug screen */
-      "testScene": {
+      "debugOverlay": {
             "showBrowserSpecificion": true,
             "showLinksToStates": true,
             "showScormDebugOptions": true,

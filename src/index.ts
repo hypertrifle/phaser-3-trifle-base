@@ -2,7 +2,7 @@
  * @author       Hypertrifle <ricardo.searle@gmail.com>
  * @copyright    2018 Hypertrifle
  * @description  Phaser3 Boilerplate
- * @license      Hypertrifle
+ * @license      UNLICENCED
  */
 
 import 'phaser';
@@ -10,25 +10,33 @@ import Boot from './scenes/Boot';
 
 console.clear();
 
+
+
+enum PreformanceIndex {
+  Low = 0,
+  Medium,
+  High
+}
+
 // main game configuration, maybe these should be moved to one of the callbacks.
 
 
 // what the designer artboard was sized to
 const designDimensions = {
-  width: 300,
-  height: 100
+  width: 960,
+  height: 540
 };
 
 // what size we want to render the game at (note that we can still zoom the canvas),
 // but this is the dimensions that the textures are rendererd at.
 const renderDimensions = {
-  width: 600,
-  height: 200
+  width: 960,
+  height: 540
 };
 
 // work out some ratio stuff.
 let ratio_w =  designDimensions.width / renderDimensions.width;
-let ratio_h =  designDimensions.height / renderDimensions.height ;
+let ratio_h =  designDimensions.height / renderDimensions.height;
 
 // TODO: we should workout
 
@@ -37,19 +45,19 @@ if (ratio_w !== ratio_h) {
   console.warn('Design and render dimension have mismatching ratio, prioritising width ratio');
 }
 
-let ratio = ratio_w;
+let ratio = Math.min(ratio_w, ratio_h);
 
 console.warn('SYS::Ratio Set', ratio);
 
 const config: GameConfig = {
   title: 'Game', // apart from this
   version: '1.0',
-  width: renderDimensions.width,
-  height: renderDimensions.height,
+  width: designDimensions.width * (1/ratio),
+  height: designDimensions.height * (1/ratio),
   zoom: ratio,
   resolution: ratio,
   type: Phaser.WEBGL,
-  parent: 'phaser-content', // this div to be loaded into
+  parent: 'phaser-content', // this div to be loaded into - LEAVE AS IS!
   scene: Boot, // we are going to use boot as our main controller, we can add / control scenes from within there.
   // these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.
   callbacks: {
@@ -64,8 +72,7 @@ const config: GameConfig = {
   //   touch: false,
   //   gamepad: false
   // },
-  backgroundColor: '#aaaaaa',
-  // pixelArt: false,
+  backgroundColor: '#aaaaaa'
   // antialias: true
 };
 
@@ -78,20 +85,21 @@ window.onload = () => {
   // I'm hoping this is the section we can re-write to embed games into different techs.
 
   let containingDivID: string = 'somthingUnique';
-  let domContainer: Element = document.getElementById(containingDivID); // the #ID of the container we wish to put the game into.
+  let domContainer: HTMLElement|null = document.getElementById(containingDivID); // the #ID of the container we wish to put the game into.
 
   // create our content container.
-  let c: Element = document.createElement('div');
+  let c: HTMLElement = document.createElement('div');
   c.setAttribute('id', 'phaser-content'); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
 
   // create our overlay container.
-  let o: Element = document.createElement('div');
+  let o: HTMLElement = document.createElement('div');
   o.setAttribute('id', 'phaser-overlay'); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
 
   // append both to the domContainer that was defined above
-  domContainer.appendChild(c);
-  domContainer.appendChild(o);
-
+  if (domContainer) {
+    domContainer.appendChild(c);
+    domContainer.appendChild(o);
+  }
   // boot the game.
   let game: Phaser.Game = new Phaser.Game(config); // finally launch our game.
 };

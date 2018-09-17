@@ -4,7 +4,7 @@
  * @export
  * @class TestSceneModel
  */
-export default class TestSceneModel {
+export default class DebugOverlayModel {
     /**
      * show broswer information
      *

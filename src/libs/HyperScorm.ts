@@ -34,7 +34,7 @@ export default class HyperScorm {
      * @type {ScormVersion}
      * @memberof HyperScorm
      */
-    public version: ScormVersion;
+    public version: ScormVersion = ScormVersion.NONE;
 
 
 
@@ -139,11 +139,11 @@ export default class HyperScorm {
      * @returns {InteractionObject} - an object of all the data saved with this interaction, everything should be as passed, apart from index which is supplied by the LMS
      * @memberof HyperScorm
      */
-    public trackInteraction(id: number, result: boolean, learner_response: string): InteractionObject {
+    public trackInteraction(id: number, result: boolean, learner_response: string): InteractionObject|undefined {
 
         if (!this.connected) {
             console.warn('interaction tracking disabled as not connected to scorm');
-            return;
+            return ;
         }
 
         // is interactions 2004 only?
@@ -237,6 +237,7 @@ export interface InteractionObject {
  * @enum {number}
  */
 enum ScormVersion {
+    NONE = 'none',
     ONE_POINT_TWO = '1.2',
     TWO_THOUSAND_AND_FOUR = '2004'
 }
@@ -288,7 +289,7 @@ enum SuccessStatus {
  */
 
 class Scorm {
-    version: string;
+    version: string = "none";
     handleExitMode: boolean = true;
     handleCompletionStatus: boolean = true;
     isDebugActive: boolean = true;
@@ -441,7 +442,11 @@ class Scorm {
         handleExitMode?: boolean; // Whether or not the wrapper should automatically handle the exit mode
         handleCompletionStatus?: boolean; // Whether or not the wrapper should automatically handle the initial completion status
     } = {}) {
-        this.version = config.version;
+
+        if (config.version) {
+            this.version = config.version as string;
+        }
+        
         this.handleExitMode = config.handleExitMode || true;
         this.handleCompletionStatus = config.handleCompletionStatus || true;
         this.isDebugActive = config.debug || true;

@@ -7,6 +7,7 @@ import ScaleManager from '../plugins/global/ScaleManager';
 import SpongeUtils from '../plugins/global/Sponge';
 import GameModel from '../models/GameModel';
 import TestScene from './TestScene';
+import DebugOverlay from './DebugOverlay';
 
 
 // this is sort of an bootstate, there probably is a more elegant way that this,
@@ -35,12 +36,13 @@ export default class Boot extends Phaser.Scene {
 
         if (this._data.getDataFor('global.debugMode')) {
             console.warn('!!! GLOBAL DEBUG MODE IS ACTIVE !!!');
-            this.scene.add('debug', TestScene, true);
+            this.scene.add('debug', DebugOverlay, true);
         }
 
 
         // finallly add our on top / HUD layer.
         this.scene.add('HUD', HUDOverlay, true); // true as we always want that badboy running in the forground.
+        
     }
 
     private loadPlugins() {
@@ -60,6 +62,11 @@ export default class Boot extends Phaser.Scene {
     }
 
     preload() {
+        
+        
+
+
+
         if (!this.game.device.browser.ie) {
             let args = [
                 '%c %c %c Sponge UK - Luigi 1.0.1 %c %c ',
