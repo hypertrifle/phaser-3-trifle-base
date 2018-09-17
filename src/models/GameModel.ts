@@ -34,11 +34,11 @@ export default class GameModel {
     icons: Array<string>;
 
     fonts: Array<Phaser.GameObjects.Text.TextStyle>;
-    
 
 
 
-    //custom state models need to be added below here
+
+    // custom state models need to be added below here
     title_screen: TitleScreenModel;
 }
 

@@ -42,7 +42,7 @@ export default class Boot extends Phaser.Scene {
 
         // finallly add our on top / HUD layer.
         this.scene.add('HUD', HUDOverlay, true); // true as we always want that badboy running in the forground.
-        
+
     }
 
     private loadPlugins() {
@@ -62,8 +62,8 @@ export default class Boot extends Phaser.Scene {
     }
 
     preload() {
-        
-        
+
+
 
 
 

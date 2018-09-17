@@ -289,7 +289,7 @@ enum SuccessStatus {
  */
 
 class Scorm {
-    version: string = "none";
+    version: string = 'none';
     handleExitMode: boolean = true;
     handleCompletionStatus: boolean = true;
     isDebugActive: boolean = true;
@@ -446,7 +446,7 @@ class Scorm {
         if (config.version) {
             this.version = config.version as string;
         }
-        
+
         this.handleExitMode = config.handleExitMode || true;
         this.handleCompletionStatus = config.handleCompletionStatus || true;
         this.isDebugActive = config.debug || true;

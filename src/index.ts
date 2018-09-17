@@ -23,8 +23,8 @@ enum PreformanceIndex {
 
 // what the designer artboard was sized to
 const designDimensions = {
-  width: 960,
-  height: 540
+  width: 1280,
+  height: 720
 };
 
 // what size we want to render the game at (note that we can still zoom the canvas),
@@ -52,8 +52,8 @@ console.warn('SYS::Ratio Set', ratio);
 const config: GameConfig = {
   title: 'Game', // apart from this
   version: '1.0',
-  width: designDimensions.width * (1/ratio),
-  height: designDimensions.height * (1/ratio),
+  width: designDimensions.width * (1 / ratio),
+  height: designDimensions.height * (1 / ratio),
   zoom: ratio,
   resolution: ratio,
   type: Phaser.WEBGL,
@@ -95,11 +95,13 @@ window.onload = () => {
   let o: HTMLElement = document.createElement('div');
   o.setAttribute('id', 'phaser-overlay'); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
 
+
   // append both to the domContainer that was defined above
-  if (domContainer) {
+  if (domContainer) { // domContainer could be null as getElementById can return null.
     domContainer.appendChild(c);
     domContainer.appendChild(o);
   }
+
   // boot the game.
   let game: Phaser.Game = new Phaser.Game(config); // finally launch our game.
 };

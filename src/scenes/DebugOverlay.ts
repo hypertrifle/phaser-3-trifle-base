@@ -29,21 +29,21 @@ export default class DebugOverlay extends Phaser.Scene {
 
     create() {
         this._model = (this.sys.plugins.get('_data') as GameData).getDataFor('debugOverlay', true); // true is a clone.
-        console.log("debug overlay model create", this._model);
+        console.log('debug overlay model create', this._model);
 
-        this.container = this.add.container(this.game.config.width as number / 2, this.game.config.height as number);   
+        this.container = this.add.container(this.game.config.width as number / 2, this.game.config.height as number);
 
         this.input.keyboard.createCombo('sponge', { maxKeyDelay: 1000 });
-        this.input.keyboard.on('keycombomatch', function (event:any) {
+        this.input.keyboard.on('keycombomatch', function (event: any) {
             this.show();
             console.log(event);
         }, this);
-        
-        console.log("DEBUG::CREATE", this);
+
+        console.log('DEBUG::CREATE', this);
 
     }
 
-    show(){
+    show() {
         this.showHideTween = this.tweens.add({
             targets: this.container,
             y: 0,
@@ -52,7 +52,7 @@ export default class DebugOverlay extends Phaser.Scene {
             onStart: this.unlockButtons
         });
     }
-    
+
 
     hide() {
         this.showHideTween = this.tweens.add({
@@ -65,18 +65,18 @@ export default class DebugOverlay extends Phaser.Scene {
     }
 
     unlockButtons() {
-        console.log("DEBUG::UNLOCKBUTTONS");
+        console.log('DEBUG::UNLOCKBUTTONS');
     }
 
     lockButtons() {
-        console.log("DEBUG::LOCKBUTTONS");
+        console.log('DEBUG::LOCKBUTTONS');
     }
 
 
 
     update() {
 
-    
+
 
 
     }

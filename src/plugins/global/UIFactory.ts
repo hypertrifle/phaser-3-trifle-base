@@ -26,67 +26,87 @@ export default class UIFactory extends Phaser.Plugins.BasePlugin {
     }
 
 
-    get canvas():Phaser.GameObjects.Graphics{
+    get canvas(): Phaser.GameObjects.Graphics {
         return this.scene.add.graphics();
     }
 
 
 
 
-    button(_conf: ButtonConfig): Phaser.GameObjects.Container {
+    // button(_conf: ButtonConfig): Phaser.GameObjects.Container {
 
 
-        let button = this.scene.add.container(_conf.x, _conf.y);
+    //     let button = this.scene.add.container(_conf.x, _conf.y);
 
-        //lets save the initial config options in the buttons dataManager
-        button.data.set("config", _conf);
-        
-
-
-        // lets add the shape
-        let bg:Phaser.GameObjects.Graphics = this.canvas;
-        CustomGraphicsTools.roundedRectangle(bg,0,0,_conf.width, _conf.height,_conf.radius);
-        
-        //add Events
-        button.on('pointerdown', function () {
-            //get the config.
-            let _conf:ButtonConfig = this.data.get("config") as ButtonConfig;
-
-            //if we have a colour down.
-            if(_conf.color_down){
-                this.tint = _conf.color_down;
-            }
-
-            //if we have a callback /event string
-            if(_conf.onDown){
-                if(typeof _conf.onDown === "string"){
-                    //event string
-                    this.scene.events.emit(_conf.onDown);
-                } else {
-                    //should expect it to be a function
-                    _conf.onDown.apply([]);
-                }
-            }
-
-        });
-        button.on('pointerup', function () {
-        
-        });
-        button.on('pointerover', function () {
-        
-        });
-        button.on('pointerout', function () {
-        
-        });
-        
+    //     //lets save the initial config options in the buttons dataManager
+    //     button.data.set("config", _conf);
 
 
 
+    //     // lets add the shape
+    //     let bg:Phaser.GameObjects.Graphics = this.canvas;
+    //     CustomGraphicsTools.roundedRectangle(bg,0,0,_conf.width, _conf.height,_conf.radius);
 
 
+    //     let states: Array<string> = ["up", "down", "over", "out"];
 
-        return button;
-    }
+    //     //for each state lets associate the events / colours tints required.
+    //     for (let i in states) {
+    //         let state = states[i];
+
+    //         button.on('pointer'+state, function () {
+    //             //get the config.
+    //             let _conf: ButtonConfig = this.data.get("config") as ButtonConfig;
+
+
+    //             let color: number | null = null;
+    //             let event: () => void | string = null;
+
+    //             switch (state) {
+    //                 case "up":
+    //                     color = _conf.color_up || null;
+    //                     event = _conf.onOut || null;
+    //                     break;
+    //                 case "down":
+    //                     color = _conf.color_down || null;
+    //                     event = _conf.onDown || null;
+
+    //                     break;
+    //                 case "over":
+    //                     color = _conf.color_over || null;
+    //                     event = _conf.onOver || null;
+
+    //                     break;
+    //                 case "out":
+    //                     color = _conf.color_up || null;
+    //                     event = _conf.onOut || null;
+    //                     break;
+    //             }
+
+
+    //             //if we have a colour down.
+    //             if (color) {
+    //                 this.tint = color;
+    //             }
+
+    //             //if we have a callback /event string
+    //             if (_conf.onDown) {
+    //                 if (typeof _conf.onDown === "string") {
+    //                     //event string
+    //                     this.scene.events.emit(_conf.onDown);
+    //                 } else {
+    //                     //should expect it to be a function
+    //                     _conf.onDown.apply([]);
+    //                 }
+    //             }
+
+    //         });
+
+
+    //     }
+
+    //     return button;
+    // }
 
 }
 
@@ -94,34 +114,34 @@ class ButtonConfig {
 
     x: number;
     y: number;
-    width:number;
-    height:number;
-    radius:number = 0;
+    width: number;
+    height: number;
+    radius: number = 0;
     color_up: number;
-    color_hover: number;
+    color_over: number;
     color_down: number;
     colour_disabled: number;
     opacity: number;
 
-    eventContext:any;
+    eventContext: any;
 
-    //callback can either be a function or event.
-    onUp?:() => void | string;
-    onDown?:() => void | string;
-    onOver?:() => void | string;
-    onOut?:() => void | string;
+    // callback can either be a function or event.
+    onUp?: () => void | string;
+    onDown?: () => void | string;
+    onOver?: () => void | string;
+    onOut?: () => void | string;
 
- 
+
 }
 
 
-export class CustomGraphicsTools{
+export class CustomGraphicsTools {
 
-    static roundedRectangle(canvas:Phaser.GameObjects.Graphics,x:number, y:number,width:number, height:number, radius:number, color?:number){
-        canvas.fillRoundedRect(x,y,width,height,radius);
+    static roundedRectangle(canvas: Phaser.GameObjects.Graphics, x: number, y: number, width: number, height: number, radius: number, color?: number) {
+        canvas.fillRoundedRect(x, y, width, height, radius);
     }
 
 
 
-    
+
 }

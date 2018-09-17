@@ -85,7 +85,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         console.log('ScaleManger::constructor', s);
 
         // our scalar (design size / render size ratio)
-        if (s.scale) { 
+        if (s.scale) {
         this.scale = 1 / s.scale;
     }
         this.boot();

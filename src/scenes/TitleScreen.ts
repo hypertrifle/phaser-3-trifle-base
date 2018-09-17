@@ -65,7 +65,7 @@ export default class
     }
 
 
-    update(time:number, delta:number) {
+    update(time: number, delta: number) {
         super.update(time, delta);
 
 
