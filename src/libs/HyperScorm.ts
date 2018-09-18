@@ -1,6 +1,6 @@
 /**
  * Can be used as a standalone library, due to the nature of scorm this is built as a singleton, and should be accessed via `HyperScorm.Instance`
- * A CLeaned up and more appealing Typescript port of the SCORM API wrapper
+ * A Cleaned up and more appealing Typescript port of the SCORM API wrapper
  * probably lots stolen from pipwerks : https://github.com/pipwerks/scorm-api-wrapper
  * @author hypertrifle - Rich Searle
  * @export
@@ -88,14 +88,14 @@ export default class HyperScorm {
      * @param {number} [scoreAsDecimal] an @optional decimal value of the score scaled bwtween 0 and 1, 0.5 => 50%
      * @memberof HyperScorm
      */
-    public complete(scoreAsDecimal?: number) {
+    public complete() {
         if (this.version === ScormVersion.ONE_POINT_TWO) {
 
-            this._scorm.set('', 'passed');
+            this.set('cmi.core.lesson_status', 'completed');
 
         } else if (this.version === ScormVersion.TWO_THOUSAND_AND_FOUR) {
 
-            this._scorm.set('', 'passed');
+            this.set('cmi.completion_status', 'completed');
 
 
         }
@@ -109,6 +109,21 @@ export default class HyperScorm {
      */
     public passed(scoreAsDecimal?: number) {
 
+        if(scoreAsDecimal){
+            this.setScore(scoreAsDecimal);
+        }
+
+        if (this.version === ScormVersion.ONE_POINT_TWO) {
+
+           (scoreAsDecimal)?  this.set('cmi.core.lesson_status', 'passed') : this.set('cmi.core.lesson_status', 'completed');
+
+        } else if (this.version === ScormVersion.TWO_THOUSAND_AND_FOUR) {
+
+            this.set('cmi.completion_status', 'failed');
+
+
+        }
+
     }
 
     /**
@@ -118,16 +133,54 @@ export default class HyperScorm {
      * @memberof HyperScorm
      */
     public failed(scoreAsDecimal?: number) {
+
+        if(scoreAsDecimal){
+            this.setScore(scoreAsDecimal);
+        }
+
         if (this.version === ScormVersion.ONE_POINT_TWO) {
 
-            this._scorm.set('', 'passed');
+            this.set('cmi.core.lesson_status', 'failed');
 
         } else if (this.version === ScormVersion.TWO_THOUSAND_AND_FOUR) {
 
-            this._scorm.set('', 'passed');
 
+            this.set('cmi.success_status', 'failed');
+            this.set('cmi.completion_status', 'completed');
+            
 
         }
+    }
+    
+     get suspendData():object {
+
+        let _s = this.get("cmi.suspend_data");
+
+        try{
+           (JSON.parse(_s));
+        } catch(e){
+            return {};
+        }
+
+        return JSON.parse(_s);
+     }
+     set suspendData(o:object) {
+
+        let _s = this.set("cmi.suspend_data", JSON.stringify(o));
+     }
+
+    setScore(scoreAsDecimal:number){
+        try{
+            
+            this.set("cmi.core.score.raw", scoreAsDecimal.toString());
+            this.set("cmi.core.score.max", "1");
+            this.set("cmi.core.score.min", "0");
+        } catch(e){ console.warn("error reporting cmi.core.score.raw");}
+
+        try{			
+            this.set("cmi.score.scaled", scoreAsDecimal.toString());
+        } catch(e){ console.warn("error reporting cmi.score.scaled");}
+
     }
 
     /**
@@ -152,7 +205,7 @@ export default class HyperScorm {
         // }
 
         // lets get the next avalible interaction
-        let index = parseInt(this._scorm.get('cmi.interactions._count'));
+        let index = parseInt(this.get('cmi.interactions._count'));
 
         if (typeof index !== 'number') {
             console.warn('cmi.interactions._count returned NaN so skipping this interaction tracking');
@@ -176,21 +229,21 @@ export default class HyperScorm {
         // standard stuffs.
         if (interaction.correct !== undefined) {
             // lets format this so it better suits an LMS
-            let formattedResult = (interaction.correct) ? 'correct' : 'wrong';
-            this._scorm.set('cmi.interactions.' + interaction.index + '.result', formattedResult);
+            let formattedResult = (interaction.correct) ? 'correct' : 'wrong'; //serriosly scorm why you choose these words.
+            this.set('cmi.interactions.' + interaction.index + '.result', formattedResult);
         }
 
         if (interaction.learner_response !== undefined) {
 
             // we are going to use fill in as this seems the best to store data.
-            this._scorm.set('cmi.interactions.' + interaction.index + '.type', 'fill-in');
+            this.set('cmi.interactions.' + interaction.index + '.type', 'fill-in');
 
-            this._scorm.set('cmi.interactions.' + interaction.index + '.student_response', encodeURI(interaction.learner_response).toString());
+            this.set('cmi.interactions.' + interaction.index + '.student_response', encodeURI(interaction.learner_response).toString());
             }
 
 
         if (interaction.id !== undefined) {
-            this._scorm.set('cmi.interactions.' + interaction.index + '.id', interaction.id);
+            this.set('cmi.interactions.' + interaction.index + '.id', interaction.id.toString());
 
         }
 
@@ -199,12 +252,14 @@ export default class HyperScorm {
     }
 
 
-    get(path: string) {
+    private get(path: string):string {
         return this._scorm.get(path);
     }
 
-    set(path: string, value: string) {
-        return this._scorm.set(path, value);
+    private set(path: string, value: string):string {
+        this._scorm.set(path, value);
+        this.save();
+        return value;
     }
 
     save(): boolean {
