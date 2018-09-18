@@ -151,7 +151,15 @@ export default class HyperScorm {
 
         }
     }
+
     
+    
+     /**
+      * get the suspend data, will be an object, but you probably will want to cast this to a typed mdoel
+      *
+      * @type {object}
+      * @memberof HyperScorm
+      */
      get suspendData():object {
 
         let _s = this.get("cmi.suspend_data");
@@ -164,11 +172,22 @@ export default class HyperScorm {
 
         return JSON.parse(_s);
      }
+     /**
+      * set the suspend data, must be an object, must be at least an object.
+      *
+      * @memberof HyperScorm
+      */
      set suspendData(o:object) {
 
         let _s = this.set("cmi.suspend_data", JSON.stringify(o));
      }
 
+    /**
+     * set the score of this SCO
+     *
+     * @param {number} scoreAsDecimal
+     * @memberof HyperScorm
+     */
     setScore(scoreAsDecimal:number){
         try{
             
