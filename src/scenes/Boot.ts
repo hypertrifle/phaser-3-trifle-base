@@ -31,7 +31,7 @@ export default class Boot extends Phaser.Scene {
 
 
         this.scene.add('TitleScreen', TitleScene, false); // false is to stop it launching now we'll choose to launch it when we need.
-      
+
 
         console.log(this._data);
 

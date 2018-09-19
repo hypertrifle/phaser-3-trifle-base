@@ -45,7 +45,7 @@ if (ratio_w !== ratio_h) {
   console.warn('Design and render dimension have mismatching ratio, prioritising width ratio');
 }
 
-let ratio = 1/ Math.min(ratio_w, ratio_h);
+let ratio = 1 / Math.min(ratio_w, ratio_h);
 
 console.warn('SYS::Ratio Set', ratio);
 

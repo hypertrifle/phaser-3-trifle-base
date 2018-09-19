@@ -108,13 +108,13 @@ export default class HyperScorm {
      */
     public passed(scoreAsDecimal?: number) {
 
-        if(scoreAsDecimal){
+        if (scoreAsDecimal) {
             this.setScore(scoreAsDecimal);
         }
 
         if (this.version === ScormVersion.ONE_POINT_TWO) {
 
-           (scoreAsDecimal)?  this.set('cmi.core.lesson_status', 'passed') : this.set('cmi.core.lesson_status', 'completed');
+           (scoreAsDecimal) ?  this.set('cmi.core.lesson_status', 'passed') : this.set('cmi.core.lesson_status', 'completed');
 
         } else if (this.version === ScormVersion.TWO_THOUSAND_AND_FOUR) {
 
@@ -133,7 +133,7 @@ export default class HyperScorm {
      */
     public failed(scoreAsDecimal?: number) {
 
-        if(scoreAsDecimal){
+        if (scoreAsDecimal) {
             this.setScore(scoreAsDecimal);
         }
 
@@ -146,22 +146,22 @@ export default class HyperScorm {
 
             this.set('cmi.success_status', 'failed');
             this.set('cmi.completion_status', 'completed');
-            
+
 
         }
     }
 
-    
-    
+
+
      /**
       * get the suspend data, will be an object, but you probably will want to cast this to a typed mdoel
       *
       * @type {object}
       * @memberof HyperScorm
       */
-     get suspendData():string {
+     get suspendData(): string {
 
-        let _s = this.get("cmi.suspend_data");
+        let _s = this.get('cmi.suspend_data');
 
         return JSON.parse(_s);
      }
@@ -170,9 +170,9 @@ export default class HyperScorm {
       *
       * @memberof HyperScorm
       */
-     set suspendData(o:string) {
+     set suspendData(o: string) {
 
-        let _s = this.set("cmi.suspend_data", o);
+        let _s = this.set('cmi.suspend_data', o);
      }
 
     /**
@@ -181,17 +181,17 @@ export default class HyperScorm {
      * @param {number} scoreAsDecimal
      * @memberof HyperScorm
      */
-    setScore(scoreAsDecimal:number){
-        try{
-            
-            this.set("cmi.core.score.raw", scoreAsDecimal.toString());
-            this.set("cmi.core.score.max", "1");
-            this.set("cmi.core.score.min", "0");
-        } catch(e){ console.warn("error reporting cmi.core.score.raw");}
+    setScore(scoreAsDecimal: number) {
+        try {
 
-        try{			
-            this.set("cmi.score.scaled", scoreAsDecimal.toString());
-        } catch(e){ console.warn("error reporting cmi.score.scaled");}
+            this.set('cmi.core.score.raw', scoreAsDecimal.toString());
+            this.set('cmi.core.score.max', '1');
+            this.set('cmi.core.score.min', '0');
+        } catch (e) { console.warn('error reporting cmi.core.score.raw'); }
+
+        try {
+            this.set('cmi.score.scaled', scoreAsDecimal.toString());
+        } catch (e) { console.warn('error reporting cmi.score.scaled'); }
 
     }
 
@@ -241,7 +241,7 @@ export default class HyperScorm {
         // standard stuffs.
         if (interaction.correct !== undefined) {
             // lets format this so it better suits an LMS
-            let formattedResult = (interaction.correct) ? 'correct' : 'wrong'; //serriosly scorm why you choose these words.
+            let formattedResult = (interaction.correct) ? 'correct' : 'wrong'; // serriosly scorm why you choose these words.
             this.set('cmi.interactions.' + interaction.index + '.result', formattedResult);
         }
 
@@ -264,11 +264,11 @@ export default class HyperScorm {
     }
 
 
-    private get(path: string):string {
+    private get(path: string): string {
         return this._scorm.get(path);
     }
 
-    private set(path: string, value: string):string {
+    private set(path: string, value: string): string {
         this._scorm.set(path, value);
         this.save();
         return value;

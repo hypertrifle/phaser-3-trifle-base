@@ -66,7 +66,7 @@ export default class
         background.setOrigin(0, 0);
 
 
-        this.add.image(this.game.config.width as number / 2, this.game.config.height as number / 2, "test.svg");
+        this.add.image(this.game.config.width as number / 2, this.game.config.height as number / 2, 'test.svg');
 
     }
 
