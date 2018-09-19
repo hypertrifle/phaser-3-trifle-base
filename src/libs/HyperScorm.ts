@@ -274,7 +274,7 @@ export default class HyperScorm {
         return value;
     }
 
-    save(): boolean {
+    private save(): boolean {
         return this._scorm.commit();
     }
 

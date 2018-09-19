@@ -237,23 +237,6 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         console.log('tracking enabled with: ', this.trackingMode);
     }
 
-    // private getScorm(modelPath: string): string {
-    //     let ret = this._scorm.get(modelPath);
-    //     this.saveScorm();
-    //     return ret;
-    // }
-
-    // private setScorm(modelPath: string, value: string) {
-    //     this._scorm.set(modelPath, value);
-    //     return this.saveScorm();
-
-    // }
-
-    private saveScorm() {
-        this.game.events.emit('systems.scorm.save', this.save);
-        return this._scorm.save();
-    }
-
 
     /**
      * loads persistent save data from current tracking system.
@@ -276,7 +259,6 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
             default:
                 break;
         }
-
 
         // convert to a Javascript Object and do any error checking required.
         let rawObj;
