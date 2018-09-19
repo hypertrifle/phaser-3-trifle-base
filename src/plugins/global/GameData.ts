@@ -237,17 +237,17 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         console.log('tracking enabled with: ', this.trackingMode);
     }
 
-    private getScorm(modelPath: string): string {
-        let ret = this._scorm.get(modelPath);
-        this.saveScorm();
-        return ret;
-    }
+    // private getScorm(modelPath: string): string {
+    //     let ret = this._scorm.get(modelPath);
+    //     this.saveScorm();
+    //     return ret;
+    // }
 
-    private setScorm(modelPath: string, value: string) {
-        this._scorm.set(modelPath, value);
-        return this.saveScorm();
+    // private setScorm(modelPath: string, value: string) {
+    //     this._scorm.set(modelPath, value);
+    //     return this.saveScorm();
 
-    }
+    // }
 
     private saveScorm() {
         this.game.events.emit('systems.scorm.save', this.save);
@@ -272,7 +272,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
                 raw = localStorage.getItem(this.save.identifier);
                 break;
             case TrackingMode.Scorm:
-                raw = this.getScorm('cmi.suspend_data');
+                raw = this._scorm.suspendData;
             default:
                 break;
         }
@@ -311,7 +311,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
             case TrackingMode.Scorm:
                 // set the scorm suspend_data Item
-                let raw = this.setScorm('cmi.suspend_data', serilized );
+                let raw = this._scorm.suspendData = serilized;
                 break;
 
             default:

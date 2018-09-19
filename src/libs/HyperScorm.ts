@@ -27,7 +27,6 @@ export default class HyperScorm {
     private _scorm: Scorm;
 
 
-
     /**
      * the version of scorm we are connected to, either 1.2 or 2004
      *
@@ -160,15 +159,9 @@ export default class HyperScorm {
       * @type {object}
       * @memberof HyperScorm
       */
-     get suspendData():object {
+     get suspendData():string {
 
         let _s = this.get("cmi.suspend_data");
-
-        try{
-           (JSON.parse(_s));
-        } catch(e){
-            return {};
-        }
 
         return JSON.parse(_s);
      }
@@ -177,9 +170,9 @@ export default class HyperScorm {
       *
       * @memberof HyperScorm
       */
-     set suspendData(o:object) {
+     set suspendData(o:string) {
 
-        let _s = this.set("cmi.suspend_data", JSON.stringify(o));
+        let _s = this.set("cmi.suspend_data", o);
      }
 
     /**
