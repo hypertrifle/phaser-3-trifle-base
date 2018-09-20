@@ -138,7 +138,7 @@ export default class Boot extends Phaser.Scene {
         // we now have an SVGScale
         this.load.svg({
             key: 'atlas.svg',
-            url: 'assets/atlas/atlas-4287d92b.svg',
+            url: 'assets/atlas/atlas-50cfe01f.svg',
             svgConfig: {scale: this.game.config.zoom}
         });
 

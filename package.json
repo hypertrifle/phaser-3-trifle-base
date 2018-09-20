@@ -6,7 +6,7 @@
   "scripts": {
     "help": "node scripts/help.js",
     "build": "webpack",
-    "dev": "npm run build && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/build/",
+    "dev": "npm run build && webpack-dev-server --host 0.0.0.0 -d --port=8081 --open-page webpack-dev-server/build/",
     "docs": "typedoc --includeDeclarations --includes ./phaser.d.ts --ignoreCompilerErrors --excludeExternals --out ./docs/ ./src/ && http-server docs -c-1 -o",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "export-assets": "estoolkit.exe -run ./scripts/make_assets_illustrator.jsx",
