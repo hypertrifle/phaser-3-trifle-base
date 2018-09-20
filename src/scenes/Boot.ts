@@ -8,16 +8,16 @@ import SpongeUtils from '../plugins/global/Sponge';
 import GameModel from '../models/GameModel';
 import TestScene from './TestScene';
 import DebugOverlay from './DebugOverlay';
+import Sponge from '../plugins/global/Sponge';
 
 
 // this is sort of an bootstate, there probably is a more elegant way that this,
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
 export default class Boot extends Phaser.Scene {
 
-    private svg: Phaser.GameObjects.Image;
-    private svgScalar: Phaser.Loader.FileTypes.SVGSizeConfig;
     private _data: GameData;
 
+    testsprites: Phaser.GameObjects.Sprite[];
 
     /**
      * because of importing and typescripts, heres where we will manually add states,
@@ -46,6 +46,12 @@ export default class Boot extends Phaser.Scene {
 
     }
 
+    /**
+     * load our global plugins, these extend Phaser global functionallity with plugins like Scorm / data and Html helpers.
+     *
+     * @private
+     * @memberof Boot
+     */
     private loadPlugins() {
         // first install out data controller, this is going to be both data models, and anything to do with content Tracking.
         this.sys.plugins.install('_data', GameData, true, '_data');
@@ -55,18 +61,28 @@ export default class Boot extends Phaser.Scene {
         this.sys.plugins.install('sponge', SpongeUtils, true, 'sponge');
     }
 
+    /**
+     *
+     * Creates an instance of Boot state.
+     * imagine this as a persitent scene which handles the setup / switching and close of states.
+     *
+     * @memberof Boot
+     */
     constructor() {
         // active true means the state always runs. from experience with Phaser2CE, best to keep this contructor free and used pleload / boot and creat for custom fucntionallity/.
         super(
-            { key: 'Boot', active: true }
+            { key: 'Boot', active: true } // we are always going to be active.
         );
+
+        this.testsprites = [];
     }
 
+    /**
+     * preload anything required for the experience.
+     *
+     * @memberof Boot
+     */
     preload() {
-
-
-
-
 
         if (!this.game.device.browser.ie) {
             let args = [
@@ -109,8 +125,7 @@ export default class Boot extends Phaser.Scene {
         // settings.
         this.load.json('settings', 'assets/json/settings.json'); // required
 
-        // image files //TODO: how are we to load image assets. (Maybe perstate from now on?)
-        // this.load.image("avatar.png", "assets/img/avatar.png");
+        this.load.json('atlas.json', 'assets/atlas/atlas.json'); // our SVG atlas
 
 
 
@@ -122,20 +137,63 @@ export default class Boot extends Phaser.Scene {
 
         // we now have an SVGScale
         this.load.svg({
-            key: 'test.svg',
-            url: 'assets/svg/test.svg',
+            key: 'atlas.svg',
+            url: 'assets/atlas/atlas-4287d92b.svg',
             svgConfig: {scale: this.game.config.zoom}
         });
+
 
         console.log('Boot::preload::end');  // and our scale manager
 
 
     }
 
+
+
+    /**
+     * Formates a JSON atlas frame data object to the new render resolution size.
+     * Edits in place.
+     *
+     * @param {*} atlasModel
+     * @memberof Boot
+     */
+    transFormAtlasDataToScale(atlasModel: any) {
+
+
+        for (let i in atlasModel.frames) {
+            let frame = atlasModel.frames[i];
+
+            // alter all frame properties
+            for (let prop in frame.frame) {
+                frame.frame[prop] *= this.game.config.zoom;
+            }
+
+            // alter all frame properties
+            for (let prop in frame.spriteSourceSize) {
+                frame.spriteSourceSize[prop] *= this.game.config.zoom;
+            }
+
+            // alter all frame properties
+            for (let prop in frame.sourceSize) {
+                frame.sourceSize[prop] *= this.game.config.zoom;
+            }
+
+
+        }
+    }
+
     create() {
         console.log('Boot::create::start');
 
 
+        // lets generate this atlas.
+        let svgAtlasTexture = this.textures.get('atlas.svg');
+        let svgAtlasData = this.game.cache.json.get('atlas.json');
+
+        this.transFormAtlasDataToScale(svgAtlasData);
+
+        // @ts-ignore
+        Phaser.Textures.Parsers.JSONArray(svgAtlasTexture, 0, svgAtlasData);
 
         // load our sponge plugins.
         this.loadPlugins();
@@ -150,15 +208,30 @@ export default class Boot extends Phaser.Scene {
 
 
 
-        this.scene.start('TitleScreen');
+        this.scene.resume('TitleScreen');
 
 
         // TODO: Entry Point.
-        // this.testSVG();
+        this.testSVG();
     }
 
+    /**
+     * called every frame of the game, remember that this state is
+     * ALLWAYS actice and running this loop.
+     *
+     * @param {number} t
+     * @param {number} dt
+     * @memberof Boot
+     */
     update(t: number, dt: number) {
+
+        // console.log(dt);
         // this is run every frame, regardless of loaded scene.
+
+        // for (let i in this.testsprites) {
+        //     this.testsprites[i].x += 10*(dt/1000);
+        //     this.testsprites[i].y += 10*(dt/1000);
+        // }
 
     }
 
@@ -166,7 +239,15 @@ export default class Boot extends Phaser.Scene {
         console.log('testing svg featureset');
 
         // so can we resize SVGs and generate games at differnet resolutions dependand on device?
-        this.svg = this.add.image(this.cameras.main.width / 2, this.cameras.main.height / 2, 'test.svg');
+        let one: Phaser.GameObjects.Sprite = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'atlas.svg', 'spaceman');
+
+
+        let two: Phaser.GameObjects.Sprite = this.add.sprite(this.cameras.main.width / 4, this.cameras.main.height / 4, 'atlas.svg', 'asteroid2');
+
+        let three: Phaser.GameObjects.Sprite = this.add.sprite((this.cameras.main.width / 4) * 3, (this.cameras.main.height / 4) * 3, 'atlas.svg', 'asteroid1');
+
+
+        this.testsprites.push(one, two, three);
         // this.svg.setScale((1/this.game.config.zoom));
     }
 

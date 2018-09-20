@@ -1,0 +1,42 @@
+{
+    "frames": [
+{{#hasCommon}}
+
+{{/hasCommon}}{{#shapes}}
+{{#dimensions.extra}}
+
+{{#selector.dimensions}}{{^last}},
+{{/last}}{{/selector.dimensions}}
+{
+"filename": "{{{base}}}",
+"frame": {
+"x": {{#invert}}{{position.absolute.x}}{{/invert}},
+"y": {{#invert}}{{position.absolute.y}}{{/invert}},
+"w": {{width.outer}},
+"h": {{height.outer}}
+},
+"rotated": false,
+"trimmed": false,
+"spriteSourceSize": {
+"x": 0,
+"y": 0,
+"w": {{width.outer}},
+"h": {{height.outer}}
+},
+"sourceSize": {
+"w": {{width.outer}},
+"h": {{height.outer}}
+},
+"pivot": {
+"x": 0.5,
+"y": 0.5
+}
+}{{^last}},
+{{/last}}
+{{/dimensions.extra}}
+
+{{/shapes}}
+
+
+]
+}

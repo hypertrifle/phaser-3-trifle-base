@@ -11,7 +11,7 @@ json.schema
 
 # Vendors
 node_modules/
-
+assets/atlas
 # Build
 docs/
 build/

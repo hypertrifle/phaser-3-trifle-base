@@ -55,7 +55,7 @@ const config: GameConfig = {
   width: designDimensions.width * ratio,
   height: designDimensions.height * ratio,
   zoom: ratio,
-  resolution: ratio,
+  resolution: 1 / ratio,
   type: Phaser.WEBGL,
   parent: 'phaser-content', // this div to be loaded into - LEAVE AS IS!
   scene: Boot, // we are going to use boot as our main controller, we can add / control scenes from within there.

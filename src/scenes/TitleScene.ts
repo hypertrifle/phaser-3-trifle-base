@@ -25,7 +25,7 @@ export default class
 
     constructor() {
         super({
-            key: 'TitleScene', active: true
+            key: 'TitleScene', active: false
         });
         console.log('TitleScene::constructor');
     }
@@ -33,7 +33,6 @@ export default class
     preload() {
         console.log('titleScene::preload');
         // grab our utils
-        this.sponge = this.sys.plugins.get('sponge') as Sponge; // cas
     }
 
     /**
@@ -46,6 +45,9 @@ export default class
 
     create() {
         // grab our data for this model.
+        this.sponge = this.sys.plugins.get('sponge') as Sponge; // cas
+
+        console.log(this.sponge);
         this.sceneDataModel = this.sponge.data.getDataFor('titleScene') as TitleSceneModel; // cast
 
 
