@@ -22,6 +22,11 @@
     "type": "git",
     "url": "git@git.spongeuk.com:sponge/boilerplates/sponge-phaser-3.0-luigi.git"
   },
+    "config": {
+      "ghooks": {
+        "pre-commit": "npm run pre-commit"
+      }
+    },
   "author": "Rich Searle - Hypertrifle.com",
   "license": "UNLICENCED",
   "private": true,
