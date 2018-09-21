@@ -1,3 +1,1 @@
-export class DataUtls {
-
-}
+export class DataUtls {}

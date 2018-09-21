@@ -1,11 +1,9 @@
 export default class Avatar extends Phaser.GameObjects.Sprite {
-
-    constructor(scene: Phaser.Scene, x: integer, y: integer) {
+  constructor(scene: Phaser.Scene, x: integer, y: integer) {
     // super the image class. (our inheritance)
-    super(scene, x, y , 'Avatar');
+    super(scene, x, y, "Avatar");
 
-
-    this.setTexture('avatar');
+    this.setTexture("avatar");
     this.setPosition(x, y);
     this.setOrigin(0);
 
@@ -13,15 +11,11 @@ export default class Avatar extends Phaser.GameObjects.Sprite {
 
     // finally add this game object to our scenes world
     // scene.children.add(this);
-   }
+  }
 
-   update(): void {
+  update(): void {}
 
-
-   }
-
-   destroy(): void {
-        super.destroy();
-   }
-
+  destroy(): void {
+    super.destroy();
+  }
 }
