@@ -5,8 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "help": "node scripts/help.js",
-    "build": "webpack",
-    "dev": "npm run build && webpack-dev-server --host 0.0.0.0 -d --port=8081 --open-page webpack-dev-server/build/",
+    "build": "webpack -p",
+    "dev": "webpack && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/build/",
     "docs": "typedoc --includeDeclarations --includes ./phaser.d.ts --ignoreCompilerErrors --excludeExternals --out ./docs/ ./src/ && http-server docs -c-1 -o",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "export-assets": "estoolkit.exe -run ./scripts/make_assets_illustrator.jsx",
@@ -15,7 +15,8 @@
     "new-asset": "node scripts/make_asset.js",
     "lint": "tslint -- src/**/*.ts",
     "fixlint": "tslint --fix src/**/*.ts",
-    "generate-schema": "typescript-json-schema src/models/**/*.ts * --titles --aliasRefs --ignoreErrors -o json.schema"
+    "generate-schema": "typescript-json-schema src/models/**/*.ts * --titles --aliasRefs --ignoreErrors -o json.schema",
+    "pre-commit": "npm run fixlint && prettier src"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "jshint": "^2.9.5",
     "jshint-loader": "^0.8.4",
     "npm-scripts-help": "^0.8.0",
+    "prettier": "1.14.3",
     "raw-loader": "^0.5.1",
     "readline-sync": "^1.4.9",
     "svg-sprite": "^1.5.0",
