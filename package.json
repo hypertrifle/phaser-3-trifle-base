@@ -22,15 +22,16 @@
     "type": "git",
     "url": "git@git.spongeuk.com:sponge/boilerplates/sponge-phaser-3.0-luigi.git"
   },
-    "config": {
-      "ghooks": {
-        "pre-commit": "npm run pre-commit"
-      }
-    },
+  "config": {
+    "ghooks": {
+      "pre-commit": "npm run pre-commit"
+    }
+  },
   "author": "Rich Searle - Hypertrifle.com",
   "license": "UNLICENCED",
   "private": true,
   "devDependencies": {
+    "@types/dat.gui": "^0.7.2",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "copy-webpack-plugin": "^4.5.2",
@@ -51,6 +52,7 @@
   },
   "dependencies": {
     "babel-loader": "^7.1.4",
+    "dat.gui": "^0.7.2",
     "http-server": "^0.11.1",
     "path-override-webpack-plugin": "^0.1.2",
     "phaser": "^3.12.0",
