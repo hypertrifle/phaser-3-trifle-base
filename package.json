@@ -16,16 +16,14 @@
     "lint": "tslint -- src/**/*.ts",
     "fixlint": "tslint --fix src/**/*.ts",
     "generate-schema": "typescript-json-schema src/models/**/*.ts * --titles --aliasRefs --ignoreErrors -o json.schema",
-    "pre-commit": "npm run fixlint && prettier --write src/**/*.*"
+    "format": "npm run fixlint && prettier --write src/**/*.*"
   },
   "repository": {
     "type": "git",
     "url": "git@git.spongeuk.com:sponge/boilerplates/sponge-phaser-3.0-luigi.git"
   },
   "config": {
-    "ghooks": {
-      "pre-commit": "npm run pre-commit"
-    }
+
   },
   "author": "Rich Searle - Hypertrifle.com",
   "license": "UNLICENCED",
