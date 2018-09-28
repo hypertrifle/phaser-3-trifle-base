@@ -2,7 +2,7 @@ import GameData from "./GameData";
 import HTMLUtils from "./HTMLUtils";
 import ScaleManager from "./ScaleManager";
 import Utils from "../utils/Utils";
-import * as dat from 'dat.gui';
+import * as dat from "dat.gui";
 
 export default class Sponge extends Phaser.Plugins.BasePlugin {
   /**
@@ -34,13 +34,10 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
     });
     this.scale = pluginManager.get("_scale") as ScaleManager;
 
-
     if (this.data.getDataFor("global.debugMode")) {
       this.debugGUI = new dat.GUI();
       this.debugGUI.add(this, "restart_scene");
-    } 
-
-
+    }
   }
 
   /**
@@ -51,7 +48,6 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
   public restart_scene() {
     console.log("restart scene");
     // this.game.scene
-    
   }
 
   public boot() {
@@ -63,7 +59,6 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
             on a lot of the settings from json files which are now availible.
             ------------------------------------------------------ */
   }
-
 
   public game: Phaser.Game;
 
@@ -97,7 +92,6 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
    * @memberof Sponge
    */
   public utils: Utils;
-  
 
   /**
    * a reference to dat.GUI - TODO: conditional inclusion only on debug mode.
