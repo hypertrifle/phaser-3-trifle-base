@@ -11,7 +11,7 @@
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "export-assets": "estoolkit.exe -run ./scripts/make_assets_illustrator.jsx",
     "generate-atlas": "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
-    "generate-svg-atlas": "svg-sprite --view --view-render-css --view-render-css-template ./supporting/atlas-template.json.hbs --view-render-css-dest atlas.json --view-dest ./assets/atlas --view-sprite atlas.svg assets/svg/*.svg && MOVE .\\assets\\atlas\\atlas.json.css .\\assets\\atlas\\atlas.json",
+    "generate-svg-atlas": "svg-sprite  --shape-spacing-padding 2,2,2,2 --view --view-render-css --view-render-css-template ./supporting/atlas-template.json.hbs --view-render-css-dest atlas.json --view-dest ./assets/atlas --view-sprite atlas.svg assets/svg/*.svg && MOVE .\\assets\\atlas\\atlas.json.css .\\assets\\atlas\\atlas.json",
     "new-asset": "node scripts/make_asset.js",
     "lint": "tslint -- src/**/*.ts",
     "fixlint": "tslint --fix src/**/*.ts",
