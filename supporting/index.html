@@ -6,7 +6,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
         crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+
     <style>
         /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -38,8 +39,15 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+html {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 body {
 	line-height: 1;
+    background-color: #000;
 }
 ol, ul {
 	list-style: none;
@@ -59,20 +67,14 @@ table {
 * {
 	font-family: inherit;
 }
-        @font-face {
-            font-family: 'fontawesome';
-            src: url('../assets/fonts/fontawesome-webfont.eot');
-            src: url('../assets/fonts/fontawesome-webfont?#iefix') format('embedded-opentype'),
-            url('../assets/fonts/fontawesome-webfont.woff2') format('woff2'),
-            url('../assets/fonts/fontawesome-webfont.woff') format('woff'),
-            url('../assets/fonts/fontawesome-webfont.ttf') format('truetype'),
-            url('../assets/fonts/fontawesome-webfont.svg#fontawesome-webfont') format('svg');
-            font-weight: normal;
-            font-style: normal;
-        }
+
+/* @font-face {
+    font-family: 'rift';
+    src: url('./assets/fonts/rift-demi-webfont.otf') format("opentype");
+} */
 
 body {
-  font-family: "fontawesome", sans-serif !important; /* preload fonts */
+  font-family: "rift", sans-serif !important; /* preload fonts */
   font-weight: bold;
   font-weight: normal;
 }

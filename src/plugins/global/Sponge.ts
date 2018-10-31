@@ -3,6 +3,9 @@ import HTMLUtils from "./HTMLUtils";
 import ScaleManager from "./ScaleManager";
 import Utils from "../utils/Utils";
 import * as dat from "dat.gui";
+import Boot from "../../scenes/Boot";
+import { GameObjects } from "phaser";
+
 
 export default class Sponge extends Phaser.Plugins.BasePlugin {
   /**
@@ -36,29 +39,29 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
 
     if (this.data.getDataFor("global.debugMode")) {
       this.debugGUI = new dat.GUI();
-      this.debugGUI.add(this, "restart_scene");
+
+      // global debug stuff?
+
+      // let global:dat.GUI = this.debugGUI.addFolder("Global");
+      // let nav:dat.GUI = global.addFolder("Navigation");
+      // this.debugGUI.add(this, "titleScene");
+
+      console.log(this.game.scene);
     }
   }
 
-  /**
-   * placeholder for some common debug options (restarting scene etc.)
-   *
-   * @memberof Sponge
-   */
-  public restart_scene() {
-    console.log("restart scene");
-    // this.game.scene
+  public postBoot(bootState: Boot) {
+    this._boot = bootState;
+    // this is called when all states and systems are loaded.
+
   }
 
-  public boot() {
-    console.log("SPONGE::BOOT");
-
-    /* ------------------------------------------------------
-            lets boot up our global plugins that we use across scenes.
-            We are going to do this in the create state as we daependant
-            on a lot of the settings from json files which are now availible.
-            ------------------------------------------------------ */
-  }
+  private _hightlightOriginalParent: Phaser.GameObjects.Container;
+  private _hightlightBlackout: Phaser.GameObjects.Graphics;
+  private _highlightContainer: Phaser.GameObjects.Container;
+  private _highlightItem: Phaser.GameObjects.GameObject;
+  private _highlightScene: Phaser.Scene;
+  private _highlightTTText: Phaser.GameObjects.Text;
 
   public game: Phaser.Game;
 
@@ -101,5 +104,9 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
    */
   public debugGUI: dat.GUI | null = null;
 
+  // private stats: Stat;
+
   public test: boolean = false;
+
+  private _boot: Boot;
 }

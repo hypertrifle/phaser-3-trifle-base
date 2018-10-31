@@ -20,15 +20,15 @@ enum PreformanceIndex {
 
 // what the designer artboard was sized to
 const designDimensions = {
-  width: 960,
-  height: 540
+  width: 1280,
+  height: 720
 };
 
 // what size we want to render the game at (note that we can still zoom the canvas),
 // but this is the dimensions that the textures are rendererd at.
 const renderDimensions = {
-  width: 960,
-  height: 540
+  width: 1280,
+  height: 720
 };
 
 // work out some ratio stuff.
@@ -47,7 +47,7 @@ let ratio = 1 / Math.min(ratio_w, ratio_h);
 
 console.warn("SYS::Ratio Set", ratio);
 
-const config: GameConfig = {
+const config: any = {
   title: "Game", // apart from this
   version: "1.0",
   width: designDimensions.width * ratio,
@@ -69,8 +69,10 @@ const config: GameConfig = {
   //   touch: false,
   //   gamepad: false
   // },
-  backgroundColor: "#aaaaaa"
-  // antialias: true
+  backgroundColor: "#aaaaaa",
+  pixelArt: false,
+  roundPixels: false
+
 };
 
 // when the page is loaded, create our game instance (entry point, this is what will change per tech)
@@ -101,5 +103,6 @@ window.onload = () => {
   }
 
   // boot the game.
-  let game: Phaser.Game = new Phaser.Game(config); // finally launch our game.
+  // @ts-ignore
+  let game = new Phaser.Game(config); // finally launch our game.
 };

@@ -1,0 +1,9 @@
+{
+    "name": "Spymaster - v0.0.1ALPHA",
+    "short_name": "Spymaster",
+    "start_url": ".",
+    "display": "fullscreen",
+    "background_color": "#000",
+    "description": "Agent Handler Extrordinaire"
+
+  }

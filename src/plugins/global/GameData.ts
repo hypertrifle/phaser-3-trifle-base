@@ -40,7 +40,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
    * @type {TrackingMode}
    * @memberof GameData
    */
-  private trackingMode: TrackingMode = TrackingMode.Off;
+  private trackingMode: TrackingMode = TrackingMode.OfflineStoage;
 
   /**
    * @constructor Creates an instance of GameData plugin (that handles any extra data based functionallity).
@@ -190,6 +190,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     this.raw.save = newSave;
 
     // make it persistent if required.
+    console.log("SAVE", newSave);
     this.persistantStorageSave();
   }
 
@@ -265,7 +266,13 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     }
 
     // finally assign to our global save.
-    this.save = rawObj;
+    console.log("Loading from persistent storage: ", rawObj);
+
+    if (rawObj !== null) {
+      this.save = rawObj;
+
+    }
+
   }
 
   /**

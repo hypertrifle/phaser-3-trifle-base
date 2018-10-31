@@ -2,6 +2,8 @@
    "compilerOptions": {
      "outDir": "./build/",
      "noImplicitAny": true,
+     "experimentalDecorators":true,
+    "emitDecoratorMetadata": true,
      "strict": false,
      "module": "commonjs",
      "target": "es5",
@@ -9,7 +11,7 @@
      "lib": ["es5", "es6", "dom"]
    },
    "files": [
-		"./phaser.d.ts"
+        "./phaser.d.ts"
   ],
   "include": [
         "src/**/*"

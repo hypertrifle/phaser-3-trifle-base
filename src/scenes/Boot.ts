@@ -1,18 +1,16 @@
 import TitleScene from "./TitleScene";
 import GameData from "../plugins/global/GameData";
-import HTMLUtils from "../plugins/global/HTMLUtils";
 import HUDOverlay from "./HUDOverlay";
-import Utils from "../plugins/utils/Utils";
-import ScaleManager from "../plugins/global/ScaleManager";
 import SpongeUtils from "../plugins/global/Sponge";
-import GameModel from "../models/GameModel";
-import TestScene from "./TestScene";
 import DebugOverlay from "./DebugOverlay";
 import Sponge from "../plugins/global/Sponge";
+import BaseScene from "./BaseScene";
 
-// this is sort of an bootstate, there probably is a more elegant way that this,
+// const atlas = require("svg-inline-loader?../../assets/svg/gameplay/gameplay-tile-door.svg") as string;
+
+// this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
-export default class Boot extends Phaser.Scene {
+export default class Boot extends BaseScene {
   private _data: GameData;
 
   testsprites: Phaser.GameObjects.Sprite[];
@@ -24,10 +22,13 @@ export default class Boot extends Phaser.Scene {
    * @memberof Boot
    */
   private loadStates() {
+    console.groupCollapsed("STATES");
+    console.log("Boot::Initilising all required states");
+
     // add all our scenes, we are going to have to do this pragmatically now with webpack and ts,
     // it means better bundle size but requuires a re-compile on changing orders.
 
-    this.scene.add("TitleScreen", TitleScene, false); // false is to stop it launching now we'll choose to launch it when we need.
+    this.scene.add("TitleScene", TitleScene, false);
 
     console.log(this._data);
 
@@ -38,6 +39,9 @@ export default class Boot extends Phaser.Scene {
 
     // finallly add our on top / HUD layer.
     this.scene.add("HUD", HUDOverlay, true); // true as we always want that badboy running in the forground.
+
+        // we are ending the console group here as any subsequent logs should be visible.
+        console.groupEnd();
   }
 
   /**
@@ -47,14 +51,26 @@ export default class Boot extends Phaser.Scene {
    * @memberof Boot
    */
   private loadPlugins() {
+    console.groupCollapsed("PLUGINS");
+
     // first install out data controller, this is going to be both data models, and anything to do with content Tracking.
     this.sys.plugins.install("_data", GameData, true, "_data");
     this._data = this.sys.plugins.get("_data") as GameData;
 
     // we are going to load all our related sponge helpers in the sponge class now.
     this.sys.plugins.install("sponge", SpongeUtils, true, "sponge");
-  }
+    this.sponge = this.sys.plugins.get("sponge") as Sponge;
 
+    if (this.sponge.debugGUI) {
+      // TODO: add custom items to dat.GUI here, as boot is always active any state based switching will work here.
+    }
+
+    // TODO: add post processing
+    // this.cameras.main.pipeline
+
+    // we are ending the console group here as any subsequent logs should be visible.
+    console.groupEnd();
+  }
   /**
    *
    * Creates an instance of Boot state.
@@ -77,9 +93,12 @@ export default class Boot extends Phaser.Scene {
    * @memberof Boot
    */
   preload() {
+
+    // this.scene.add("Background", Background, true); // false is to stop it launching now we'll choose to launch it when we need.
+
     if (!this.game.device.browser.ie) {
       let args = [
-        "%c %c %c Sponge UK - Luigi 1.0.1 %c %c ",
+        "%c %c %c Sponge UK - Luigi 1.1.0 %c %c ",
         "font-size: 12px; background: #d8dd0b;",
         "font-size: 12px; background: #0044ff;",
         "color: #fff; font-size: 12px; background: #45b245;",
@@ -88,6 +107,19 @@ export default class Boot extends Phaser.Scene {
       ];
 
       console.log.apply(console, args);
+
+    //   let args2 = [
+    //     "%c %c %c %c 🔎 _GAME_NAME_ _GAME_VERSION_ ALPHA 🔭 %c %c %c ", // // https://getemoji.com/
+    //     "font-size: 8px; background: #F0C25A", //custom colours
+    //     "font-size: 10px; background: #33A995",
+    //     "font-size: 12px; background: #F0394F;",
+    //     "color: #DAEAF0; font-size: 12px; background: #233648;",
+    //     "font-size: 12px; background: #F0394F;",
+    //     "font-size: 10px; background: #33A995",
+    //     "font-size: 8px; background: #F0C25A"
+    //   ];
+
+    //   console.log.apply(console, args2);
     }
 
     // we are going to colapse any log messages here unitl we are fully booted.
@@ -122,20 +154,30 @@ export default class Boot extends Phaser.Scene {
     // settings.
     this.load.json("settings", "assets/json/settings.json"); // required
 
-    this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
+    this.load.json("atlaspng.json", "assets/atlas/atlaspng.json"); // our png atlas
+
+    this.load.atlas('atlas.png', 'assets/atlas/atlaspng.png', 'assets/atlas/atlaspng.json');
+
 
     /* with SVGs we now want to start thinking about making games that we can scale up if required. *
-         * to start, we can determine a scale for SVG assets, this way when converted to textures they are enlarged / reduced based on our game size
-         * note - this doesn't redraw on resize, its calculated from gameconfig width / height at entry.
-         * as we change the resolution, we change the zoom as well keeping fededlity.
-         */
+    * to start, we can determine a scale for SVG assets, this way when converted to textures they are enlarged / reduced based on our game size
+    * note - this doesn't redraw on resize, its calculated from gameconfig width / height at entry.
+    * as we change the resolution, we change the zoom as well keeping fededlity.
+    */
 
-    // we now have an SVGScale
-    this.load.svg({
-      key: "atlas.svg",
-      url: "assets/atlas/atlas-50cfe01f.svg",
-      svgConfig: { scale: this.game.config.zoom }
+   // we now have an SVGScale
+   this.load.svg({
+     key: "atlas.svg",
+     url: "assets/atlas/atlas.svg",
+     svgConfig: { scale: this.game.config.zoom }
     });
+
+    this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
+
+    this.load.script(
+      "webfont",
+      "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"
+    );
 
     console.log("Boot::preload::end"); // and our scale manager
   }
@@ -171,6 +213,29 @@ export default class Boot extends Phaser.Scene {
   create() {
     console.log("Boot::create::start");
 
+    this.webFontsLoaded();
+    return;
+
+    // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
+    // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
+    WebFont.load({
+      // google: {
+      //   families: ['Droid Sans', 'Droid Serif']
+      // }
+      //,
+      custom: {
+         families: ["rift"]
+      },
+      active: this.webFontsLoaded.bind(this)
+    });
+  }
+
+  /**
+   * a second state of our load cue just to make sure fonts have been loaded.
+   *
+   * @memberof Boot
+   */
+  webFontsLoaded() {
     // lets generate this atlas.
     let svgAtlasTexture = this.textures.get("atlas.svg");
     let svgAtlasData = this.game.cache.json.get("atlas.json");
@@ -182,20 +247,21 @@ export default class Boot extends Phaser.Scene {
 
     // load our sponge plugins.
     this.loadPlugins();
-    console.log("Boot::Initilising all required states");
 
     // load our states for this experience.
     this.loadStates();
     console.log("Boot::create::end");
 
+    this.sponge.postBoot(this);
+
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();
 
-    this.scene.resume("TitleScreen");
-
     // TODO: Entry Point.
-    this.testSVG();
+    this.scene.run("TitleScene");
   }
+
+  generateTiles() {}
 
   /**
    * called every frame of the game, remember that this state is
@@ -212,34 +278,5 @@ export default class Boot extends Phaser.Scene {
     //     this.testsprites[i].x += 10*(dt/1000);
     //     this.testsprites[i].y += 10*(dt/1000);
     // }
-  }
-
-  testSVG(): void {
-    console.log("testing svg featureset");
-
-    // so can we resize SVGs and generate games at differnet resolutions dependand on device?
-    let one: Phaser.GameObjects.Sprite = this.add.sprite(
-      this.cameras.main.width / 2,
-      this.cameras.main.height / 2,
-      "atlas.svg",
-      "spaceman"
-    );
-
-    let two: Phaser.GameObjects.Sprite = this.add.sprite(
-      this.cameras.main.width / 4,
-      this.cameras.main.height / 4,
-      "atlas.svg",
-      "asteroid2"
-    );
-
-    let three: Phaser.GameObjects.Sprite = this.add.sprite(
-      (this.cameras.main.width / 4) * 3,
-      (this.cameras.main.height / 4) * 3,
-      "atlas.svg",
-      "asteroid1"
-    );
-
-    this.testsprites.push(one, two, three);
-    // this.svg.setScale((1/this.game.config.zoom));
   }
 }

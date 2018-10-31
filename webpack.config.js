@@ -34,9 +34,6 @@ function applyPackageVars(content){
 }
 
 function prepareJSONFiles(content) {
-    console.log(content.toString('utf8'));
-    console.log(strip(content.toString('utf8')))
-
     return strip(content.toString('utf8'));
 }
 
@@ -74,7 +71,8 @@ module.exports = {
             query: {
                 presets: ['es2015']
             }
-        }]
+        }
+    ]
     },
 
     plugins: [
@@ -85,17 +83,25 @@ module.exports = {
             "typeof EXPERIMENTAL": JSON.stringify(false),
             "typeof PLUGIN_CAMERA3D": JSON.stringify(false),
             "typeof PLUGIN_FBINSTANT": JSON.stringify(false)
-        }),
+        })
 
-        // new CleanWebpackPlugin(['dist']),
+        // new CleanWebpackPlugin(['dist']),    
+],
 
+};
 
+// console.log("enviroment", process.env);
 
-
+if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
+    console.log("adding assets copy to pipeline");
+    module.exports.plugins.push(
         new CopyWebpackPlugin(   
             [ 
                 //standard assets, - this will be changed to Texture packer eventually
-                { from: 'assets', to: 'assets' },
+                { from: 'assets/atlas', to: 'assets/atlas' },
+                { from: 'assets/json/*.json', to: '' },
+                { from: 'assets/fonts', to: 'assets/fonts' },
+                { from: 'supporting/manifest.json', to: './manifest.json' },
 
                 //our JSON files, we want to strip comments essentially and convert to stadard json files (avoid mime type issues.)
                 { from: 'assets/json/content.jsonc', to: 'assets/json/content.json',
@@ -135,38 +141,6 @@ module.exports = {
                 }
                 
             ], {}
-    ),
-
-         new WebpackShellPlugin({
-            // onBuildExit: [''], //shell commpands on end of each compile.
-            // onBuildStart: [texturePackerString], //shell commands on start up
-            //  onBuildExit: [texturePackerString, "echo 'Webpack Start'"],// shell commands after each build? trexture packaer sting seems to 
-
-        })
-
-        // // Seems to halt the other webpack functionallity working.
-        // new filewatcherPlugin({
-        //     watchFileRegex: ['./assets/img'],
-        //     onAddDirCallback: function (path, wut, two) {
-        //         //a file has changed
-        //         exec(texturePackerString);
-        //         console.log("rebuilt spritesheets");
-        //         return null;
-        //     },
-
-        //     onRawCallback: function (event, path, details) {
-        //         // console.log(event, path);
-
-        //         if (event === "change") {
-        //             //a file has changed
-        //             exec(texturePackerString);
-        //             console.log("rebuilt spritesheets");
-        //         }
-        //         return null;
-        //     }
-
-        // })
-
-    ]
-
-};
+    )
+    );
+}

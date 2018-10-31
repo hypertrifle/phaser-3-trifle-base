@@ -1,17 +1,18 @@
 {
   "name": "sponge-phaser-3.0-luigi",
-  "version": "1.0.3",
-  "description": "A Phaser 3 Typescript Setup with useful common funtionallity",
+  "version": "1.1.0",
+  "description": "A Phaser 3 Typescript Setup with useful common funtionallity - post spymaster update",
   "main": "src/index.js",
   "scripts": {
     "help": "node scripts/help.js",
     "build": "webpack -p",
+    "build-ci": "webpack -p --env.NODE_ENV=ci",
     "dev": "webpack && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/build/",
     "docs": "typedoc --includeDeclarations --includes ./phaser.d.ts --ignoreCompilerErrors --excludeExternals --out ./docs/ ./src/ && http-server docs -c-1 -o",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "export-assets": "estoolkit.exe -run ./scripts/make_assets_illustrator.jsx",
     "generate-atlas": "TexturePacker --sheet build/assets.png --data build/assets.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
-    "generate-svg-atlas": "svg-sprite  --shape-spacing-padding 2,2,2,2 --view --view-render-css --view-render-css-template ./supporting/atlas-template.json.hbs --view-render-css-dest atlas.json --view-dest ./assets/atlas --view-sprite atlas.svg assets/svg/*.svg && MOVE .\\assets\\atlas\\atlas.json.css .\\assets\\atlas\\atlas.json && MOVE .\\assets\\atlas\\atlas-*.svg .\\assets\\atlas\\atlas.svg",
+    "generate-svg-atlas": "svg-sprite  --shape-spacing-padding 2,2,2,2 --view --view-render-css --view-render-css-template ./supporting/atlas-template.json.hbs --view-render-css-dest atlas.json --view-dest ./assets/atlas --view-sprite atlas.svg assets/svg/**/*.svg && MOVE .\\assets\\atlas\\atlas.json.css .\\assets\\atlas\\atlas.json && MOVE .\\assets\\atlas\\atlas-*.svg .\\assets\\atlas\\atlas.svg",
     "new-asset": "node scripts/make_asset.js",
     "lint": "tslint -- src/**/*.ts",
     "fixlint": "tslint --fix src/**/*.ts",
@@ -22,13 +23,11 @@
     "type": "git",
     "url": "git@git.spongeuk.com:sponge/boilerplates/sponge-phaser-3.0-luigi.git"
   },
-  "config": {
-
-  },
-  "author": "Rich Searle - Hypertrifle.com",
+  "author": "Rich Searle - SpongeUK.com",
   "license": "UNLICENCED",
   "private": true,
   "devDependencies": {
+    "@types/activex-excel": "^14.0.4",
     "@types/dat.gui": "^0.7.2",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
@@ -38,7 +37,7 @@
     "jshint": "^2.9.5",
     "jshint-loader": "^0.8.4",
     "npm-scripts-help": "^0.8.0",
-    "prettier": "1.14.3",
+    "prettier": "^1.14.3",
     "raw-loader": "^0.5.1",
     "readline-sync": "^1.4.9",
     "svg-sprite": "^1.5.0",
@@ -49,12 +48,15 @@
     "webpack-shell-plugin": "^0.5.0"
   },
   "dependencies": {
+    "@types/stats.js": "^0.17.0",
     "babel-loader": "^7.1.4",
     "dat.gui": "^0.7.2",
+    "easystarjs": "^0.4.3",
     "http-server": "^0.11.1",
     "path-override-webpack-plugin": "^0.1.2",
-    "phaser": "^3.12.0",
+    "phaser": "^3.14.0",
     "strip-json-comments": "^2.0.1",
+    "svgo": "^1.1.1",
     "ts-loader": "^3.5.0",
     "tslint": "^5.11.0",
     "typedoc": "^0.12.0",

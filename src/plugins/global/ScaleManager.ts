@@ -165,16 +165,16 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     // here we are goign to append the overlay HTML element over the top of the canvas object of the game
     this.canvas.parentElement.appendChild(this.forgroundHTML);
 
-    // if (this._scaleConfig.expandToParent) {
-    //     // lets listen to when the browser is resized and if so re-apply any scaling we require to.
-    //     window.addEventListener('resize', () => {
-    //         this.resizeCanvas();
-    //     });
+    if (this._scaleConfig.expandToParent) {
+        // lets listen to when the browser is resized and if so re-apply any scaling we require to.
+        window.addEventListener('resize', () => {
+            this.resizeCanvas();
+        });
 
-    //     // force a reload on initial build
-    //     this.resizeCanvas();
+        // force a reload on initial build
+        this.resizeCanvas();
 
-    // }
+    }
   }
 
   /**
@@ -184,9 +184,9 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   public resizeCanvas() {
-    if (this.mobile) {
-      this.handleOrientationMode();
-    }
+    // if (this.mobile) {
+    //   this.handleOrientationMode();
+    // }
 
     this.handleCanvasScale(this.canvas);
 
@@ -217,7 +217,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   private handleOrientationMode(): void {
-    if (!this.mobile) {
+    if (!this.mobile || !this._scaleConfig.shouldForceOrientationOnMobile) {
       return;
     }
 
@@ -245,16 +245,17 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   handleCanvasScale(canvas: HTMLCanvasElement) {
-    console.log("canvas rescale");
 
     // get the container our both our game canvas and any extra content to be supplied over the top.
-    let parent = this.game.canvas.parentElement.parentElement;
+    let parent = this.game.canvas.parentElement.parentElement.parentElement.parentElement;
 
     // work out a ratio that will allow use to show all our cotnent within the parted viewport.
     let requiredScaling = Math.min(
       parent.clientWidth / canvas.width,
       Math.min(window.innerHeight, parent.clientHeight) / canvas.height
     );
+
+
 
     // TODO: we want to restrict the game to any mini max size? this will tie in the tih
     // if we are bigger than the max width or height defined in our configuration we need to re calculated the scale to fit all content
@@ -269,8 +270,8 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     }
 
     let styleString =
-      "-ms-transform-origin: left top; -webkit-transform-origin: left top;" +
-      " -moz-transform-origin: left top; -o-transform-origin: left top; transform-origin: left top;" +
+      "-ms-transform-origin: middle center; -webkit-transform-origin: middle center;" +
+      " -moz-transform-origin: middle center; -o-transform-origin: middle center; transform-origin: middle center;" +
       " -ms-transform: scale(" +
       requiredScaling +
       "); -webkit-transform: scale3d(" +
@@ -286,7 +287,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
       "height:" +
       canvas.height +
       ";" +
-      " display: block; margin: 0;";
+      " display: block; margin: 0 auto;";
 
     this.canvas.setAttribute("style", styleString);
     this.forgroundHTML.setAttribute("style", styleString);
@@ -298,8 +299,8 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   enterIncorrectOrientation() {
-    document.getElementById("orientation").style.display = "block";
-    document.getElementById("content").style.display = "none";
+    // document.getElementById("orientation").style.display = "block";
+    // document.getElementById("content").style.display = "none";
   }
 
   /**
@@ -307,8 +308,8 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   leaveIncorrectOrientation() {
-    document.getElementById("orientation").style.display = "none";
-    document.getElementById("content").style.display = "block";
+    // document.getElementById("orientation").style.display = "none";
+    // document.getElementById("content").style.display = "block";
   }
 
   /**

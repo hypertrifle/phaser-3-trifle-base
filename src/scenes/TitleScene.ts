@@ -1,8 +1,9 @@
 import GameData from "../plugins/global/GameData";
 import Sponge from "../plugins/global/Sponge";
 import { TitleSceneModel } from "../models/TitleSceneModel";
+import BaseScene from "./BaseScene";
 
-export default class TitleScreen extends Phaser.Scene {
+export default class TitleScreen extends BaseScene {
   /**
    * data model for this class, define so everything is in order.
    *
@@ -10,15 +11,6 @@ export default class TitleScreen extends Phaser.Scene {
    * @memberof TitleScreen
    */
   sceneDataModel: TitleSceneModel;
-
-  /**
-   * reference to our spong tools.
-   *
-   * @type {SpongeUtils}
-   * @memberof TitleScreen
-   */
-  sponge: Sponge;
-
   constructor() {
     super({
       key: "TitleScene",
@@ -41,9 +33,6 @@ export default class TitleScreen extends Phaser.Scene {
   backgroundLayer: Phaser.GameObjects.Container;
 
   create() {
-    // grab our data for this model.
-    this.sponge = this.sys.plugins.get("sponge") as Sponge; // cas
-
     console.log(this.sponge);
     this.sceneDataModel = this.sponge.data.getDataFor(
       "titleScene"
