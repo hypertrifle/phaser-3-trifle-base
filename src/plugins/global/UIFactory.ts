@@ -154,7 +154,7 @@ export class BarButton extends Phaser.GameObjects.Container {
         ? (scene as any).sponge.data.getDataFor("fonts." + config.font)
         : (scene as any).sponge.data.getDataFor("fonts.button");
       this._label = scene.add.text(0, 0, config.label, style);
-      this._label.setOrigin((config.left)? -0.4 : 1.3, 0.5);
+      this._label.setOrigin((config.left) ? -0.4 : 1.3, 0.5);
       this.add(this._label);
     }
     // this.background.alpha = 0;

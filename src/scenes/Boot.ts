@@ -222,7 +222,7 @@ export default class Boot extends BaseScene {
       // google: {
       //   families: ['Droid Sans', 'Droid Serif']
       // }
-      //,
+      // ,
       custom: {
          families: ["rift"]
       },
