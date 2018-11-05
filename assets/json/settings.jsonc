@@ -14,16 +14,16 @@
       },
 
       "titleScene": {
-            "backgroundColor": "0xff00aa"
+            "backgroundColor": "0x450710"
       },
 
       /*scaling options used for changing size etc*/
       "scaling": {
-            "expandToParent": false,
+            "expandToParent": true,
             "shouldForceOrientationOnMobile": true,
             "shouldForceLandscaprOnMobile": true,
             "maxWidth": 1280,
-            "maxHeight": 800
+            "maxHeight": 720
       },
 
       /* Heads Up / in game UI settings.*/

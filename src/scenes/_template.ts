@@ -1,23 +1,22 @@
-import SpongeUtils from "../plugins/global/Sponge";
+import BaseScene from "./BaseScene";
 
-export default class REPLACEMEScene extends Phaser.Scene {
-  private sponge: SpongeUtils;
+export default class REPLACEMEScene extends BaseScene {
 
   constructor() {
     super({
       key: "REPLACEMEScene",
-      active: true
+      active: false
     });
     console.log("REPLACEMEScene::constructor");
   }
 
   preload() {
     console.log("REPLACEMEScene::preload");
+
   }
 
   create() {
-    // grab our utils
-    this.sponge = this.sys.plugins.get("sponge") as SpongeUtils; // cast
+    super.create();
   }
 
   update(time: number, delta: number) {
@@ -27,5 +26,7 @@ export default class REPLACEMEScene extends Phaser.Scene {
   shutdown() {
     // drop references to anything we have in create
     this.sponge = null;
+
+    super.shutdown();
   }
 }

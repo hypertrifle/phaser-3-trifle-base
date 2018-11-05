@@ -5,6 +5,7 @@ import SpongeUtils from "../plugins/global/Sponge";
 import DebugOverlay from "./DebugOverlay";
 import Sponge from "../plugins/global/Sponge";
 import BaseScene from "./BaseScene";
+import GameOneScene from "./GameOneScene";
 
 // const atlas = require("svg-inline-loader?../../assets/svg/gameplay/gameplay-tile-door.svg") as string;
 
@@ -29,6 +30,7 @@ export default class Boot extends BaseScene {
     // it means better bundle size but requuires a re-compile on changing orders.
 
     this.scene.add("TitleScene", TitleScene, false);
+    this.scene.add("GameOneScene", GameOneScene, false);
 
     console.log(this._data);
 
@@ -148,11 +150,17 @@ export default class Boot extends BaseScene {
       progress.destroy();
     });
 
+    //TODO: try and load content, if not skip those libs.
+    //TODO: inline json for package size.
+
+
     // load content.
     this.load.json("content", "assets/json/content.json"); // required
 
     // settings.
     this.load.json("settings", "assets/json/settings.json"); // required
+
+    //todo: 
 
     this.load.json("atlaspng.json", "assets/atlas/atlaspng.json"); // our png atlas
 
@@ -213,18 +221,15 @@ export default class Boot extends BaseScene {
   create() {
     console.log("Boot::create::start");
 
-    this.webFontsLoaded();
-    return;
+    // this.webFontsLoaded();
+    // return;
 
     // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
     WebFont.load({
-      // google: {
-      //   families: ['Droid Sans', 'Droid Serif']
-      // }
-      // ,
+   
       custom: {
-         families: ["rift"]
+         families: ["pixel"]
       },
       active: this.webFontsLoaded.bind(this)
     });
@@ -258,7 +263,7 @@ export default class Boot extends BaseScene {
     console.groupEnd();
 
     // TODO: Entry Point.
-    this.scene.run("TitleScene");
+    this.scene.run("GameOneScene");
   }
 
   generateTiles() {}

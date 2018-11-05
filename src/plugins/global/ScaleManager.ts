@@ -246,14 +246,17 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    */
   handleCanvasScale(canvas: HTMLCanvasElement) {
 
+    // console.error("handle canvas scale");
+
     // get the container our both our game canvas and any extra content to be supplied over the top.
-    let parent = this.game.canvas.parentElement.parentElement.parentElement.parentElement;
+    let parent = this.game.canvas.parentElement.parentElement.parentElement;
 
     // work out a ratio that will allow use to show all our cotnent within the parted viewport.
     let requiredScaling = Math.min(
       parent.clientWidth / canvas.width,
       Math.min(window.innerHeight, parent.clientHeight) / canvas.height
     );
+
 
 
 
@@ -268,6 +271,9 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         this._scaleConfig.maxWidth / canvas.width
       );
     }
+
+    // requiredScaling = 16;//this.game.config.zoom;
+
 
     let styleString =
       "-ms-transform-origin: middle center; -webkit-transform-origin: middle center;" +

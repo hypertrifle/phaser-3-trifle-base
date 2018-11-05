@@ -68,13 +68,51 @@ table {
 	font-family: inherit;
 }
 
+#container {
+    overflow: visible !important;
+}
+
+canvas {
+  image-rendering: optimizeSpeed;             /* Older versions of FF          */
+  image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+  image-rendering: -webkit-optimize-contrast; /* Safari                        */
+  image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+  image-rendering: pixelated;                 /* Awesome future-browsers       */
+  -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+}
+
 /* @font-face {
     font-family: 'rift';
     src: url('./assets/fonts/rift-demi-webfont.otf') format("opentype");
 } */
 
+@font-face {
+    font-family: 'pixel';
+    src: url('./assets/fonts/SFPixelate.ttf') format("opentype");
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'pixel';
+    src: url('./assets/fonts/SFPixelate-Bold.ttf') format("opentype");
+    font-weight: bold;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'pixel';
+    src: url('./assets/fonts/SFPixelate-Oblique.ttf') format("opentype");
+    font-weight: normal;
+    font-style: oblique;
+}
+@font-face {
+    font-family: 'pixel';
+    src: url('./assets/fonts/SFPixelate-BoldOblique.ttf') format("opentype");
+    font-weight: bold;
+    font-style: oblique;
+}
+
 body {
-  font-family: "rift", sans-serif !important; /* preload fonts */
+  font-family: "pixel", sans-serif !important; /* preload fonts */
   font-weight: bold;
   font-weight: normal;
 }
@@ -104,7 +142,7 @@ body {
 <body>
     <script src="./project.bundle.js" charset="utf-8"></script>
 
-    <div id="somthingUnique" style="overflow:hidden"></div>
+    <div id="container"></div>
 </body>
 
 </html>

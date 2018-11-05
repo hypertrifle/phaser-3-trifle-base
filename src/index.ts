@@ -47,15 +47,19 @@ let ratio = 1 / Math.min(ratio_w, ratio_h);
 
 console.warn("SYS::Ratio Set", ratio);
 
-const config: any = {
+const config: GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
-  width: designDimensions.width * ratio,
-  height: designDimensions.height * ratio,
-  zoom: ratio,
-  resolution: 1 / ratio,
+  width: 1280,
+  height: 720,
+  zoom: 1,
+  render: {
+    pixelArt: true,
+    antialias: false,
+    
+  },
   type: Phaser.WEBGL,
-  parent: "phaser-content", // this div to be loaded into - LEAVE AS IS!
+  parent: "container", // this div to be loaded into - LEAVE AS IS!
   scene: Boot, // we are going to use boot as our main controller, we can add / control scenes from within there.
   // these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.
   callbacks: {
@@ -69,9 +73,7 @@ const config: any = {
   //   touch: false,
   //   gamepad: false
   // },
-  backgroundColor: "#aaaaaa",
-  pixelArt: false,
-  roundPixels: false
+  backgroundColor: 0x450710,
 
 };
 
@@ -104,5 +106,5 @@ window.onload = () => {
 
   // boot the game.
   // @ts-ignore
-  let game = new Phaser.Game(config); // finally launch our game.
+  let game = new Phaser.Game(config) // finally launch our game.
 };
