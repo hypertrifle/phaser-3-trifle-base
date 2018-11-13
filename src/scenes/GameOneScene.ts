@@ -1,6 +1,6 @@
 import BaseScene from "./BaseScene";
 
-const POST = require("../../assets/glsl/jumper-post.frag");
+const POST = require("../../assets/glsl/post.frag");
 
 
 export class FullScreeenShader extends Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline {
@@ -95,37 +95,22 @@ initPostShader(){
   create() {
     super.create();
 
-   this.initPostShader();
+  //  this.initPostShader();
 
-
-   
    console.log("GameOneScene::Create");
-    this.cameras.main.setBounds(0, 0, 80, 45);
+    this.cameras.main.setBounds(0, 0, this.game.canvas.width, this.game.canvas.height);
     this.cameras.main.setZoom(16);
 
-    this.gameHeight = this.game.config.height as number;
-    this.gameWidth = this.game.config.width as number;
+    console.log(this.game.canvas);
+
+    this.gameHeight = this.game.canvas.height
+    this.gameWidth = this.game.canvas.width;
 
 
    let bg = this.add.graphics({});
-   bg.fillStyle(0x790012,1);
+   bg.fillStyle(0xff00aa,1);
    bg.fillRect(0,0,this.gameWidth,this.gameHeight);
 
-
-      this.tree = this.add.sprite((this.gameWidth/this.zoomLevel)/2,(this.gameHeight/this.zoomLevel)/2,"atlas.png", "tree_2.png");
-
-      this.tree.setInteractive({ pixelPerfect: true, draggable: true });
-      this.tree.input.draggable = true;
-      this.tree.on('drag', function (pointer:Phaser.Input.Pointer, dragX:number, dragY:number) {
-
-         console.log(pointer);
-
-         this.tree.x = pointer.x /this.cameras.main.zoomLevel;
-         this.tree.y = pointer.x  /this.cameras.main.zoomLevel;
- 
-     }.bind(this));
-
-   
 
     
   }
@@ -147,7 +132,7 @@ initPostShader(){
 
   shutdown() {
     // drop references to anything we have in create
-    this.sponge = null;
+    this.tools = null;
 
     super.shutdown();
   }

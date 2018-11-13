@@ -1,7 +1,5 @@
 import GameData from "./GameData";
 import UIModel from "../../models/UIModels";
-import { PositionManager } from "./ScaleManager";
-import BaseComponent from "../../components/BaseComponent";
 
 export default class UIFactory extends Phaser.Plugins.BasePlugin {
   private _model: UIModel;

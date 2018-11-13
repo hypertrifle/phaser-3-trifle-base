@@ -1,9 +1,7 @@
 import TitleScene from "./TitleScene";
 import GameData from "../plugins/global/GameData";
-import HUDOverlay from "./HUDOverlay";
-import SpongeUtils from "../plugins/global/Sponge";
-import DebugOverlay from "./DebugOverlay";
-import Sponge from "../plugins/global/Sponge";
+import Tools from "../plugins/global/Tools";
+import Sponge from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
 import GameOneScene from "./GameOneScene";
 
@@ -34,13 +32,13 @@ export default class Boot extends BaseScene {
 
     console.log(this._data);
 
-    if (this._data.getDataFor("global.debugMode")) {
-      console.warn("!!! GLOBAL DEBUG MODE IS ACTIVE !!!");
-      this.scene.add("debug", DebugOverlay, true);
-    }
+    // if (this._data.getDataFor("global.debugMode")) {
+    //   console.warn("!!! GLOBAL DEBUG MODE IS ACTIVE !!!");
+    //   this.scene.add("debug", DebugOverlay, true);
+    // }
 
-    // finallly add our on top / HUD layer.
-    this.scene.add("HUD", HUDOverlay, true); // true as we always want that badboy running in the forground.
+    // finallly add our on top / HUD layer. - fuck this.
+    // this.scene.add("HUD", HUDOverlay, true); // true as we always want that badboy running in the forground.
 
         // we are ending the console group here as any subsequent logs should be visible.
         console.groupEnd();
@@ -55,17 +53,17 @@ export default class Boot extends BaseScene {
   private loadPlugins() {
     console.groupCollapsed("PLUGINS");
 
-    // first install out data controller, this is going to be both data models, and anything to do with content Tracking.
+    // first install out data controller, this is going to be both data models, and anything to do with content Tracking. TODO:I'm going to leave the data tools in as is a nice way for quick config / translation, but casting these loose object to types doing catch warning on compile... and we are back to ol' reliable javascritp:/
     this.sys.plugins.install("_data", GameData, true, "_data");
     this._data = this.sys.plugins.get("_data") as GameData;
 
     // we are going to load all our related sponge helpers in the sponge class now.
-    this.sys.plugins.install("sponge", SpongeUtils, true, "sponge");
-    this.sponge = this.sys.plugins.get("sponge") as Sponge;
+    this.sys.plugins.install("tools", Tools, true, "tools");
+    this.tools = this.sys.plugins.get("tools") as Tools;
 
-    if (this.sponge.debugGUI) {
-      // TODO: add custom items to dat.GUI here, as boot is always active any state based switching will work here.
-    }
+    // if (this.tools.debugGUI) {
+    //   // TODO: add custom items to dat.GUI here, as boot is always active any state based switching will work here.
+    // }
 
     // TODO: add post processing
     // this.cameras.main.pipeline
@@ -100,12 +98,12 @@ export default class Boot extends BaseScene {
 
     if (!this.game.device.browser.ie) {
       let args = [
-        "%c %c %c Sponge UK - Luigi 1.1.0 %c %c ",
-        "font-size: 12px; background: #d8dd0b;",
-        "font-size: 12px; background: #0044ff;",
-        "color: #fff; font-size: 12px; background: #45b245;",
-        "font-size: 12px; background: #0044ff;",
-        "font-size: 12px; background: #d8dd0b;"
+        "%c %c %c Tricky's Custom Phaser 1.0.0 - HYPERTRIFLE.COM %c %c ",
+        "font-size: 12px; background: #1C005F;",
+        "font-size: 12px; background: #85F7BF;",
+        "color: #000054; font-size: 12px; background: #C65DD2;",
+        "font-size: 12px; background: #85F7BF;",
+        "font-size: 12px; background: #1C005F;"
       ];
 
       console.log.apply(console, args);
@@ -257,7 +255,7 @@ export default class Boot extends BaseScene {
     this.loadStates();
     console.log("Boot::create::end");
 
-    this.sponge.postBoot(this);
+    this.tools.postBoot(this);
 
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();

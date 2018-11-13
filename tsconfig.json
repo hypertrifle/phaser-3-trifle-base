@@ -14,7 +14,7 @@
         "./phaser.d.ts"
   ],
   "include": [
-        "src/**/*"
+        "src/**/*", "KEEP/TitleSceneModel.ts", "KEEP/LabelButton.ts", "KEEP/HUDModel.ts"
     ],
     "exclude": [
         "node_modules",

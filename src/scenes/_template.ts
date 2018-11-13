@@ -1,6 +1,9 @@
 import BaseScene from "./BaseScene";
+import Tools from "../plugins/global/Tools";
 
 export default class REPLACEMEScene extends BaseScene {
+
+  public tools:Tools;
 
   constructor() {
     super({
@@ -25,7 +28,7 @@ export default class REPLACEMEScene extends BaseScene {
 
   shutdown() {
     // drop references to anything we have in create
-    this.sponge = null;
+    this.tools = null;
 
     super.shutdown();
   }

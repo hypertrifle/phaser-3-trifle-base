@@ -1,6 +1,6 @@
 import GameData from "../plugins/global/GameData";
-import Sponge from "../plugins/global/Sponge";
-import { TitleSceneModel } from "../models/TitleSceneModel";
+import Sponge from "../plugins/global/Tools";
+import { TitleSceneModel } from "../../KEEP/TitleSceneModel";
 import BaseScene from "./BaseScene";
 
 export default class TitleScreen extends BaseScene {
@@ -33,8 +33,8 @@ export default class TitleScreen extends BaseScene {
   backgroundLayer: Phaser.GameObjects.Container;
 
   create() {
-    console.log(this.sponge);
-    this.sceneDataModel = this.sponge.data.getDataFor(
+    console.log(this.tools);
+    this.sceneDataModel = this.tools.data.getDataFor(
       "titleScene"
     ) as TitleSceneModel; // cast
 
@@ -51,8 +51,8 @@ export default class TitleScreen extends BaseScene {
     g.fillRect(
       0,
       0,
-      this.sponge.scale.percentX(100),
-      this.sponge.scale.percentY(100)
+      this.tools.scale.percentX(100),
+      this.tools.scale.percentY(100)
     );
     g.generateTexture("titlescreen_texture");
 

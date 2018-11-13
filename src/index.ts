@@ -8,50 +8,21 @@
 import "phaser";
 import Boot from "./scenes/Boot";
 
+//some development options, this console.clear resets a developer console on webpack refresh which I find handy.
 console.clear();
+const DEBUG: boolean = true;
 
-enum PreformanceIndex {
-  Low = 0,
-  Medium,
-  High
-}
-
-// main game configuration, maybe these should be moved to one of the callbacks.
-
-// what the designer artboard was sized to
-const designDimensions = {
-  width: 1280,
-  height: 720
-};
-
-// what size we want to render the game at (note that we can still zoom the canvas),
-// but this is the dimensions that the textures are rendererd at.
-const renderDimensions = {
-  width: 1280,
-  height: 720
-};
-
-// work out some ratio stuff.
-let ratio_w = designDimensions.width / renderDimensions.width;
-let ratio_h = designDimensions.height / renderDimensions.height;
-
-// TODO: we should workout
-
-if (ratio_w !== ratio_h) {
-  console.warn(
-    "Design and render dimension have mismatching ratio, prioritising width ratio"
-  );
-}
-
-let ratio = 1 / Math.min(ratio_w, ratio_h);
-
-console.warn("SYS::Ratio Set", ratio);
-
+//@ts-ignore
 const config: GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
-  width: 1280,
-  height: 720,
+//@ts-ignore
+  scale: {
+//@ts-ignore
+    mode: Phaser.DOM.CONTAIN,
+    width: 800,
+    height: 600
+},
   zoom: 1,
   render: {
     pixelArt: true,
@@ -84,27 +55,15 @@ window.onload = () => {
   // depending on the tech, we may wish to have these DOM elements in different locations or orders.
   // I'm hoping this is the section we can re-write to embed games into different techs.
 
-  let containingDivID: string = "somthingUnique";
-  let domContainer: HTMLElement | null = document.getElementById(
-    containingDivID
-  ); // the #ID of the container we wish to put the game into.
+  
+  let container = document.getElementById("container");
 
-  // create our content container.
-  let c: HTMLElement = document.createElement("div");
-  c.setAttribute("id", "phaser-content"); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
+  ///this works for now, fills our game to it's container, will work with scaling, centering and other optins within the scale amanager
+  config.width = container.clientWidth;
+  config.height = container.clientHeight;
 
-  // create our overlay container.
-  let o: HTMLElement = document.createElement("div");
-  o.setAttribute("id", "phaser-overlay"); // IF THESE CHANGE THIS WILL EFFECT THE SCALE MANAGER
-
-  // append both to the domContainer that was defined above
-  if (domContainer) {
-    // domContainer could be null as getElementById can return null.
-    domContainer.appendChild(c);
-    domContainer.appendChild(o);
-  }
-
-  // boot the game.
-  // @ts-ignore
-  let game = new Phaser.Game(config) // finally launch our game.
+  if (DEBUG)
+  console.log("final game config",config);
+  
+  var game = new Phaser.Game(config) // finally launch our game.
 };

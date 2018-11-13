@@ -1,5 +1,6 @@
 /**
  * Data used for the Test / Debug Screen
+ * TODO: is this needed?
  *
  * @export
  * @class TestSceneModel

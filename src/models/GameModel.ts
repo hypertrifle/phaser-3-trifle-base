@@ -1,10 +1,9 @@
 import SaveDataModel from "./SaveModel";
-import { TitleSceneModel } from "./TitleSceneModel";
+import { TitleSceneModel } from "../../KEEP/TitleSceneModel";
 import UIModel from "./UIModels";
-import DebugOverlayModel from "./DebugOverlayModel";
 
 /**
- * Data Model - this holds all information that has been imported from the
+ * Data Model - this holds all information that may be required, some 
  * content.json AND setting.json files, and will be ready after the boot state has completed,
  * this will need to be updated for each game to reflect the structure of the data being loaded.
  *
@@ -14,7 +13,14 @@ import DebugOverlayModel from "./DebugOverlayModel";
  */
 /* These are defined in src/models/*.ts and unless they are small settings objects its a good place to abstract them to... */
 
+
 export default class GameModel {
+
+
+  // constants are good for quick checks of things.
+
+
+
   /**
    * reference to our sae data model
    *
@@ -23,19 +29,9 @@ export default class GameModel {
    */
   save: SaveDataModel; // add we will add functionallity to the model class, we will include but we can always type some of the code we are expecting.
   scaling: ScalingModel;
-
   userInterface: UIModel;
-
-  debugOverlay: DebugOverlayModel;
-
-  global: GlobalModel;
-
-  icons: Array<string>;
-
   fonts: Array<Phaser.GameObjects.Text.TextStyle>;
 
-  // custom state models need to be added below here
-  titleScene: TitleSceneModel;
 }
 
 /* small so just whack it here */
@@ -45,9 +41,4 @@ export class ScalingModel {
   shouldForceLandscaprOnMobile: boolean = true;
   maxWidth: number = 1280;
   maxHeight: number = 720;
-}
-
-/* small so just whack it here */
-export class GlobalModel {
-  isDebug: boolean = true;
 }

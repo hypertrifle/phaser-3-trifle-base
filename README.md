@@ -2,57 +2,27 @@
 
 Based off of [Richard Davey's Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template)
 
-Originally planed & written by [Rich Searle](//hypertrifle.com) - But Modified and tailored for Sponge UK.
+Originally planed & written by [Rich Searle](//hypertrifle.com) for SpongeUK, since then I have removed any unnicery code that I deemed bloated on not useful for small game projects (any any contributuions from sponge)
 
-## quick setup
+All this work is my own, (with help from the Phaser commuity and is completly unlicenced, )
 
-`npm i`
+why not `npm i` ?
 
-## links to dev logs
+## To Remove
 
-## introduction to webpack and the npm commands 
-[quickstart](https://medium.com/javascript-training/beginner-s-guide-to-webpack-b1f1a3638460)
+- HyperScorm - or move to more suitible repo
+- interfaces? remove this package?
+- single save / game model, (lets not load from JSON files unless required)
+- HUD overlay / system and  model is a good Idea in practive but not needed for now.
 
-## breif overview of folder / package structure.
+## To Fix
 
-## design principles
+- rmeove sponge refernces from plgings / scenes etc.
+- convert interaces to classes - I can't see of any overhead, but allows us default values, and the abilitiy to define getters and setters, potentailly tieing into VueJS's 'reactive' natiure..
 
-## typescript
+## to Add
 
-## controllers, factories and helpers though plugins.
-
-## nice itterators
-
-## EVENTS (will alieviate a lot of problemos!)
-
-## models as interfaces
-
-## models and the data controller
-
-## updates to the html and tacking controller
-
-## migration of utils
-
-## (typed objects as params of optional configuration)
-  
-
-
-# Sponge Updates
-
-## To discusses with Design
-
-- standardise Loading Screen
-- standardise & devise UI settings
-- standardise
-
-## Whats new
-
-- Typescript - yay
-- Webpack for bundling / packaging
-- Importing / requiring
-- States -> scenes
-- Controllers -> Plugins
-
-## File Structure
-
-- assets ()
+- revisit package.json - are all these commands needed?
+- error checking on loading both atlas types (and a configuration?)
+- revisit webpack config
+- requiring image files.

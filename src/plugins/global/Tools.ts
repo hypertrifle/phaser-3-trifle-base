@@ -2,14 +2,13 @@ import GameData from "./GameData";
 import HTMLUtils from "./HTMLUtils";
 import ScaleManager from "./ScaleManager";
 import Utils from "../utils/Utils";
-import * as dat from "dat.gui";
 import Boot from "../../scenes/Boot";
 import { GameObjects } from "phaser";
 
 
-export default class Sponge extends Phaser.Plugins.BasePlugin {
+export default class Tools extends Phaser.Plugins.BasePlugin {
   /**
-   * @constructor Creates an instance of the Sponge plugin that just has easy access to all our custom plugins.
+   * @constructor Creates an instance of the Generic tools now use for general game development..
    * @param {Phaser.Plugins.PluginManager} pluginManager
    * @memberof GameData
    */
@@ -18,7 +17,7 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
 
     this.game = pluginManager.game;
 
-    console.log("Sponge::constructor");
+    console.log("Tools::constructor");
 
     // we might need this in the boot / controller class.
     this.data = pluginManager.get("_data") as GameData;
@@ -31,14 +30,14 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
     pluginManager.install("_utils", Utils, true, "_utls");
     this.utils = pluginManager.get("_utils") as Utils;
 
-    // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
-    pluginManager.install("_scale", ScaleManager, true, "_scale", {
-      scale: this.game.config.zoom
-    });
-    this.scale = pluginManager.get("_scale") as ScaleManager;
+    // // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
+    // pluginManager.install("_scale", ScaleManager, true, "_scale", {
+    //   scale: this.game.config.zoom
+    // });
+    // this.scale = pluginManager.get("_scale") as ScaleManager;
 
     if (this.data.getDataFor("global.debugMode")) {
-      this.debugGUI = new dat.GUI();
+      // this.debugGUI = new dat.GUI();
 
       // global debug stuff?
 
@@ -102,7 +101,7 @@ export default class Sponge extends Phaser.Plugins.BasePlugin {
    * @type {(dat.GUI | null)}
    * @memberof Sponge
    */
-  public debugGUI: dat.GUI | null = null;
+  // public debugGUI: dat.GUI | null = null;
 
   // private stats: Stat;
 

@@ -1,10 +1,10 @@
-import SpongeUtils from "../plugins/global/Sponge";
+import Tools from "../plugins/global/Tools";
 export interface BaseSceneConfig {
    key: string;
    active?: boolean;
 }
 export default class BaseScene extends Phaser.Scene {
-  public sponge: SpongeUtils;
+  public tools: Tools;
 
   constructor(config: BaseSceneConfig) {
 
@@ -17,9 +17,10 @@ export default class BaseScene extends Phaser.Scene {
     });
 
     try {
-      this.sponge = this.sys.plugins.get("sponge") as SpongeUtils; // cast
+      this.tools = this.sys.plugins.get("tools") as Tools; // cast
     } catch (e) {
        // not availible yet.
+       console.warn("State instatiated but plugins are not yet ready, you will no have access to these.");
     }
 
 
@@ -31,7 +32,9 @@ export default class BaseScene extends Phaser.Scene {
 
   create() {
    // grab our utils
-   this.sponge = this.sys.plugins.get("sponge") as SpongeUtils; // cast
+   if(!this.tools){
+    this.tools = this.sys.plugins.get("tools") as Tools; // cast
+   }
 
    // listen to events.
    this.events.on("sleep", this.sleep, this);
@@ -48,6 +51,6 @@ export default class BaseScene extends Phaser.Scene {
 
   shutdown() {
     // drop references to anything we have in create
-    this.sponge = null;
+    this.tools = null;
   }
 }
