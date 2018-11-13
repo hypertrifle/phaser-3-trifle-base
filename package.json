@@ -1,7 +1,7 @@
 {
-  "name": "sponge-phaser-3.0-luigi",
+  "name": "HYPERTRIFLE-PHASER-TEMPALTE",
   "version": "1.1.0",
-  "description": "A Phaser 3 Typescript Setup with useful common funtionallity - post spymaster update",
+  "description": "A Phaser 3 Typescript Setup with useful common funtionallity",
   "main": "src/index.js",
   "scripts": {
     "help": "node scripts/help.js",
@@ -20,7 +20,7 @@
     "type": "git",
     "url": "git@git.spongeuk.com:sponge/boilerplates/sponge-phaser-3.0-luigi.git"
   },
-  "author": "Rich Searle - SpongeUK.com",
+  "author": "Rich Searle - hypertrifle.com",
   "license": "UNLICENCED",
   "private": true,
   "devDependencies": {
