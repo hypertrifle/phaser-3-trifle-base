@@ -3,7 +3,7 @@ import Tools from "../plugins/global/Tools";
 
 export default class REPLACEMEScene extends BaseScene {
 
-  public tools:Tools;
+  public tools: Tools;
 
   constructor() {
     super({

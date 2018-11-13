@@ -148,8 +148,8 @@ export default class Boot extends BaseScene {
       progress.destroy();
     });
 
-    //TODO: try and load content, if not skip those libs.
-    //TODO: inline json for package size.
+    // TODO: try and load content, if not skip those libs.
+    // TODO: inline json for package size.
 
 
     // load content.
@@ -158,7 +158,7 @@ export default class Boot extends BaseScene {
     // settings.
     this.load.json("settings", "assets/json/settings.json"); // required
 
-    //todo: 
+    // todo:
 
     this.load.json("atlaspng.json", "assets/atlas/atlaspng.json"); // our png atlas
 
@@ -225,7 +225,7 @@ export default class Boot extends BaseScene {
     // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
     WebFont.load({
-   
+
       custom: {
          families: ["pixel"]
       },

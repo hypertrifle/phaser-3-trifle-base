@@ -3,7 +3,7 @@ import { TitleSceneModel } from "../../KEEP/TitleSceneModel";
 import UIModel from "./UIModels";
 
 /**
- * Data Model - this holds all information that may be required, some 
+ * Data Model - this holds all information that may be required, some
  * content.json AND setting.json files, and will be ready after the boot state has completed,
  * this will need to be updated for each game to reflect the structure of the data being loaded.
  *

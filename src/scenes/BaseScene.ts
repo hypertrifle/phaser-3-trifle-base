@@ -32,7 +32,7 @@ export default class BaseScene extends Phaser.Scene {
 
   create() {
    // grab our utils
-   if(!this.tools){
+   if (!this.tools) {
     this.tools = this.sys.plugins.get("tools") as Tools; // cast
    }
 
