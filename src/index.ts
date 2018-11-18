@@ -11,7 +11,12 @@ import Boot from "./scenes/Boot";
 // some development options, this console.clear resets a developer console on webpack refresh which I find handy.
 console.clear();
 const DEBUG: boolean = true;
+var Game:Phaser.Game;
+const DYNAMIC_PHASER_CANVAS:boolean = false; 
 
+
+
+var container:HTMLElement;
 // @ts-ignore
 const config: GameConfig = {
   title: "Game", // apart from this
@@ -19,11 +24,11 @@ const config: GameConfig = {
 // @ts-ignore
   scale: {
 // @ts-ignore
-    mode: Phaser.DOM.CONTAIN,
-    width: 800,
-    height: 600
+    width: 640,
+    height: 360
 },
-  zoom: 1,
+  
+  zoom: 4,
   render: {
     pixelArt: true,
     antialias: false,
@@ -56,14 +61,17 @@ window.onload = () => {
   // I'm hoping this is the section we can re-write to embed games into different techs.
 
 
-  let container = document.getElementById("container");
+  container = document.getElementById("container");
 
-  /// this works for now, fills our game to it's container, will work with scaling, centering and other optins within the scale amanager
-  config.width = container.clientWidth;
-  config.height = container.clientHeight;
-
+  
   if (DEBUG)
   console.log("final game config",config);
 
-  let game = new Phaser.Game(config); // finally launch our game.
+  Game = new Phaser.Game(config); // finally launch our game.
+};
+
+
+window.onresize = () => {
+  if(DYNAMIC_PHASER_CANVAS)
+  Game.resize(container.clientWidth, container.clientHeight);
 };

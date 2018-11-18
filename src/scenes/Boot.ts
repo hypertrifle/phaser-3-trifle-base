@@ -4,6 +4,7 @@ import Tools from "../plugins/global/Tools";
 import Sponge from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
 import GameOneScene from "./GameOneScene";
+import DriveScene from "./Drive";
 
 // const atlas = require("svg-inline-loader?../../assets/svg/gameplay/gameplay-tile-door.svg") as string;
 
@@ -27,8 +28,8 @@ export default class Boot extends BaseScene {
     // add all our scenes, we are going to have to do this pragmatically now with webpack and ts,
     // it means better bundle size but requuires a re-compile on changing orders.
 
-    this.scene.add("TitleScene", TitleScene, false);
-    this.scene.add("GameOneScene", GameOneScene, false);
+    // this.scene.add("TitleScene", TitleScene, false);
+    this.scene.add("DriveScene", DriveScene, false);
 
     console.log(this._data);
 
@@ -225,7 +226,6 @@ export default class Boot extends BaseScene {
     // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
     WebFont.load({
-
       custom: {
          families: ["pixel"]
       },
@@ -261,7 +261,7 @@ export default class Boot extends BaseScene {
     console.groupEnd();
 
     // TODO: Entry Point.
-    this.scene.run("GameOneScene");
+    this.scene.run("DriveScene");
   }
 
   generateTiles() {}

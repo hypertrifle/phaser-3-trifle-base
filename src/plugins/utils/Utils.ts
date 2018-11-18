@@ -3,6 +3,10 @@ import DataUtils from "./DataUtils";
 import DisplayUtils from "./DisplayUtils";
 import { DataUtls } from "../../utils/DataUtls";
 
+
+
+
+
 export default class Utils extends Phaser.Plugins.BasePlugin {
   /**
    * @constructor Creates an instance of the Utils plugin (just some common functionallity that is handly to have in a nice place.).
@@ -17,6 +21,10 @@ export default class Utils extends Phaser.Plugins.BasePlugin {
     this.data = new DataUtls();
     this.math = new MathUtils();
     this.display = new DisplayUtils();
+
+
+    //used for future scale factors (we re-rendereing ).
+    Utils.scaleFactor = 1;
   }
 
   /**
@@ -41,6 +49,22 @@ export default class Utils extends Phaser.Plugins.BasePlugin {
    * @memberof Utils
    */
   public display: DisplayUtils;
+
+
+  /**
+   * the scale factor used when converting with StaticFnctions;
+   *
+   * @type {number}
+   * @memberof Utils
+   */
+  public static scaleFactor: number;
+
+  /* I Will define other static functions hear just because of the noce namesapce access */
+
+
+
+
+  //
 
   /* we can still define util functions here if they don't belong anywhere specific.*/
 

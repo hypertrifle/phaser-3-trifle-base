@@ -276,8 +276,8 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
 
     let styleString =
-      "-ms-transform-origin: middle center; -webkit-transform-origin: middle center;" +
-      " -moz-transform-origin: middle center; -o-transform-origin: middle center; transform-origin: middle center;" +
+      "-ms-transform-origin: top center; -webkit-transform-origin: top center;" +
+      " -moz-transform-origin: top center; -o-transform-origin: top center; transform-origin: top center;" +
       " -ms-transform: scale(" +
       requiredScaling +
       "); -webkit-transform: scale3d(" +

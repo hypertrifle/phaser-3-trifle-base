@@ -14,7 +14,7 @@
       },
 
       "titleScene": {
-            "backgroundColor": "0x450710"
+            "backgroundColor": "0xFF00AA"
       },
 
       /*scaling options used for changing size etc*/
@@ -46,10 +46,10 @@
             "settings": {
                   "radius": 0,
                   "colors": {
-                        "primary": "#F34939",
-                        "secondary": "#FEBD19",
-                        "hover":  "#F25F52",
-                        "disabled": "#AAAAAA"
+                        "primary": "#000000",
+                        "secondary": "#000000",
+                        "hover":  "#0000000",
+                        "disabled": "#000000"
                   }
             },
             "buttons": {}

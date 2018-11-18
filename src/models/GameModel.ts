@@ -2,6 +2,7 @@ import SaveDataModel from "./SaveModel";
 import { TitleSceneModel } from "../../KEEP/TitleSceneModel";
 import UIModel from "./UIModels";
 
+
 /**
  * Data Model - this holds all information that may be required, some
  * content.json AND setting.json files, and will be ready after the boot state has completed,
@@ -32,6 +33,8 @@ export default class GameModel {
   userInterface: UIModel;
   fonts: Array<Phaser.GameObjects.Text.TextStyle>;
 
+  racingModel:RacingModel = new RacingModel();
+
 }
 
 /* small so just whack it here */
@@ -41,4 +44,13 @@ export class ScalingModel {
   shouldForceLandscaprOnMobile: boolean = true;
   maxWidth: number = 1280;
   maxHeight: number = 720;
+}
+
+export class RacingModel {
+  
+  
+  
+  constructor(){
+
+  }
 }
