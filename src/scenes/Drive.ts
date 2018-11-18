@@ -1,6 +1,8 @@
 import BaseScene from "./BaseScene";
 import Tools from "../plugins/global/Tools";
 import { Scene } from "phaser";
+import { platform } from "os";
+import { config } from "shelljs";
 
 
 interface SceneryConfig extends GameObjectConfig {
@@ -12,13 +14,37 @@ interface SceneryConfig extends GameObjectConfig {
 export class Scenery extends Phaser.GameObjects.Image {
 
   offset:Phaser.Geom.Point;
-
+  isLeft:boolean;
+  frameName:string;
   constructor(scene:Scene,config:SceneryConfig){
-    super(scene,0,0,config.frame);
+    super(scene,500,20,config.frame);
+
+    this.isLeft = config.isLeft || false;
+
     //now what
 
     this.offset = config.offset;
+    this.frameName = config.frame;
 
+    scene.add.existing(this);
+  }
+
+  updatePosition() {
+
+    this.alpha = Math.max(0, (this.y/20),Math.min(1));
+
+    this.flipX = (this.frameName === "palm") && !this.isLeft;
+    this.flipY = true;
+
+    let center = (this.isLeft)?260:340;
+    
+    let j = this.y - 360;
+
+    let roadScale:number = 1/(j/100)+0.35;
+
+        this.setScale(roadScale);
+    
+    this.x = center;
 
   }
 }
@@ -33,7 +59,7 @@ export default class DriveScene extends BaseScene {
   private _currentLapTime:number = 0;
   private _currentDistance:number = 0;
 
-  private _scenery:Phaser.GameObjects.Image[];
+  private _scenery:Scenery[];
   private roadSprites:Phaser.GameObjects.Image[];
   private _bgSprites:Phaser.GameObjects.Image[];
 
@@ -57,6 +83,10 @@ export default class DriveScene extends BaseScene {
     this.load.image("road", "assets/img/road_alt.png");
     this.load.image("bg_strip", "assets/img/bgstrip1.png");
     this.load.image("bg_stripAlt", "assets/img/bgstrip2.png");
+
+
+    this.load.image("palm", "assets/img/palm_shadow_left.png");
+    this.load.image("billboard", "assets/img/sign_shadow_right.png");
 
   }
 
@@ -83,6 +113,17 @@ export default class DriveScene extends BaseScene {
     let frames:string[] = ["palm_shadow_left.png","palm_shadow_left.png","palm_shadow_left.png","palm_shadow_left.png"]
 
 
+    for(var i = 0; i < 20; i ++){
+      let s = new Scenery(this, {
+        isLeft: i%3==0,
+        frame : (i%50 ===0)? "billboard" : "palm",
+        offset : new Phaser.Geom.Point((Math.random()*20) -10, (Math.random()*20) -10)
+      })
+
+      s.y = (360/20)*i;
+
+      this._scenery.push(s);
+    }
   }
 
   renderStraightRoad(){
@@ -114,8 +155,6 @@ export default class DriveScene extends BaseScene {
       road.scaleX = roadScale;
       this.roadSprites.push(road);
       this._bgSprites.push(bg_strip);
-
-
     }
   }
 
@@ -151,6 +190,23 @@ export default class DriveScene extends BaseScene {
           s.x = 320 + Math.sin((time +(j*delta*0.4)) /600)*25;
 
       }
+
+
+      for(var i:number =0; i < this._scenery.length;i ++){
+        let s
+        = this._scenery[i];
+
+        s.y +=speed;
+
+        if(s.y >360){
+          s.y -= this.roadSprites.length;
+        }
+
+        s.updatePosition();
+
+
+      }
+
 
 
   }
