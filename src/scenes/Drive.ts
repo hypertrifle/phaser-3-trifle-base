@@ -20,6 +20,13 @@ export class Scenery extends Phaser.GameObjects.Image {
     super(scene,500,20,config.frame);
 
     this.isLeft = config.isLeft || false;
+    if(this.isLeft){
+      this.setOrigin(0,0.5);
+    }
+    if(!this.isLeft){
+      this.setOrigin(1,0.5);
+    }
+    
 
     //now what
 
@@ -27,26 +34,33 @@ export class Scenery extends Phaser.GameObjects.Image {
     this.frameName = config.frame;
 
     scene.add.existing(this);
+
   }
 
-  updatePosition() {
+  updatePosition(time:number, delta:number) {
 
-    this.alpha = Math.max(0, (this.y/20),Math.min(1));
+    // this.alpha = Math.max(0, (this.y/20),Math.min(1));
 
     this.flipX = (this.frameName === "palm") && !this.isLeft;
     this.flipY = true;
 
-    let center = (this.isLeft)?260:340;
+    let center = (this.isLeft)?320:320;
     
     let j = this.y - 360;
 
     let roadScale:number = 1/(j/100)+0.35;
 
         this.setScale(roadScale);
-    
-    this.x = center;
 
-  }
+         if(this.isLeft){
+           this.x = 220 + Math.sin((time +((j/2)*delta*0.4)) /600)*25;
+           this.x -= (this.y/this.y) - this.offset.x;
+         }else{
+          this.x = 420 + Math.sin((time +((j/2)*delta*0.4)) /600)*25;
+          this.x += (this.y/this.y) + this.offset.x;
+       }
+        }
+    
 }
 
 const SKYLINE:number = 100;
@@ -113,15 +127,15 @@ export default class DriveScene extends BaseScene {
     let frames:string[] = ["palm_shadow_left.png","palm_shadow_left.png","palm_shadow_left.png","palm_shadow_left.png"]
 
 
-    for(var i = 0; i < 20; i ++){
+    for(var i = 0; i < 100; i ++){
       let s = new Scenery(this, {
         isLeft: i%3==0,
         frame : (i%50 ===0)? "billboard" : "palm",
-        offset : new Phaser.Geom.Point((Math.random()*20) -10, (Math.random()*20) -10)
+        offset : new Phaser.Geom.Point((Math.random()*100),0)
       })
 
       s.y = (360/20)*i;
-
+      s.alpha = 0.4;
       this._scenery.push(s);
     }
   }
@@ -167,6 +181,7 @@ export default class DriveScene extends BaseScene {
   }
 
   update(time: number, delta: number) {
+    
     super.update(time, delta);
 
     let speed = 5;
@@ -184,7 +199,7 @@ export default class DriveScene extends BaseScene {
 
          let j = s.y - 360;
 
-      let roadScale:number = 1/(j/100)+0.35;
+      let roadScale:number = (1/(j/100)+0.35)*0.5;
 
           s.scaleX = roadScale;
           s.x = 320 + Math.sin((time +(j*delta*0.4)) /600)*25;
@@ -202,7 +217,7 @@ export default class DriveScene extends BaseScene {
           s.y -= this.roadSprites.length;
         }
 
-        s.updatePosition();
+        s.updatePosition(time,delta);
 
 
       }
