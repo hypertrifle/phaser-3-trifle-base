@@ -33,7 +33,7 @@ export default class GameModel {
   userInterface: UIModel;
   fonts: Array<Phaser.GameObjects.Text.TextStyle>;
 
-  racingModel:RacingModel = new RacingModel();
+  racingModel: RacingModel = new RacingModel();
 
 }
 
@@ -47,10 +47,10 @@ export class ScalingModel {
 }
 
 export class RacingModel {
-  
-  
-  
-  constructor(){
+
+
+
+  constructor() {
 
   }
 }

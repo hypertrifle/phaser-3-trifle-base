@@ -23,7 +23,7 @@ export default class Utils extends Phaser.Plugins.BasePlugin {
     this.display = new DisplayUtils();
 
 
-    //used for future scale factors (we re-rendereing ).
+    // used for future scale factors (we re-rendereing ).
     Utils.scaleFactor = 1;
   }
 

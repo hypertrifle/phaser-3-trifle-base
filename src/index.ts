@@ -11,12 +11,12 @@ import Boot from "./scenes/Boot";
 // some development options, this console.clear resets a developer console on webpack refresh which I find handy.
 console.clear();
 const DEBUG: boolean = true;
-var Game:Phaser.Game;
-const DYNAMIC_PHASER_CANVAS:boolean = false; 
+let Game: Phaser.Game;
+const DYNAMIC_PHASER_CANVAS: boolean = false;
 
 
 
-var container:HTMLElement;
+let container: HTMLElement;
 // @ts-ignore
 const config: GameConfig = {
   title: "Game", // apart from this
@@ -27,7 +27,7 @@ const config: GameConfig = {
     width: 640,
     height: 360
 },
-  
+
   zoom: 4,
   render: {
     pixelArt: true,
@@ -63,7 +63,7 @@ window.onload = () => {
 
   container = document.getElementById("container");
 
-  
+
   if (DEBUG)
   console.log("final game config",config);
 
@@ -72,6 +72,6 @@ window.onload = () => {
 
 
 window.onresize = () => {
-  if(DYNAMIC_PHASER_CANVAS)
+  if (DYNAMIC_PHASER_CANVAS)
   Game.resize(container.clientWidth, container.clientHeight);
 };
