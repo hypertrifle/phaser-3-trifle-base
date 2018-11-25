@@ -1,9 +1,8 @@
 {
-    "name": "Spymaster - v0.0.1ALPHA",
-    "short_name": "Spymaster",
+    "name": "HYPERTRIFLE - $title$ - v0.0.1ALPHA",
+    "short_name": "$title$",
     "start_url": ".",
     "display": "fullscreen",
     "background_color": "#000",
-    "description": "Agent Handler Extrordinaire"
-
+    "description": "some bleddy unit"
   }

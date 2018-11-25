@@ -1,99 +1,32 @@
 import BaseScene from "./BaseScene";
 import Tools from "../plugins/global/Tools";
-import { Scene } from "phaser";
+import { Scene, Cameras } from "phaser";
 import { platform } from "os";
 import { config } from "shelljs";
-
-
-interface SceneryConfig extends GameObjectConfig {
-  frame: string;
-  offset: Phaser.Geom.Point;
-  isLeft?: boolean;
-  totalBands: number;
-  }
-
-export class Scenery extends Phaser.GameObjects.Image {
-
-  offset: Phaser.Geom.Point;
-  isLeft: boolean;
-  frameName: string;
-  totalBands: number;
-  constructor(scene: Scene,config: SceneryConfig) {
-    super(scene,500,20,config.frame);
-
-    this.totalBands = config.totalBands;
-
-    this.isLeft = config.isLeft || false;
-    if (this.isLeft) {
-      this.setOrigin(0,0.5);
-    }
-    if (!this.isLeft) {
-      this.setOrigin(1,0.5);
-    }
-
-
-    // now what
-
-    this.offset = config.offset;
-    this.frameName = config.frame;
-
-    scene.add.existing(this);
-
-  }
-
-
-
-  positionScale(j: number, total: number): number {
-    return 0;
-  }
-
-  updatePosition(time: number, delta: number) {
-
-    // this.alpha = Math.max(0, (this.y/20),Math.min(1));
-
-    this.flipX = (this.frameName === "palm") && !this.isLeft;
-    this.flipY = true;
-
-    let center = (this.isLeft) ? 320 : 320;
-
-    let j = this.y - 360;
-
-    // let roadScale:number = 0.5 * (this.totalBands/(j*2));
-    let roadScale: number = 1 - ( (j / (this.totalBands * 1.05 )) * -1 );
-
-        // console.log(roadScale);
-        this.setScale(roadScale * 2, -roadScale * 4);
-        if (this.isLeft) {
-          this.x = 300 - (roadScale * 1000) - this.offset.x;
-
-        } else {
-          this.x = 330 + (roadScale * 1000) + this.offset.x;
-
-        }
-
-
-        //  if(this.isLeft){
-        //   this.x = 320 + (roadScale*500 - this.offset.x);
-        //  }else{
-          // this.x = 320 + (roadScale*500 + this.offset.x);
-      //  }
-      //   }
-  }
-}
+import Scenery from "../components/race/Scenery";
+import TrackSystem from "../components/race/TrackSystem";
+import { ControlSystem } from "../components/race/Controls";
+import Car from "../components/race/Car";
 
 const SKYLINE: number = 100;
 
 export default class DriveScene extends BaseScene {
 
-  private _car: Phaser.GameObjects.Sprite;
+  private _track:TrackSystem;
+  private _controls:ControlSystem;
+
+  
   private _skyBox: Phaser.GameObjects.Image;
-  private _terrain: Phaser.GameObjects.Graphics;
+  private _scenery: Scenery[];
+  private _car: Car;
+
+
+  private _roadSprites: Phaser.GameObjects.Image[];
+  private _bgSprites: Phaser.GameObjects.Image[];
+
   private _currentLapTime: number = 0;
   private _currentDistance: number = 0;
 
-  private _scenery: Scenery[];
-  private roadSprites: Phaser.GameObjects.Image[];
-  private _bgSprites: Phaser.GameObjects.Image[];
 
   // private _scenery:
 
@@ -104,6 +37,14 @@ export default class DriveScene extends BaseScene {
       active: false
     });
     console.log("DriveScene::constructor");
+
+    this._track = new TrackSystem();
+    this._controls = new ControlSystem();
+
+    this._roadSprites = [];
+    this._bgSprites = [];
+    this._scenery = [];
+
   }
 
   preload() {
@@ -124,32 +65,28 @@ export default class DriveScene extends BaseScene {
 
   create() {
 
-    this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#00C0FF");
     console.log("DriveScene::create");
-
+    this.cameras.main.backgroundColor = Phaser.Display.Color.HexStringToColor("#00C0FF");
     super.create();
+    this.resetGraphicItems();
 
-    // this
-
-
-    this.roadSprites = [];
-    this._bgSprites = [];
-    this._scenery = [];
-    this.resetGraphics();
-
+    //test
     this.renderStraightRoad();
-    this._car = this.add.sprite(320,270,"car").setScale(2);
+
+    //car
+    this._car = new Car(this, {
+      positionFromBottom:60
+    });
 
     // generate the side scenerey.
-
-
 
     for (let i = 0; i < 300; i ++) {
       let s = new Scenery(this, {
         isLeft: i % 2 === 0,
         frame : (i % 50 === 0) ? "billboard" : "palm",
         offset : new Phaser.Geom.Point((Math.random() * 200),0),
-        totalBands: 360 - SKYLINE + 1
+        totalBands: 360 - SKYLINE + 1,
+        owner:this
       });
 
       s.y = (360 / 20) * i;
@@ -185,14 +122,14 @@ export default class DriveScene extends BaseScene {
 
       // road.setScale(roadScale);
       road.scaleX = roadScale;
-      this.roadSprites.push(road);
+      this._roadSprites.push(road);
       this._bgSprites.push(bg_strip);
     }
   }
 
 
 
-  resetGraphics() {
+  resetGraphicItems() {
     this._skyBox = this.add.sprite(320,SKYLINE,"skyblok");
     this._skyBox.setOrigin(0.5,1);
 
@@ -205,13 +142,13 @@ export default class DriveScene extends BaseScene {
     let speed = 8;
 
       for (let i: number = 0; i < this._bgSprites.length;i ++) {
-          let s = this.roadSprites[i];
+          let s = this._roadSprites[i];
           let b = this._bgSprites[i];
           s.y += speed;
           b.y += speed;
           if (s.y > 360) {
-            s.y -= this.roadSprites.length;
-            b.y -= this.roadSprites.length;
+            s.y -= this._roadSprites.length;
+            b.y -= this._roadSprites.length;
           }
 
 
@@ -236,7 +173,7 @@ export default class DriveScene extends BaseScene {
         s.y += speed / 2;
 
         if (s.y > 360) {
-          s.y -= this.roadSprites.length;
+          s.y -= this._roadSprites.length;
         }
 
         s.updatePosition(time,delta);
