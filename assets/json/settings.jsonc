@@ -21,9 +21,9 @@
       "scaling": {
             "expandToParent": true,
             "shouldForceOrientationOnMobile": true,
-            "shouldForceLandscaprOnMobile": true,
-            "maxWidth": 1280,
-            "maxHeight": 720
+            "shouldForceLandscaprOnMobile": true
+            // "maxWidth": 1280,
+            // "maxHeight": 720
       },
 
       /* Heads Up / in game UI settings.*/

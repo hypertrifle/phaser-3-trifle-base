@@ -42,8 +42,8 @@ export class ScalingModel {
   expandToParent: boolean = true;
   shouldForceOrientationOnMobile: boolean = true;
   shouldForceLandscaprOnMobile: boolean = true;
-  maxWidth: number = 1280;
-  maxHeight: number = 720;
+  maxWidth: number|null = 1280;
+  maxHeight: number|null = 720;
 }
 
 export class RacingModel {
