@@ -128,12 +128,17 @@ body {
 #container, #orientation {
     top:0; left:0; right:0; bottom: 0;
     position: absolute;
-    /* display: flex;
-    flex-direction: row;
-    justify-content: center;
+    overflow: visible !important;
+    display: flex;
     align-items: center;
-    align-content: center; */
+    justify-content: center;
 }
+
+canvas {
+    position: absolute;
+    bottom: 0;
+}
+
 
 #orientation {
     font-size:10em;
