@@ -43,7 +43,7 @@ export class ViewPortSettings {
 export class GameplaySettings {
   maxAccellerationPerSecond:number = 1;
   slowDownScalar:number = 0.9;
-  maxVelocity:number = 100;
+  maxVelocity:number = 16;
   turnVelocityScalar:number = 0.7;
   currentVelocity:number = 0.5;
   sceneryAmount:number  = 200;
@@ -74,11 +74,26 @@ export class GameplaySettings {
 
     
      this.trackData = [];
-     this.trackData.push({trackDistance:100, maxXoffset:90, trackPosition: 100});
-     this.trackData.push({trackDistance:200, maxXoffset:-650, trackPosition: 500});
-     this.trackData.push({trackDistance:800, maxXoffset:200, trackPosition: 1500});
+    this.generateRandomTrack();
 
 
+    }
+
+
+
+    generateRandomTrack() {
+      this.trackData.push({trackDistance:100, maxXoffset:90, trackPosition: 100});
+
+      for(var i = 0 ; i < 50;i++){
+        let previous = this.trackData[i];
+        let track =  {
+          trackPosition: previous.trackPosition + (previous.trackDistance*2) + Math.random()*1000,
+          maxXoffset: (Math.random()-0.5)* 500,
+          trackDistance : Math.random()*600 + 200
+        }
+
+        this.trackData.push(track);
+      }
     }
 
 

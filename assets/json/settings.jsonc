@@ -21,9 +21,9 @@
       "scaling": {
             "expandToParent": true,
             "shouldForceOrientationOnMobile": true,
-            "shouldForceLandscaprOnMobile": true,
-            "maxWidth": 640,
-            "maxHeight": 360
+            "shouldForceLandscaprOnMobile": true
+            // "maxWidth": 640,
+            // "maxHeight": 360
       },
 
       /* Heads Up / in game UI settings.*/
@@ -85,6 +85,20 @@
                   "fontWeight": "700",
                   "wordWrap": true,
                   "wordWrapWidth": 900
+            },
+            "speed": {
+                  "font": "BIT",
+                  "fontSize": "16px",
+                  "fill": "#ffffff",
+                  "align": "left",
+                  "fontWeight": "700"
+            },
+            "time": {
+                  "font": "BIT",
+                  "fontSize": 24,
+                  "fill": "#ffffff",
+                  "align": "left",
+                  "fontWeight": "700"
             }
       }
 }

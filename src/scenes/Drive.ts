@@ -7,6 +7,7 @@ import Scenery from "../components/race/Scenery";
 import TrackSystem, { ViewPortSettings } from "../components/race/TrackSystem";
 import { ControlSystem } from "../components/race/Controls";
 import Car from "../components/race/Car";
+import { runInThisContext } from "vm";
 
 export default class DriveScene extends BaseScene {
 
@@ -26,6 +27,10 @@ export default class DriveScene extends BaseScene {
   private _currentDistance: number = 0;
 
   dimensions:Phaser.Geom.Point;
+
+  private _currentTimeValue:number = 0;
+  private _currentTime:Phaser.GameObjects.Text;
+  private _currentSpeed:Phaser.GameObjects.Text;
 
 
   // private _scenery:
@@ -81,6 +86,8 @@ export default class DriveScene extends BaseScene {
     });
 
     this.BuildScenery();
+
+    this.buildUI();
   }
 
   private BuildScenery() {
@@ -96,6 +103,29 @@ export default class DriveScene extends BaseScene {
       s.alpha = 1;
       this._scenery.push(s);
     }
+  }
+
+  private buildUI(){
+
+      console.log(this.tools.data.getDataFor("fonts.speed"))
+
+
+    this._currentTime = this.add.text(this.dimensions.x - 5,5,"00:00",{
+      fontFamily: "BIT",
+      fontSize: "32px",
+      color: "#ffffff"
+  }
+);
+    this._currentSpeed = this.add.text(5,5,"100MPH", {
+      fontFamily: "BIT",
+      fontSize: "24px",
+      color: "#ffffff"
+  });
+    this._currentTime.setOrigin(1,0);
+    this._currentSpeed.setOrigin(0,0);
+
+    // this._currentSpeed.x = this.dimensions.x - this._currentSpeed.width - 2;
+  
   }
 
   resetGraphicItems() {
@@ -133,6 +163,7 @@ export default class DriveScene extends BaseScene {
   updatePhysics(time: number, delta: number){
 
     let changeInAccleration = this._controls.currentYVector * this._track.gameplay.maxAccellerationPerSecond*delta;
+
     
     if(changeInAccleration > 0 ) {
       //its breaking or declerating
@@ -144,10 +175,12 @@ export default class DriveScene extends BaseScene {
     }
 
     //topspeed
-    this._track.gameplay.currentVelocity = Math.min(this._track.gameplay.currentVelocity,8);
+    this._track.gameplay.currentVelocity = Math.min(this._track.gameplay.currentVelocity,this._track.gameplay.maxVelocity);
 
     //no reverse
     this._track.gameplay.currentVelocity = Math.max(this._track.gameplay.currentVelocity,0);
+
+    //apply any breaking from side of road();
 
 
 
@@ -157,7 +190,29 @@ export default class DriveScene extends BaseScene {
     // handle the horizontal car control.
     this._car.x += (this._controls.currentXVector * this._track.gameplay.turnVelocityScalar *delta);
     
+    //but we also want to apply any turning force.
+    this._car.x -= this._track.currentBendOffset*0.005*this._track.gameplay.currentVelocity;
+
+    //min and max then decelerate heavily
+
+    let bounds = 100;
+
+
+    if(this._car.x< bounds || this._car.x> this.dimensions.x-bounds){
+      if(this._car.x< this.dimensions.x/2){
+        this._car.x = bounds;
+      } else {
+        this._car.x= this.dimensions.x-bounds;
+
+      }
+
+      
+      this._track.gameplay.currentVelocity *= 0.98;
+    }
+
     
+    //TODO UPDATE VELOCITY ON ANYTHING ELSE
+
 
   }
   updateRender(time: number, delta: number){
@@ -242,12 +297,27 @@ export default class DriveScene extends BaseScene {
   }
 
   updateUI(time: number, delta: number){
-      
+      this._currentTime.text = this.raceTime;
+      this._currentSpeed.text = Math.floor(this._track.gameplay.currentVelocity*14).toString()+ " KPH";
 
   }
+  pad(n:string, width:number, z?:string) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  }
 
+  get raceTime():string {
+    let seconds = Math.floor(this._currentTimeValue/1000);
+
+    return this.pad(Math.floor(seconds/60)+"",2)+":"+ this.pad((seconds%60).toString(),2)
+    
+    
+  }
 
   update(time: number, delta: number) {
+
+    this._currentTimeValue += delta;
 
     super.update(time, delta);
     this._controls.update(time, delta, this._car);

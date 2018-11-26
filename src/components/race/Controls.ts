@@ -25,30 +25,18 @@ export class ControlSystem {
    accelleratorButton:Boolean = false;
    brakeButton:Boolean = false;
    cursors:Phaser.Input.Keyboard.CursorKeys;
+
+   cursorValues:Phaser.Geom.Point;
    
    
    get currentXVector():number {
-      if(this.cursors.left.isDown){
-        return -1;
-      } else if (this.cursors.right.isDown) {
-        return 1;
-      }
+     return this.cursorValues.x;
       
-
-      
-
-      return 0;
-   }  
+    
+  }  
    get currentYVector():number {
-    if(this.cursors.up.isDown){
-      return 1;
-    } else if (this.cursors.down.isDown) {
-      return -1;
-    }
+    return this.cursorValues.y;
 
-
-
-    return 0;
    }
 
 
@@ -56,6 +44,8 @@ export class ControlSystem {
       console.log("ControlSystem::contructor");
       this._viewPort = viewportSettings;
       this.settings = new ControlSystemSettings();
+
+      this.cursorValues = new Phaser.Geom.Point(0,0);
 
       if(this.settings.mode === ControlMode.TANK){
         scene.input.on("touchdown", this.pointerDown.bind(this));
@@ -71,10 +61,27 @@ export class ControlSystem {
    }
 
    update(time: number, delta: number, car:Car){
-
+      // console.log("controls update");
       if(this.settings.mode === ControlMode.TANK){
 
       }
+
+      if(this.cursors.up.isDown){
+        this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05);
+      } else if (this.cursors.down.isDown) {
+        this.cursorValues.y = Math.max(-1, this.cursorValues.y-0.05);
+      } else {
+        this.cursorValues.y *= 0.8;
+      }
+
+      if(this.cursors.right.isDown){
+        this.cursorValues.x = Math.min(1, this.cursorValues.x+0.01);
+      } else if (this.cursors.left.isDown) {
+        this.cursorValues.x = Math.max(-1, this.cursorValues.x-0.01);
+      }else {
+        this.cursorValues.x *= 0.5;
+      }
+
 
    }
  
