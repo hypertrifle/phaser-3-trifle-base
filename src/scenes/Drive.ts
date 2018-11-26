@@ -4,7 +4,7 @@ import { Scene, Cameras } from "phaser";
 import { platform } from "os";
 import { config } from "shelljs";
 import Scenery from "../components/race/Scenery";
-import TrackSystem, { ViewPortSettings } from "../components/race/TrackSystem";
+import TrackSystem, { ViewPortSettings, TrackCorner } from "../components/race/TrackSystem";
 import { ControlSystem } from "../components/race/Controls";
 import Car from "../components/race/Car";
 import { runInThisContext } from "vm";
@@ -45,7 +45,7 @@ export default class DriveScene extends BaseScene {
     this.dimensions = new Phaser.Geom.Point(640, 360);
     
     this.viewPort = new ViewPortSettings(this.dimensions);
-    this._track = new TrackSystem(this.viewPort);
+    this._track = new TrackSystem(this.viewPort, this);
 
     this.trackSegments = [];
     this._scenery = [];
@@ -67,12 +67,20 @@ export default class DriveScene extends BaseScene {
 
     this.load.image("palm", "assets/img/palm_shadow_left.png");
     this.load.image("billboard", "assets/img/sign_shadow_right.png");
+    this.load.image("button", "assets/img/buttonOne.png");
+
+    this.load.image("replay", "assets/img/replay-button.png");
+    this.load.image("highscores", "assets/img/highscores-button.png");
 
   }
 
   create() {
     super.create();
-    this._controls = new ControlSystem(this,this.viewPort);
+
+    this._track.trackData = this.tools.data.getDataFor("track") as TrackCorner[];
+    this._track.gameplay.currentVelocity = 0;
+
+    console.log("TRAK LLOADED",this._track.trackData )
 
     console.log("DriveScene::create");
 
@@ -88,6 +96,10 @@ export default class DriveScene extends BaseScene {
     this.BuildScenery();
 
     this.buildUI();
+    this._controls = new ControlSystem(this,this.viewPort);
+
+    // this.win();
+
   }
 
   private BuildScenery() {
@@ -110,10 +122,13 @@ export default class DriveScene extends BaseScene {
       console.log(this.tools.data.getDataFor("fonts.speed"))
 
 
-    this._currentTime = this.add.text(this.dimensions.x - 5,5,"00:00",{
+    this._currentTime = this.add.text(this.dimensions.x - 130,5,"00:00:00",{
       fontFamily: "BIT",
       fontSize: "32px",
-      color: "#ffffff"
+      color: "#ffffff",
+      textAlign: "center"
+
+      
   }
 );
     this._currentSpeed = this.add.text(5,5,"100MPH", {
@@ -121,7 +136,7 @@ export default class DriveScene extends BaseScene {
       fontSize: "24px",
       color: "#ffffff"
   });
-    this._currentTime.setOrigin(1,0);
+    this._currentTime.setOrigin(0,0);
     this._currentSpeed.setOrigin(0,0);
 
     // this._currentSpeed.x = this.dimensions.x - this._currentSpeed.width - 2;
@@ -246,12 +261,14 @@ export default class DriveScene extends BaseScene {
       s.x = this._track.getPositionForSegment(trakPositionFromCar,this.trackSegments.length); //position the road parts based on bend
       
       //set correct texture and tinting for the banding effect.
-      if (Math.floor(i+ this._track.currenDistance)  % this.viewPort.alternameAmount(i) === 0) {
-              alt = !alt;
-            }
+      Math.sign(Math.sin(this._track.currenDistance-i*20))
+      
+      let alt = (Math.sign(Math.sin(i*0.2+this._track.currenDistance)) === 1);
+
+
 
       s.tint = (alt)? 0xffffff:0xeeeeee;
-      // b.tint = (alt)? 0xffffff:0xeeeeee;
+      b.tint = (alt)? 0xffffff:0xeeeeee;
       
 
 
@@ -308,25 +325,95 @@ export default class DriveScene extends BaseScene {
   }
 
   get raceTime():string {
+    let ms = Math.floor(this._currentTimeValue/10)%100;
     let seconds = Math.floor(this._currentTimeValue/1000);
 
-    return this.pad(Math.floor(seconds/60)+"",2)+":"+ this.pad((seconds%60).toString(),2)
+    return this.pad(Math.floor(seconds/60)+"",2)+":"+ this.pad((seconds%60).toString(),2) + ":" + this.pad(ms.toString(),2);
     
     
   }
 
   update(time: number, delta: number) {
 
+  
+
+
+    if(
+      this._track.currenDistance > 31955 && !this.ended
+    ){
+      this.win();
+    }
+
     this._currentTimeValue += delta;
 
     super.update(time, delta);
-    this._controls.update(time, delta, this._car);
+    this._controls.update(time, delta, this._car, this);
     this.updatePhysics(time, delta);
     this.updateRender(time, delta);
+
+    if(this.ended){
+      return;
+    }
     this.updateUI(time, delta);
 
-    this.scene.switch("boot");
+    // this.scene.switch("boot");
   }
+
+  win() {
+    console.log("END OF LAP!")
+    this.ended = true;
+
+    this.wingroup = this.add.container(this.dimensions.x/2, this.dimensions.y/2);
+
+    let bg = this.add.graphics({});
+    bg.fillStyle(0x000000, 0.8);
+    bg.fillRect(-300,-160,600,320);
+
+    this.wingroup.add(bg);
+
+    let scoreText = this.add.text(0,0,this.raceTime,{
+      fontFamily: "BIT",
+      fontSize: "64px",
+      color: "#ffffff",
+      textAlign: "center",
+    })
+    scoreText.setOrigin(0.5,0.5);
+
+  this.wingroup.add(scoreText);
+
+  //buttons
+
+  let replaybutton = this.add.image(-160,100,"replay");
+  let highscores = this.add.image(160,100,"highscores");
+
+  replaybutton.setInteractive();
+  // highscores.setInteractive();
+  
+  replaybutton.on("pointerup", this.reset.bind(this));
+ 
+
+
+  this.wingroup.add(replaybutton);
+  this.wingroup.add(highscores);
+
+
+  }
+
+  wingroup:Phaser.GameObjects.Container|null;
+
+  reset() {
+      if(this.wingroup){
+        this.wingroup.destroy();
+      }
+
+      this. _currentTimeValue = 0;
+      this._track.currenDistance = 0;
+      this._track.gameplay.currentVelocity = 0;
+
+      this.ended = false;
+  }
+
+  ended:boolean = false;
 
   shutdown() {
     // drop references to anything we have in create

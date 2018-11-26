@@ -26,10 +26,10 @@ export default class Scenery extends Phaser.GameObjects.Image {
  
      this.isLeft = config.isLeft || false;
      if (this.isLeft) {
-       this.setOrigin(0,1);
+       this.setOrigin(0,0);
      }
      if (!this.isLeft) {
-       this.setOrigin(1,1);
+       this.setOrigin(1,0);
      }
  
  

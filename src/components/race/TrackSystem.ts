@@ -1,3 +1,5 @@
+import DriveScene from "../../scenes/Drive";
+
 export interface TrackCorner {
   trackPosition:number;
   trackDistance:number;
@@ -7,7 +9,7 @@ export interface TrackCorner {
 
 export class ViewPortSettings {
 
-  horizonHeight:number = 160;
+  horizonHeight:number = 120;
   minXRoadWith:number = 100;
   maxMoadWidth:number = 600;
   linearScaling:boolean = true;
@@ -60,21 +62,24 @@ export class GameplaySettings {
    gameplay:GameplaySettings;
    private _viewPort:ViewPortSettings;
    trackData:TrackCorner[];
+   owner:DriveScene;
 
  
  
  
 
    
-   constructor(viewportSettings:ViewPortSettings){
+   constructor(viewportSettings:ViewPortSettings, owner:DriveScene){
      console.log("ControlSystem::contructor");
      this.gameplay = new GameplaySettings();
      this._viewPort = viewportSettings;
+     this.owner = owner;
 
 
+
+    // console.log(this.trackData);
+  
     
-     this.trackData = [];
-    this.generateRandomTrack();
 
 
     }
@@ -84,16 +89,18 @@ export class GameplaySettings {
     generateRandomTrack() {
       this.trackData.push({trackDistance:100, maxXoffset:90, trackPosition: 100});
 
-      for(var i = 0 ; i < 50;i++){
+      for(var i = 0 ; i < 20;i++){
         let previous = this.trackData[i];
         let track =  {
-          trackPosition: previous.trackPosition + (previous.trackDistance*2) + Math.random()*1000,
-          maxXoffset: (Math.random()-0.5)* 500,
-          trackDistance : Math.random()*600 + 200
+          trackPosition: Math.floor(previous.trackPosition + (previous.trackDistance*2) + Math.random()*1000),
+          maxXoffset: Math.floor((Math.random()-0.5)* 300),
+          trackDistance : Math.floor(Math.random()*600 + 200)
         }
 
         this.trackData.push(track);
       }
+
+      console.log(JSON.stringify(this.trackData));
     }
 
 
@@ -146,13 +153,14 @@ export class GameplaySettings {
 
      return (this.currentBendOffset*ratio) + this._viewPort.gameDimensions.x/2;
    }
+   
 
    getSceneryOffsetMin(y:number,total:number, flipped:boolean, offset:number):number{
 
     let ratio = (this.easeInQuad(y/total));
     let center:number =  this.getPositionForSegment(y,total);
 
-    let roadOffset:number =  (this.getScaleForSegment(y,total)*500);
+    let roadOffset:number =  (this.getScaleForSegment(y,total)*600);
 
     let randomOffset:number = (this.getScaleForSegment(y,total)*offset);
 
@@ -169,7 +177,7 @@ export class GameplaySettings {
    } 
 
    getSceneryScale(y:number, total:number){
-     return  1 - (y/total);
+     return  (1 - (y/total))*2;
 
 
 

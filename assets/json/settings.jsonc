@@ -57,6 +57,92 @@
       "test": {
             "priority": "settings"
       },
+
+      "track" : [{
+            "trackDistance": 100,
+            "maxXoffset": 90,
+            "trackPosition": 100
+         }, {
+            "trackPosition": 999,
+            "maxXoffset": -1,
+            "trackDistance": 228
+         }, {
+            "trackPosition": 2367,
+            "maxXoffset": 88,
+            "trackDistance": 549
+         }, {
+            "trackPosition": 3845,
+            "maxXoffset": 19,
+            "trackDistance": 339
+         }, {
+            "trackPosition": 4999,
+            "maxXoffset": -49,
+            "trackDistance": 686
+         }, {
+            "trackPosition": 6651,
+            "maxXoffset": -35,
+            "trackDistance": 598
+         }, {
+            "trackPosition": 8004,
+            "maxXoffset": -136,
+            "trackDistance": 710
+         }, {
+            "trackPosition": 9453,
+            "maxXoffset": -85,
+            "trackDistance": 252
+         }, {
+            "trackPosition": 10273,
+            "maxXoffset": 135,
+            "trackDistance": 418
+         }, {
+            "trackPosition": 11385,
+            "maxXoffset": -4,
+            "trackDistance": 748
+         }, {
+            "trackPosition": 13744,
+            "maxXoffset": 15,
+            "trackDistance": 795
+         }, {
+            "trackPosition": 16198,
+            "maxXoffset": -71,
+            "trackDistance": 240
+         }, {
+            "trackPosition": 17322,
+            "maxXoffset": -119,
+            "trackDistance": 740
+         }, {
+            "trackPosition": 19765,
+            "maxXoffset": -58,
+            "trackDistance": 468
+         }, {
+            "trackPosition": 21659,
+            "maxXoffset": -46,
+            "trackDistance": 632
+         }, {
+            "trackPosition": 23353,
+            "maxXoffset": 24,
+            "trackDistance": 385
+         }, {
+            "trackPosition": 24683,
+            "maxXoffset": 124,
+            "trackDistance": 661
+         }, {
+            "trackPosition": 26447,
+            "maxXoffset": 70,
+            "trackDistance": 661
+         }, {
+            "trackPosition": 28582,
+            "maxXoffset": -105,
+            "trackDistance": 792
+         }, {
+            "trackPosition": 30394,
+            "maxXoffset": 5,
+            "trackDistance": 712
+         }, {
+            "trackPosition": 31855,
+            "maxXoffset": -109,
+            "trackDistance": 603
+         }],
       /* our font definitions */
       "fonts": {
             "h1": {
