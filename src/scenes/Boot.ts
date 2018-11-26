@@ -223,11 +223,15 @@ export default class Boot extends BaseScene {
     // this.webFontsLoaded();
     // return;
 
-    // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
+    
+    console.log("Boot::create::webfotnsstarted");
+    
+    
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
+    // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
     WebFont.load({
       custom: {
-         families: ["pixel"]
+         families: ["pixel","BIT"]
       },
       active: this.webFontsLoaded.bind(this)
     });
@@ -239,6 +243,7 @@ export default class Boot extends BaseScene {
    * @memberof Boot
    */
   webFontsLoaded() {
+    console.log("Boot::create::webfotnsloaded");
     // lets generate this atlas.
     let svgAtlasTexture = this.textures.get("atlas.svg");
     let svgAtlasData = this.game.cache.json.get("atlas.json");

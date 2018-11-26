@@ -43,12 +43,12 @@ const config: GameConfig = {
       // console.warn('post callback', this);
     }
   },
-  // input: {
-  //   keyboard: true,
-  //   mouse: true,
-  //   touch: false,
-  //   gamepad: false
-  // },
+  input: {
+    keyboard: true,
+    mouse: true,
+    touch: true,
+    gamepad: false
+  },
   backgroundColor: 0x450710,
 
 };

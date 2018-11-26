@@ -26,10 +26,10 @@ export default class Scenery extends Phaser.GameObjects.Image {
  
      this.isLeft = config.isLeft || false;
      if (this.isLeft) {
-       this.setOrigin(0,0.5);
+       this.setOrigin(0,1);
      }
      if (!this.isLeft) {
-       this.setOrigin(1,0.5);
+       this.setOrigin(1,1);
      }
  
  
@@ -49,6 +49,13 @@ export default class Scenery extends Phaser.GameObjects.Image {
  
    positionScale(j: number, total: number): number {
      return 0;
+   }
+
+   moveAndReset(distanceToMove:number){
+     this.y += distanceToMove;
+     if(this.y - this.height > this.owner.dimensions.y){
+      this.y -=(this.owner.dimensions.y - this.owner.viewPort.horizonHeight + this.height);
+     }
    }
  
    updatePosition(time: number, delta: number) {

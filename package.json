@@ -1,5 +1,5 @@
 {
-  "name": "HYPERTRIFLE-PHASER-TEMPALTE",
+  "name": "hypertrifle-phaser-tempalte",
   "version": "1.1.0",
   "description": "A Phaser 3 Typescript Setup with useful common funtionallity",
   "main": "src/index.js",
