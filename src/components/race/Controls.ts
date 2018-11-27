@@ -6,54 +6,54 @@ enum ControlMode {
    CLASSIC = "CLASSIC",
    TANK = "TANK_STYLE"
    }
-   
+
    export class ControlSystemSettings {
-     mode:ControlMode;
-     verticleAnalougeMin:number = 0;
-     verticleAnalougeMax:number = 0;
-     horizontalAnalougeMin:number = 0;
-     horizontalAnalougeMax:number = 0;
+     mode: ControlMode;
+     verticleAnalougeMin: number = 0;
+     verticleAnalougeMax: number = 0;
+     horizontalAnalougeMin: number = 0;
+     horizontalAnalougeMax: number = 0;
    }
 
 export class ControlSystem {
-   settings:ControlSystemSettings;
-   private _viewPort:ViewPortSettings;
-   
-   leftAnalougePosition:number;
-   righAnalougePosition:number;
+   settings: ControlSystemSettings;
+   private _viewPort: ViewPortSettings;
 
-   steeringPosition:number;
-   accelleratorButton:Boolean = false;
-   brakeButton:Boolean = false;
-   cursors:Phaser.Input.Keyboard.CursorKeys;
+   leftAnalougePosition: number;
+   righAnalougePosition: number;
 
-   cursorValues:Phaser.Geom.Point;
-   
-   
-   get currentXVector():number {
+   steeringPosition: number;
+   accelleratorButton: Boolean = false;
+   brakeButton: Boolean = false;
+   cursors: Phaser.Input.Keyboard.CursorKeys;
+
+   cursorValues: Phaser.Geom.Point;
+
+
+   get currentXVector(): number {
      return this.cursorValues.x;
-      
-    
-  }  
-   get currentYVector():number {
+
+
+  }
+   get currentYVector(): number {
     return this.cursorValues.y;
 
    }
 
 
-   constructor(scene:Phaser.Scene, viewportSettings:ViewPortSettings){
+   constructor(scene: Phaser.Scene, viewportSettings: ViewPortSettings) {
       console.log("ControlSystem::contructor");
       this._viewPort = viewportSettings;
       this.settings = new ControlSystemSettings();
 
       this.cursorValues = new Phaser.Geom.Point(0,0);
 
-      if(this.settings.mode === ControlMode.TANK){
-        
+      if (this.settings.mode === ControlMode.TANK) {
+
       }
 
       this.cursors = scene.input.keyboard.createCursorKeys();
-      scene.input.addPointer(); //second pointer
+      scene.input.addPointer(); // second pointer
 
 
       this.leftButton = scene.add.image(0,0,"button");
@@ -75,60 +75,59 @@ export class ControlSystem {
 
    }
 
-   leftButtonValue:boolean = false;
-   rightButtonValue:boolean = false;
+   leftButtonValue: boolean = false;
+   rightButtonValue: boolean = false;
 
-   leftPointerDown(){
-     console.log("leftPointerDown")
+   leftPointerDown() {
+     console.log("leftPointerDown");
      this.leftButtonValue = true;
    }
 
-   leftPointerUp(){
-    console.log("leftPointerUp")
+   leftPointerUp() {
+    console.log("leftPointerUp");
     this.leftButtonValue = false;
 
   }
 
-   rightPointerDown(){
-     console.log("rightPointerDown")
+   rightPointerDown() {
+     console.log("rightPointerDown");
      this.rightButtonValue = true;
 
    }
 
-   rightPointerUp(){
-    console.log("rightPointerUp")
+   rightPointerUp() {
+    console.log("rightPointerUp");
     this.rightButtonValue = false;
 
   }
 
-   rightButton:Phaser.GameObjects.Image;
-   leftButton:Phaser.GameObjects.Image;
+   rightButton: Phaser.GameObjects.Image;
+   leftButton: Phaser.GameObjects.Image;
 
-   pointerDown(e:TouchEvent) {
+   pointerDown(e: TouchEvent) {
       console.log("TouchEvent",e);
    }
 
-   right:Phaser.Input.Pointer;
-   left:Phaser.Input.Pointer;
+   right: Phaser.Input.Pointer;
+   left: Phaser.Input.Pointer;
 
-   private registerTouchEventControl(pointer: Phaser.Input.Pointer, scene:DriveScene) {
+   private registerTouchEventControl(pointer: Phaser.Input.Pointer, scene: DriveScene) {
     if (pointer.downX < scene.dimensions.x / 2) {
-      //handle this as a left
+      // handle this as a left
       this.left = pointer;
-    }
-    else {
+    } else {
       this.right = pointer;
     }
   }
 
 
-   update(time: number, delta: number, car:Car, scene:DriveScene){
+   update(time: number, delta: number, car: Car, scene: DriveScene) {
       // console.log("controls update");
 
 
       //   if(scene.input.pointer1.isDown){
       //     this.registerTouchEventControl(scene.input.pointer1, scene);
-      //   } 
+      //   }
 
       //   if(scene.input.pointer2.isDown){
       //     this.registerTouchEventControl(scene.input.pointer1, scene);
@@ -139,7 +138,7 @@ export class ControlSystem {
 
 
 
-      //     /* 
+      //     /*
 
       //     let controlBounts:number = 50;
 
@@ -182,7 +181,7 @@ export class ControlSystem {
       //     this.cursorValues.x = Math.min(1, this.cursorValues.x-0.01);
       //   } else if(this.left.isDown && this.right.isDown) {
       //     this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05);
-          
+
       //   } else if(!this.left.isDown && !this.right.isDown) {
       //     this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05);
 
@@ -192,46 +191,46 @@ export class ControlSystem {
 
 
 
-      if(scene.game.device.os.iOS || scene.game.device.os.android){
+      if (scene.game.device.os.iOS || scene.game.device.os.android) {
 
-      if(this.leftButtonValue && this.rightButtonValue){
+      if (this.leftButtonValue && this.rightButtonValue) {
 
-        this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05);
+        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.05);
 
-      } else if(!this.leftButtonValue && !this.rightButtonValue) {
+      } else if (!this.leftButtonValue && !this.rightButtonValue) {
 
-        this.cursorValues.y = Math.max(-1, this.cursorValues.y-0.05);
+        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
 
-      }else if (this.leftButtonValue || this.rightButtonValue) {
-        this.cursorValues.y = Math.max(-1, this.cursorValues.y-0.05);
+      } else if (this.leftButtonValue || this.rightButtonValue) {
+        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
       } else {
         this.cursorValues.y *= 0.8;
 
       }
 
-      if(this.leftButtonValue && !this.rightButtonValue){
-        this.cursorValues.x = Math.max(-1, this.cursorValues.x-0.05);
+      if (this.leftButtonValue && !this.rightButtonValue) {
+        this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.05);
 
       } else if (!this.leftButtonValue && this.rightButtonValue) {
-        this.cursorValues.x = Math.min(1, this.cursorValues.x+0.05);
-      }else {
+        this.cursorValues.x = Math.min(1, this.cursorValues.x + 0.05);
+      } else {
         this.cursorValues.x *= 0.5;
       }
 
     } else {
-  if(this.cursors.up.isDown){
-        this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05);
+  if (this.cursors.up.isDown) {
+        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.05);
       } else if (this.cursors.down.isDown) {
-        this.cursorValues.y = Math.max(-1, this.cursorValues.y-0.05);
+        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
       } else {
         this.cursorValues.y *= 0.8;
       }
 
-      if(this.cursors.right.isDown){
-        this.cursorValues.x = Math.min(1, this.cursorValues.x+0.01);
+      if (this.cursors.right.isDown) {
+        this.cursorValues.x = Math.min(1, this.cursorValues.x + 0.01);
       } else if (this.cursors.left.isDown) {
-        this.cursorValues.x = Math.max(-1, this.cursorValues.x-0.01);
-      }else {
+        this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.01);
+      } else {
         this.cursorValues.x *= 0.5;
       }
 
@@ -241,13 +240,13 @@ export class ControlSystem {
 
 
 
-  
-     
-    
+
+
+
 
 
    }
- 
 
- 
+
+
  }

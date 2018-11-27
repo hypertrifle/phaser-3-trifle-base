@@ -161,7 +161,7 @@ export default class Boot extends BaseScene {
 
     // todo:
 
-    this.load.json("atlaspng.json", "assets/atlas/atlaspng.json"); // our png atlas
+    // this.load.json("atlaspng.json", "assets/atlas/atlaspng.json"); // our png atlas
 
     this.load.atlas('atlas.png', 'assets/atlas/atlaspng.png', 'assets/atlas/atlaspng.json');
 
@@ -223,10 +223,10 @@ export default class Boot extends BaseScene {
     // this.webFontsLoaded();
     // return;
 
-    
+
     console.log("Boot::create::webfotnsstarted");
-    
-    
+
+
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
     // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
     WebFont.load({

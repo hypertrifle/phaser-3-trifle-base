@@ -262,7 +262,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     // TODO: we want to restrict the game to any mini max size? this will tie in the tih
 
-    if(this._scaleConfig.maxWidth !== null && this._scaleConfig.maxHeight != null) {
+    if (this._scaleConfig.maxWidth !== null && this._scaleConfig.maxHeight != null) {
     // if we are bigger than the max width or height defined in our configuration we need to re calculated the scale to fit all content
     if (
       canvas.width * requiredScaling > this._scaleConfig.maxWidth ||
