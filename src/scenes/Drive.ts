@@ -124,7 +124,7 @@ export default class DriveScene extends BaseScene {
       let offsetMax = (this._track.gameplay.lapDistance / (this._track.gameplay.pickupsPerLap + 3)) * 0.1;
 
       let s = new PickUp(this, {
-        frame: "road_alt.png",
+        frame: "palm_shadow_left.png",
         totalBands: this.viewPort.totalBands,
         owner: this,
         lane: Math.round(Math.random() * 2),
@@ -251,6 +251,32 @@ export default class DriveScene extends BaseScene {
 
     this.updateTrack(time,delta);
     this.updateScenery(time,delta);
+    this.updatePickups(time, delta);
+  }
+
+  updatePickups(time: number, delta: number){
+
+
+    for (let i: number = 0; i < this._pickups.length;i ++) {
+
+
+      let positionFromCamera = this._pickups[i].roadPosition - this._track.currenDistance;
+      if(positionFromCamera < 0 || positionFromCamera > (this.dimensions.y-this.viewPort.horizonHeight)){
+        this._pickups[i].setVisible(false);
+
+        continue;
+      }
+
+      else {
+        this._pickups[i].setVisible(true);
+        let scale = this._track.getPickupScale(positionFromCamera,this.trackSegments.length);
+        this._pickups[i].setScale(scale);
+        this._pickups[i].x = this._track.getPickupLocation(positionFromCamera,this.trackSegments.length,this._pickups[i].roadPosition ); // position the road parts based on bend
+        this._pickups[i].y = this.dimensions.y - positionFromCamera*0.5;
+      }
+      
+    }
+
   }
 
   updateTrack(time: number, delta: number) {

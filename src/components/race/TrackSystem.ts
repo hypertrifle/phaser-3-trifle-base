@@ -187,7 +187,7 @@ export class GameplaySettings {
 
     let roadOffset: number =  (this.getScaleForSegment(y,total) * offset);
 
-    return center + roadOffset;
+    return center;
 
 
    }
@@ -196,6 +196,10 @@ export class GameplaySettings {
      return  (1 - (y / total)) * 2;
 
 
+
+   }
+   getPickupScale(y: number, total: number) {
+     return  Math.max(0.3,(1 - (y / total)) * 5);
 
    }
 

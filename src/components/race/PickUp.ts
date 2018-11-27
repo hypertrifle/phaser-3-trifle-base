@@ -20,19 +20,26 @@ export default class PickUp extends Phaser.GameObjects.Image {
 
 
    constructor(scene: Phaser.Scene,config: PickUpConfig) {
-     super(scene,0,-1000,"atlas.png",config.frame);
+     super(scene,0,-1000,"atlas.png","test-sprite.png");
 
    //   Object.assign(this,config);
 
+      console.log("added pickup");
+      this.owner = config.owner;
+
+      this.x = this.owner.dimensions.x/2;
+      this.y = this.owner.dimensions.y/2;
+ 
+
      this.totalBands = config.totalBands;
-     this.owner = config.owner;
+
      this.roadPosition = config.roadPosition;
      this.frameName = config.frame;
 
      scene.add.existing(this);
 
-     this.active = false;
-     this.visible = false;
+   //   this.active = false;
+   //   this.visible = false;
 
    }
 
