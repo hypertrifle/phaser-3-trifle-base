@@ -257,23 +257,27 @@ export default class DriveScene extends BaseScene {
   updatePickups(time: number, delta: number){
 
 
+    let paralax:number = 800;
+
+
     for (let i: number = 0; i < this._pickups.length;i ++) {
 
 
-      let positionFromCamera = this._pickups[i].roadPosition - this._track.currenDistance;
-      if(positionFromCamera < 0 || positionFromCamera > (this.dimensions.y-this.viewPort.horizonHeight)){
+      let positionFromCamera = (this._pickups[i].roadPosition - this._track.currenDistance)*(1/paralax);
+      
+      
+      if(positionFromCamera < 0 || positionFromCamera > (this.dimensions.y-this.viewPort.horizonHeight)/paralax){
         this._pickups[i].setVisible(false);
-
         continue;
       }
 
-      else {
+
         this._pickups[i].setVisible(true);
-        let scale = this._track.getPickupScale(positionFromCamera,this.trackSegments.length);
+        let scale = this._track.getPickupScale(positionFromCamera*paralax,this.trackSegments.length);
         this._pickups[i].setScale(scale);
-        this._pickups[i].x = this._track.getPickupLocation(positionFromCamera,this.trackSegments.length,this._pickups[i].roadPosition ); // position the road parts based on bend
-        this._pickups[i].y = this.dimensions.y - positionFromCamera*0.5;
-      }
+        this._pickups[i].x = this._track.getPickupLocation(positionFromCamera*paralax,this.trackSegments.length,positionFromCamera*paralax ); // position the road parts based on bend
+        this._pickups[i].y = this.dimensions.y - positionFromCamera*paralax;
+      
       
     }
 

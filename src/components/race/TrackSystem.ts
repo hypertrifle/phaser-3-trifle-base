@@ -181,13 +181,13 @@ export class GameplaySettings {
    getPickupLocation(y: number,total: number, lane: number): number {
 
     let ratio = (this.easeInQuad(y / total));
-    let center: number =  this.getPositionForSegment(y,total);
+    let center: number =  this.getPositionForSegment(y,total/paralax);
 
-    let offset = [-300,0,300][lane];
+    let offset = [-0.2,0,0.2][lane];
 
-    let roadOffset: number =  (this.getScaleForSegment(y,total) * offset);
+    let roadOffset: number =  (this.getScaleForSegment(y,total/paralax) * offset);
 
-    return center;
+    return center + roadOffset;
 
 
    }
