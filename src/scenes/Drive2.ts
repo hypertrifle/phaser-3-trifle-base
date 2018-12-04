@@ -23,7 +23,7 @@ enum ROAD_CURVE {
 
 class RaceSettings {
   roadWidth:number = 2000;
-  cameraHeight:number = 1000;
+  cameraHeight:number = 1500;
   drawDistance:number = 300;
   FOV: number = 100;
   fogDensity:number = 0;
@@ -142,6 +142,9 @@ export default class Drive2Scene extends BaseScene {
 
     this._controls = new ControlSystem(this);
     this.resetRoad();
+
+    this.generateSceneryItemsAndAddSkyBox();
+
     this.genRoadDisplayPool();
 
     this._car = new Car(this,{
@@ -150,11 +153,14 @@ export default class Drive2Scene extends BaseScene {
     })
     
 
+
   }
 
   generateSceneryItemsAndAddSkyBox(){
     //TODO: generate a pool of scenery items and add the sky box
-
+    // badd basic skybox layers.
+    this._skyBox = this.add.sprite(this.dimensions.x/2,0,"atlas.png","tmp_skybox_large.png");
+    this._skyBox.setOrigin(0.5,0);
 
   }
 
@@ -261,7 +267,7 @@ export default class Drive2Scene extends BaseScene {
     p.camera.z     = (p.world.z || 0) - cameraZ;
     p.scale = cameraDepth/p.camera.z;
     p.screen.x     = Math.round((width/2)  + (p.scale * p.camera.x  * width/2));
-    p.screen.y     = Math.round((height/2) - (p.scale * p.camera.y  * height/2));
+    p.screen.y     = Math.round((height/4.05) - (p.scale * p.camera.y  * height/2));
     p.screen.w     = Math.round(             (p.scale * roadWidth   * width/2));
   }
 
@@ -406,7 +412,7 @@ export default class Drive2Scene extends BaseScene {
       visual.bg.tint = (seg.alt) ? 0xffffff : 0xeeeeee;
 
       //set the track scales.
-      const y = Math.abs(seg.p2.screen.y - seg.p1.screen.y) / (this.settings.segmentLength/8);//TODO: work out why we need to /8
+      const y = Math.abs(seg.p2.screen.y - seg.p1.screen.y) / (this.settings.segmentLength/12);//TODO: work out why we need to /8
 
       visual.bg.setScale(1,y);
       visual.fg.setScale(seg.p1.screen.w/this.dimensions.x,y);
