@@ -22,6 +22,8 @@ export default class Car extends Phaser.GameObjects.Sprite {
       this.setPosition(this._scene.dimensions.x / 2, this._scene.dimensions.y - this._config.positionFromBottom);
 
       this.scene.add.existing(this);
+
+      
    }
 
 }

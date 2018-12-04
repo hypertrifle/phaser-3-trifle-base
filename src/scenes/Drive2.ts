@@ -150,6 +150,16 @@ export default class Drive2Scene extends BaseScene {
 
   }
 
+  generateSceneryItemsAndAddSkyBox(){
+    //TODO: generate a pool of scenery items and add the sky box
+
+
+  }
+
+  gerenateAndDistributePickups(){
+
+  }
+
   genRoadDisplayPool() {
     this.trackDisplaySegments = [];
     for(var n = 0 ; n < 500 ; n++) { // arbitrary amount of images to 
@@ -233,6 +243,9 @@ export default class Drive2Scene extends BaseScene {
 
  
     this.settings.trackLength = this.trackSegments.length * this.settings.segmentLength;
+    this.addStraight();
+    this.addStraight();
+
   }
 
   findSegment(z:number):TrackSegment {
