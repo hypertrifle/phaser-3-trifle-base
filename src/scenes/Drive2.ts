@@ -31,6 +31,8 @@ class RaceSettings {
   segmentLength:number = 100;
   trackLength:number = 0;
   cameraDepth:number = 0;
+  maxAccellerationPerSecond: number = 1;
+  maxVelocity:number = 20;
 }
 
 class CurrentState {
@@ -263,8 +265,29 @@ export default class Drive2Scene extends BaseScene {
     p.screen.w     = Math.round(             (p.scale * roadWidth   * width/2));
   }
 
-  updatePhysics(){
+  updatePhysics(baseSegment: TrackSegment, delta:number){
     //all we want to do is have a move the car, wile taking into account the G of the turn.
+
+    let changeInAccleration = this._controls.currentYVector * this.settings.maxAccellerationPerSecond * delta;
+
+
+    if (changeInAccleration > 0 ) {
+      // its breaking or declerating
+      this._state.speed += changeInAccleration / 1000;
+    } else if (changeInAccleration < 0) {
+
+      this._state.speed += changeInAccleration  / 100;
+      // is accellerating
+    }
+
+    // topspeed
+    this._state.speed = Math.min(this._state.speed,this.settings.maxVelocity);
+
+    // no reverse
+    this._state.speed = Math.max(this._state.speed,0);
+
+    // apply any breaking from side of road();
+
 
     if(this._controls.currentXVector > 0.2){
       this._car.setFrame("car_left.png");
@@ -277,6 +300,17 @@ export default class Drive2Scene extends BaseScene {
   checkGameState(){
     //check to see we are over the finish line, if so we want to dhow the scores overlay, and reset to allow quick restart.
 
+    if(this._state.position > this.settings.trackLength){
+      this.reset();
+    }
+
+
+  }
+
+  reset(){
+    this._state.position = 0;
+    this._state.speed = 0;
+    this._state.position = 0;
 
   }
 
@@ -285,7 +319,10 @@ export default class Drive2Scene extends BaseScene {
 
     this.checkGameState();
 
-    this.updatePhysics();
+    let baseSegment = this.findSegment(this._state.position);
+
+
+    this.updatePhysics(baseSegment, delta);
 
       //update the controls
       this._controls.update(time, delta,this._car,this);
@@ -296,12 +333,14 @@ export default class Drive2Scene extends BaseScene {
 
     this._state.position += this._state.speed*delta;
 
-    let baseSegment = this.findSegment(this._state.position);
+
+    if(baseSegment.pickups && baseSegment.pickups.length>0){
+      //check we overlap with the pickup, if so enable speed boost, remove pickup
+
+    }
 
     // set all segments to not visible?
     this.updateRoadModel(baseSegment);
-
-
 
     this.renderRoad(time,delta);
   }
