@@ -11,11 +11,13 @@ export default class Car extends Phaser.GameObjects.Sprite {
    private _config: CarConfig;
 
    constructor(scene: Phaser.Scene, config: CarConfig) {
-      super(scene, 0,0, "atlas.png", "car_front.png");
+      super(scene, 0,0, "atlas.png", "car_neutral.png");
       this._scene = scene as DriveScene;
       this._config = config;
 
       this.setOrigin(0.5,1);
+
+      this.setScale(config.scale,config.scale)
 
       this.setPosition(this._scene.dimensions.x / 2, this._scene.dimensions.y - this._config.positionFromBottom);
 

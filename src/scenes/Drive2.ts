@@ -37,17 +37,28 @@ class CurrentState {
   speed:number = 10;
   position:number = 0;
   playerX:number = 0;
+
+}
+
+interface SceneryItem {
+  frameName:string,
+  isLeft:boolean,
+  offset:number
+}
+
+interface Pickup {
+  lane:number
 }
 
 interface TrackSegment {
-  // bg: Phaser.GameObjects.Image;
-  // fg: Phaser.GameObjects.Image;
   index: number;
   p1: WCS;
   p2: WCS;
   alt:boolean;
   isVisible:boolean;
   curve:number;
+  scenery?: SceneryItem[];
+  pickups?: Pickup[];
 }
 
 interface TrackDisplaySegment {
@@ -60,8 +71,6 @@ const ROAD = {
   LENGTH: { NONE: 0, SHORT:  25, MEDIUM:  50, LONG:  100 }, // num segments
   CURVE:  { NONE: 0, EASY:    2, MEDIUM:   4, HARD:    6 }
 };
-
-
 
 interface WCS {
   world:Phaser.Math.Vector3;
@@ -132,6 +141,11 @@ export default class Drive2Scene extends BaseScene {
     this._controls = new ControlSystem(this);
     this.resetRoad();
     this.genRoadDisplayPool();
+
+    this._car = new Car(this,{
+      positionFromBottom:0,
+      scale:1
+    })
     
 
   }
@@ -217,18 +231,7 @@ export default class Drive2Scene extends BaseScene {
     this.addSCurves();
     this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.EASY);
 
-
-    // for(var n = 0 ; n < 500 ; n++) { // arbitrary road length
-    //   this.trackSegments.push({
-    //      index: n,
-    //      p1: { world: new Phaser.Math.Vector3(0,0,n*this.settings.segmentLength), camera: new Phaser.Math.Vector3(), screen:new Phaser.Math.Vector4(), scale:0 },
-    //      p2: { world: new Phaser.Math.Vector3(0,0,(n+1)*this.settings.segmentLength), camera: new Phaser.Math.Vector3(), screen:new Phaser.Math.Vector4(), scale:0 },
-    //      alt: Math.floor(n/this.settings.altLength)%2 ? true : false,
-    //     isVisible:false,
-    //     curve : 0.5
-    //   });
-    // }
-  
+ 
     this.settings.trackLength = this.trackSegments.length * this.settings.segmentLength;
   }
 
@@ -249,6 +252,12 @@ export default class Drive2Scene extends BaseScene {
 
   updatePhysics(){
     //all we want to do is have a move the car, wile taking into account the G of the turn.
+
+    if(this._controls.currentXVector > 0.2){
+      this._car.setFrame("car_left.png");
+    }else if(this._controls.currentXVector < -0.2){
+      this._car.setFrame("car_right.png");
+    }
 
   }
 
@@ -351,10 +360,19 @@ export default class Drive2Scene extends BaseScene {
       visual.fg.setScale(seg.p1.screen.w/this.dimensions.x,y);
 
       visual.fg.x = seg.p1.screen.x;
-      
 
 
+      //any scenery items?
+      if(seg.scenery && seg.scenery.length>0){
+        //todo render scenery item.
 
+      }
+
+      //any pickup items?
+      if(seg.pickups && seg.pickups.length>0){
+        //todo render pickup item.
+
+      }
 
     }
 
