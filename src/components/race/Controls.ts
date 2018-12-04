@@ -1,6 +1,7 @@
 import Car from "./Car";
 import { ViewPortSettings } from "./TrackSystem";
 import DriveScene from "../../scenes/Drive";
+import BaseScene from "../../scenes/BaseScene";
 
 enum ControlMode {
    CLASSIC = "CLASSIC",
@@ -41,9 +42,8 @@ export class ControlSystem {
    }
 
 
-   constructor(scene: Phaser.Scene, viewportSettings: ViewPortSettings) {
+   constructor(scene: Phaser.Scene) {
       console.log("ControlSystem::contructor");
-      this._viewPort = viewportSettings;
       this.settings = new ControlSystemSettings();
 
       this.cursorValues = new Phaser.Geom.Point(0,0);
@@ -111,8 +111,8 @@ export class ControlSystem {
    right: Phaser.Input.Pointer;
    left: Phaser.Input.Pointer;
 
-   private registerTouchEventControl(pointer: Phaser.Input.Pointer, scene: DriveScene) {
-    if (pointer.downX < scene.dimensions.x / 2) {
+   private registerTouchEventControl(pointer: Phaser.Input.Pointer, scene: BaseScene) {
+    if (pointer.downX < scene.cameras.main.width / 2) {
       // handle this as a left
       this.left = pointer;
     } else {
@@ -121,7 +121,7 @@ export class ControlSystem {
   }
 
 
-   update(time: number, delta: number, car: Car, scene: DriveScene) {
+   update(time: number, delta: number, car: Car, scene: BaseScene) {
       // console.log("controls update");
 
 

@@ -14,7 +14,7 @@
     "lint": "tslint --fix src/**/*.ts",
     "build": "webpack -p",
     "docs": "typedoc --includeDeclarations --includes ./phaser.d.ts --ignoreCompilerErrors --excludeExternals --out ./docs/ ./src/ && http-server docs -c-1 -o",
-    "generate-schema": "typescript-json-schema src/models/**/*.ts * --titles --aliasRefs --ignoreErrors -o json.schema"
+    "generate-schema": "typescript-json-schema src/interfaces/test.ts * --titles --defaultProps --ignoreErrors --propOrder -o schema.json"
   },
   "repository": {
     "type": "git",

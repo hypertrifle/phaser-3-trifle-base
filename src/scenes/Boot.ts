@@ -5,6 +5,7 @@ import Sponge from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
 import GameOneScene from "./GameOneScene";
 import DriveScene from "./Drive";
+import Drive2Scene from "./Drive2";
 
 // const atlas = require("svg-inline-loader?../../assets/svg/gameplay/gameplay-tile-door.svg") as string;
 
@@ -29,7 +30,7 @@ export default class Boot extends BaseScene {
     // it means better bundle size but requuires a re-compile on changing orders.
 
     // this.scene.add("TitleScene", TitleScene, false);
-    this.scene.add("DriveScene", DriveScene, false);
+    this.scene.add("Drive2Scene", Drive2Scene, false);
 
     console.log(this._data);
 
@@ -266,7 +267,7 @@ export default class Boot extends BaseScene {
     console.groupEnd();
 
     // TODO: Entry Point.
-    this.scene.run("DriveScene");
+    this.scene.run("Drive2Scene");
   }
 
   generateTiles() {}

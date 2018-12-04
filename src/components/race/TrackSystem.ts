@@ -49,7 +49,7 @@ export class GameplaySettings {
   turnVelocityScalar: number = 0.7;
   currentVelocity: number = 0.5;
   sceneryAmount: number  = 200;
-  pickupsPerLap: number  = 5;
+  pickupsPerLap: number  = 0;
   lapDistance: number = 31955;
 
   constructor() {
@@ -181,11 +181,11 @@ export class GameplaySettings {
    getPickupLocation(y: number,total: number, lane: number): number {
 
     let ratio = (this.easeInQuad(y / total));
-    let center: number =  this.getPositionForSegment(y,total/paralax);
+    let center: number =  this.getPositionForSegment(y,total);
 
     let offset = [-0.2,0,0.2][lane];
 
-    let roadOffset: number =  (this.getScaleForSegment(y,total/paralax) * offset);
+    let roadOffset: number =  (this.getScaleForSegment(y,total) * offset);
 
     return center + roadOffset;
 

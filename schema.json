@@ -1,0 +1,76 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "OtherClass": {
+            "defaultProperties": [
+            ],
+            "properties": {
+                "frame": {
+                    "title": "frame",
+                    "type": "string"
+                },
+                "lane": {
+                    "title": "lane",
+                    "type": "number"
+                },
+                "roadPosition": {
+                    "title": "roadPosition",
+                    "type": "number"
+                },
+                "totalBands": {
+                    "title": "totalBands",
+                    "type": "number"
+                }
+            },
+            "propertyOrder": [
+                "frame",
+                "lane",
+                "totalBands",
+                "roadPosition"
+            ],
+            "title": "OtherClass",
+            "type": "object"
+        },
+        "PickUpConfig": {
+            "defaultProperties": [
+            ],
+            "properties": {
+                "frame": {
+                    "title": "frame",
+                    "type": "string"
+                },
+                "lane": {
+                    "title": "lane",
+                    "type": "number"
+                },
+                "owner": {
+                    "items": {
+                        "$ref": "#/definitions/OtherClass"
+                    },
+                    "title": "owner",
+                    "type": "array"
+                },
+                "roadPosition": {
+                    "items": {
+                        "type": "number"
+                    },
+                    "title": "roadPosition",
+                    "type": "array"
+                },
+                "totalBands": {
+                    "title": "totalBands",
+                    "type": "number"
+                }
+            },
+            "propertyOrder": [
+                "frame",
+                "lane",
+                "totalBands",
+                "owner",
+                "roadPosition"
+            ],
+            "type": "object"
+        }
+    }
+}
+

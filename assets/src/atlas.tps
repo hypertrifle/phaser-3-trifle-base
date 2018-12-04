@@ -86,7 +86,7 @@
         <key>textureFormat</key>
         <enum type="SettingsBase::TextureFormat">png</enum>
         <key>borderPadding</key>
-        <uint>0</uint>
+        <uint>1</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
@@ -151,7 +151,7 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <true/>
+        <false/>
         <key>trimSpriteNames</key>
         <false/>
         <key>prependSmartFolderName</key>
@@ -165,7 +165,7 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>

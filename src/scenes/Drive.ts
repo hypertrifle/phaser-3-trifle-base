@@ -93,7 +93,7 @@ export default class DriveScene extends BaseScene {
     this.BuildScenery();
     this.generatePickups();
     this.buildUI();
-    this._controls = new ControlSystem(this,this.viewPort);
+    this._controls = new ControlSystem(this);
 
     // this.win();
 
