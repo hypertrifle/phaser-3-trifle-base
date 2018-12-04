@@ -22,7 +22,7 @@ enum ROAD_CURVE {
 }
 
 class RaceSettings {
-  roadWidth:number = 2000;
+  roadWidth:number = 1500;
   cameraHeight:number = 1500;
   drawDistance:number = 300;
   FOV: number = 100;
@@ -122,7 +122,7 @@ export default class Drive2Scene extends BaseScene {
 
     });
 
-    gui.add(this.settings,"roadWidth",1000,2100);
+    gui.add(this.settings,"roadWidth",500,2100);
     gui.add(this.settings,"cameraHeight",650,2000);
     gui.add(this.settings,"drawDistance",10, 300);
     gui.add(this.settings,"FOV",50,100);
@@ -148,7 +148,7 @@ export default class Drive2Scene extends BaseScene {
     this.genRoadDisplayPool();
 
     this._car = new Car(this,{
-      positionFromBottom:0,
+      positionFromBottom:20,
       scale:1
     })
     
@@ -299,6 +299,8 @@ export default class Drive2Scene extends BaseScene {
       this._car.setFrame("car_left.png");
     }else if(this._controls.currentXVector < -0.2){
       this._car.setFrame("car_right.png");
+    } else {
+      this._car.setFrame("car_neutral.png");
     }
 
   }
@@ -317,6 +319,9 @@ export default class Drive2Scene extends BaseScene {
     this._state.position = 0;
     this._state.speed = 0;
     this._state.position = 0;
+
+    this._state.speed = 10;
+
 
   }
 
@@ -412,7 +417,7 @@ export default class Drive2Scene extends BaseScene {
       visual.bg.tint = (seg.alt) ? 0xffffff : 0xeeeeee;
 
       //set the track scales.
-      const y = Math.abs(seg.p2.screen.y - seg.p1.screen.y) / (this.settings.segmentLength/12);//TODO: work out why we need to /8
+      const y = Math.abs(seg.p2.screen.y - seg.p1.screen.y) / (this.settings.segmentLength/40);//TODO: work out why we need to /8
 
       visual.bg.setScale(1,y);
       visual.fg.setScale(seg.p1.screen.w/this.dimensions.x,y);
