@@ -9,6 +9,7 @@ const PathOverridePlugin = require('path-override-webpack-plugin');
 const phaserModule = path.join(__dirname, '/node_modules/phaser/');
 const phaser = path.join(phaserModule, 'src/phaser.js');
 const strip = require('strip-json-comments');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 
 const pkg = require("./package.json");
@@ -40,6 +41,12 @@ function prepareJSONFiles(content) {
 module.exports = {
 
     entry: './src/index.ts',
+
+    // optimization: {
+    //     minimizer: [new UglifyJsPlugin({
+    //         test: /\.js(\?.*)?$/i
+    //     })],
+    //   },
 
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -73,7 +80,7 @@ module.exports = {
             }
         }
     ]
-    },
+    }, 
 
     plugins: [
 
@@ -83,7 +90,7 @@ module.exports = {
             "typeof EXPERIMENTAL": JSON.stringify(false),
             "typeof PLUGIN_CAMERA3D": JSON.stringify(false),
             "typeof PLUGIN_FBINSTANT": JSON.stringify(false)
-        })
+        }),
 
         // new CleanWebpackPlugin(['dist']),    
 ],

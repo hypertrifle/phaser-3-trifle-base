@@ -9,16 +9,16 @@ import {GUI} from "dat.gui";
 
 enum ROAD_LENGTH {
   NONE = 0,
-  SHORT = 50,
-  MEDIUM = 100,
-  LONG = 200
+  SHORT = 100,
+  MEDIUM = 200,
+  LONG = 400
 }
 
 enum ROAD_CURVE {
   NONE = 0,
-  EASY = 1,
-  MEDIUM = 2,
-  HARD = 3
+  EASY = 0.2,
+  MEDIUM = 0.4,
+  HARD = 0.5
 }
 
 class RaceSettings {
@@ -28,11 +28,11 @@ class RaceSettings {
   FOV: number = 100;
   fogDensity:number = 0;
   altLength:number  = 3;    
-  segmentLength:number = 100;
+  segmentLength:number = 50;
   trackLength:number = 0;
   cameraDepth:number = 0;
   maxAccellerationPerSecond: number = 1;
-  maxVelocity:number = 20;
+  maxVelocity:number = 5;
 }
 
 class CurrentState {
@@ -124,7 +124,7 @@ export default class Drive2Scene extends BaseScene {
 
     gui.add(this.settings,"roadWidth",500,2100);
     gui.add(this.settings,"cameraHeight",650,2000);
-    gui.add(this.settings,"drawDistance",10, 300);
+    // gui.add(this.settings,"drawDistance",10, 300);
     gui.add(this.settings,"FOV",50,100);
     // gui.add(this.settings,"fogDensity");
 
@@ -149,7 +149,7 @@ export default class Drive2Scene extends BaseScene {
 
     this._car = new Car(this,{
       positionFromBottom:20,
-      scale:1
+      scale:1.5
     })
     
 
@@ -170,7 +170,7 @@ export default class Drive2Scene extends BaseScene {
 
   genRoadDisplayPool() {
     this.trackDisplaySegments = [];
-    for(var n = 0 ; n < 500 ; n++) { // arbitrary amount of images to 
+    for(var n = 0 ; n < this.settings.drawDistance ; n++) { // arbitrary amount of images to 
 
       let bg_strip = this.add.sprite(this.dimensions.x/2,0,"atlas.png" , "bgstrip1.png");
       let road = this.add.sprite(this.dimensions.x/2,0,  "atlas.png" , "blank_road.png");
@@ -267,7 +267,7 @@ export default class Drive2Scene extends BaseScene {
     p.camera.z     = (p.world.z || 0) - cameraZ;
     p.scale = cameraDepth/p.camera.z;
     p.screen.x     = Math.round((width/2)  + (p.scale * p.camera.x  * width/2));
-    p.screen.y     = Math.round((height/4.05) - (p.scale * p.camera.y  * height/2));
+    p.screen.y     = Math.round((height/4.38) - (p.scale * p.camera.y  * height/2));
     p.screen.w     = Math.round(             (p.scale * roadWidth   * width/2));
   }
 
