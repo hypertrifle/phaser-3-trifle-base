@@ -102,11 +102,11 @@ export default class DriveScene extends BaseScene {
   private BuildScenery() {
     for (let i = 0; i < this._track.gameplay.sceneryAmount; i++) {
       let s = new Scenery(this, {
-        isLeft : Math.random() > 0.5,
-        frame: (i % 50 === 0) ? "sign_shadow_right.png" : "palm_shadow_left.png",
-        offset: new Phaser.Geom.Point((Math.random() * 1000), 0),
-        totalBands: this.viewPort.totalBands,
-        owner: this
+        // isLeft : Math.random() > 0.5,
+        // frame: (i % 50 === 0) ? "sign_shadow_right.png" : "palm_shadow_left.png",
+        // offset: new Phaser.Geom.Point((Math.random() * 1000), 0),
+        // totalBands: this.viewPort.totalBands,
+        // owner: this
       });
       s.y = (360 / 20) * i;
       s.alpha = 1;
@@ -330,19 +330,19 @@ export default class DriveScene extends BaseScene {
       let s = this._scenery[i];
 
       // move them based on speed?!?!
-      s.moveAndReset(this._track.gameplay.currentVelocity * delta * 0.025);
+      // s.moveAndReset(this._track.gameplay.currentVelocity * delta * 0.025);
 
 
 
       let roadOffsetY = Math.min(Math.abs((s.y ) - this.dimensions.y), this.dimensions.y - this.viewPort.horizonHeight);
 
-      let distanceToEdge: number = this._track.getSceneryOffsetMin(roadOffsetY,this.trackSegments.length,s.isLeft,s.offset.x);
+      // let distanceToEdge: number = this._track.getSceneryOffsetMin(roadOffsetY,this.trackSegments.length,s.isLeft,s.offset.x);
 
 
       let scale = this._track.getSceneryScale(roadOffsetY,this.trackSegments.length);
 
       if (s.y < this.dimensions.y) {
-        s.x = distanceToEdge;
+        // s.x = distanceToEdge;
         s.setScale(scale, scale);
       }
 

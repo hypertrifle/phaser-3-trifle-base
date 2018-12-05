@@ -9,26 +9,26 @@ import {GUI} from "dat.gui";
 
 enum ROAD_LENGTH {
   NONE = 0,
-  SHORT = 100,
-  MEDIUM = 200,
-  LONG = 400
+  SHORT = 500,
+  MEDIUM = 1000,
+  LONG = 4000
 }
 
 enum ROAD_CURVE {
   NONE = 0,
-  EASY = 0.2,
-  MEDIUM = 0.4,
-  HARD = 0.5
+  EASY = 0.01,
+  MEDIUM = 0.03,
+  HARD = 0.05
 }
 
 class RaceSettings {
   roadWidth:number = 1500;
   cameraHeight:number = 1500;
-  drawDistance:number = 300;
+  drawDistance:number = 600;
   FOV: number = 100;
   fogDensity:number = 0;
-  altLength:number  = 3;    
-  segmentLength:number = 50;
+  altLength:number  = 20;    
+  segmentLength:number = 20;
   trackLength:number = 0;
   cameraDepth:number = 0;
   maxAccellerationPerSecond: number = 1;
@@ -162,6 +162,33 @@ export default class Drive2Scene extends BaseScene {
     this._skyBox = this.add.sprite(this.dimensions.x/2,0,"atlas.png","tmp_skybox_large.png");
     this._skyBox.setOrigin(0.5,0);
 
+
+    this._scenery = [];
+
+    //generate our visual items to use.
+    for(let i = 0; i < this.settings.drawDistance/4; i ++){
+      let sceneryItem = new Scenery(this, {});
+      this._scenery.push(sceneryItem);
+    }
+
+    //distrubut our items in the models throughout the track
+    let sceneryDenisty = 25;
+    let totalTrees = Math.floor(this.trackSegments.length / (sceneryDenisty)); //divide for 2 for bothsides.
+
+    for(let i =0; i< totalTrees; i ++){
+      let roadPosition = i * sceneryDenisty;
+      this.trackSegments[i*sceneryDenisty].scenery = [];
+      this.trackSegments[i*sceneryDenisty].scenery.push({
+        frameName:"palm_shadow_left.png",
+        isLeft:(i%2===0)?true:false,
+        offset:Math.random()*10
+      }
+        
+      );
+    }
+
+
+
   }
 
   gerenateAndDistributePickups(){
@@ -267,7 +294,7 @@ export default class Drive2Scene extends BaseScene {
     p.camera.z     = (p.world.z || 0) - cameraZ;
     p.scale = cameraDepth/p.camera.z;
     p.screen.x     = Math.round((width/2)  + (p.scale * p.camera.x  * width/2));
-    p.screen.y     = Math.round((height/4.38) - (p.scale * p.camera.y  * height/2));
+    p.screen.y     = Math.round((height/4.6) - (p.scale * p.camera.y  * height/2));
     p.screen.w     = Math.round(             (p.scale * roadWidth   * width/2));
   }
 
@@ -390,6 +417,10 @@ export default class Drive2Scene extends BaseScene {
 
 
 
+    let previousPosition:number = -1;
+
+
+
     //now we can render each strip?
     for(let n = this.trackSegments.length-1 ; n >=0 ; n--) {
       let seg = this.trackSegments[n];
@@ -399,6 +430,28 @@ export default class Drive2Scene extends BaseScene {
         continue;
       }
 
+
+      //any scenery items?
+      if(seg.scenery && seg.scenery.length>0){
+        //todo render scenery item.
+        this.getFirstAvalibleSceneryItem();
+
+      }
+
+      //any pickup items?
+      if(seg.pickups && seg.pickups.length>0){
+        //todo render pickup item.
+
+      }
+
+
+      //we are going to cull certain road segments now if they overlap for performance.
+      if(Math.round(seg.p1.screen.y) === Math.round(previousPosition)){
+        //overlap cull
+        // console.log("cull");
+        continue;
+
+      }
       //get a display item
       let visual:TrackDisplaySegment = this.getFirstAvalibleRoadItem();
 
@@ -407,12 +460,14 @@ export default class Drive2Scene extends BaseScene {
       visual.fg.visible = true;
 
 
-      visual.bg.y = visual.fg.y = seg.p1.screen.y;
+      visual.bg.y = visual.fg.y = previousPosition =  seg.p1.screen.y;
 
 
       
       // alternate tints based on track properties.
       visual.fg.setFrame((seg.alt) ? "blank_road.png" : "road_alt.png");
+
+      // 
       visual.fg.tint = (seg.alt) ? 0xffffff : 0xeeeeee;
       visual.bg.tint = (seg.alt) ? 0xffffff : 0xeeeeee;
 
@@ -425,18 +480,7 @@ export default class Drive2Scene extends BaseScene {
       visual.fg.x = seg.p1.screen.x;
 
 
-      //any scenery items?
-      if(seg.scenery && seg.scenery.length>0){
-        //todo render scenery item.
-
-      }
-
-      //any pickup items?
-      if(seg.pickups && seg.pickups.length>0){
-        //todo render pickup item.
-
-      }
-
+    
     }
 
 
@@ -465,6 +509,21 @@ export default class Drive2Scene extends BaseScene {
       }
 
       console.log("out of road visuals");
+  }
+
+  getFirstAvalibleSceneryItem():Scenery{
+    //returns the first road display item not in use.
+    for(let i=0; i< this._scenery.length; i++){
+      const s = this._scenery[i];
+  
+      if(!s.hasBeenUsed){
+        s.hasBeenUsed = true;
+        return s;
+      }
+
+
+      }
+      // console.log("out of road scenery visual elements");
   }
 
   shutdown() {
