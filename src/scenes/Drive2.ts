@@ -326,11 +326,11 @@ export default class Drive2Scene extends BaseScene {
 
 
     //CHANGE IN X 
-    if (this._state.speed > 3) {
+    if (this._state.speed > 0.5) {
 
       // let easeIn = Math.max(3, this._state.speed)
 
-      this._car.x = this._car.x + (this._controls.currentXVector * delta) / Math.max(1, this._state.speed);
+      this._car.x = this._car.x + (this._controls.currentXVector * delta) / Math.max(3, this._state.speed);
 
       //g from curve
       this._car.x = this._car.x - (g * delta) * Math.max(1, this._state.speed / 2);
@@ -376,9 +376,10 @@ export default class Drive2Scene extends BaseScene {
 
 
 
-    if (this._controls.currentXVector > 0.2) {
+    if (this._controls.currentXVector > 0.2 && this._state.speed > 0.5) {
+    
       this._car.setFrame("car_left.png");
-    } else if (this._controls.currentXVector < -0.2) {
+    } else if (this._controls.currentXVector < -0.2 && this._state.speed > 0.5) {
       this._car.setFrame("car_right.png");
     } else {
       this._car.setFrame("car_neutral.png");
