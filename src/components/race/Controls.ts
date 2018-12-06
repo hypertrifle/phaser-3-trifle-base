@@ -2,6 +2,7 @@ import Car from "./Car";
 import { ViewPortSettings } from "./TrackSystem";
 import DriveScene from "../../scenes/Drive";
 import BaseScene from "../../scenes/BaseScene";
+import Drive2Scene from "../../scenes/Drive2";
 
 enum ControlMode {
    CLASSIC = "CLASSIC",
@@ -9,7 +10,7 @@ enum ControlMode {
    }
 
    export class ControlSystemSettings {
-     mode: ControlMode;
+     mode: ControlMode = ControlMode.CLASSIC;
      verticleAnalougeMin: number = 0;
      verticleAnalougeMax: number = 0;
      horizontalAnalougeMin: number = 0;
@@ -30,6 +31,8 @@ export class ControlSystem {
 
    cursorValues: Phaser.Geom.Point;
 
+   owner:Drive2Scene;
+
 
    get currentXVector(): number {
      return this.cursorValues.x;
@@ -37,6 +40,7 @@ export class ControlSystem {
 
   }
    get currentYVector(): number {
+    //  console.log(this.cursorValues.y)
     return this.cursorValues.y;
 
    }
@@ -52,26 +56,32 @@ export class ControlSystem {
 
       }
 
+      this.owner = scene as Drive2Scene;
+
       this.cursors = scene.input.keyboard.createCursorKeys();
       scene.input.addPointer(); // second pointer
 
 
-      this.leftButton = scene.add.image(0,0,"button");
-      this.leftButton.setOrigin(0,0);
+      // this.leftButton = scene.add.graphics({});
+      // this.leftButton.fillStyle(0xff00aa, 0);
+      // this.leftButton.fillRect(0,0,this.owner.dimensions.x/2, this.owner.dimensions.y);
 
-      this.rightButton = scene.add.image(640,0,"button");
-      this.rightButton.setOrigin(1,0);
+      // this.rightButton = scene.add.graphics({});
+      // this.rightButton.fillStyle(0xff00aa, 0);
+      // this.rightButton.fillRect(this.owner.dimensions.x/2,0,this.owner.dimensions.x/2, this.owner.dimensions.y);
 
-      this.rightButton.alpha = this.leftButton.alpha = 0.001;
+      // // this.rightButton.alpha = this.leftButton.alpha = 1;
 
-      this.rightButton.setInteractive();
-      this.rightButton.on("pointerdown", this.rightPointerDown.bind(this));
-      this.rightButton.on("pointerup", this.rightPointerUp.bind(this));
-
-      this.leftButton.setInteractive();
-      this.leftButton.on("pointerdown", this.leftPointerDown.bind(this));
-      this.leftButton.on("pointerup", this.leftPointerUp.bind(this));
-
+      
+      // this.leftButton.setInteractive(new Phaser.Geom.Rectangle(0,0,this.owner.dimensions.x/2, this.owner.dimensions.y),Phaser.Geom.Rectangle.Contains);
+      // this.leftButton.on("pointerdown", this.leftPointerDown.bind(this));
+      // this.leftButton.on("pointerup", this.leftPointerUp.bind(this));
+      
+      // this.rightButton.setInteractive(new Phaser.Geom.Rectangle(this.owner.dimensions.x/2,0,this.owner.dimensions.x/2, this.owner.dimensions.y), Phaser.Geom.Rectangle.Contains);
+      // this.rightButton.on("pointerdown", this.rightPointerDown.bind(this));
+      // this.rightButton.on("pointerup", this.rightPointerUp.bind(this));
+      
+      // console.log(this.rightButton, this.leftButton);
 
    }
 
@@ -79,174 +89,84 @@ export class ControlSystem {
    rightButtonValue: boolean = false;
 
    leftPointerDown() {
-     console.log("leftPointerDown");
+    //  console.log("leftPointerDown");
      this.leftButtonValue = true;
    }
 
    leftPointerUp() {
-    console.log("leftPointerUp");
+    // console.log("leftPointerUp");
     this.leftButtonValue = false;
 
   }
 
    rightPointerDown() {
-     console.log("rightPointerDown");
+    //  console.log("rightPointerDown");
      this.rightButtonValue = true;
 
    }
 
    rightPointerUp() {
-    console.log("rightPointerUp");
+    // console.log("rightPointerUp");
     this.rightButtonValue = false;
 
   }
 
-   rightButton: Phaser.GameObjects.Image;
-   leftButton: Phaser.GameObjects.Image;
+  handlePointer(pointer:Phaser.Input.Pointer){
+    if(pointer.isDown){
+      if(pointer.position.x< 320){
+        // left
+        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.05);
+        this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.1);
 
-   pointerDown(e: TouchEvent) {
-      console.log("TouchEvent",e);
-   }
+      } else {
+        //right
+        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.05);
+        this.cursorValues.x = Math.min(1, this.cursorValues.x + 0.1);
 
-   right: Phaser.Input.Pointer;
-   left: Phaser.Input.Pointer;
-
-   private registerTouchEventControl(pointer: Phaser.Input.Pointer, scene: BaseScene) {
-    if (pointer.downX < scene.cameras.main.width / 2) {
-      // handle this as a left
-      this.left = pointer;
-    } else {
-      this.right = pointer;
+      }
+      
     }
+
   }
 
-
    update(time: number, delta: number, car: Car, scene: BaseScene) {
-      // console.log("controls update");
-
-
-      //   if(scene.input.pointer1.isDown){
-      //     this.registerTouchEventControl(scene.input.pointer1, scene);
-      //   }
-
-      //   if(scene.input.pointer2.isDown){
-      //     this.registerTouchEventControl(scene.input.pointer1, scene);
-      //   }
-
-      //   if(this.left !== undefined && this.right !== undefined && scene.input.pointer1.isDown && scene.input.pointer2.isDown){
-      //     // console.log("controls to update.")
-
-
-
-      //     /*
-
-      //     let controlBounts:number = 50;
-
-      //     let inputZeroLeft = scene.dimensions.y / 2; //this.left.downY
-      //     let inputZeroRight = scene.dimensions.y / 2; //this.right.downY
-
-      //     let changeInY = ((inputZeroLeft - this.left.y) + (inputZeroRight - this.right.y)) /2;
-      //     changeInY = Math.max(-controlBounts,changeInY);
-      //     changeInY = Math.min(controlBounts,changeInY);
-      //     changeInY = changeInY/controlBounts;
-
-
-      //     let changeInX = ((inputZeroLeft - this.left.y) + (inputZeroRight - this.right.y)) /2;
-      //     changeInX = Math.max(-controlBounts,changeInX);
-      //     changeInX = Math.min(controlBounts,changeInX);
-      //     changeInX = changeInX/controlBounts;
-
-      //     console.log(changeInY, changeInX);
-
-      //     this.cursorValues.y = Math.min(1, this.cursorValues.y+(0.05*changeInY));
-      //     this.cursorValues.y = Math.max(-1, this.cursorValues.y);
-
-      //     this.cursorValues.x = Math.min(1, this.cursorValues.x+(0.05*changeInX));
-      //     this.cursorValues.x = Math.max(-1, this.cursorValues.x);
-
-      //     */
-
-
-
-
-
-
-
-      //   if(this.left.isDown && !this.right.isDown){
-      //     this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05*0.5);
-      //     this.cursorValues.x = Math.max(-1, this.cursorValues.x-0.01);
-
-      //   } else if (!this.left.isDown && this.right.isDown) {
-      //     this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05*0.5);
-      //     this.cursorValues.x = Math.min(1, this.cursorValues.x-0.01);
-      //   } else if(this.left.isDown && this.right.isDown) {
-      //     this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05);
-
-      //   } else if(!this.left.isDown && !this.right.isDown) {
-      //     this.cursorValues.y = Math.min(1, this.cursorValues.y+0.05);
-
-      //   }
-
-      // }
-
-
-
+  
       if (scene.game.device.os.iOS || scene.game.device.os.android) {
+        this.handlePointer(scene.input.pointer1);
+        this.handlePointer(scene.input.pointer2);
 
-      if (this.leftButtonValue && this.rightButtonValue) {
+        if(!scene.input.pointer1.isDown && !scene.input.pointer2.isDown ){
+           this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.01);
+        }
 
-        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.05);
-
-      } else if (!this.leftButtonValue && !this.rightButtonValue) {
-
-        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
-
-      } else if (this.leftButtonValue || this.rightButtonValue) {
-        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
-      } else {
-        this.cursorValues.y *= 0.8;
-
-      }
-
-      if (this.leftButtonValue && !this.rightButtonValue) {
-        this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.05);
-
-      } else if (!this.leftButtonValue && this.rightButtonValue) {
-        this.cursorValues.x = Math.min(1, this.cursorValues.x + 0.05);
-      } else {
-        this.cursorValues.x *= 0.5;
-      }
-
+        if(scene.input.pointer1.isDown === scene.input.pointer2.isDown ){
+          this.cursorValues.x *= 0.5;
+        }
     } else {
+
+      // cursor / desktop.
   if (this.cursors.up.isDown) {
-        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.05);
+    console.log("up");
+        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.1);
       } else if (this.cursors.down.isDown) {
         this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
       } else {
-        this.cursorValues.y *= 0.8;
+        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.01);
       }
 
       if (this.cursors.right.isDown) {
-        this.cursorValues.x = Math.min(1, this.cursorValues.x + 0.01);
+        this.cursorValues.x = Math.min(1, this.cursorValues.x + 0.1);
+
       } else if (this.cursors.left.isDown) {
-        this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.01);
+    
+        this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.1);
+    
       } else {
         this.cursorValues.x *= 0.5;
       }
 
     }
 
-
-
-
-
-
-
-
-
-
-   }
-
-
+  }
 
  }
