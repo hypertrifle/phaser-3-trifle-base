@@ -22,7 +22,7 @@ enum ROAD_CURVE {
 }
 
 class RaceSettings {
-  roadWidth: number = 1500;
+  roadWidth: number = 3000;
   cameraHeight: number = 1500;
   drawDistance: number = 600;
   FOV: number = 100;
@@ -33,6 +33,12 @@ class RaceSettings {
   cameraDepth: number = 0;
   maxAccellerationPerSecond: number = 1;
   maxVelocity: number = 9;
+
+  closeColour:number = 0xfae873;
+  farColour:number = 0xf58c36;
+
+  skyBottomColor = 0x00dcff;
+  skyTopColor = 0x00c0ff;
 }
 
 class CurrentState {
@@ -118,15 +124,15 @@ export default class Drive2Scene extends BaseScene {
 
     this.settings = new RaceSettings();
     this._state = new CurrentState();
-    const gui: GUI = new GUI({
+    // const gui: GUI = new GUI({
 
-    });
+    // });
 
-    gui.add(this.settings, "roadWidth", 500, 2100);
-    gui.add(this.settings, "cameraHeight", 650, 2000);
-    // gui.add(this.settings,"drawDistance",10, 300);
-    gui.add(this.settings, "FOV", 50, 100);
-    // gui.add(this.settings,"fogDensity");
+    // gui.add(this.settings, "roadWidth", 500, 2100);
+    // gui.add(this.settings, "cameraHeight", 650, 2000);
+    // // gui.add(this.settings,"drawDistance",10, 300);
+    // gui.add(this.settings, "FOV", 50, 100);
+    // // gui.add(this.settings,"fogDensity");
 
 
   }
@@ -142,21 +148,35 @@ export default class Drive2Scene extends BaseScene {
 
     this.resetRoad();
 
+
+    this.gernerateAboveHorizon();
+
     this.genRoadDisplayPool();
 
-    this.generateSceneryItemsAndAddSkyBox();
-
-
+    
+    this.generateScenery();
     this._car = new Car(this, {
       positionFromBottom: 40,
       scale: 1
     })
-
-
+    
     this._controls = new ControlSystem(this);
   }
 
-  generateSceneryItemsAndAddSkyBox() {
+  gernerateAboveHorizon(){
+    let sky = this.add.graphics();
+
+    for(let i = 0; i < 5; i ++ ){
+      //@ts-ignore
+      var c:any = Phaser.Display.Color.Interpolate.ColorWithColor(new Phaser.Display.Color(this.settings.skyTopColor), new Phaser.Display.Color(this.settings.skyBottomColor), 5, i);
+      console.log(c);
+      // sky.fillStyle(c,1);
+
+    }
+
+  }
+
+  generateScenery() {
     //TODO: generate a pool of scenery items and add the sky box
     // badd basic skybox layers.
     this._skyBox = this.add.sprite(this.dimensions.x / 2, 0, "atlas.png", "tmp_skybox_large.png");
@@ -205,7 +225,6 @@ export default class Drive2Scene extends BaseScene {
       bg_strip.setOrigin(0.5, 0);
       road.setOrigin(0.5, 0);
 
-      console.log(bg_strip);
 
       this.trackDisplaySegments.push({
         bg: bg_strip,
@@ -307,7 +326,10 @@ export default class Drive2Scene extends BaseScene {
 
 
     //CHANGE IN X 
-    if (this._state.speed > 1) {
+    if (this._state.speed > 3) {
+
+      // let easeIn = Math.max(3, this._state.speed)
+
       this._car.x = this._car.x + (this._controls.currentXVector * delta) / Math.max(1, this._state.speed);
 
       //g from curve
@@ -325,8 +347,6 @@ export default class Drive2Scene extends BaseScene {
       this._state.speed *=  (1-( 0.001* delta));
 
     }
-
-
 
 
     let changeInAccleration = this._controls.currentYVector * this.settings.maxAccellerationPerSecond * delta;
@@ -477,11 +497,11 @@ export default class Drive2Scene extends BaseScene {
         s.visible = true;
         s.y = seg.p1.screen.y;
 
-        s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w);
+        s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*0.1;
 
         console.log();
         //maybe camera.z? factor in track distance and segment legnth?
-        let scale = (seg.p1.scale * this.settings.roadWidth) * 1.5;
+        let scale = (seg.p1.scale * this.settings.roadWidth) * 1;
         s.setScale((model.isLeft) ? scale * -1 : scale, scale);
         let a = Math.min(1, scale * 4); //todo pop in.
         s.setAlpha(a);
@@ -517,9 +537,9 @@ export default class Drive2Scene extends BaseScene {
       // alternate tints based on track properties.
       visual.fg.setFrame((seg.alt) ? "blank_road.png" : "road_alt.png");
 
-      // 
+      
       visual.fg.tint = (seg.alt) ? 0xffffff : 0xeeeeee;
-      visual.bg.tint = (seg.alt) ? 0xffffff : 0xeeeeee;
+      visual.bg.tint = (seg.alt) ? this.settings.closeColour : this.settings.farColour;
 
 
 

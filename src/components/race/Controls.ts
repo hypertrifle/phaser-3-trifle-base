@@ -146,7 +146,6 @@ export class ControlSystem {
 
       // cursor / desktop.
   if (this.cursors.up.isDown) {
-    console.log("up");
         this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.1);
       } else if (this.cursors.down.isDown) {
         this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);

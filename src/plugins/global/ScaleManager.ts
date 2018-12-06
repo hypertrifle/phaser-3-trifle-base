@@ -245,7 +245,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   handleCanvasScale(canvas: HTMLCanvasElement) {
-
+    
     // console.error("handle canvas scale");
 
     // get the container our both our game canvas and any extra content to be supplied over the top.
