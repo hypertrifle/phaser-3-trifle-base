@@ -161,6 +161,39 @@ export default class Drive2Scene extends BaseScene {
     })
     
     this._controls = new ControlSystem(this);
+
+    this.addUI();
+  }
+
+  private _spedo:Phaser.GameObjects.Image;
+  private _spedoMask:Phaser.GameObjects.Graphics;
+
+  addUI(){
+    this._spedo = this.add.image(10,10,"atlas.png","bar_back.png");
+    this._spedo.setOrigin(0,0);
+    this._spedo.setScale(0.5,0.5);
+    let fog = this.add.image(10,10,"atlas.png","bar_front.png");
+    fog.setOrigin(0,0);
+    fog.setScale(0.5,0.5);
+
+
+
+    this._spedoMask = this.make.graphics({});
+
+
+
+    this._spedo.mask = new Phaser.Display.Masks.GeometryMask(this, this._spedoMask);
+    this.updateUI(0.5);
+
+
+
+  }
+
+  updateUI(speedPercent:number){
+    this._spedoMask.clear();
+    this._spedoMask.fillStyle(0xffffff,1);
+    this._spedoMask.fillRect(this._spedo.x, this._spedo.y,this._spedo.width*this._spedo.scaleX*speedPercent, this._spedo.height*this._spedo.scaleY );
+
   }
 
   gernerateAboveHorizon(){
@@ -174,13 +207,12 @@ export default class Drive2Scene extends BaseScene {
 
     }
 
+    // badd basic skybox layers.
   }
 
   generateScenery() {
     //TODO: generate a pool of scenery items and add the sky box
-    // badd basic skybox layers.
-    this._skyBox = this.add.sprite(this.dimensions.x / 2, 0, "atlas.png", "tmp_skybox_large.png");
-    this._skyBox.setOrigin(0.5, 0);
+ 
 
 
     this._scenery = [];
@@ -337,10 +369,14 @@ export default class Drive2Scene extends BaseScene {
 
     }
 
+
     if (this._car.x < 100) {
       this._car.x = 100;
       this._state.speed *=  (1-( 0.001* delta));
       //TODO: add rumble.
+
+
+      //TODO: scale decelleration by delta.
 
     } else if (this._car.x > this.dimensions.x - 100) {
       this._car.x = this.dimensions.x - 100;
@@ -366,13 +402,6 @@ export default class Drive2Scene extends BaseScene {
 
     // no reverse
     this._state.speed = Math.max(this._state.speed, 0);
-
-    // apply any breaking from side of road();
-
-
-
-
-
 
 
 
@@ -416,6 +445,7 @@ export default class Drive2Scene extends BaseScene {
 
 
     this.updatePhysics(baseSegment, delta);
+    this.updateUI(this._state.speed/this.settings.maxVelocity);
 
     //update the controls
     this._controls.update(time, delta, this._car, this);

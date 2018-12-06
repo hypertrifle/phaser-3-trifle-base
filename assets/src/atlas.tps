@@ -6,7 +6,7 @@
         <key>texturePackerVersion</key>
         <string>4.6.3</string>
         <key>fileName</key>
-        <string>C:/dev/phaser/phaser-3-trifle-base/assets/src/atlas.tps</string>
+        <string>C:/dev/web/phaser/phaser-3-trifle-base/assets/src/atlas.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -72,7 +72,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>0</uint>
+        <uint>2</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -86,7 +86,7 @@
         <key>textureFormat</key>
         <enum type="SettingsBase::TextureFormat">png</enum>
         <key>borderPadding</key>
-        <uint>1</uint>
+        <uint>2</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
@@ -108,9 +108,9 @@
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
-            <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
+            <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
             <key>forceSquared</key>
-            <false/>
+            <true/>
             <key>maxRects</key>
             <struct type="AlgorithmMaxRectsSettings">
                 <key>heuristic</key>
@@ -183,21 +183,21 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../img/base_road_sprite.png</key>
+            <key type="filename">../img/bar_back.png</key>
+            <key type="filename">../img/bar_front.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>320,68,640,135</rect>
+                <rect>67,11,135,22</rect>
                 <key>scale9Paddings</key>
-                <rect>320,68,640,135</rect>
+                <rect>67,11,135,22</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
             <key type="filename">../img/bgstrip1.png</key>
-            <key type="filename">../img/bgstrip2.png</key>
             <key type="filename">../img/blank_road.png</key>
             <key type="filename">../img/road_alt.png</key>
             <struct type="IndividualSpriteSettings">
@@ -212,56 +212,45 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../img/buttonOne.png</key>
+            <key type="filename">../img/billboard.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>80,90,160,180</rect>
+                <rect>72,35,144,70</rect>
                 <key>scale9Paddings</key>
-                <rect>80,90,160,180</rect>
+                <rect>72,35,144,70</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../img/car_front.png</key>
+            <key type="filename">../img/car_left.png</key>
+            <key type="filename">../img/car_neutral.png</key>
+            <key type="filename">../img/car_right.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>23,11,46,22</rect>
+                <rect>25,25,50,50</rect>
                 <key>scale9Paddings</key>
-                <rect>23,11,46,22</rect>
+                <rect>25,25,50,50</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../img/highscores-button.png</key>
-            <key type="filename">../img/replay-button.png</key>
+            <key type="filename">../img/clouds_0.png</key>
+            <key type="filename">../img/clouds_1.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>50,15,100,30</rect>
+                <rect>145,24,291,48</rect>
                 <key>scale9Paddings</key>
-                <rect>50,15,100,30</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">../img/jump_texture.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>8,8,16,16</rect>
-                <key>scale9Paddings</key>
-                <rect>8,8,16,16</rect>
+                <rect>145,24,291,48</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -278,81 +267,18 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../img/sign_shadow_right.png</key>
+            <key type="filename">../img/scenery_0.png</key>
+            <key type="filename">../img/scenery_1.png</key>
+            <key type="filename">../img/scenery_2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>37,23,74,47</rect>
+                <rect>94,13,187,27</rect>
                 <key>scale9Paddings</key>
-                <rect>37,23,74,47</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">../img/test-sprite.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>4,4,8,8</rect>
-                <key>scale9Paddings</key>
-                <rect>4,4,8,8</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">../img/tiles.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>160,16,320,32</rect>
-                <key>scale9Paddings</key>
-                <rect>160,16,320,32</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">../img/tmp_skybox.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>105,24,209,49</rect>
-                <key>scale9Paddings</key>
-                <rect>105,24,209,49</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">../img/tmp_skybox_large.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>175,24,350,49</rect>
-                <key>scale9Paddings</key>
-                <rect>175,24,350,49</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">../img/tree_2.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>5,5,9,11</rect>
-                <key>scale9Paddings</key>
-                <rect>5,5,9,11</rect>
+                <rect>94,13,187,27</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
