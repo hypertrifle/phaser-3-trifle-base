@@ -183,19 +183,49 @@ export default class Drive2Scene extends BaseScene {
 
 
     this._spedo.mask = new Phaser.Display.Masks.GeometryMask(this, this._spedoMask);
+    
+    
+    this._currentTime = this.add.text(this.dimensions.x - 70,5,"00:00:00",{
+      fontFamily: "BIT",
+      fontSize: "32px",
+      color: "#ffffff",
+      textAlign: "center"
+      
+      
+    }
+    );
+    this._currentSpeed = this.add.text(194,8,"100MPH", {
+      fontFamily: "BIT",
+      fontSize: "24px",
+      color: "#ffffff"
+    });
+    this._currentTime.setOrigin(0.5,0);
+    this._currentSpeed.setOrigin(0.5,0);
+    
     this.updateUI(0.5);
-
-
-
   }
 
-  updateUI(speedPercent:number){
+  updateUI(speedPercent:number, time:number = 10000){
     this._spedoMask.clear();
     this._spedoMask.fillStyle(0xffffff,1);
     this._spedoMask.fillRect(this._spedo.x, this._spedo.y,this._spedo.width*this._spedo.scaleX*speedPercent, this._spedo.height*this._spedo.scaleY );
+    this._currentSpeed.text = Math.floor(speedPercent*220).toString() + " KPH";
+    this._currentTime.text = this.raceTime;
 
   }
 
+  get raceTime(): string {
+    let ms = Math.floor(this._currentTimeValue / 10) % 100;
+    let seconds = Math.floor(this._currentTimeValue / 1000);
+
+    return this.pad(Math.floor(seconds / 60) + "",2) + ":" + this.pad((seconds % 60).toString(),2) + ":" + this.pad(ms.toString(),2);
+
+
+  }
+
+  pad(n: string, width: number, z: string = "0") {
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+  }
   gernerateAboveHorizon(){
     let sky = this.add.graphics();
 
@@ -416,8 +446,9 @@ export default class Drive2Scene extends BaseScene {
 
   }
 
-  checkGameState() {
+  checkGameState(delta: number) {
     //check to see we are over the finish line, if so we want to dhow the scores overlay, and reset to allow quick restart.
+    this._currentTimeValue += delta;
 
     if (this._state.position > this.settings.trackLength) {
       this.reset();
@@ -439,7 +470,7 @@ export default class Drive2Scene extends BaseScene {
   update(time: number, delta: number) {
     super.update(time, delta);
 
-    this.checkGameState();
+    this.checkGameState(delta);
 
     let baseSegment = this.findSegment(this._state.position);
 
