@@ -124,7 +124,6 @@ export class ControlSystem {
         this.cursorValues.x = Math.min(1, this.cursorValues.x + 0.1);
 
       }
-      
     }
 
   }
@@ -148,7 +147,7 @@ export class ControlSystem {
   if (this.cursors.up.isDown) {
         this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.1);
       } else if (this.cursors.down.isDown) {
-        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
+        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.1);
       } else {
         this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.01);
       }

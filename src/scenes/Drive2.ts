@@ -25,7 +25,7 @@ class RaceSettings {
   roadWidth: number = 3000;
   cameraHeight: number = 1500;
   drawDistance: number = 600;
-  FOV: number = 100;
+  FOV: number = 120;
   fogDensity: number = 0;
   altLength: number = 20;
   segmentLength: number = 20;
@@ -34,11 +34,27 @@ class RaceSettings {
   maxAccellerationPerSecond: number = 1;
   maxVelocity: number = 9;
 
-  closeColour:number = 0xfae873;
-  farColour:number = 0xf58c36;
+  _closeColour:number = 0xfae873;
+  _farColour:number = 0xf58c36;
 
-  skyBottomColor = 0x00dcff;
-  skyTopColor = 0x00c0ff;
+  _skyBottomColor:number = 0x00dcff;
+  _skyTopColor:number = 0x00c0ff;
+
+  get closeColour(){
+    return Phaser.Display.Color.ValueToColor(this._closeColour);
+  }
+
+  get farColour(){
+    return Phaser.Display.Color.ValueToColor(this._farColour);
+  }
+
+  get skyBottomColor(){
+    return Phaser.Display.Color.ValueToColor(this._skyBottomColor);
+  }
+
+  get skyTopColor(){
+    return Phaser.Display.Color.ValueToColor(this._skyTopColor);
+  }
 }
 
 class CurrentState {
@@ -163,12 +179,20 @@ export default class Drive2Scene extends BaseScene {
     this._controls = new ControlSystem(this);
 
     this.addUI();
+
+
   }
 
   private _spedo:Phaser.GameObjects.Image;
   private _spedoMask:Phaser.GameObjects.Graphics;
 
   addUI(){
+
+
+    let bg = this.add.graphics({});
+    bg.fillStyle(0x000000,1);
+    bg.fillRect(15,11,126,20);
+
     this._spedo = this.add.image(10,10,"atlas.png","bar_back.png");
     this._spedo.setOrigin(0,0);
     this._spedo.setScale(0.5,0.5);
@@ -231,9 +255,9 @@ export default class Drive2Scene extends BaseScene {
 
     for(let i = 0; i < 5; i ++ ){
       //@ts-ignore
-      var c:any = Phaser.Display.Color.Interpolate.ColorWithColor(new Phaser.Display.Color(this.settings.skyTopColor), new Phaser.Display.Color(this.settings.skyBottomColor), 5, i);
+      var c:any = Phaser.Display.Color.Interpolate.ColorWithColor(this.settings.skyTopColor, this.settings.skyTopColor, 5, i);
       console.log(c);
-      // sky.fillStyle(c,1);
+      sky.fillStyle(c,1);
 
     }
 
@@ -419,12 +443,12 @@ export default class Drive2Scene extends BaseScene {
 
 
     if (changeInAccleration > 0) {
-      // its accellerating
+      // its accellerating.
       this._state.speed += changeInAccleration / 1000;
     } else if (changeInAccleration < 0) {
 
-      this._state.speed += changeInAccleration / 100;
-      // is accellerating
+      //its braking.
+      this._state.speed += changeInAccleration / 300;
     }
 
     // topspeed
@@ -535,9 +559,12 @@ export default class Drive2Scene extends BaseScene {
     let previousPosition: number = -1;
 
 
-
+    let i = -1;
+    let previousAlt:boolean = false;
+    let tint:number = this.settings._farColour;
     //now we can render each strip?
     for (let n = this.trackSegments.length - 1; n >= 0; n--) {
+      i++;
       let seg = this.trackSegments[n];
 
       //if this segment isn't in draw distance / we have gone past it we dont need to render.
@@ -561,7 +588,6 @@ export default class Drive2Scene extends BaseScene {
 
         s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*0.1;
 
-        console.log();
         //maybe camera.z? factor in track distance and segment legnth?
         let scale = (seg.p1.scale * this.settings.roadWidth) * 1;
         s.setScale((model.isLeft) ? scale * -1 : scale, scale);
@@ -578,9 +604,11 @@ export default class Drive2Scene extends BaseScene {
 
 
       //we are going to cull certain road segments now if they overlap for performance.
-      if (Math.round(seg.p1.screen.y) === Math.round(previousPosition)) {
+
+
+      if (Math.round(seg.p1.screen.y) === Math.round(previousPosition) ) {
         //overlap cull
-        // console.log("cull");
+        previousPosition = seg.p1.screen.y;
         continue;
 
       }
@@ -595,15 +623,33 @@ export default class Drive2Scene extends BaseScene {
       visual.bg.y = visual.fg.y = previousPosition = seg.p1.screen.y;
 
 
-
       // alternate tints based on track properties.
       visual.fg.setFrame((seg.alt) ? "blank_road.png" : "road_alt.png");
 
       
       visual.fg.tint = (seg.alt) ? 0xffffff : 0xeeeeee;
-      visual.bg.tint = (seg.alt) ? this.settings.closeColour : this.settings.farColour;
 
 
+      
+
+
+      if(seg.alt != previousAlt){
+        previousAlt = seg.alt;
+        let color = Phaser.Display.Color.Interpolate.ColorWithColor(this.settings.closeColour,this.settings.farColour,this.settings.drawDistance*this.settings.segmentLength,seg.p1.camera.z )
+        //@ts-ignore
+        let shade = new Phaser.Display.Color(color.r,color.g,color.b);
+
+        if(previousAlt){
+          shade.lighten(3);
+
+        } else {
+          shade.darken(3);
+
+        }
+      
+        tint = shade.color;// Phaser.Display.Color;//tint.//(seg.alt) ? this.settings.closeColour : this.settings.farColour;
+      }
+      visual.bg.tint = tint
 
       visual.bg.setScale(1, y);
       visual.fg.setScale(seg.p1.screen.w / this.dimensions.x, y);
