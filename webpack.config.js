@@ -108,6 +108,7 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
                 { from: 'assets/atlas', to: 'assets/atlas' },
                 { from: 'assets/json/*.json', to: '' },
                 { from: 'assets/fonts', to: 'assets/fonts' },
+                { from: 'assets/audio', to: 'assets/audio' },
                 { from: 'assets/img', to: 'assets/img' },
                 { from: 'supporting', to: '.' },
 

@@ -161,7 +161,12 @@ export default class Drive2Scene extends BaseScene {
   preload() {
     console.log("Drive2Scene::preload");
 
+    this.load.audio('car_engine', ['assets/audio/engine_loop.wav']);
+
+
   }
+
+  engineSound:Phaser.Sound.BaseSound;
 
   create() {
     super.create();
@@ -183,10 +188,17 @@ export default class Drive2Scene extends BaseScene {
     
     this._controls = new ControlSystem(this);
 
+    this.engineSound = this.sound.add("car_engine", { loop:true, volume:0.1});
+    this.engineSound.play();
+    
     this.addUI();
 
 
     console.log("encodetest", DataUtils.encode("teststring"));
+
+
+
+
 
 
     this.load.once('complete', this.scoresReturn, this);
@@ -268,6 +280,16 @@ export default class Drive2Scene extends BaseScene {
     this._spedoMask.fillRect(this._spedo.x, this._spedo.y,this._spedo.width*this._spedo.scaleX*speedPercent, this._spedo.height*this._spedo.scaleY );
     this._currentSpeed.text = Math.floor(speedPercent*220).toString() + " KPH";
     this._currentTime.text = this.raceTime;
+
+  //   this.engineSound.stop();
+  //   this.engineSound.play(null,{ loop:true, 
+  //     volume:Math.min(0.1,speedPercent),
+  //     detune:speedPercent*1000
+  //   }
+
+  //  )
+    this.sound.setDetune(speedPercent*1000);
+    this.sound.volume = speedPercent;
 
   }
 
