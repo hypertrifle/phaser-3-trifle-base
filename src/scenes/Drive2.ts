@@ -269,7 +269,7 @@ export default class Drive2Scene extends BaseScene {
     for(let i = 2; i >= 0; i --){
       let item = this.add.image(this.dimensions.x/2, 60,"atlas.png","scenery_"+i+".png");
       item.setDataEnabled();
-      item.data.set("paralax", (3-i)*0.3);
+      item.data.set("paralax", (3-i)*0.1);
       this._horizonItems.push(item);
     }
 
@@ -304,7 +304,7 @@ export default class Drive2Scene extends BaseScene {
       this.trackSegments[i * sceneryDenisty].scenery.push({
         frameName: "palm_shadow_left.png",
         isLeft: (i % 2 === 0) ? true : false,
-        offset: Math.random() * 10
+        offset: Math.random() 
       }
 
       );
@@ -606,7 +606,7 @@ export default class Drive2Scene extends BaseScene {
 
         //position.
         s.y = seg.p1.screen.y;
-        s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*0.1;
+        s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*(0.1*model.offset);
 
         //maybe camera.z? factor in track distance and segment legnth?
         let scale = (seg.p1.scale * this.settings.roadWidth) * 1;

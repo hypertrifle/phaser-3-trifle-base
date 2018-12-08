@@ -149,7 +149,7 @@ export class ControlSystem {
       } else if (this.cursors.down.isDown) {
         this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.1);
       } else {
-        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.01);
+        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
       }
 
       if (this.cursors.right.isDown) {
