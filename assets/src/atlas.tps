@@ -240,6 +240,20 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">../img/car_smoke0.png</key>
+            <key type="filename">../img/car_smoke1.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>38,9,75,17</rect>
+                <key>scale9Paddings</key>
+                <rect>38,9,75,17</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">../img/clouds_0.png</key>
             <key type="filename">../img/clouds_1.png</key>
             <struct type="IndividualSpriteSettings">
@@ -251,6 +265,33 @@
                 <rect>145,24,291,48</rect>
                 <key>scale9Paddings</key>
                 <rect>145,24,291,48</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../img/end.png</key>
+            <key type="filename">../img/start.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>125,50,250,100</rect>
+                <key>scale9Paddings</key>
+                <rect>125,50,250,100</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../img/iceberg.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>48,34,95,69</rect>
+                <key>scale9Paddings</key>
+                <rect>48,34,95,69</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

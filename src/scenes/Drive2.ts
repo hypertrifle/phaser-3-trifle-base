@@ -6,6 +6,7 @@ import Scenery from "../components/race/Scenery";
 import Car from "../components/race/Car";
 import PickUp from "../components/race/PickUp";
 import { GUI } from "dat.gui";
+import DataUtils from "../plugins/utils/DataUtils";
 
 enum ROAD_LENGTH {
   NONE = 0,
@@ -185,6 +186,20 @@ export default class Drive2Scene extends BaseScene {
     this.addUI();
 
 
+    console.log("encodetest", DataUtils.encode("teststring"));
+
+
+    this.load.once('complete', this.scoresReturn, this);
+
+    //  Load all the same files again to test we still get the complete event
+    this.load.json('high_score_results',"./getScoresForTime.json");
+
+    this.load.start();
+
+  }
+
+  scoresReturn(){
+    console.log("get scores returned",this.cache.json.get("high_score_results"));
   }
 
   private _spedo:Phaser.GameObjects.Image;
@@ -220,20 +235,23 @@ export default class Drive2Scene extends BaseScene {
     this._spedo.mask = new Phaser.Display.Masks.GeometryMask(this, this._spedoMask);
     
     
-    this._currentTime = this.add.text(this.dimensions.x - 50,5,"00:00:00",{
+    this._currentTime = this.add.text(this.dimensions.x - 50,3,"00:00:00",{
       fontFamily: "BIT",
-      fontSize: "20px",
+      fontSize: "24px",
       color: "#ffffff",
       align: "center"
       
       
     }
     );
-    this._currentSpeed = this.add.text(216,5,"100MPH", {
+
+    //TODO: add shodow to fonts.
+    this._currentSpeed = this.add.text(217,3,"100MPH", {
       fontFamily: "BIT",
-      fontSize: "20px",
+      fontSize: "24px",
       color: "#ffffff",
-      align: "center"
+      align: "center",
+      shadow:{}
 
     });
     this._currentTime.style.setAlign("center");
@@ -345,6 +363,7 @@ export default class Drive2Scene extends BaseScene {
       if(i % 20 ===1) {
         offset += 4;
       }
+      
 
       this.trackSegments[i * sceneryDenisty].scenery.push({
         frameName: (i % 20 ===1)?"billboard.png" :  "palm_shadow_left.png",
@@ -353,10 +372,28 @@ export default class Drive2Scene extends BaseScene {
       }
 
       );
+
+
+
     }
 
+
+    this.trackSegments[300].scenery = [];
+    this.trackSegments[300].scenery.push({
+      frameName: "start.png",
+      isLeft: false,
+      offset: 0 
+    });
+
+    this.trackSegments[this.trackSegments.length-(3000)].scenery = [];
+    this.trackSegments[this.trackSegments.length-(3000)].scenery.push({
+      frameName: "end.png",
+      isLeft: false,
+      offset: 0 
+    });
+
     //distribute our obstacles / pickups.
-    let pickupDesnity = 1000;
+    let pickupDesnity = 2000;
     let totalPickups = Math.floor(this.trackSegments.length / (pickupDesnity));
 
     for (let i = 0; i < totalPickups; i++) {
@@ -368,6 +405,9 @@ export default class Drive2Scene extends BaseScene {
         used: false
       });
     }
+
+
+
 
   }
 
@@ -722,8 +762,10 @@ export default class Drive2Scene extends BaseScene {
       //any scenery items?
       if (seg.scenery && seg.scenery.length > 0 && previousPosition !== -1) {
 
+        for(let k:number = 0; k< seg.scenery.length; k++){
+
         //currently we can only have one item per segment so lets just grab that.
-        let model = seg.scenery[0];
+        let model = seg.scenery[k];
 
         //grab one from the pool.
         let s = this.getFirstAvalibleSceneryItem();
@@ -733,7 +775,12 @@ export default class Drive2Scene extends BaseScene {
 
         //position.
         s.y = seg.p1.screen.y;
-        s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*(0.1*model.offset);
+
+        if(model.frameName === "start.png" || model.frameName === "end.png"){
+          s.x = seg.p1.screen.x;
+        } else {
+          s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*(0.1*model.offset);
+        }
 
         // start and end items,
         
@@ -745,7 +792,7 @@ export default class Drive2Scene extends BaseScene {
         let a = Math.min(1, scale * 12); //todo pop in.
         s.setAlpha(a);
 
-
+        }
       }
 
       //any pickup items?

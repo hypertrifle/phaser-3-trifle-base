@@ -46,8 +46,10 @@ const config: GameConfig = {
   input: {
     keyboard: true,
     mouse: true,
-    touch: true,
-    gamepad: false,
+    touch:{
+      target:document.body
+    }
+    // gamepad: false
 
   },
   backgroundColor: 0x15bcf7,

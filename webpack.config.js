@@ -109,6 +109,7 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
                 { from: 'assets/json/*.json', to: '' },
                 { from: 'assets/fonts', to: 'assets/fonts' },
                 { from: 'assets/img', to: 'assets/img' },
+                { from: 'supporting', to: '.' },
 
                 //our JSON files, we want to strip comments essentially and convert to stadard json files (avoid mime type issues.)
                 { from: 'assets/json/content.jsonc', to: 'assets/json/content.json',

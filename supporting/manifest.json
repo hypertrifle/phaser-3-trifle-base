@@ -2,7 +2,8 @@
     "name": "HYPERTRIFLE - $title$ - v0.0.1ALPHA",
     "short_name": "$title$",
     "start_url": ".",
-    "display": "fullscreen",
     "background_color": "#000",
-    "description": "some bleddy unit"
+    "description": "some bleddy unit",
+    "display": "fullscreen",
+    "orientation": "landscape"
   }

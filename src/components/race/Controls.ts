@@ -113,17 +113,29 @@ export class ControlSystem {
 
   handlePointer(pointer:Phaser.Input.Pointer){
     if(pointer.isDown){
+
+
+
+
       if(pointer.position.x< 320){
         // left
-        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.05);
         this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.1);
-
       } else {
         //right
-        this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.05);
         this.cursorValues.x = Math.min(1, this.cursorValues.x + 0.1);
-
       }
+
+
+      let accel = ((pointer.position.y/this.owner.dimensions.y) - 0.5)*-3;
+      accel = Math.max(-1,accel);
+      accel = Math.min(1,accel);
+
+      console.log(accel);
+
+      this.cursorValues.y = Math.max(-1, Math.min(1, this.cursorValues.y + (0.05*accel)));
+
+
+
     }
 
   }
