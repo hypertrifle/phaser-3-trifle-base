@@ -72,6 +72,18 @@ interface SceneryItem {
   offset: number
 }
 
+interface ScoreEntry {
+  name:string;
+  position: number;
+  time: number;
+}
+
+interface ScoreResults {
+  above?:ScoreEntry[];
+  me:ScoreEntry;
+  below?:ScoreEntry[];
+}
+
 interface Pickup {
   lane: number,
   used: boolean
@@ -196,23 +208,10 @@ export default class Drive2Scene extends BaseScene {
 
     console.log("encodetest", DataUtils.encode("teststring"));
 
-
-
-
-
-
-    this.load.once('complete', this.scoresReturn, this);
-
-    //  Load all the same files again to test we still get the complete event
-    this.load.json('high_score_results',"./getScoresForTime.json");
-
-    this.load.start();
+    this.win();
 
   }
 
-  scoresReturn(){
-    console.log("get scores returned",this.cache.json.get("high_score_results"));
-  }
 
   private _spedo:Phaser.GameObjects.Image;
   private _spedoMask:Phaser.GameObjects.Graphics;
@@ -279,7 +278,7 @@ export default class Drive2Scene extends BaseScene {
     this._spedoMask.fillStyle(0xffffff,1);
     this._spedoMask.fillRect(this._spedo.x, this._spedo.y,this._spedo.width*this._spedo.scaleX*speedPercent, this._spedo.height*this._spedo.scaleY );
     this._currentSpeed.text = Math.floor(speedPercent*220).toString() + " KPH";
-    this._currentTime.text = this.raceTime;
+    this._currentTime.text = this.timeString(this._currentTimeValue);
 
   //   this.engineSound.stop();
   //   this.engineSound.play(null,{ loop:true, 
@@ -291,11 +290,14 @@ export default class Drive2Scene extends BaseScene {
     this.sound.setDetune(speedPercent*1000);
     this.sound.volume = speedPercent;
 
+
   }
 
-  get raceTime(): string {
-    let ms = Math.floor(this._currentTimeValue / 10) % 100;
-    let seconds = Math.floor(this._currentTimeValue / 1000);
+
+
+  timeString(time:number): string {
+    let ms = Math.floor( time/ 10) % 100;
+    let seconds = Math.floor(time / 1000);
 
     return this.pad(Math.floor(seconds / 60) + "",2) + ":" + this.pad((seconds % 60).toString(),2) + ":" + this.pad(ms.toString(),2);
 
@@ -368,7 +370,7 @@ export default class Drive2Scene extends BaseScene {
     this._scenery = [];
 
     //generate our visual items to use.
-    for (let i = 0; i < this.settings.drawDistance / 4; i++) {
+    for (let i = 0; i < 25; i++) {
       let sceneryItem = new Scenery(this, {});
       this._scenery.push(sceneryItem);
     }
@@ -439,7 +441,7 @@ export default class Drive2Scene extends BaseScene {
 
   genRoadDisplayPool() {
     this.trackDisplaySegments = [];
-    for (var n = 0; n < this.settings.drawDistance; n++) { // arbitrary amount of images to 
+    for (var n = 0; n < 200; n++) { // arbitrary amount of images to 
 
       let bg_strip = this.add.sprite(this.dimensions.x / 2, 0, "atlas.png", "bgstrip1.png");
       let road = this.add.sprite(this.dimensions.x / 2, 0, "atlas.png", "blank_road.png");
@@ -618,6 +620,8 @@ export default class Drive2Scene extends BaseScene {
   }
 
   win() {
+    
+    
     console.log("END OF LAP!");
     this.ended = true;
 
@@ -629,32 +633,96 @@ export default class Drive2Scene extends BaseScene {
 
     this.wingroup.add(bg);
 
-    let scoreText = this.add.text(0,0,this.raceTime,{
-      fontFamily: "BIT",
-      fontSize: "64px",
-      color: "#ffffff",
-      textAlign: "center",
-    });
-    scoreText.setOrigin(0.5,0.5);
+    // let scoreText = this.add.text(0,0,this.raceTime,{
+    //   fontFamily: "BIT",
+    //   fontSize: "64px",
+    //   color: "#ffffff",
+    //   textAlign: "center",
+    // });
 
-  this.wingroup.add(scoreText);
+
+
+
 
   // buttons
 
-  let replaybutton = this.add.image(-160,100,"replay");
-  let highscores = this.add.image(160,100,"highscores");
+  let replaybutton = this.add.image(0,100,"atlas.png","replay.png");
 
   replaybutton.setInteractive();
   // highscores.setInteractive();
 
   replaybutton.on("pointerup", this.reset.bind(this));
-
-
-
   this.wingroup.add(replaybutton);
-  this.wingroup.add(highscores);
+
+  this.load.once('complete', this.popuplateScores, this);
+
+  //  load the scores for the current player.
+  this.load.json('high_score_results',"./getScoresForTime.json");
+
+  this.load.start();
+  
+
+  
+  }
+
+  popuplateScores(){
+    let scoresString = "";
+    let scores:ScoreResults =this.cache.json.get("high_score_results");
+
+    if(scores.above && scores.above.length > 0){
+      for(let i =0; i < scores.above.length;i++){
+        let entry = scores.above[i];
+        
+        //rank
+        scoresString += this.pad(entry.position.toString(),4," ");
+        scoresString += this.pad(entry.name,15," ");
+        scoresString += this.pad(this.timeString(entry.time),15," ");
+        scoresString += "\n";
+        
+      }
+    }
+
+    // me
+    let entry = scores.me;
+        
+    //rank
+    scoresString += this.pad(entry.position.toString(),4," ");
+    scoresString += this.pad(entry.name,15," ");
+    scoresString += this.pad(this.timeString(entry.time),15," ");
+    scoresString += "\n";
+
+    if(scores.below && scores.below.length > 0){
+      for(let i =0; i < scores.below.length;i++){
+        
+        let entry = scores.below[i];
+        
+        //rank
+        scoresString += this.pad(entry.position.toString(),4," ");
+        scoresString += this.pad(entry.name,15," ");
+        scoresString += this.pad(this.timeString(entry.time),15," ");
+        scoresString += "\n";
 
 
+      }
+    }
+  
+
+
+    
+
+
+    
+
+    let scoreText = this.add.text(0,-140,scoresString,{
+      fontFamily: "BIT",
+      fontSize: "32px",
+      color: "#ffffff",
+      textAlign: "center",
+    });
+
+    scoreText.setOrigin(0.5,0.0);
+
+  this.wingroup.add(scoreText);
   }
 
   wingroup: Phaser.GameObjects.Container|null;
@@ -906,9 +974,9 @@ export default class Drive2Scene extends BaseScene {
       visual.fg.x = seg.p1.screen.x;
 
 
-
     }
-
+    
+    // console.log("Pool sizes used (scenery, track)", this.benchCount, this.benchCountRoad)
 
   }
 
@@ -937,6 +1005,9 @@ export default class Drive2Scene extends BaseScene {
   }
 
   resetDisplayItems() {
+
+    this.benchCount = 0;
+    this.benchCountRoad = 0;
     ///basicly reset all our display segments.
     for (let i = 0; i < this.trackDisplaySegments.length; i++) {
       const seg = this.trackDisplaySegments[i];
@@ -959,6 +1030,7 @@ export default class Drive2Scene extends BaseScene {
       const seg = this.trackDisplaySegments[i];
 
       if (!seg.hasBeenUsed) {
+        this.benchCountRoad ++;
         seg.hasBeenUsed = true;
         return seg;
       }
@@ -968,12 +1040,17 @@ export default class Drive2Scene extends BaseScene {
     console.log("out of road visuals");
   }
 
+
+  private benchCount = 0;
+  private benchCountRoad = 0;
+
   getFirstAvalibleSceneryItem(): Scenery {
     //returns the first road display item not in use.
     for (let i = 0; i < this._scenery.length; i++) {
       const s = this._scenery[i];
 
       if (!s.hasBeenUsed) {
+        this.benchCount ++;
         s.hasBeenUsed = true;
         return s;
       }

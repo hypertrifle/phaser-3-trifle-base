@@ -21,8 +21,6 @@ del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 b, u, i, center,
 dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
@@ -81,6 +79,40 @@ canvas {
   -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
 }
 
+.forms fieldset {
+  padding: 1em 1em;
+  margin: 1em 1em;
+}
+.forms legend {
+  padding: 0;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.forms label {
+  display: block;
+  margin: 1em 0;
+}
+.forms label textarea, .forms label select, .forms label input[type="text"], .forms label input[type="email"], .forms label input[type="search"], .forms label input[type="tel"], .forms label input[type="url"], .forms label input[type="password"], .forms label input[type="color"], .forms label input[type="file"], .forms label input[type="color"], .forms label input[type="number"], .forms label input[type="range"], .forms label input[type="date"], .forms label input[type="month"], .forms label input[type="week"], .forms label input[type="time"], .forms label input[type="datetime"], .forms label input[type="datetime-local"] {
+  display: block;
+  max-width: 100%;
+}
+.forms textarea, .forms select, .forms input[type="text"], .forms input[type="email"], .forms input[type="search"], .forms input[type="tel"], .forms input[type="url"], .forms input[type="password"], .forms input[type="color"], .forms input[type="file"], .forms input[type="color"], .forms input[type="number"], .forms input[type="range"], .forms input[type="date"], .forms input[type="month"], .forms input[type="week"], .forms input[type="time"], .forms input[type="datetime"], .forms input[type="datetime-local"] {
+  margin: .2em 0;
+  padding: .25em .4em;
+  border: 1px solid #ddd;
+  max-width: 100%;
+}
+.forms input[type="search"] {
+  box-sizing: border-box;
+}
+.forms input[type="file"] {
+  border-width: 0;
+  padding: 0;
+}
+.forms input[type="image"] {
+  vertical-align: bottom;
+}
+
 /* @font-face {
     font-family: 'rift';
     src: url('./assets/fonts/rift-demi-webfont.otf') format("opentype");
@@ -108,13 +140,14 @@ body {
     right:0;
 }
 
-#container, #orientation {
+#container, #orientation, #overlay {
     top:0; left:0; right:0; bottom: 0;
     position: absolute;
     overflow: visible !important;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 canvas {
@@ -123,11 +156,39 @@ canvas {
 }
 
 
+#overlay {
+    background-color: #00c0ff;
+    padding:50px;
+    display: none;
+
+}
+
+#overlay input, #overlay button {
+    font-size: 0.9em;
+    padding: .25em .4em;
+
+}
+
+form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    align-items:stretch;
+    margin: 10px;
+}
+
+form p {
+    font-size: 0.8em;
+    padding: .25em .4em;
+
+}
+
+
+
 #orientation {
-    font-size:10em;
     background: rgba(0,0,0,0);
     color: #FFFFFF;
-    padding-top: 25%;
     text-align: center;
     display: none;
 
@@ -142,8 +203,41 @@ canvas {
 
 <body>
     
-    <div id="container">
+<div id="container">
+</div>
+<div id="overlay" class="forms">
+        <form> 
+            <h2></h2>
+                <fieldset> 
+                    <legend>To be added to the high scores:</legend>
+                    <label>
+                        <b>Name *</b>
+                        <input type="text" placeholder="name", maxlength="6">
+                    </label>
+                    <p>&nbsp;<br>&nbsp;</p>
+                    <div><button type="submit">Just add me to the leader board</button></div> 
 
-   
-</div></body>
+                </fieldset>
+                <fieldset> 
+                    <legend>And to enter your score to win prize:</legend>
+                    <label>
+                        <b>Email</b>
+                        <input type="text" placeholder="email" >
+                    </label>
+                    <div>
+                        <p>By supplying your email address<br>you agree to accept our privacy policy</p>
+                        <button type="submit">Enter me into the competition</button>
+                    </div> 
+
+                </fieldset>
+
+        </form>
+        <form>
+                <button type="submit">No thanks</button>
+
+        </form>
+
+</div>
+
+</body>
 </html>
