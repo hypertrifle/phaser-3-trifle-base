@@ -228,15 +228,17 @@ export default class Drive2Scene extends BaseScene {
       
     }
     );
-    this._currentSpeed = this.add.text(179,5,"100MPH", {
+    this._currentSpeed = this.add.text(216,5,"100MPH", {
       fontFamily: "BIT",
       fontSize: "20px",
       color: "#ffffff",
       align: "center"
 
     });
+    this._currentTime.style.setAlign("center");
+    this._currentSpeed.style.setAlign("center");
     this._currentTime.setOrigin(0.5,0);
-    this._currentSpeed.setOrigin(0.5,0);
+    this._currentSpeed.setOrigin(1,0);
     
     this.updateUI(0.5);
   }
@@ -352,7 +354,19 @@ export default class Drive2Scene extends BaseScene {
       );
     }
 
+    //distribute our obstacles / pickups.
+    let pickupDesnity = 1000;
+    let totalPickups = Math.floor(this.trackSegments.length / (pickupDesnity));
 
+    for (let i = 0; i < totalPickups; i++) {
+
+      this.trackSegments[i * pickupDesnity].pickups = [];
+      
+      this.trackSegments[i * pickupDesnity].pickups.push({
+        lane:Phaser.Math.RND.integerInRange(0,2)
+      });
+
+    }
 
   }
 
@@ -641,9 +655,10 @@ export default class Drive2Scene extends BaseScene {
 
     if (this.ended) {
       this._controls.cursorValues.y = Math.max(-1, this._controls.cursorValues.y - 0.05);
+      this._controls.cursorValues.x *= 0.8;
       return;
     }
-    
+
     this._controls.update(time, delta, this._car, this);
     this.checkGameState(delta);
 
@@ -733,8 +748,33 @@ export default class Drive2Scene extends BaseScene {
       }
 
       //any pickup items?
-      if (seg.pickups && seg.pickups.length > 0) {
-        //todo render pickup item.
+      if (seg.pickups && seg.pickups.length > 0 && previousPosition !== -1) {
+
+        //currently we can only have one item per segment so lets just grab that.
+        let model = seg.pickups[0];
+
+        //grab one from the pool.
+        let s = this.getFirstAvalibleSceneryItem();
+       
+        s.visible = true;
+        s.setFrame("iceberg.png");
+
+        //position.
+        s.y = seg.p1.screen.y;
+        let offset = (model.lane -1)*5000;
+        s.x = seg.p1.screen.x + (seg.p1.screen.w *offset);
+
+        // start and end items,
+        
+        
+         
+        //maybe camera.z? factor in track distance and segment legnth?
+        let scale = (seg.p1.scale * this.settings.roadWidth) * 0.2;
+        s.setScale(scale, scale);
+        let a = Math.min(1, scale * 15); //todo pop in.
+        s.setAlpha(a);
+
+
       }
 
 
