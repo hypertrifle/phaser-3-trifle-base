@@ -72,7 +72,8 @@ interface SceneryItem {
 }
 
 interface Pickup {
-  lane: number
+  lane: number,
+  used: boolean
 }
 
 interface TrackSegment {
@@ -363,9 +364,9 @@ export default class Drive2Scene extends BaseScene {
       this.trackSegments[i * pickupDesnity].pickups = [];
       
       this.trackSegments[i * pickupDesnity].pickups.push({
-        lane:Phaser.Math.RND.integerInRange(0,2)
+        lane:Phaser.Math.RND.integerInRange(0,2)-1,
+        used: false
       });
-
     }
 
   }
@@ -741,7 +742,7 @@ export default class Drive2Scene extends BaseScene {
         //maybe camera.z? factor in track distance and segment legnth?
         let scale = (seg.p1.scale * this.settings.roadWidth) * 1;
         s.setScale((model.isLeft) ? scale * -1 : scale, scale);
-        let a = Math.min(1, scale * 6); //todo pop in.
+        let a = Math.min(1, scale * 12); //todo pop in.
         s.setAlpha(a);
 
 
@@ -750,8 +751,12 @@ export default class Drive2Scene extends BaseScene {
       //any pickup items?
       if (seg.pickups && seg.pickups.length > 0 && previousPosition !== -1) {
 
+        
+
         //currently we can only have one item per segment so lets just grab that.
         let model = seg.pickups[0];
+
+        if(!model.used){
 
         //grab one from the pool.
         let s = this.getFirstAvalibleSceneryItem();
@@ -761,8 +766,9 @@ export default class Drive2Scene extends BaseScene {
 
         //position.
         s.y = seg.p1.screen.y;
-        let offset = (model.lane -1)*5000;
-        s.x = seg.p1.screen.x + (seg.p1.screen.w *offset);
+
+        // s.x = seg.p1.screen.x + ((seg.p1.screen.w *offset)*1000);
+        s.x = seg.p1.screen.x + (seg.p1.screen.w)*(0.24*model.lane);
 
         // start and end items,
         
@@ -773,6 +779,17 @@ export default class Drive2Scene extends BaseScene {
         s.setScale(scale, scale);
         let a = Math.min(1, scale * 15); //todo pop in.
         s.setAlpha(a);
+
+        if(Phaser.Geom.Rectangle.Overlaps(s.getBounds(), this._car.bounds)){
+          model.used = true;
+          this._state.speed *= 0.7;
+          console.log("hit");
+        }
+      } else {
+        //todo: render "used" iceberg 
+      }
+
+        
 
 
       }

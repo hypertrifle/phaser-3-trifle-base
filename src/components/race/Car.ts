@@ -26,4 +26,17 @@ export default class Car extends Phaser.GameObjects.Sprite {
       
    }
 
+
+   get bounds():Phaser.Geom.Rectangle {
+      let b = this.getBounds();
+
+      b.y += 30;
+      b.height -= 60;
+
+      b.x += 30;
+      b.width -= 60;
+
+      return b;
+   }
+
 }
