@@ -9,9 +9,9 @@ import { GUI } from "dat.gui";
 
 enum ROAD_LENGTH {
   NONE = 0,
-  SHORT = 500,
-  MEDIUM = 1000,
-  LONG = 4000
+  SHORT = 200,
+  MEDIUM = 500,
+  LONG = 1000
 }
 
 enum ROAD_CURVE {
@@ -22,9 +22,9 @@ enum ROAD_CURVE {
 }
 
 class RaceSettings {
-  roadWidth: number = 3000;
+  roadWidth: number = 4000;
   cameraHeight: number = 1500;
-  drawDistance: number = 600;
+  drawDistance: number = 1500;
   FOV: number = 120;
   fogDensity: number = 0;
   altLength: number = 20;
@@ -61,6 +61,7 @@ class CurrentState {
   speed: number = 10;
   position: number = 0;
   playerX: number = 0;
+  g:number = 0;
 
 }
 
@@ -128,6 +129,8 @@ export default class Drive2Scene extends BaseScene {
   private _currentTimeValue: number = 0;
   private _currentTime: Phaser.GameObjects.Text;
   private _currentSpeed: Phaser.GameObjects.Text;
+
+  private _horizonItems:Phaser.GameObjects.Image[] = []
 
 
   private _pickups: PickUp[];
@@ -253,22 +256,36 @@ export default class Drive2Scene extends BaseScene {
   gernerateAboveHorizon(){
     let sky = this.add.graphics();
 
-    for(let i = 0; i < 5; i ++ ){
+    for(let i = 0; i < 50; i ++ ){
       //@ts-ignore
-      var c:any = Phaser.Display.Color.Interpolate.ColorWithColor(this.settings.skyTopColor, this.settings.skyTopColor, 5, i);
-      console.log(c);
-      sky.fillStyle(c,1);
+      var c:Phaser.Display.Color = this.getInterpoadtedColor(this.settings._skyTopColor, this.settings._skyBottomColor, i, 5);
+      sky.fillStyle(c.color,1);
+      sky.fillRect(0,i*8,this.dimensions.x,8);
 
     }
 
     // badd basic skybox layers.
+
+    for(let i = 2; i >= 0; i --){
+      let item = this.add.image(this.dimensions.x/2, 60,"atlas.png","scenery_"+i+".png");
+      item.setDataEnabled();
+      item.data.set("paralax", (3-i)*0.3);
+      this._horizonItems.push(item);
+    }
+
+    
+  }
+
+
+  updateAboveHorizon(changeInXVel:number, delta:number){
+    for(let i = 0; i < this._horizonItems.length; i ++){
+      this._horizonItems[i].x -= (changeInXVel *delta *this._horizonItems[i].data.get("paralax"))
+    }
   }
 
   generateScenery() {
     //TODO: generate a pool of scenery items and add the sky box
  
-
-
     this._scenery = [];
 
     //generate our visual items to use.
@@ -353,11 +370,11 @@ export default class Drive2Scene extends BaseScene {
   }
 
   addSCurves() {
-    this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, -ROAD_CURVE.EASY);
-    this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_CURVE.MEDIUM);
-    this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_CURVE.EASY);
-    this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, -ROAD_CURVE.EASY);
     this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, -ROAD_CURVE.MEDIUM);
+    this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_CURVE.HARD);
+    this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_CURVE.MEDIUM);
+    this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, -ROAD_CURVE.MEDIUM);
+    this.addRoadSegment(ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, ROAD_LENGTH.MEDIUM, -ROAD_CURVE.HARD);
   }
 
 
@@ -374,7 +391,7 @@ export default class Drive2Scene extends BaseScene {
     this.addSCurves();
     this.addStraight(ROAD_LENGTH.LONG);
     this.addCurve(ROAD_LENGTH.MEDIUM, ROAD_CURVE.MEDIUM);
-    this.addCurve(ROAD_LENGTH.LONG, ROAD_CURVE.MEDIUM);
+    this.addCurve(ROAD_LENGTH.LONG, ROAD_CURVE.HARD);
     this.addStraight();
     this.addSCurves();
     this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.MEDIUM);
@@ -402,13 +419,13 @@ export default class Drive2Scene extends BaseScene {
     p.scale = cameraDepth / p.camera.z;
     p.screen.x = Math.round((width / 2) + (p.scale * p.camera.x * width / 2));
     p.screen.y = Math.round((height / 4.6) - (p.scale * p.camera.y * height / 2));
-    p.screen.w = Math.round((p.scale * roadWidth * width / 2));
+    p.screen.w = Math.round((p.scale * roadWidth * width / 2.5));
   }
 
   updatePhysics(baseSegment: TrackSegment, delta: number) {
     //all we want to do is have a move the car, wile taking into account the G of the turn.
 
-    let g = baseSegment.curve;
+    this._state.g = baseSegment.curve;
 
 
     //CHANGE IN X 
@@ -419,7 +436,7 @@ export default class Drive2Scene extends BaseScene {
       this._car.x = this._car.x + (this._controls.currentXVector * delta) / Math.max(3, this._state.speed);
 
       //g from curve
-      this._car.x = this._car.x - (g * delta) * Math.max(1, this._state.speed / 2);
+      this._car.x = this._car.x - (this._state.g * delta) * Math.max(1, this._state.speed / 2);
 
     }
 
@@ -501,7 +518,7 @@ export default class Drive2Scene extends BaseScene {
 
     this.updatePhysics(baseSegment, delta);
     this.updateUI(this._state.speed/this.settings.maxVelocity);
-
+    this.updateAboveHorizon(this._state.g*(this._state.speed/this.settings.maxVelocity),delta);
     //update the controls
     this._controls.update(time, delta, this._car, this);
 
@@ -577,15 +594,18 @@ export default class Drive2Scene extends BaseScene {
 
 
       //any scenery items?
-      if (seg.scenery && seg.scenery.length > 0) {
-        //todo render scenery item.
+      if (seg.scenery && seg.scenery.length > 0 && previousPosition !== -1) {
 
+        //currently we can only have one item per segment so lets just grab that.
         let model = seg.scenery[0];
 
+        //grab one from the pool.
         let s = this.getFirstAvalibleSceneryItem();
+       
         s.visible = true;
-        s.y = seg.p1.screen.y;
 
+        //position.
+        s.y = seg.p1.screen.y;
         s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*0.1;
 
         //maybe camera.z? factor in track distance and segment legnth?
@@ -604,9 +624,7 @@ export default class Drive2Scene extends BaseScene {
 
 
       //we are going to cull certain road segments now if they overlap for performance.
-
-
-      if (Math.round(seg.p1.screen.y) === Math.round(previousPosition) ) {
+      if (Math.round(seg.p1.screen.y) === Math.round(previousPosition) || previousPosition === -1 ) {
         //overlap cull
         previousPosition = seg.p1.screen.y;
         continue;
@@ -635,17 +653,7 @@ export default class Drive2Scene extends BaseScene {
 
       if(seg.alt != previousAlt){
         previousAlt = seg.alt;
-        let color = Phaser.Display.Color.Interpolate.ColorWithColor(this.settings.closeColour,this.settings.farColour,this.settings.drawDistance*this.settings.segmentLength,seg.p1.camera.z )
-        //@ts-ignore
-        let shade = new Phaser.Display.Color(color.r,color.g,color.b);
-
-        if(previousAlt){
-          shade.lighten(3);
-
-        } else {
-          shade.darken(3);
-
-        }
+        let shade = this.getInterpoadtedColor(this.settings._closeColour,this.settings._farColour, seg.p1.camera.z, this.settings.drawDistance * this.settings.segmentLength , previousAlt);
       
         tint = shade.color;// Phaser.Display.Color;//tint.//(seg.alt) ? this.settings.closeColour : this.settings.farColour;
       }
@@ -661,6 +669,30 @@ export default class Drive2Scene extends BaseScene {
     }
 
 
+  }
+
+  private getInterpoadtedColor(color1:number, color2:number,value: number, total:number, alternating?: boolean):Phaser.Display.Color {
+   
+    let color:ColorObject = Phaser.Display.Color.Interpolate.ColorWithColor(
+      Phaser.Display.Color.ValueToColor(color1), 
+      Phaser.Display.Color.ValueToColor(color2), 
+      total, 
+      value
+      );
+
+    // @ts-ignore
+    let shade = new Phaser.Display.Color(color.r, color.g, color.b);
+   
+      if(alternating !== undefined){
+        if (alternating) {
+          shade.lighten(3);
+        }
+        else {
+          shade.darken(3);
+        }
+      }
+   
+    return shade;
   }
 
   resetDisplayItems() {
