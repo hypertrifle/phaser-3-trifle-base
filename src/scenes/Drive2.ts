@@ -58,7 +58,7 @@ class RaceSettings {
 }
 
 class CurrentState {
-  speed: number = 10;
+  speed: number = 1;
   position: number = 0;
   playerX: number = 0;
   g:number = 0;
@@ -193,13 +193,20 @@ export default class Drive2Scene extends BaseScene {
 
 
     let bg = this.add.graphics({});
-    bg.fillStyle(0x000000,1);
-    bg.fillRect(15,11,126,20);
 
-    this._spedo = this.add.image(10,10,"atlas.png","bar_back.png");
+    //spedo bg
+    bg.fillStyle(0x333333,1);
+    bg.fillRoundedRect(10,6,210,20,4);
+
+
+    //timer BG
+    bg.fillRoundedRect(this.dimensions.x - 98,6,93,20,4);
+
+
+    this._spedo = this.add.image(5,5,"atlas.png","bar_back.png");
     this._spedo.setOrigin(0,0);
     this._spedo.setScale(0.5,0.5);
-    let fog = this.add.image(10,10,"atlas.png","bar_front.png");
+    let fog = this.add.image(5,5,"atlas.png","bar_front.png");
     fog.setOrigin(0,0);
     fog.setScale(0.5,0.5);
 
@@ -212,19 +219,21 @@ export default class Drive2Scene extends BaseScene {
     this._spedo.mask = new Phaser.Display.Masks.GeometryMask(this, this._spedoMask);
     
     
-    this._currentTime = this.add.text(this.dimensions.x - 70,5,"00:00:00",{
+    this._currentTime = this.add.text(this.dimensions.x - 50,5,"00:00:00",{
       fontFamily: "BIT",
-      fontSize: "32px",
+      fontSize: "20px",
       color: "#ffffff",
-      textAlign: "center"
+      align: "center"
       
       
     }
     );
-    this._currentSpeed = this.add.text(194,8,"100MPH", {
+    this._currentSpeed = this.add.text(179,5,"100MPH", {
       fontFamily: "BIT",
-      fontSize: "24px",
-      color: "#ffffff"
+      fontSize: "20px",
+      color: "#ffffff",
+      align: "center"
+
     });
     this._currentTime.setOrigin(0.5,0);
     this._currentSpeed.setOrigin(0.5,0);
@@ -264,14 +273,30 @@ export default class Drive2Scene extends BaseScene {
 
     }
 
+
+    
+    let cloud = this.add.image(this.dimensions.x/2, 60,"atlas.png","clouds_0.png");
+    cloud.setDataEnabled();
+    cloud.data.set("paralax", 0.2);
+    cloud.data.set("velocity", 0.005);
+    this._horizonItems.push(cloud);
+
+
     // badd basic skybox layers.
 
     for(let i = 2; i >= 0; i --){
       let item = this.add.image(this.dimensions.x/2, 60,"atlas.png","scenery_"+i+".png");
       item.setDataEnabled();
       item.data.set("paralax", (3-i)*0.1);
+      item.data.set("velocity", 0);
       this._horizonItems.push(item);
     }
+
+    let cloud2 = this.add.image(this.dimensions.x/2, 60,"atlas.png","clouds_1.png");
+    cloud2.setDataEnabled();
+    cloud2.data.set("paralax", 0.2);
+    cloud2.data.set("velocity", 0.01);
+    this._horizonItems.push(cloud2);
 
     
   }
@@ -279,7 +304,18 @@ export default class Drive2Scene extends BaseScene {
 
   updateAboveHorizon(changeInXVel:number, delta:number){
     for(let i = 0; i < this._horizonItems.length; i ++){
-      this._horizonItems[i].x -= (changeInXVel *delta *this._horizonItems[i].data.get("paralax"))
+      
+      //any movement based on the corners (curve length scaled by speed)
+      this._horizonItems[i].x -= (changeInXVel *delta *this._horizonItems[i].data.get("paralax"));
+
+      //any basic movement based on velocity (mainly for clouds)
+      this._horizonItems[i].x -= (this._horizonItems[i].data.get("velocity")*delta);
+
+      if(this._horizonItems[i].x + (this._horizonItems[i].width/2) < 0){
+        this._horizonItems[i].x += this._horizonItems[i].width + this.dimensions.x;
+      }
+
+
     }
   }
 
@@ -301,10 +337,16 @@ export default class Drive2Scene extends BaseScene {
     for (let i = 0; i < totalTrees; i++) {
       let roadPosition = i * sceneryDenisty;
       this.trackSegments[i * sceneryDenisty].scenery = [];
+
+      let offset = Math.random();
+      if(i % 20 ===1) {
+        offset += 4;
+      }
+
       this.trackSegments[i * sceneryDenisty].scenery.push({
-        frameName: "palm_shadow_left.png",
+        frameName: (i % 20 ===1)?"billboard.png" :  "palm_shadow_left.png",
         isLeft: (i % 2 === 0) ? true : false,
-        offset: Math.random() 
+        offset: offset 
       }
 
       );
@@ -492,35 +534,94 @@ export default class Drive2Scene extends BaseScene {
     this._currentTimeValue += delta;
 
     if (this._state.position > this.settings.trackLength) {
-      this.reset();
+      this.win();
     }
 
 
   }
 
-  reset() {
-    this._state.position = 0;
-    this._state.speed = 0;
-    this._state.position = 0;
+  win() {
+    console.log("END OF LAP!");
+    this.ended = true;
 
-    this._state.speed = 10;
+    this.wingroup = this.add.container(this.dimensions.x / 2, this.dimensions.y / 2);
+
+    let bg = this.add.graphics({});
+    bg.fillStyle(0x000000, 0.8);
+    bg.fillRect(-300,-160,600,320);
+
+    this.wingroup.add(bg);
+
+    let scoreText = this.add.text(0,0,this.raceTime,{
+      fontFamily: "BIT",
+      fontSize: "64px",
+      color: "#ffffff",
+      textAlign: "center",
+    });
+    scoreText.setOrigin(0.5,0.5);
+
+  this.wingroup.add(scoreText);
+
+  // buttons
+
+  let replaybutton = this.add.image(-160,100,"replay");
+  let highscores = this.add.image(160,100,"highscores");
+
+  replaybutton.setInteractive();
+  // highscores.setInteractive();
+
+  replaybutton.on("pointerup", this.reset.bind(this));
+
+
+
+  this.wingroup.add(replaybutton);
+  this.wingroup.add(highscores);
 
 
   }
 
+  wingroup: Phaser.GameObjects.Container|null;
+
+  reset() {
+      if (this.wingroup) {
+        this.wingroup.destroy();
+      }
+
+      this. _currentTimeValue = 0;
+      this._state.position = 0;
+      this._state.speed = 0;
+      this._state.playerX = 0;
+
+      this.ended = false;
+  }
+
+  ended: boolean = false;
+
+  // reset() {
+  //   this._state.position = 0;
+  //   this._state.speed = 0;
+  //   this._state.position = 0;
+
+  //   this._state.speed = 10;
+
+
+  // }
+
   update(time: number, delta: number) {
     super.update(time, delta);
 
-    this.checkGameState(delta);
+    this.updateUI(this._state.speed/this.settings.maxVelocity);
+
+  
 
     let baseSegment = this.findSegment(this._state.position);
 
+    
+
 
     this.updatePhysics(baseSegment, delta);
-    this.updateUI(this._state.speed/this.settings.maxVelocity);
     this.updateAboveHorizon(this._state.g*(this._state.speed/this.settings.maxVelocity),delta);
     //update the controls
-    this._controls.update(time, delta, this._car, this);
 
 
 
@@ -537,6 +638,15 @@ export default class Drive2Scene extends BaseScene {
     this.updateRoadModel(baseSegment);
 
     this.renderRoad(time, delta);
+
+    if (this.ended) {
+      this._controls.cursorValues.y = Math.max(-1, this._controls.cursorValues.y - 0.05);
+      return;
+    }
+    
+    this._controls.update(time, delta, this._car, this);
+    this.checkGameState(delta);
+
   }
 
   private updateRoadModel(baseSegment: TrackSegment) {
@@ -603,15 +713,20 @@ export default class Drive2Scene extends BaseScene {
         let s = this.getFirstAvalibleSceneryItem();
        
         s.visible = true;
+        s.setFrame(model.frameName);
 
         //position.
         s.y = seg.p1.screen.y;
         s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*(0.1*model.offset);
 
+        // start and end items,
+        
+        
+         
         //maybe camera.z? factor in track distance and segment legnth?
         let scale = (seg.p1.scale * this.settings.roadWidth) * 1;
         s.setScale((model.isLeft) ? scale * -1 : scale, scale);
-        let a = Math.min(1, scale * 4); //todo pop in.
+        let a = Math.min(1, scale * 6); //todo pop in.
         s.setAlpha(a);
 
 
