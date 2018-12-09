@@ -174,11 +174,13 @@ export default class Drive2Scene extends BaseScene {
     console.log("Drive2Scene::preload");
 
     this.load.audio('car_engine', ['assets/audio/engine_loop.wav']);
+    this.load.audio('ice_berg_crash', ['assets/audio/Hit.wav']);
 
 
   }
 
   engineSound:Phaser.Sound.BaseSound;
+  hitSound:Phaser.Sound.BaseSound;
 
   create() {
     super.create();
@@ -200,6 +202,7 @@ export default class Drive2Scene extends BaseScene {
     
     this._controls = new ControlSystem(this);
 
+    this.hitSound = this.sound.add("ice_berg_crash", {volume:1});
     this.engineSound = this.sound.add("car_engine", { loop:true, volume:0.1});
     this.engineSound.play();
     
@@ -920,6 +923,7 @@ export default class Drive2Scene extends BaseScene {
         if(Phaser.Geom.Rectangle.Overlaps(s.getBounds(), this._car.bounds)){
           model.used = true;
           this._state.speed *= 0.7;
+          this.hitSound.play();
           console.log("hit");
         }
       } else {
