@@ -59,7 +59,7 @@ class RaceSettings {
 }
 
 class CurrentState {
-  speed: number = 1;
+  speed: number = 0;
   position: number = 0;
   playerX: number = 0;
   g:number = 0;
@@ -581,18 +581,21 @@ export default class Drive2Scene extends BaseScene {
 
     }
 
+    this._car.update(delta);
+    this._car.resetRumble();
+
 
     if (this._car.x < 100) {
-      this._car.x = 100;
+      this._car.x = Math.max(this._car.x,50) ;
       this._state.speed *=  (1-( 0.001* delta));
       //TODO: add rumble.
+      this._car.rumble();
 
-
-      //TODO: scale decelleration by delta.
 
     } else if (this._car.x > this.dimensions.x - 100) {
-      this._car.x = this.dimensions.x - 100;
+      this._car.x = Math.min(this._car.x,this.dimensions.x - 50) ;
       this._state.speed *=  (1-( 0.001* delta));
+      this._car.rumble();
 
     }
 
