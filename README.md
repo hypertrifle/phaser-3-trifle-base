@@ -1,3 +1,13 @@
+```sql
+CREATE TABLE `scores` (
+   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   `name` VARCHAR(10) NOT NULL DEFAULT 'anonymous',
+   `score` INT(10) UNSIGNED NOT NULL DEFAULT '0'
+)
+TYPE=MyISAM;
+```
+
+
 # assets
 scaled horizon art
 

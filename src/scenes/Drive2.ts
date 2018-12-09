@@ -173,7 +173,7 @@ export default class Drive2Scene extends BaseScene {
   preload() {
     console.log("Drive2Scene::preload");
 
-    this.load.audio('car_engine', ['assets/audio/engine_loop.wav']);
+    this.load.audio('car_engine', ['assets/audio/sfx_vehicle_carloop1.wav']);
     this.load.audio('ice_berg_crash', ['assets/audio/Hit.wav']);
 
 
@@ -203,7 +203,7 @@ export default class Drive2Scene extends BaseScene {
     this._controls = new ControlSystem(this);
 
     this.hitSound = this.sound.add("ice_berg_crash", {volume:1});
-    this.engineSound = this.sound.add("car_engine", { loop:true, volume:0.1});
+    this.engineSound = this.sound.add("car_engine", { loop:true, volume:0.2});
     this.engineSound.play();
     
     this.addUI();
@@ -333,10 +333,21 @@ export default class Drive2Scene extends BaseScene {
     // badd basic skybox layers.
 
     for(let i = 2; i >= 0; i --){
-      let item = this.add.image(this.dimensions.x/2, 60,"atlas.png","scenery_"+i+".png");
+      let position = 0;
+
+      if(i === 2){
+        position -=100;
+      } else if(i === 1){
+        position+=100;
+
+      }
+
+      let item = this.add.image((this.dimensions.x/2)+position, 60,"atlas.png","scenery_"+i+".png");
       item.setDataEnabled();
       item.data.set("paralax", (3-i)*0.1);
       item.data.set("velocity", 0);
+
+    
       this._horizonItems.push(item);
     }
 
@@ -345,6 +356,12 @@ export default class Drive2Scene extends BaseScene {
     cloud2.data.set("paralax", 0.2);
     cloud2.data.set("velocity", 0.01);
     this._horizonItems.push(cloud2);
+
+    let blimp = this.add.image(this.dimensions.x/1.5, 30,"atlas.png","blimp.png");
+    blimp.setDataEnabled();
+    blimp.data.set("paralax", 0.4);
+    blimp.data.set("velocity", 0.005);
+    this._horizonItems.push(blimp);
 
     
   }
@@ -405,8 +422,8 @@ export default class Drive2Scene extends BaseScene {
     }
 
 
-    this.trackSegments[300].scenery = [];
-    this.trackSegments[300].scenery.push({
+    this.trackSegments[200].scenery = [];
+    this.trackSegments[200].scenery.push({
       frameName: "start.png",
       isLeft: false,
       offset: 0 
@@ -735,13 +752,18 @@ export default class Drive2Scene extends BaseScene {
         this.wingroup.destroy();
       }
 
-      this. _currentTimeValue = 0;
+      this. _currentTimeValue = -3;
       this._state.position = 0;
       this._state.speed = 0;
       this._state.playerX = 0;
 
       this.ended = false;
+      this.inCountDown = true;
+      this.countDownValue = 3;
   }
+  inCountDown:boolean = true;
+  countDownValue:number = 3;
+
 
   ended: boolean = false;
 
@@ -786,6 +808,20 @@ export default class Drive2Scene extends BaseScene {
     this.updateRoadModel(baseSegment);
 
     this.renderRoad(time, delta);
+
+    if(this.inCountDown){
+      console.log(this.countDownValue, delta);
+
+      this.countDownValue -= (delta/1000);
+      if(this.countDownValue < 0){
+        
+        this.inCountDown = false;
+
+      } else {
+        console.log(this.countDownValue);
+      }
+      return;
+    }
 
     if (this.ended) {
       this._controls.cursorValues.y = Math.max(-1, this._controls.cursorValues.y - 0.05);
