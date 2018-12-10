@@ -32,8 +32,8 @@ class RaceSettings {
   segmentLength: number = 20;
   trackLength: number = 0;
   cameraDepth: number = 0;
-  maxAccellerationPerSecond: number = 1;
-  maxVelocity: number = 9;
+  maxAccellerationPerSecond: number = 0.8;
+  maxVelocity: number = 10;
 
   _closeColour:number = 0xfae873;
   _farColour:number = 0xf58c36;
@@ -173,14 +173,30 @@ export default class Drive2Scene extends BaseScene {
   preload() {
     console.log("Drive2Scene::preload");
 
-    this.load.audio('car_engine', ['assets/audio/sfx_vehicle_carloop1.wav']);
-    this.load.audio('ice_berg_crash', ['assets/audio/Hit.wav']);
+    this.load.audio('car_engine_1', ['assets/audio/car-3-pitch-1.mp3','assets/audio/car-3-pitch-1.wav']);
+    this.load.audio('car_engine_2', ['assets/audio/car-3-pitch-2.mp3','assets/audio/car-3-pitch-2.wav']);
+    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3','assets/audio/car-3-pitch-3.wav']);
+    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3','assets/audio/car-3-pitch-3.wav']);
+    this.load.audio('car_engine_4', ['assets/audio/car-3-pitch-4.mp3','assets/audio/car-3-pitch-4.wav']);
+    this.load.audio('ice_berg_crash', ['assets/audio/hit.mp3','assets/audio/Hit.wav']);
+    this.load.audio('rumble', ['assets/audio/rumble.mp3','assets/audio/rumble.wav']);
+    this.load.audio('ready', ['assets/audio/ready.mp3','assets/audio/ready.wav']);
+    this.load.audio('go', ['assets/audio/go.mp3','assets/audio/go.wav']);
+    this.load.audio('brake', ['assets/audio/break.mp3','assets/audio/break.wav']);
+    this.load.audio('music', ['assets/audio/music.mp3','assets/audio/music.wav']);
+
 
 
   }
 
-  engineSound:Phaser.Sound.BaseSound;
+  engineSounds:Phaser.Sound.BaseSound[] = [];
   hitSound:Phaser.Sound.BaseSound;
+  _rumbleSound:Phaser.Sound.BaseSound;
+  _readySound:Phaser.Sound.BaseSound;
+  _goSound:Phaser.Sound.BaseSound;
+  _brakeSound:Phaser.Sound.BaseSound;
+  _music:Phaser.Sound.BaseSound;
+
 
   create() {
     super.create();
@@ -202,9 +218,25 @@ export default class Drive2Scene extends BaseScene {
     
     this._controls = new ControlSystem(this);
 
+    this._controls.update(0, 16, this._car, this);
+
+
     this.hitSound = this.sound.add("ice_berg_crash", {volume:1});
-    this.engineSound = this.sound.add("car_engine", { loop:true, volume:0.2});
-    this.engineSound.play();
+    this._rumbleSound = this.sound.add("rumble", {volume:0.3});
+    this._readySound = this.sound.add("ready", {volume:0.5});
+    this._goSound = this.sound.add("go", {volume:0.5});
+
+    this._brakeSound = this.sound.add("brake", {volume:0.4, detune:-700});
+    this._music = this.sound.add("music", {volume:0.7,loop:true});
+    this._music.play();
+    this.engineSounds = [];
+
+    for(let i = 1; i< 5;i ++){
+      this.engineSounds[i-1] = this.sound.add("car_engine_"+i, { loop:true, volume:0.3});
+      this.engineSounds[i-1].stop();
+
+    }
+
     
     this.addUI();
 
@@ -212,6 +244,8 @@ export default class Drive2Scene extends BaseScene {
     console.log("encodetest", DataUtils.encode("teststring"));
 
     this.win();
+
+
 
   }
 
@@ -250,7 +284,7 @@ export default class Drive2Scene extends BaseScene {
     
     
     this._currentTime = this.add.text(this.dimensions.x - 50,3,"00:00:00",{
-      fontFamily: "BIT",
+      fontFamily: "charybdisregular",
       fontSize: "24px",
       color: "#ffffff",
       align: "center"
@@ -261,17 +295,29 @@ export default class Drive2Scene extends BaseScene {
 
     //TODO: add shodow to fonts.
     this._currentSpeed = this.add.text(217,3,"100MPH", {
-      fontFamily: "BIT",
+      fontFamily: "charybdisregular",
       fontSize: "24px",
       color: "#ffffff",
-      align: "center",
-      shadow:{}
+      align: "center"
 
     });
     this._currentTime.style.setAlign("center");
     this._currentSpeed.style.setAlign("center");
     this._currentTime.setOrigin(0.5,0);
     this._currentSpeed.setOrigin(1,0);
+
+
+    this.countDownDisplay = this.add.text(this.dimensions.x/2, this.dimensions.y/3,"3", {
+      fontFamily: "charybdisregular",
+      fontSize: "128px",
+      color: "#16bdf7",
+      align: "center",
+      stroke: "#ffffff",
+      strokeThickness: 8
+    });
+    this.countDownDisplay.visible = false;
+
+    this.countDownDisplay.setOrigin(0.5,0.5)
     
     this.updateUI(0.5);
   }
@@ -280,8 +326,23 @@ export default class Drive2Scene extends BaseScene {
     this._spedoMask.clear();
     this._spedoMask.fillStyle(0xffffff,1);
     this._spedoMask.fillRect(this._spedo.x, this._spedo.y,this._spedo.width*this._spedo.scaleX*speedPercent, this._spedo.height*this._spedo.scaleY );
-    this._currentSpeed.text = Math.floor(speedPercent*220).toString() + " KPH";
+    this._currentSpeed.text = Math.floor(speedPercent*220).toString() + " MPH";
     this._currentTime.text = this.timeString(this._currentTimeValue);
+
+
+    let engineSpeed = Math.round((1-speedPercent)*this.engineSounds.length);
+    for(let i = 0; i< this.engineSounds.length; i ++){
+      if(i === engineSpeed){
+
+        this.engineSounds[i].stop();
+        this.engineSounds[i] = this.sound.add("car_engine_"+(i+1), { loop:true, volume:0.3, detune:speedPercent*1000});
+        this.engineSounds[i].play();
+
+      } else {
+        this.engineSounds[i].stop();
+
+      }
+    }
 
   //   this.engineSound.stop();
   //   this.engineSound.play(null,{ loop:true, 
@@ -290,8 +351,8 @@ export default class Drive2Scene extends BaseScene {
   //   }
 
   //  )
-    this.sound.setDetune(speedPercent*1000);
-    this.sound.volume = speedPercent;
+    // this.sound.setDetune(speedPercent*1000);
+    // this.sound.volume = speedPercent;
 
 
   }
@@ -299,6 +360,11 @@ export default class Drive2Scene extends BaseScene {
 
 
   timeString(time:number): string {
+
+    if(time <= 0){
+      return "00:00:00";
+    }
+
     let ms = Math.floor( time/ 10) % 100;
     let seconds = Math.floor(time / 1000);
 
@@ -404,13 +470,23 @@ export default class Drive2Scene extends BaseScene {
       this.trackSegments[i * sceneryDenisty].scenery = [];
 
       let offset = Math.random();
-      if(i % 20 ===1) {
+      
+      if(i % 20 ===17) {
+      }
+
+      let frame:string = "palm_shadow_left.png";
+
+      if(i % 20 ===17){
         offset += 4;
+        frame = "billboard.png"
+      } else if(i % 20 ===6){
+        offset += 8;
+        frame = "billboard2.png"
       }
       
 
       this.trackSegments[i * sceneryDenisty].scenery.push({
-        frameName: (i % 20 ===1)?"billboard.png" :  "palm_shadow_left.png",
+        frameName: frame ,
         isLeft: (i % 2 === 0) ? true : false,
         offset: offset 
       }
@@ -424,14 +500,14 @@ export default class Drive2Scene extends BaseScene {
 
     this.trackSegments[200].scenery = [];
     this.trackSegments[200].scenery.push({
-      frameName: "start.png",
+      frameName: "end.png",
       isLeft: false,
       offset: 0 
     });
 
     this.trackSegments[this.trackSegments.length-(3000)].scenery = [];
     this.trackSegments[this.trackSegments.length-(3000)].scenery.push({
-      frameName: "end.png",
+      frameName: "start.png",
       isLeft: false,
       offset: 0 
     });
@@ -528,20 +604,16 @@ export default class Drive2Scene extends BaseScene {
   resetRoad() {
     this.trackSegments = [];
 
-    this.addStraight(ROAD_LENGTH.SHORT / 4);
+    this.addStraight(ROAD_LENGTH.SHORT/4);
+    this.addStraight(ROAD_LENGTH.MEDIUM);
     this.addSCurves();
-    this.addStraight(ROAD_LENGTH.LONG);
-    this.addCurve(ROAD_LENGTH.MEDIUM, ROAD_CURVE.MEDIUM);
-    this.addCurve(ROAD_LENGTH.LONG, ROAD_CURVE.HARD);
-    this.addStraight();
-    this.addSCurves();
+    this.addStraight(ROAD_LENGTH.SHORT);
+    this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.HARD);
+    this.addStraight(ROAD_LENGTH.SHORT);
     this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.MEDIUM);
     this.addCurve(ROAD_LENGTH.LONG, ROAD_CURVE.MEDIUM);
-    this.addStraight();
-    this.addSCurves();
     this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.EASY);
-
-
+    this.addStraight(ROAD_LENGTH.SHORT);
     this.settings.trackLength = this.trackSegments.length * this.settings.segmentLength;
     this.addStraight();
     this.addStraight();
@@ -570,14 +642,14 @@ export default class Drive2Scene extends BaseScene {
 
 
     //CHANGE IN X 
-    if (this._state.speed > 0.5) {
+    if (this._state.speed > 0.2) {
 
       // let easeIn = Math.max(3, this._state.speed)
 
-      this._car.x = this._car.x + (this._controls.currentXVector * delta) / Math.max(3, this._state.speed);
+      this._car.x = this._car.x + (this._controls.currentXVector * delta) / Math.max(2, (this._state.speed/2.5));
 
       //g from curve
-      this._car.x = this._car.x - (this._state.g * delta) * Math.max(1, this._state.speed / 2);
+      this._car.x = this._car.x - (this._state.g * delta) * Math.max(0.1, this._state.speed*0.8);
 
     }
 
@@ -585,19 +657,37 @@ export default class Drive2Scene extends BaseScene {
     this._car.resetRumble();
 
 
-    if (this._car.x < 100) {
+    if (this._car.x < 100 && this._state.speed > 1) {
       this._car.x = Math.max(this._car.x,50) ;
-      this._state.speed *=  (1-( 0.001* delta));
+      this._state.speed *=  (1-( 0.006* delta));
       //TODO: add rumble.
       this._car.rumble();
+      this.cameras.main.shake(250,0.005);
+      if(!this._rumbleSound.isPlaying){
+      this._rumbleSound.play();
+      }
 
 
-    } else if (this._car.x > this.dimensions.x - 100) {
+
+    } else if (this._car.x > this.dimensions.x - 100 && this._state.speed > 1) {
       this._car.x = Math.min(this._car.x,this.dimensions.x - 50) ;
-      this._state.speed *=  (1-( 0.001* delta));
+      this._state.speed *=  (1-( 0.006* delta));
       this._car.rumble();
+      this.cameras.main.shake(250,0.005);
+      if(!this._rumbleSound.isPlaying){
+        this._rumbleSound.play();
+        }
+  
 
     }
+
+    if(!this.ended && !this.inCountDown){
+    if(this._controls.currentYVector < -0.8 && this._state.speed > 1){
+      this._car.rumble();
+      this._brakeSound.play();
+      // console.log("car breaking",this._controls.currentYVector );
+    }
+  }
 
 
     let changeInAccleration = this._controls.currentYVector * this.settings.maxAccellerationPerSecond * delta;
@@ -657,7 +747,7 @@ export default class Drive2Scene extends BaseScene {
     this.wingroup.add(bg);
 
     // let scoreText = this.add.text(0,0,this.raceTime,{
-    //   fontFamily: "BIT",
+    //   fontFamily: "charybdisregular",
     //   fontSize: "64px",
     //   color: "#ffffff",
     //   textAlign: "center",
@@ -669,7 +759,7 @@ export default class Drive2Scene extends BaseScene {
 
   // buttons
 
-  let replaybutton = this.add.image(0,100,"atlas.png","replay.png");
+  let replaybutton = this.add.image(0,100,"atlas.png","replay_up.png");
 
   replaybutton.setInteractive();
   // highscores.setInteractive();
@@ -737,13 +827,15 @@ export default class Drive2Scene extends BaseScene {
     
 
     let scoreText = this.add.text(0,-140,scoresString,{
-      fontFamily: "BIT",
+      fontFamily: "charybdisregular",
       fontSize: "32px",
       color: "#ffffff",
-      textAlign: "center",
+      textAlign: "center"
     });
 
     scoreText.setOrigin(0.5,0.0);
+
+    scoreText.style.baselineX = 40;
 
   this.wingroup.add(scoreText);
   }
@@ -756,7 +848,7 @@ export default class Drive2Scene extends BaseScene {
       }
 
       this. _currentTimeValue = -3;
-      this._state.position = 0;
+      this._state.position = 0;//this.settings.trackLength -1000;
       this._state.speed = 0;
       this._state.playerX = 0;
 
@@ -764,8 +856,9 @@ export default class Drive2Scene extends BaseScene {
       this.inCountDown = true;
       this.countDownValue = 3;
   }
-  inCountDown:boolean = true;
+  inCountDown:boolean = false;
   countDownValue:number = 3;
+  previousCountDown:number = 4;
 
 
   ended: boolean = false;
@@ -813,15 +906,27 @@ export default class Drive2Scene extends BaseScene {
     this.renderRoad(time, delta);
 
     if(this.inCountDown){
-      console.log(this.countDownValue, delta);
 
       this.countDownValue -= (delta/1000);
       if(this.countDownValue < 0){
-        
+        this._goSound.play();
         this.inCountDown = false;
+        this.countDownDisplay.visible = false;
+
+
 
       } else {
-        console.log(this.countDownValue);
+
+        
+        if(Math.ceil(this.countDownValue) != this.previousCountDown){
+          
+          this._readySound.play();
+          this.previousCountDown = Math.ceil(this.countDownValue);
+
+
+          this.countDownDisplay.visible = true;
+          this.countDownDisplay.text = ""+this.previousCountDown;
+        }
       }
       return;
     }
@@ -836,6 +941,8 @@ export default class Drive2Scene extends BaseScene {
     this.checkGameState(delta);
 
   }
+
+  countDownDisplay:Phaser.GameObjects.Text;
 
   private updateRoadModel(baseSegment: TrackSegment) {
 
@@ -961,8 +1068,9 @@ export default class Drive2Scene extends BaseScene {
 
         if(Phaser.Geom.Rectangle.Overlaps(s.getBounds(), this._car.bounds)){
           model.used = true;
-          this._state.speed *= 0.7;
+          this._state.speed *= 0.25;
           this.hitSound.play();
+          this.cameras.main.shake(250,0.02);
           console.log("hit");
         }
       } else {

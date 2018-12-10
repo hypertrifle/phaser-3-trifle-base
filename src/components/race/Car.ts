@@ -10,7 +10,8 @@ export default class Car extends Phaser.GameObjects.Sprite {
    private _scene: DriveScene;
    private _config: CarConfig;
 
-   private _rumble:Phaser.GameObjects.Image;
+   private _rumbleLeft:Phaser.GameObjects.Image;
+   private _rumbleRight:Phaser.GameObjects.Image;
 
    private _rumbleStep:number = 0;
    private _rumbleAmount:number = 0;
@@ -28,31 +29,36 @@ export default class Car extends Phaser.GameObjects.Sprite {
 
       this.scene.add.existing(this);
 
-      this._rumble = scene.add.image(0,0,"atlas.png", "car_smoke0.png");
-      this._rumble.setOrigin(0.5,0.8);
+      this._rumbleLeft = scene.add.image(0,0,"atlas.png", "car_smoke0.png");
+      this._rumbleLeft.setOrigin(0,0.8);
 
+      this._rumbleLeft.setScale(2)
       
+      this._rumbleRight = scene.add.image(0,0,"atlas.png", "car_smoke0.png");
+      this._rumbleRight.setOrigin(1,0.8);
+      this._rumbleRight.setFlipX(true);
+      
+      this._rumbleRight.setScale(2)
+
    }
 
    rumble(){
       this._rumbleStep ++;
-      if(this._rumbleStep > 3){
+      if(this._rumbleStep > 4*7){
          this._rumbleStep = 0;
          this._rumbleAmount = Math.random()*0.02;
       }
 
-      if(this._rumbleAmount > 0.01){
-         this._rumble.visible = true;
-      }
+         this._rumbleLeft.visible = true;
+         this._rumbleRight.visible = true;
 
       this.setOrigin(0.5,0.9+this._rumbleAmount);
-      
-      if(this._rumbleStep > 0 && this._rumbleStep< 3 ){
-         this._rumble.setFrame("car_smoke0.png");
-      } else {
-         this._rumble.setFrame("car_smoke1.png");
 
-      }
+         let frame = Math.floor(this._rumbleStep / 4.1);
+      
+         this._rumbleLeft.setFrame("skid_0000"+frame+".png");
+         this._rumbleRight.setFrame("skid_0000"+frame+".png");
+   
 
    }
 
@@ -75,11 +81,13 @@ export default class Car extends Phaser.GameObjects.Sprite {
    }
 
    update(delta:number){
-      console.log("carupdate");
+      this._rumbleLeft.visible = false;
+      this._rumbleLeft.x = this.x-100;
+      this._rumbleLeft.y = this.y;
 
-      this._rumble.visible = false;
-      this._rumble.x = this.x;
-      this._rumble.y = this.y;
+      this._rumbleRight.visible = false;
+      this._rumbleRight.x = this.x+100;
+      this._rumbleRight.y = this.y;
    }
 
 }

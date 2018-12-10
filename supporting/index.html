@@ -4,7 +4,6 @@
 <head>
     <title>$title$</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        crossorigin="anonymous">
     <link rel="manifest" href="./manifest.json">
     <script src="./project.bundle.js" charset="utf-8"></script>
 
@@ -119,15 +118,26 @@ canvas {
 } */
 
 
-@font-face {
-    font-family: 'BIT';
-    src: url('./assets/fonts/chary.ttf') format("opentype");
-    font-weight: bold;
-    font-style: oblique;
-}
+/* @font-face {
+    font-family: 'chary';
+    src: url('./assets/fonts/chary.woff2') format('woff2'),
+        url('./assets/fonts/chary.woff') format('woff');
+        font-style: italic;
+        font-weight: normal;
+} */
+
+/* @font-face {
+    font-family: 'Charybdis';
+    src: url('Charybdis.woff2') format('woff2'),
+        url('Charybdis.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+} */
+
+
 
 body {
-  font-family: "BIT", sans-serif !important; /* preload fonts */
+  font-family: "charybdisregular", sans-serif !important; /* preload fonts */
   font-weight: bold;
   font-weight: normal;
 }

@@ -278,28 +278,20 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     // requiredScaling = 16;//this.game.config.zoom;
 
-
     let styleString =
-      "-ms-transform-origin: bottom center; -webkit-transform-origin: bottom center;" +
-      " -moz-transform-origin: bottom center; -o-transform-origin: bottom center; transform-origin: bottom center;" +
-      " -ms-transform: scale(" +
-      requiredScaling +
-      "); -webkit-transform: scale3d(" +
-      requiredScaling +
-      ", 1);" +
-      " -moz-transform: scale(" +
-      requiredScaling +
-      "); -o-transform: scale(" +
-      requiredScaling +
-      "); transform: scale(" +
-      requiredScaling +
-      ");" +
-      "height:" +
-      canvas.height +
-      ";" +
-      " display: block; margin: 0 auto;";
+    // "transform: scale(" +
+      // requiredScaling + "," + requiredScaling +
+      // ");" +
+        "height:" +
+        canvas.height * requiredScaling + "px;" +
+        "width:" +
+        canvas.width * requiredScaling + "px;" ;
+        // +
+        // "width:" +
+        // canvas.width + "px;";
 
     this.canvas.setAttribute("style", styleString);
+
     this.forgroundHTML.setAttribute("style", styleString);
   }
 

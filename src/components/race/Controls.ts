@@ -50,7 +50,7 @@ export class ControlSystem {
       console.log("ControlSystem::contructor");
       this.settings = new ControlSystemSettings();
 
-      this.cursorValues = new Phaser.Geom.Point(0,0);
+      this.cursorValues = new Phaser.Geom.Point(0,0.05);
 
       if (this.settings.mode === ControlMode.TANK) {
 
@@ -130,7 +130,7 @@ export class ControlSystem {
       accel = Math.max(-1,accel);
       accel = Math.min(1,accel);
 
-      console.log(accel);
+      // console.log(accel);
 
       this.cursorValues.y = Math.max(-1, Math.min(1, this.cursorValues.y + (0.05*accel)));
 
@@ -147,7 +147,7 @@ export class ControlSystem {
         this.handlePointer(scene.input.pointer2);
 
         if(!scene.input.pointer1.isDown && !scene.input.pointer2.isDown ){
-           this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.01);
+           this.cursorValues.y = Math.max(-0.8, this.cursorValues.y - 0.01);
         }
 
         if(scene.input.pointer1.isDown === scene.input.pointer2.isDown ){
@@ -161,7 +161,7 @@ export class ControlSystem {
       } else if (this.cursors.down.isDown) {
         this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.1);
       } else {
-        this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.05);
+        this.cursorValues.y = Math.max(-0.8, this.cursorValues.y - 0.05);
       }
 
       if (this.cursors.right.isDown) {
@@ -169,7 +169,7 @@ export class ControlSystem {
 
       } else if (this.cursors.left.isDown) {
     
-        this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.1);
+        this.cursorValues.x = Math.max(-0.8, this.cursorValues.x - 0.1);
     
       } else {
         this.cursorValues.x *= 0.5;
