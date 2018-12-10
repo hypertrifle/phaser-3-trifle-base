@@ -97,7 +97,7 @@ interface TrackSegment {
   isVisible: boolean;
   curve: number;
   scenery?: SceneryItem[];
-  pickups?: Pickup[];
+  obstacles?: Pickup[];
 }
 
 interface TrackDisplaySegment {
@@ -518,9 +518,9 @@ export default class Drive2Scene extends BaseScene {
 
     for (let i = 0; i < totalPickups; i++) {
 
-      this.trackSegments[i * pickupDesnity].pickups = [];
+      this.trackSegments[i * pickupDesnity].obstacles = [];
       
-      this.trackSegments[i * pickupDesnity].pickups.push({
+      this.trackSegments[i * pickupDesnity].obstacles.push({
         lane:Phaser.Math.RND.integerInRange(0,2)-1,
         used: false
       });
@@ -826,7 +826,7 @@ export default class Drive2Scene extends BaseScene {
 
     
 
-    let scoreText = this.add.text(0,-140,scoresString,{
+    let scoreText = this.add.text(2,-140,scoresString,{
       fontFamily: "charybdisregular",
       fontSize: "32px",
       color: "#ffffff",
@@ -895,7 +895,7 @@ export default class Drive2Scene extends BaseScene {
     this._state.position += this._state.speed * delta;
 
 
-    if (baseSegment.pickups && baseSegment.pickups.length > 0) {
+    if (baseSegment.obstacles && baseSegment.obstacles.length > 0) {
       //check we overlap with the pickup, if so enable speed boost, remove pickup
 
     }
@@ -1035,12 +1035,12 @@ export default class Drive2Scene extends BaseScene {
       }
 
       //any pickup items?
-      if (seg.pickups && seg.pickups.length > 0 && previousPosition !== -1) {
+      if (seg.obstacles && seg.obstacles.length > 0 && previousPosition !== -1) {
 
         
 
         //currently we can only have one item per segment so lets just grab that.
-        let model = seg.pickups[0];
+        let model = seg.obstacles[0];
 
         if(!model.used){
 
