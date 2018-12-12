@@ -98,6 +98,7 @@ interface TrackSegment {
   curve: number;
   scenery?: SceneryItem[];
   obstacles?: Pickup[];
+  pickups?: Pickup[];
 }
 
 interface TrackDisplaySegment {
@@ -173,17 +174,17 @@ export default class Drive2Scene extends BaseScene {
   preload() {
     console.log("Drive2Scene::preload");
 
-    this.load.audio('car_engine_1', ['assets/audio/car-3-pitch-1.mp3','assets/audio/car-3-pitch-1.wav']);
-    this.load.audio('car_engine_2', ['assets/audio/car-3-pitch-2.mp3','assets/audio/car-3-pitch-2.wav']);
-    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3','assets/audio/car-3-pitch-3.wav']);
-    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3','assets/audio/car-3-pitch-3.wav']);
-    this.load.audio('car_engine_4', ['assets/audio/car-3-pitch-4.mp3','assets/audio/car-3-pitch-4.wav']);
-    this.load.audio('ice_berg_crash', ['assets/audio/hit.mp3','assets/audio/Hit.wav']);
-    this.load.audio('rumble', ['assets/audio/rumble.mp3','assets/audio/rumble.wav']);
-    this.load.audio('ready', ['assets/audio/ready.mp3','assets/audio/ready.wav']);
-    this.load.audio('go', ['assets/audio/go.mp3','assets/audio/go.wav']);
-    this.load.audio('brake', ['assets/audio/break.mp3','assets/audio/break.wav']);
-    this.load.audio('music', ['assets/audio/music.mp3','assets/audio/music.wav']);
+    this.load.audio('car_engine_1', ['assets/audio/car-3-pitch-1.mp3','assets/audio/car-3-pitch-1.ogg']);
+    this.load.audio('car_engine_2', ['assets/audio/car-3-pitch-2.mp3','assets/audio/car-3-pitch-2.ogg']);
+    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3','assets/audio/car-3-pitch-3.ogg']);
+    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3','assets/audio/car-3-pitch-3.ogg']);
+    this.load.audio('car_engine_4', ['assets/audio/car-3-pitch-4.mp3','assets/audio/car-3-pitch-4.ogg']);
+    this.load.audio('ice_berg_crash', ['assets/audio/hit.mp3','assets/audio/Hit.ogg']);
+    this.load.audio('rumble', ['assets/audio/rumble.mp3','assets/audio/rumble.ogg']);
+    this.load.audio('ready', ['assets/audio/ready.mp3','assets/audio/ready.ogg']);
+    this.load.audio('go', ['assets/audio/go.mp3','assets/audio/go.ogg']);
+    this.load.audio('brake', ['assets/audio/break.mp3','assets/audio/break.ogg']);
+    this.load.audio('music', ['assets/audio/music.mp3','assets/audio/music.ogg']);
 
 
 
@@ -513,14 +514,29 @@ export default class Drive2Scene extends BaseScene {
     });
 
     //distribute our obstacles / pickups.
-    let pickupDesnity = 2000;
+    let obstacleDensity = 2000;
+    let totalObstacles = Math.floor(this.trackSegments.length / (obstacleDensity));
+
+    for (let i = 0; i < totalObstacles; i++) {
+
+      this.trackSegments[i * obstacleDensity].obstacles = [];
+      
+      this.trackSegments[i * obstacleDensity].obstacles.push({
+        lane:Phaser.Math.RND.integerInRange(0,2)-1,
+        used: false
+      });
+    }
+
+
+    //distribute our obstacles / pickups.
+    let pickupDesnity = 3001;
     let totalPickups = Math.floor(this.trackSegments.length / (pickupDesnity));
 
     for (let i = 0; i < totalPickups; i++) {
 
-      this.trackSegments[i * pickupDesnity].obstacles = [];
+      this.trackSegments[i * pickupDesnity].pickups = [];
       
-      this.trackSegments[i * pickupDesnity].obstacles.push({
+      this.trackSegments[i * pickupDesnity].pickups.push({
         lane:Phaser.Math.RND.integerInRange(0,2)-1,
         used: false
       });

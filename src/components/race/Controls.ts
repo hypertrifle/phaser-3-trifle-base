@@ -33,6 +33,13 @@ export class ControlSystem {
 
    owner:Drive2Scene;
 
+   classicSteer:Phaser.GameObjects.GameObject;
+   steerOrigin:number;
+   steerCurrent:number;
+   steerActive:boolean;
+   classicA:Phaser.GameObjects.GameObject;
+   classicB:Phaser.GameObjects.GameObject;
+
 
    get currentXVector(): number {
      return this.cursorValues.x;
@@ -49,6 +56,7 @@ export class ControlSystem {
    constructor(scene: Phaser.Scene) {
       console.log("ControlSystem::contructor");
       this.settings = new ControlSystemSettings();
+      this.owner = scene as Drive2Scene;
 
       this.cursorValues = new Phaser.Geom.Point(0,0.05);
 
@@ -56,33 +64,60 @@ export class ControlSystem {
 
       }
 
-      this.owner = scene as Drive2Scene;
+      
+
 
       this.cursors = scene.input.keyboard.createCursorKeys();
-      scene.input.addPointer(); // second pointer
-
-
-      // this.leftButton = scene.add.graphics({});
-      // this.leftButton.fillStyle(0xff00aa, 0);
-      // this.leftButton.fillRect(0,0,this.owner.dimensions.x/2, this.owner.dimensions.y);
-
-      // this.rightButton = scene.add.graphics({});
-      // this.rightButton.fillStyle(0xff00aa, 0);
-      // this.rightButton.fillRect(this.owner.dimensions.x/2,0,this.owner.dimensions.x/2, this.owner.dimensions.y);
-
-      // // this.rightButton.alpha = this.leftButton.alpha = 1;
-
+      scene.input.addPointer(); 
       
-      // this.leftButton.setInteractive(new Phaser.Geom.Rectangle(0,0,this.owner.dimensions.x/2, this.owner.dimensions.y),Phaser.Geom.Rectangle.Contains);
-      // this.leftButton.on("pointerdown", this.leftPointerDown.bind(this));
-      // this.leftButton.on("pointerup", this.leftPointerUp.bind(this));
-      
-      // this.rightButton.setInteractive(new Phaser.Geom.Rectangle(this.owner.dimensions.x/2,0,this.owner.dimensions.x/2, this.owner.dimensions.y), Phaser.Geom.Rectangle.Contains);
-      // this.rightButton.on("pointerdown", this.rightPointerDown.bind(this));
-      // this.rightButton.on("pointerup", this.rightPointerUp.bind(this));
-      
-      // console.log(this.rightButton, this.leftButton);
+      if(this.owner.game.device.os.android || this.owner.game.device.os.iOS){
+        if(this.settings.mode === ControlMode.CLASSIC ){
+          
+          this.classicSteer = this.owner.add.rectangle((this.owner.dimensions.x/4) * 3,(this.owner.dimensions.y/4) * 3, this.owner.dimensions.x/2,this.owner.dimensions.y/2,0xFFAA00,0.3);
+          
+          this.classicSteer.setInteractive();
+          this.classicSteer.on("pointerdown", this.steerPointerDown, this);
+          this.classicSteer.on("pointermove", this.steerPointerMove, this);
+          this.classicSteer.on("pointerup", this.steerPointerUp, this);
 
+          this.classicA = this.owner.add.rectangle((this.owner.dimensions.x/8) * 1,(this.owner.dimensions.y/8) * 7, (this.owner.dimensions.x/8) * 2,(this.owner.dimensions.y/8) * 2,0x00FFAA,0.3);
+          this.classicA.setInteractive();
+          this.classicA.on("pointerdown", this.leftPointerDown, this);
+          this.classicA.on("pointerup", this.leftPointerUp, this);
+
+
+
+          this.classicB = this.owner.add.rectangle((this.owner.dimensions.x/16) * 3,(this.owner.dimensions.y/8) * 5, (this.owner.dimensions.x/8) * 2,(this.owner.dimensions.y/8) * 2,0xff00AA,0.3);
+          this.classicB.setInteractive();
+          this.classicB.on("pointerdown", this.rightPointerDown, this);
+          this.classicB.on("pointerup", this.rightPointerUp, this);
+
+
+        }
+      }
+     
+
+
+   }
+
+   steerPointerDown(e:PointerEvent){
+      // console.log("controls::steerPointerDown",e);
+      this.steerActive = true;
+      this.steerOrigin = e.x;
+      this.steerCurrent = e.x;
+
+   }
+   steerPointerMove(e:PointerEvent){
+    // console.log("controls::steerPointerMove",e);
+
+
+    this.steerCurrent = e.x;
+
+
+   }
+   steerPointerUp(e:PointerEvent){
+    // console.log("controls::steerPointerUp",e);
+    this.steerActive = false;
    }
 
    leftButtonValue: boolean = false;
@@ -132,6 +167,8 @@ export class ControlSystem {
 
       // console.log(accel);
 
+
+
       this.cursorValues.y = Math.max(-1, Math.min(1, this.cursorValues.y + (0.05*accel)));
 
 
@@ -143,6 +180,9 @@ export class ControlSystem {
    update(time: number, delta: number, car: Car, scene: BaseScene) {
   
       if (scene.game.device.os.iOS || scene.game.device.os.android) {
+
+
+        if(this.settings.mode === ControlMode.TANK){
         this.handlePointer(scene.input.pointer1);
         this.handlePointer(scene.input.pointer2);
 
@@ -153,6 +193,35 @@ export class ControlSystem {
         if(scene.input.pointer1.isDown === scene.input.pointer2.isDown ){
           this.cursorValues.x *= 0.5;
         }
+
+
+
+
+      } else {
+        //classic controls.
+
+        if(this.leftButtonValue === true){
+          this.cursorValues.y = Math.min(1, this.cursorValues.y + 0.1);
+        } else if(this.rightButtonValue === true){
+           this.cursorValues.y = Math.max(-1, this.cursorValues.y - 0.1);
+        } else {
+          this.cursorValues.y = Math.max(-0.8, this.cursorValues.y - 0.05);
+        }
+
+        //steering
+        if(this.steerActive){
+
+
+          const offset:number = this.steerCurrent - this.steerOrigin;
+          const offsetScaled = Math.max(-1, Math.min(1, offset/100 ));
+          this.cursorValues.x = offsetScaled;
+    
+        } else {
+          this.cursorValues.x *= 0.5;
+        }
+
+
+      }
     } else {
 
       // cursor / desktop.
@@ -169,7 +238,7 @@ export class ControlSystem {
 
       } else if (this.cursors.left.isDown) {
     
-        this.cursorValues.x = Math.max(-0.8, this.cursorValues.x - 0.1);
+        this.cursorValues.x = Math.max(-1, this.cursorValues.x - 0.1);
     
       } else {
         this.cursorValues.x *= 0.5;

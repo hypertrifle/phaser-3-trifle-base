@@ -47,7 +47,7 @@ const config: GameConfig = {
     keyboard: true,
     mouse: true,
     touch:{
-      target:document.body,
+      target:document.getElementById("container"),
       capture:true
     }
     // gamepad: false

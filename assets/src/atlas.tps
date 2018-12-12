@@ -72,7 +72,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>2</uint>
+        <uint>1</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -108,7 +108,7 @@
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
-            <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
+            <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
             <key>forceSquared</key>
             <true/>
             <key>maxRects</key>
@@ -213,6 +213,7 @@
                 <false/>
             </struct>
             <key type="filename">../img/billboard.png</key>
+            <key type="filename">../img/billboard2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -222,6 +223,19 @@
                 <rect>72,35,144,70</rect>
                 <key>scale9Paddings</key>
                 <rect>72,35,144,70</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../img/blimp.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>29,9,58,18</rect>
+                <key>scale9Paddings</key>
+                <rect>29,9,58,18</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -237,20 +251,6 @@
                 <rect>25,25,50,50</rect>
                 <key>scale9Paddings</key>
                 <rect>25,25,50,50</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">../img/car_smoke0.png</key>
-            <key type="filename">../img/car_smoke1.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>38,9,75,17</rect>
-                <key>scale9Paddings</key>
-                <rect>38,9,75,17</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -295,6 +295,20 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
+            <key type="filename">../img/instructions/instructionsDesktop.png</key>
+            <key type="filename">../img/instructions/instructionsMobile.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>155,85,310,170</rect>
+                <key>scale9Paddings</key>
+                <rect>155,85,310,170</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">../img/palm_shadow_left.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -305,6 +319,68 @@
                 <rect>34,18,67,37</rect>
                 <key>scale9Paddings</key>
                 <rect>34,18,67,37</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../img/pickup/pickup_00000.png</key>
+            <key type="filename">../img/pickup/pickup_00001.png</key>
+            <key type="filename">../img/pickup/pickup_00002.png</key>
+            <key type="filename">../img/pickup/pickup_00003.png</key>
+            <key type="filename">../img/pickup/pickup_00004.png</key>
+            <key type="filename">../img/pickup/pickup_00005.png</key>
+            <key type="filename">../img/pickup/pickup_00006.png</key>
+            <key type="filename">../img/pickup/pickup_00007.png</key>
+            <key type="filename">../img/pickup/pickup_00008.png</key>
+            <key type="filename">../img/pickup/pickup_00009.png</key>
+            <key type="filename">../img/pickup/pickup_00010.png</key>
+            <key type="filename">../img/pickup/pickup_00011.png</key>
+            <key type="filename">../img/pickup/pickup_00012.png</key>
+            <key type="filename">../img/pickup/pickup_00013.png</key>
+            <key type="filename">../img/pickup/pickup_00014.png</key>
+            <key type="filename">../img/pickup/pickup_00015.png</key>
+            <key type="filename">../img/pickup/pickup_00016.png</key>
+            <key type="filename">../img/pickup/pickup_00017.png</key>
+            <key type="filename">../img/pickup/pickup_00018.png</key>
+            <key type="filename">../img/pickup/pickup_00019.png</key>
+            <key type="filename">../img/pickup/pickup_00020.png</key>
+            <key type="filename">../img/pickup/pickup_00021.png</key>
+            <key type="filename">../img/pickup/pickup_00022.png</key>
+            <key type="filename">../img/pickup/pickup_00023.png</key>
+            <key type="filename">../img/pickup/pickup_00024.png</key>
+            <key type="filename">../img/pickup/pickup_00025.png</key>
+            <key type="filename">../img/pickup/pickup_00026.png</key>
+            <key type="filename">../img/pickup/pickup_00027.png</key>
+            <key type="filename">../img/pickup/pickup_00028.png</key>
+            <key type="filename">../img/pickup/pickup_00029.png</key>
+            <key type="filename">../img/pickup/pickup_00030.png</key>
+            <key type="filename">../img/pickup/pickup_00031.png</key>
+            <key type="filename">../img/pickup/pickup_00032.png</key>
+            <key type="filename">../img/pickup/pickup_00033.png</key>
+            <key type="filename">../img/pickup/pickup_00034.png</key>
+            <key type="filename">../img/pickup/pickup_00035.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>8,8,16,16</rect>
+                <key>scale9Paddings</key>
+                <rect>8,8,16,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../img/replay_over.png</key>
+            <key type="filename">../img/replay_up.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>44,12,88,25</rect>
+                <key>scale9Paddings</key>
+                <rect>44,12,88,25</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -320,6 +396,25 @@
                 <rect>94,13,187,27</rect>
                 <key>scale9Paddings</key>
                 <rect>94,13,187,27</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../img/skid_00000.png</key>
+            <key type="filename">../img/skid_00001.png</key>
+            <key type="filename">../img/skid_00002.png</key>
+            <key type="filename">../img/skid_00003.png</key>
+            <key type="filename">../img/skid_00004.png</key>
+            <key type="filename">../img/skid_00005.png</key>
+            <key type="filename">../img/skid_00006.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>10,10,21,20</rect>
+                <key>scale9Paddings</key>
+                <rect>10,10,21,20</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
