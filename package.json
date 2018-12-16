@@ -8,7 +8,7 @@
     "pre-dev": "npm run generate-svg-atlas",
     "generate-atlas": "TexturePacker --sheet assets/atlas/atlas.png --data assets/atlas/atlaspng.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
     "generate-svg-atlas": "svg-sprite  --shape-spacing-padding 2,2,2,2 --view --view-render-css --view-render-css-template ./supporting/atlas-template.json.hbs --view-render-css-dest atlas.json --view-dest ./assets/atlas --view-sprite atlas.svg assets/svg/**/*.svg && MOVE .\\assets\\atlas\\atlas.json.css .\\assets\\atlas\\atlas.json && MOVE .\\assets\\atlas\\atlas-*.svg .\\assets\\atlas\\atlas.svg",
-    "dev": " npm run pre-dev && webpack && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/build/ --host 192.168.178.22",
+    "dev": " webpack && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/build/ --host 192.168.178.22",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "build-ci": "webpack -p --env.NODE_ENV=ci",
     "lint": "tslint --fix src/**/*.ts",

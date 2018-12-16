@@ -29,12 +29,12 @@ export default class Car extends Phaser.GameObjects.Sprite {
 
       this.scene.add.existing(this);
 
-      this._rumbleLeft = scene.add.image(0,0,"atlas.png", "car_smoke0.png");
+      this._rumbleLeft = scene.add.image(0,0,"atlas.png", "skid_00001.png");
       this._rumbleLeft.setOrigin(0,0.8);
 
       this._rumbleLeft.setScale(2)
       
-      this._rumbleRight = scene.add.image(0,0,"atlas.png", "car_smoke0.png");
+      this._rumbleRight = scene.add.image(0,0,"atlas.png", "skid_00001.png");
       this._rumbleRight.setOrigin(1,0.8);
       this._rumbleRight.setFlipX(true);
       

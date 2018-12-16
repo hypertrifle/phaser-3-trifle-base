@@ -146,11 +146,6 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
                     return Promise.resolve(applyPackageVars(content));}
                 },
                 //IMSManifest - required for valid scorm package.
-                { from: 'supporting/imsmanifest.xml', to: './imsmanifest.xml', flatten:true, 
-                transform (content, path) {
-                    return Promise.resolve(applyPackageVars(content));}
-                },
-                //IMSManifest - required for valid scorm package.
                 { from: 'supporting/manifest.json', to: './manifest.json', flatten:true, 
                 transform (content, path) {
                     return Promise.resolve(applyPackageVars(content));}

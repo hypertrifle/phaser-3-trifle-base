@@ -1,6 +1,6 @@
 import DriveScene from "../../scenes/Drive";
 
- interface PickUpConfig extends GameObjectConfig {
+ interface ObstacleConfig extends GameObjectConfig {
    frame: string;
    lane: number;
    totalBands: number;
@@ -9,7 +9,7 @@ import DriveScene from "../../scenes/Drive";
 
 }
 
-export default class PickUp extends Phaser.GameObjects.Sprite {
+export default class Obstacle extends Phaser.GameObjects.Image {
 
    offset: Phaser.Geom.Point;
    isLeft: boolean;
@@ -19,7 +19,7 @@ export default class PickUp extends Phaser.GameObjects.Sprite {
    roadPosition: number;
 
 
-   constructor(scene: Phaser.Scene,config: PickUpConfig) {
+   constructor(scene: Phaser.Scene,config: ObstacleConfig) {
      super(scene,0,-1000,"atlas.png","test-sprite.png");
 
    //   Object.assign(this,config);
@@ -35,10 +35,6 @@ export default class PickUp extends Phaser.GameObjects.Sprite {
 
      this.roadPosition = config.roadPosition;
      this.frameName = config.frame;
-
-
-   //   this.anims.
-   //TODO: add animation
 
      scene.add.existing(this);
 

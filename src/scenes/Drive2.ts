@@ -4,7 +4,7 @@ import { ControlSystem } from "../components/race/Controls";
 import { ViewPortSettings } from "../components/race/TrackSystem";
 import Scenery from "../components/race/Scenery";
 import Car from "../components/race/Car";
-import PickUp from "../components/race/PickUp";
+import Obstacle from "../components/race/Obstacle";
 import { GUI } from "dat.gui";
 import DataUtils from "../plugins/utils/DataUtils";
 
@@ -35,25 +35,25 @@ class RaceSettings {
   maxAccellerationPerSecond: number = 0.8;
   maxVelocity: number = 10;
 
-  _closeColour:number = 0xfae873;
-  _farColour:number = 0xf58c36;
+  _closeColour: number = 0xfae873;
+  _farColour: number = 0xf58c36;
 
-  _skyBottomColor:number = 0x00dcff;
-  _skyTopColor:number = 0x00c0ff;
+  _skyBottomColor: number = 0x00dcff;
+  _skyTopColor: number = 0x00c0ff;
 
-  get closeColour(){
+  get closeColour() {
     return Phaser.Display.Color.ValueToColor(this._closeColour);
   }
 
-  get farColour(){
+  get farColour() {
     return Phaser.Display.Color.ValueToColor(this._farColour);
   }
 
-  get skyBottomColor(){
+  get skyBottomColor() {
     return Phaser.Display.Color.ValueToColor(this._skyBottomColor);
   }
 
-  get skyTopColor(){
+  get skyTopColor() {
     return Phaser.Display.Color.ValueToColor(this._skyTopColor);
   }
 }
@@ -62,7 +62,7 @@ class CurrentState {
   speed: number = 0;
   position: number = 0;
   playerX: number = 0;
-  g:number = 0;
+  g: number = 0;
 
 }
 
@@ -73,16 +73,16 @@ interface SceneryItem {
 }
 
 interface ScoreEntry {
-  name:string;
+  name: string;
   position: number;
-  time: number;
+  score: number;
 }
 
-interface ScoreResults {
-  above?:ScoreEntry[];
-  me:ScoreEntry;
-  below?:ScoreEntry[];
-}
+// interface ScoreResults {
+//   above?:ScoreEntry[];
+//   me:ScoreEntry;
+//   below?:ScoreEntry[];
+// }
 
 interface Pickup {
   lane: number,
@@ -145,10 +145,10 @@ export default class Drive2Scene extends BaseScene {
   private _currentTime: Phaser.GameObjects.Text;
   private _currentSpeed: Phaser.GameObjects.Text;
 
-  private _horizonItems:Phaser.GameObjects.Image[] = []
+  private _horizonItems: Phaser.GameObjects.Image[] = []
 
 
-  private _pickups: PickUp[];
+  private _pickups: Obstacle[];
   constructor() {
     super({
       key: "Drive2Scene",
@@ -174,29 +174,29 @@ export default class Drive2Scene extends BaseScene {
   preload() {
     console.log("Drive2Scene::preload");
 
-    this.load.audio('car_engine_1', ['assets/audio/car-3-pitch-1.mp3','assets/audio/car-3-pitch-1.ogg']);
-    this.load.audio('car_engine_2', ['assets/audio/car-3-pitch-2.mp3','assets/audio/car-3-pitch-2.ogg']);
-    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3','assets/audio/car-3-pitch-3.ogg']);
-    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3','assets/audio/car-3-pitch-3.ogg']);
-    this.load.audio('car_engine_4', ['assets/audio/car-3-pitch-4.mp3','assets/audio/car-3-pitch-4.ogg']);
-    this.load.audio('ice_berg_crash', ['assets/audio/hit.mp3','assets/audio/Hit.ogg']);
-    this.load.audio('rumble', ['assets/audio/rumble.mp3','assets/audio/rumble.ogg']);
-    this.load.audio('ready', ['assets/audio/ready.mp3','assets/audio/ready.ogg']);
-    this.load.audio('go', ['assets/audio/go.mp3','assets/audio/go.ogg']);
-    this.load.audio('brake', ['assets/audio/break.mp3','assets/audio/break.ogg']);
-    this.load.audio('music', ['assets/audio/music.mp3','assets/audio/music.ogg']);
+    this.load.audio('car_engine_1', ['assets/audio/car-3-pitch-1.mp3', 'assets/audio/car-3-pitch-1.ogg']);
+    this.load.audio('car_engine_2', ['assets/audio/car-3-pitch-2.mp3', 'assets/audio/car-3-pitch-2.ogg']);
+    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3', 'assets/audio/car-3-pitch-3.ogg']);
+    this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3', 'assets/audio/car-3-pitch-3.ogg']);
+    this.load.audio('car_engine_4', ['assets/audio/car-3-pitch-4.mp3', 'assets/audio/car-3-pitch-4.ogg']);
+    this.load.audio('ice_berg_crash', ['assets/audio/hit.mp3', 'assets/audio/Hit.ogg']);
+    this.load.audio('rumble', ['assets/audio/rumble.mp3', 'assets/audio/rumble.ogg']);
+    this.load.audio('ready', ['assets/audio/ready.mp3', 'assets/audio/ready.ogg']);
+    this.load.audio('go', ['assets/audio/go.mp3', 'assets/audio/go.ogg']);
+    this.load.audio('brake', ['assets/audio/break.mp3', 'assets/audio/break.ogg']);
+    this.load.audio('music', ['assets/audio/music.mp3', 'assets/audio/music.ogg']);
 
 
 
   }
 
-  engineSounds:Phaser.Sound.BaseSound[] = [];
-  hitSound:Phaser.Sound.BaseSound;
-  _rumbleSound:Phaser.Sound.BaseSound;
-  _readySound:Phaser.Sound.BaseSound;
-  _goSound:Phaser.Sound.BaseSound;
-  _brakeSound:Phaser.Sound.BaseSound;
-  _music:Phaser.Sound.BaseSound;
+  engineSounds: Phaser.Sound.BaseSound[] = [];
+  hitSound: Phaser.Sound.BaseSound;
+  _rumbleSound: Phaser.Sound.BaseSound;
+  _readySound: Phaser.Sound.BaseSound;
+  _goSound: Phaser.Sound.BaseSound;
+  _brakeSound: Phaser.Sound.BaseSound;
+  _music: Phaser.Sound.BaseSound;
 
 
   create() {
@@ -210,35 +210,35 @@ export default class Drive2Scene extends BaseScene {
 
     this.genRoadDisplayPool();
 
-    
+
     this.generateScenery();
     this._car = new Car(this, {
       positionFromBottom: 40,
       scale: 1
     })
-    
+
     this._controls = new ControlSystem(this);
 
     this._controls.update(0, 16, this._car, this);
 
 
-    this.hitSound = this.sound.add("ice_berg_crash", {volume:1});
-    this._rumbleSound = this.sound.add("rumble", {volume:0.3});
-    this._readySound = this.sound.add("ready", {volume:0.5});
-    this._goSound = this.sound.add("go", {volume:0.5});
+    this.hitSound = this.sound.add("ice_berg_crash", { volume: 1 });
+    this._rumbleSound = this.sound.add("rumble", { volume: 0.3 });
+    this._readySound = this.sound.add("ready", { volume: 0.5 });
+    this._goSound = this.sound.add("go", { volume: 0.5 });
 
-    this._brakeSound = this.sound.add("brake", {volume:0.4, detune:-700});
-    this._music = this.sound.add("music", {volume:0.7,loop:true});
+    this._brakeSound = this.sound.add("brake", { volume: 0.4, detune: -700 });
+    this._music = this.sound.add("music", { volume: 0.7, loop: true });
     this._music.play();
     this.engineSounds = [];
 
-    for(let i = 1; i< 5;i ++){
-      this.engineSounds[i-1] = this.sound.add("car_engine_"+i, { loop:true, volume:0.3});
-      this.engineSounds[i-1].stop();
+    for (let i = 1; i < 5; i++) {
+      this.engineSounds[i - 1] = this.sound.add("car_engine_" + i, { loop: true, volume: 0.3 });
+      this.engineSounds[i - 1].stop();
 
     }
 
-    
+
     this.addUI();
 
 
@@ -251,29 +251,29 @@ export default class Drive2Scene extends BaseScene {
   }
 
 
-  private _spedo:Phaser.GameObjects.Image;
-  private _spedoMask:Phaser.GameObjects.Graphics;
+  private _spedo: Phaser.GameObjects.Image;
+  private _spedoMask: Phaser.GameObjects.Graphics;
 
-  addUI(){
+  addUI() {
 
 
     let bg = this.add.graphics({});
 
     //spedo bg
-    bg.fillStyle(0x333333,1);
-    bg.fillRoundedRect(10,6,210,20,4);
+    bg.fillStyle(0x333333, 1);
+    bg.fillRoundedRect(10, 6, 210, 20, 4);
 
 
     //timer BG
-    bg.fillRoundedRect(this.dimensions.x - 98,6,93,20,4);
+    bg.fillRoundedRect(this.dimensions.x - 98, 6, 93, 20, 4);
 
 
-    this._spedo = this.add.image(5,5,"atlas.png","bar_back.png");
-    this._spedo.setOrigin(0,0);
-    this._spedo.setScale(0.5,0.5);
-    let fog = this.add.image(5,5,"atlas.png","bar_front.png");
-    fog.setOrigin(0,0);
-    fog.setScale(0.5,0.5);
+    this._spedo = this.add.image(5, 5, "atlas.png", "bar_back.png");
+    this._spedo.setOrigin(0, 0);
+    this._spedo.setScale(0.5, 0.5);
+    let fog = this.add.image(5, 5, "atlas.png", "bar_front.png");
+    fog.setOrigin(0, 0);
+    fog.setScale(0.5, 0.5);
 
 
 
@@ -282,20 +282,20 @@ export default class Drive2Scene extends BaseScene {
 
 
     this._spedo.mask = new Phaser.Display.Masks.GeometryMask(this, this._spedoMask);
-    
-    
-    this._currentTime = this.add.text(this.dimensions.x - 50,3,"00:00:00",{
+
+
+    this._currentTime = this.add.text(this.dimensions.x - 50, 3, "00:00:00", {
       fontFamily: "charybdisregular",
       fontSize: "24px",
       color: "#ffffff",
       align: "center"
-      
-      
+
+
     }
     );
 
     //TODO: add shodow to fonts.
-    this._currentSpeed = this.add.text(217,3,"100MPH", {
+    this._currentSpeed = this.add.text(217, 3, "100MPH", {
       fontFamily: "charybdisregular",
       fontSize: "24px",
       color: "#ffffff",
@@ -304,11 +304,11 @@ export default class Drive2Scene extends BaseScene {
     });
     this._currentTime.style.setAlign("center");
     this._currentSpeed.style.setAlign("center");
-    this._currentTime.setOrigin(0.5,0);
-    this._currentSpeed.setOrigin(1,0);
+    this._currentTime.setOrigin(0.5, 0);
+    this._currentSpeed.setOrigin(1, 0);
 
 
-    this.countDownDisplay = this.add.text(this.dimensions.x/2, this.dimensions.y/3,"3", {
+    this.countDownDisplay = this.add.text(this.dimensions.x / 2, this.dimensions.y / 3, "3", {
       fontFamily: "charybdisregular",
       fontSize: "128px",
       color: "#16bdf7",
@@ -318,25 +318,25 @@ export default class Drive2Scene extends BaseScene {
     });
     this.countDownDisplay.visible = false;
 
-    this.countDownDisplay.setOrigin(0.5,0.5)
-    
+    this.countDownDisplay.setOrigin(0.5, 0.5)
+
     this.updateUI(0.5);
   }
 
-  updateUI(speedPercent:number, time:number = 10000){
+  updateUI(speedPercent: number, time: number = 10000) {
     this._spedoMask.clear();
-    this._spedoMask.fillStyle(0xffffff,1);
-    this._spedoMask.fillRect(this._spedo.x, this._spedo.y,this._spedo.width*this._spedo.scaleX*speedPercent, this._spedo.height*this._spedo.scaleY );
-    this._currentSpeed.text = Math.floor(speedPercent*220).toString() + " MPH";
+    this._spedoMask.fillStyle(0xffffff, 1);
+    this._spedoMask.fillRect(this._spedo.x, this._spedo.y, this._spedo.width * this._spedo.scaleX * speedPercent, this._spedo.height * this._spedo.scaleY);
+    this._currentSpeed.text = Math.floor(speedPercent * 220).toString() + " MPH";
     this._currentTime.text = this.timeString(this._currentTimeValue);
 
 
-    let engineSpeed = Math.round((1-speedPercent)*this.engineSounds.length);
-    for(let i = 0; i< this.engineSounds.length; i ++){
-      if(i === engineSpeed){
+    let engineSpeed = Math.round((1 - speedPercent) * this.engineSounds.length);
+    for (let i = 0; i < this.engineSounds.length; i++) {
+      if (i === engineSpeed) {
 
         this.engineSounds[i].stop();
-        this.engineSounds[i] = this.sound.add("car_engine_"+(i+1), { loop:true, volume:0.3, detune:speedPercent*1000});
+        this.engineSounds[i] = this.sound.add("car_engine_" + (i + 1), { loop: true, volume: 0.3, detune: speedPercent * 1000 });
         this.engineSounds[i].play();
 
       } else {
@@ -345,13 +345,13 @@ export default class Drive2Scene extends BaseScene {
       }
     }
 
-  //   this.engineSound.stop();
-  //   this.engineSound.play(null,{ loop:true, 
-  //     volume:Math.min(0.1,speedPercent),
-  //     detune:speedPercent*1000
-  //   }
+    //   this.engineSound.stop();
+    //   this.engineSound.play(null,{ loop:true, 
+    //     volume:Math.min(0.1,speedPercent),
+    //     detune:speedPercent*1000
+    //   }
 
-  //  )
+    //  )
     // this.sound.setDetune(speedPercent*1000);
     // this.sound.volume = speedPercent;
 
@@ -360,16 +360,16 @@ export default class Drive2Scene extends BaseScene {
 
 
 
-  timeString(time:number): string {
+  timeString(time: number): string {
 
-    if(time <= 0){
+    if (time <= 0) {
       return "00:00:00";
     }
 
-    let ms = Math.floor( time/ 10) % 100;
+    let ms = Math.floor(time / 10) % 100;
     let seconds = Math.floor(time / 1000);
 
-    return this.pad(Math.floor(seconds / 60) + "",2) + ":" + this.pad((seconds % 60).toString(),2) + ":" + this.pad(ms.toString(),2);
+    return this.pad(Math.floor(seconds / 60) + "", 2) + ":" + this.pad((seconds % 60).toString(), 2) + ":" + this.pad(ms.toString(), 2);
 
 
   }
@@ -377,20 +377,20 @@ export default class Drive2Scene extends BaseScene {
   pad(n: string, width: number, z: string = "0") {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
   }
-  gernerateAboveHorizon(){
+  gernerateAboveHorizon() {
     let sky = this.add.graphics();
 
-    for(let i = 0; i < 50; i ++ ){
+    for (let i = 0; i < 50; i++) {
       //@ts-ignore
-      var c:Phaser.Display.Color = this.getInterpoadtedColor(this.settings._skyTopColor, this.settings._skyBottomColor, i, 5);
-      sky.fillStyle(c.color,1);
-      sky.fillRect(0,i*8,this.dimensions.x,8);
+      var c: Phaser.Display.Color = this.getInterpoadtedColor(this.settings._skyTopColor, this.settings._skyBottomColor, i, 5);
+      sky.fillStyle(c.color, 1);
+      sky.fillRect(0, i * 8, this.dimensions.x, 8);
 
     }
 
 
-    
-    let cloud = this.add.image(this.dimensions.x/2, 60,"atlas.png","clouds_0.png");
+
+    let cloud = this.add.image(this.dimensions.x / 2, 60, "atlas.png", "clouds_0.png");
     cloud.setDataEnabled();
     cloud.data.set("paralax", 0.2);
     cloud.data.set("velocity", 0.005);
@@ -399,51 +399,51 @@ export default class Drive2Scene extends BaseScene {
 
     // badd basic skybox layers.
 
-    for(let i = 2; i >= 0; i --){
+    for (let i = 2; i >= 0; i--) {
       let position = 0;
 
-      if(i === 2){
-        position -=100;
-      } else if(i === 1){
-        position+=100;
+      if (i === 2) {
+        position -= 100;
+      } else if (i === 1) {
+        position += 100;
 
       }
 
-      let item = this.add.image((this.dimensions.x/2)+position, 60,"atlas.png","scenery_"+i+".png");
+      let item = this.add.image((this.dimensions.x / 2) + position, 60, "atlas.png", "scenery_" + i + ".png");
       item.setDataEnabled();
-      item.data.set("paralax", (3-i)*0.1);
+      item.data.set("paralax", (3 - i) * 0.1);
       item.data.set("velocity", 0);
 
-    
+
       this._horizonItems.push(item);
     }
 
-    let cloud2 = this.add.image(this.dimensions.x/2, 60,"atlas.png","clouds_1.png");
+    let cloud2 = this.add.image(this.dimensions.x / 2, 60, "atlas.png", "clouds_1.png");
     cloud2.setDataEnabled();
     cloud2.data.set("paralax", 0.2);
     cloud2.data.set("velocity", 0.01);
     this._horizonItems.push(cloud2);
 
-    let blimp = this.add.image(this.dimensions.x/1.5, 30,"atlas.png","blimp.png");
+    let blimp = this.add.image(this.dimensions.x / 1.5, 30, "atlas.png", "blimp.png");
     blimp.setDataEnabled();
     blimp.data.set("paralax", 0.4);
     blimp.data.set("velocity", 0.005);
     this._horizonItems.push(blimp);
 
-    
+
   }
 
 
-  updateAboveHorizon(changeInXVel:number, delta:number){
-    for(let i = 0; i < this._horizonItems.length; i ++){
-      
+  updateAboveHorizon(changeInXVel: number, delta: number) {
+    for (let i = 0; i < this._horizonItems.length; i++) {
+
       //any movement based on the corners (curve length scaled by speed)
-      this._horizonItems[i].x -= (changeInXVel *delta *this._horizonItems[i].data.get("paralax"));
+      this._horizonItems[i].x -= (changeInXVel * delta * this._horizonItems[i].data.get("paralax"));
 
       //any basic movement based on velocity (mainly for clouds)
-      this._horizonItems[i].x -= (this._horizonItems[i].data.get("velocity")*delta);
+      this._horizonItems[i].x -= (this._horizonItems[i].data.get("velocity") * delta);
 
-      if(this._horizonItems[i].x + (this._horizonItems[i].width/2) < 0){
+      if (this._horizonItems[i].x + (this._horizonItems[i].width / 2) < 0) {
         this._horizonItems[i].x += this._horizonItems[i].width + this.dimensions.x;
       }
 
@@ -452,8 +452,7 @@ export default class Drive2Scene extends BaseScene {
   }
 
   generateScenery() {
-    //TODO: generate a pool of scenery items and add the sky box
- 
+
     this._scenery = [];
 
     //generate our visual items to use.
@@ -471,25 +470,25 @@ export default class Drive2Scene extends BaseScene {
       this.trackSegments[i * sceneryDenisty].scenery = [];
 
       let offset = Math.random();
-      
-      if(i % 20 ===17) {
+
+      if (i % 20 === 17) {
       }
 
-      let frame:string = "palm_shadow_left.png";
+      let frame: string = "palm_shadow_left.png";
 
-      if(i % 20 ===17){
+      if (i % 20 === 17) {
         offset += 4;
         frame = "billboard.png"
-      } else if(i % 20 ===6){
+      } else if (i % 20 === 6) {
         offset += 8;
         frame = "billboard2.png"
       }
-      
+
 
       this.trackSegments[i * sceneryDenisty].scenery.push({
-        frameName: frame ,
+        frameName: frame,
         isLeft: (i % 2 === 0) ? true : false,
-        offset: offset 
+        offset: offset
       }
 
       );
@@ -503,14 +502,14 @@ export default class Drive2Scene extends BaseScene {
     this.trackSegments[200].scenery.push({
       frameName: "end.png",
       isLeft: false,
-      offset: 0 
+      offset: 0
     });
 
-    this.trackSegments[this.trackSegments.length-(3000)].scenery = [];
-    this.trackSegments[this.trackSegments.length-(3000)].scenery.push({
+    this.trackSegments[this.trackSegments.length - (3000)].scenery = [];
+    this.trackSegments[this.trackSegments.length - (3000)].scenery.push({
       frameName: "start.png",
       isLeft: false,
-      offset: 0 
+      offset: 0
     });
 
     //distribute our obstacles / pickups.
@@ -520,9 +519,9 @@ export default class Drive2Scene extends BaseScene {
     for (let i = 0; i < totalObstacles; i++) {
 
       this.trackSegments[i * obstacleDensity].obstacles = [];
-      
+
       this.trackSegments[i * obstacleDensity].obstacles.push({
-        lane:Phaser.Math.RND.integerInRange(0,2)-1,
+        lane: Phaser.Math.RND.integerInRange(0, 2) - 1,
         used: false
       });
     }
@@ -535,9 +534,9 @@ export default class Drive2Scene extends BaseScene {
     for (let i = 0; i < totalPickups; i++) {
 
       this.trackSegments[i * pickupDesnity].pickups = [];
-      
+
       this.trackSegments[i * pickupDesnity].pickups.push({
-        lane:Phaser.Math.RND.integerInRange(0,2)-1,
+        lane: Phaser.Math.RND.integerInRange(0, 2) - 1,
         used: false
       });
     }
@@ -620,7 +619,7 @@ export default class Drive2Scene extends BaseScene {
   resetRoad() {
     this.trackSegments = [];
 
-    this.addStraight(ROAD_LENGTH.SHORT/4);
+    this.addStraight(ROAD_LENGTH.SHORT / 4);
     this.addStraight(ROAD_LENGTH.MEDIUM);
     this.addSCurves();
     this.addStraight(ROAD_LENGTH.SHORT);
@@ -662,10 +661,10 @@ export default class Drive2Scene extends BaseScene {
 
       // let easeIn = Math.max(3, this._state.speed)
 
-      this._car.x = this._car.x + (this._controls.currentXVector * delta) / Math.max(2, (this._state.speed/2.5));
+      this._car.x = this._car.x + (this._controls.currentXVector * delta) / Math.max(2, (this._state.speed / 2.5));
 
       //g from curve
-      this._car.x = this._car.x - (this._state.g * delta) * Math.max(0.1, this._state.speed*0.8);
+      this._car.x = this._car.x - (this._state.g * delta) * Math.max(0.1, this._state.speed * 0.8);
 
     }
 
@@ -673,37 +672,37 @@ export default class Drive2Scene extends BaseScene {
     this._car.resetRumble();
 
 
-    if (this._car.x < 100 && this._state.speed > 1) {
-      this._car.x = Math.max(this._car.x,50) ;
-      this._state.speed *=  (1-( 0.006* delta));
-      //TODO: add rumble.
+    if (this._car.x < 100 && this._state.speed > 0.2) {
+      this._state.speed *= (1 - (0.006 * delta));
+
       this._car.rumble();
-      this.cameras.main.shake(250,0.005);
-      if(!this._rumbleSound.isPlaying){
-      this._rumbleSound.play();
+      this.cameras.main.shake(250, 0.005);
+      if (!this._rumbleSound.isPlaying) {
+        this._rumbleSound.play();
       }
 
 
 
-    } else if (this._car.x > this.dimensions.x - 100 && this._state.speed > 1) {
-      this._car.x = Math.min(this._car.x,this.dimensions.x - 50) ;
-      this._state.speed *=  (1-( 0.006* delta));
+    } else if (this._car.x > this.dimensions.x - 100 && this._state.speed > 0.2) {
+      this._state.speed *= (1 - (0.006 * delta));
       this._car.rumble();
-      this.cameras.main.shake(250,0.005);
-      if(!this._rumbleSound.isPlaying){
+      this.cameras.main.shake(250, 0.005);
+      if (!this._rumbleSound.isPlaying) {
         this._rumbleSound.play();
-        }
-  
+      }
+
 
     }
+    this._car.x = Math.min(this._car.x, this.dimensions.x - 50);
+    this._car.x = Math.max(this._car.x, 50);
 
-    if(!this.ended && !this.inCountDown){
-    if(this._controls.currentYVector < -0.8 && this._state.speed > 1){
-      this._car.rumble();
-      this._brakeSound.play();
-      // console.log("car breaking",this._controls.currentYVector );
+    if (!this.ended && !this.inCountDown) {
+      if (this._controls.currentYVector < -0.8 && this._state.speed > 1) {
+        this._car.rumble();
+        this._brakeSound.play();
+        // console.log("car breaking",this._controls.currentYVector );
+      }
     }
-  }
 
 
     let changeInAccleration = this._controls.currentYVector * this.settings.maxAccellerationPerSecond * delta;
@@ -727,7 +726,7 @@ export default class Drive2Scene extends BaseScene {
 
 
     if (this._controls.currentXVector > 0.2 && this._state.speed > 0.5) {
-    
+
       this._car.setFrame("car_left.png");
     } else if (this._controls.currentXVector < -0.2 && this._state.speed > 0.5) {
       this._car.setFrame("car_right.png");
@@ -749,132 +748,104 @@ export default class Drive2Scene extends BaseScene {
   }
 
   win() {
-    
-    
+
     console.log("END OF LAP!");
     this.ended = true;
 
+
+    //TODO: show HTML form and listen for submit.
+    this.showScoresDisplay(
+    //   {
+    //     "score":55765,
+    //     "name":"TESTIN",
+    //     "client_secret":"test_entry_data",
+    //     "email":""
+    // }
+    );
+
+  }
+
+
+  showScoresDisplay(submitData?:any) {
     this.wingroup = this.add.container(this.dimensions.x / 2, this.dimensions.y / 2);
 
     let bg = this.add.graphics({});
     bg.fillStyle(0x000000, 0.8);
-    bg.fillRect(-300,-160,600,320);
+    bg.fillRect(-300, -160, 600, 320);
 
     this.wingroup.add(bg);
 
-    // let scoreText = this.add.text(0,0,this.raceTime,{
-    //   fontFamily: "charybdisregular",
-    //   fontSize: "64px",
-    //   color: "#ffffff",
-    //   textAlign: "center",
-    // });
+    let replaybutton = this.add.image(0, 100, "atlas.png", "replay_up.png");
 
+    replaybutton.setInteractive();
+    // highscores.setInteractive();
 
+    replaybutton.on("pointerup", this.reset.bind(this));
+    this.wingroup.add(replaybutton);
 
+    this.load.once('complete', this.popuplateScores, this);
 
+    let scoreString = "";
 
-  // buttons
+    if(submitData){
+      scoreString ="?s=" + btoa(JSON.stringify(submitData));
+      console.log(scoreString);
+    }
 
-  let replaybutton = this.add.image(0,100,"atlas.png","replay_up.png");
+    //  load the scores for the current player.
+    this.load.json('high_score_results', "//localhost/scores/scores.php"+scoreString);
 
-  replaybutton.setInteractive();
-  // highscores.setInteractive();
-
-  replaybutton.on("pointerup", this.reset.bind(this));
-  this.wingroup.add(replaybutton);
-
-  this.load.once('complete', this.popuplateScores, this);
-
-  //  load the scores for the current player.
-  this.load.json('high_score_results',"./getScoresForTime.json");
-
-  this.load.start();
-  
-
-  
+    this.load.start();
   }
 
-  popuplateScores(){
+  popuplateScores() {
     let scoresString = "";
-    let scores:ScoreResults =this.cache.json.get("high_score_results");
+    let scores: ScoreEntry[] = this.cache.json.get("high_score_results");
 
-    if(scores.above && scores.above.length > 0){
-      for(let i =0; i < scores.above.length;i++){
-        let entry = scores.above[i];
-        
-        //rank
-        scoresString += this.pad(entry.position.toString(),4," ");
-        scoresString += this.pad(entry.name,15," ");
-        scoresString += this.pad(this.timeString(entry.time),15," ");
-        scoresString += "\n";
-        
-      }
+    for (let i = 0; i < scores.length; i++) {
+      let entry = scores[i];
+
+      //rank
+      scoresString += this.pad(entry.position.toString(), 4, " ");
+      scoresString += this.pad(entry.name, 15, " ");
+      scoresString += this.pad(this.timeString(entry.score), 15, " ");
+      scoresString += "\n";
+
     }
 
-    // me
-    let entry = scores.me;
-        
-    //rank
-    scoresString += this.pad(entry.position.toString(),4," ");
-    scoresString += this.pad(entry.name,15," ");
-    scoresString += this.pad(this.timeString(entry.time),15," ");
-    scoresString += "\n";
-
-    if(scores.below && scores.below.length > 0){
-      for(let i =0; i < scores.below.length;i++){
-        
-        let entry = scores.below[i];
-        
-        //rank
-        scoresString += this.pad(entry.position.toString(),4," ");
-        scoresString += this.pad(entry.name,15," ");
-        scoresString += this.pad(this.timeString(entry.time),15," ");
-        scoresString += "\n";
-
-
-      }
-    }
-  
-
-
-    
-
-
-    
-
-    let scoreText = this.add.text(2,-140,scoresString,{
+    let scoreText = this.add.text(2, -140, scoresString, {
       fontFamily: "charybdisregular",
       fontSize: "32px",
       color: "#ffffff",
       textAlign: "center"
     });
 
-    scoreText.setOrigin(0.5,0.0);
+    scoreText.setOrigin(0.5, 0.0);
 
     scoreText.style.baselineX = 40;
 
-  this.wingroup.add(scoreText);
+    this.wingroup.add(scoreText);
   }
 
-  wingroup: Phaser.GameObjects.Container|null;
+  wingroup: Phaser.GameObjects.Container | null;
 
   reset() {
-      if (this.wingroup) {
-        this.wingroup.destroy();
-      }
+    if (this.wingroup) {
+      this.wingroup.destroy();
+    }
 
-      this. _currentTimeValue = -3;
-      this._state.position = 0;//this.settings.trackLength -1000;
-      this._state.speed = 0;
-      this._state.playerX = 0;
+    this._currentTimeValue = -3;
+    this._state.position = 0;//this.settings.trackLength -1000;
+    this._state.speed = 0;
+    this._state.playerX = 0;
 
-      this.ended = false;
-      this.inCountDown = true;
-      this.countDownValue = 3;
+    this.ended = false;
+    this.inCountDown = true;
+    this.countDownValue = 3;
   }
-  inCountDown:boolean = false;
-  countDownValue:number = 3;
-  previousCountDown:number = 4;
+  inCountDown: boolean = false;
+  countDownValue: number = 3;
+  previousCountDown: number = 4;
 
 
   ended: boolean = false;
@@ -892,17 +863,17 @@ export default class Drive2Scene extends BaseScene {
   update(time: number, delta: number) {
     super.update(time, delta);
 
-    this.updateUI(this._state.speed/this.settings.maxVelocity);
+    this.updateUI(this._state.speed / this.settings.maxVelocity);
 
-  
+
 
     let baseSegment = this.findSegment(this._state.position);
 
-    
+
 
 
     this.updatePhysics(baseSegment, delta);
-    this.updateAboveHorizon(this._state.g*(this._state.speed/this.settings.maxVelocity),delta);
+    this.updateAboveHorizon(this._state.g * (this._state.speed / this.settings.maxVelocity), delta);
     //update the controls
 
 
@@ -921,10 +892,10 @@ export default class Drive2Scene extends BaseScene {
 
     this.renderRoad(time, delta);
 
-    if(this.inCountDown){
+    if (this.inCountDown) {
 
-      this.countDownValue -= (delta/1000);
-      if(this.countDownValue < 0){
+      this.countDownValue -= (delta / 1000);
+      if (this.countDownValue < 0) {
         this._goSound.play();
         this.inCountDown = false;
         this.countDownDisplay.visible = false;
@@ -933,15 +904,15 @@ export default class Drive2Scene extends BaseScene {
 
       } else {
 
-        
-        if(Math.ceil(this.countDownValue) != this.previousCountDown){
-          
+
+        if (Math.ceil(this.countDownValue) != this.previousCountDown) {
+
           this._readySound.play();
           this.previousCountDown = Math.ceil(this.countDownValue);
 
 
           this.countDownDisplay.visible = true;
-          this.countDownDisplay.text = ""+this.previousCountDown;
+          this.countDownDisplay.text = "" + this.previousCountDown;
         }
       }
       return;
@@ -958,7 +929,7 @@ export default class Drive2Scene extends BaseScene {
 
   }
 
-  countDownDisplay:Phaser.GameObjects.Text;
+  countDownDisplay: Phaser.GameObjects.Text;
 
   private updateRoadModel(baseSegment: TrackSegment) {
 
@@ -998,8 +969,8 @@ export default class Drive2Scene extends BaseScene {
 
 
     let i = -1;
-    let previousAlt:boolean = false;
-    let tint:number = this.settings._farColour;
+    let previousAlt: boolean = false;
+    let tint: number = this.settings._farColour;
     //now we can render each strip?
     for (let n = this.trackSegments.length - 1; n >= 0; n--) {
       i++;
@@ -1017,35 +988,35 @@ export default class Drive2Scene extends BaseScene {
       //any scenery items?
       if (seg.scenery && seg.scenery.length > 0 && previousPosition !== -1) {
 
-        for(let k:number = 0; k< seg.scenery.length; k++){
+        for (let k: number = 0; k < seg.scenery.length; k++) {
 
-        //currently we can only have one item per segment so lets just grab that.
-        let model = seg.scenery[k];
+          //currently we can only have one item per segment so lets just grab that.
+          let model = seg.scenery[k];
 
-        //grab one from the pool.
-        let s = this.getFirstAvalibleSceneryItem();
-       
-        s.visible = true;
-        s.setFrame(model.frameName);
+          //grab one from the pool.
+          let s = this.getFirstAvalibleSceneryItem();
 
-        //position.
-        s.y = seg.p1.screen.y;
+          s.visible = true;
+          s.setFrame(model.frameName);
 
-        if(model.frameName === "start.png" || model.frameName === "end.png"){
-          s.x = seg.p1.screen.x;
-        } else {
-          s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w)*(0.1*model.offset);
-        }
+          //position.
+          s.y = seg.p1.screen.y;
 
-        // start and end items,
-        
-        
-         
-        //maybe camera.z? factor in track distance and segment legnth?
-        let scale = (seg.p1.scale * this.settings.roadWidth) * 1;
-        s.setScale((model.isLeft) ? scale * -1 : scale, scale);
-        let a = Math.min(1, scale * 12); //todo pop in.
-        s.setAlpha(a);
+          if (model.frameName === "start.png" || model.frameName === "end.png") {
+            s.x = seg.p1.screen.x;
+          } else {
+            s.x = seg.p1.screen.x + ((model.isLeft) ? -seg.p1.screen.w : seg.p1.screen.w) * (0.1 * model.offset);
+          }
+
+          // start and end items,
+
+
+
+          //maybe camera.z? factor in track distance and segment legnth?
+          let scale = (seg.p1.scale * this.settings.roadWidth) * 1;
+          s.setScale((model.isLeft) ? scale * -1 : scale, scale);
+          let a = Math.min(1, scale * 12); //todo pop in.
+          s.setAlpha(a);
 
         }
       }
@@ -1053,54 +1024,54 @@ export default class Drive2Scene extends BaseScene {
       //any pickup items?
       if (seg.obstacles && seg.obstacles.length > 0 && previousPosition !== -1) {
 
-        
+
 
         //currently we can only have one item per segment so lets just grab that.
         let model = seg.obstacles[0];
 
-        if(!model.used){
+        if (!model.used) {
 
-        //grab one from the pool.
-        let s = this.getFirstAvalibleSceneryItem();
-       
-        s.visible = true;
-        s.setFrame("iceberg.png");
+          //grab one from the pool.
+          let s = this.getFirstAvalibleSceneryItem();
 
-        //position.
-        s.y = seg.p1.screen.y;
+          s.visible = true;
+          s.setFrame("iceberg.png");
 
-        // s.x = seg.p1.screen.x + ((seg.p1.screen.w *offset)*1000);
-        s.x = seg.p1.screen.x + (seg.p1.screen.w)*(0.24*model.lane);
+          //position.
+          s.y = seg.p1.screen.y;
 
-        // start and end items,
-        
-        
-         
-        //maybe camera.z? factor in track distance and segment legnth?
-        let scale = (seg.p1.scale * this.settings.roadWidth) * 0.2;
-        s.setScale(scale, scale);
-        let a = Math.min(1, scale * 15); //todo pop in.
-        s.setAlpha(a);
+          // s.x = seg.p1.screen.x + ((seg.p1.screen.w *offset)*1000);
+          s.x = seg.p1.screen.x + (seg.p1.screen.w) * (0.24 * model.lane);
 
-        if(Phaser.Geom.Rectangle.Overlaps(s.getBounds(), this._car.bounds)){
-          model.used = true;
-          this._state.speed *= 0.25;
-          this.hitSound.play();
-          this.cameras.main.shake(250,0.02);
-          console.log("hit");
+          // start and end items,
+
+
+
+          //maybe camera.z? factor in track distance and segment legnth?
+          let scale = (seg.p1.scale * this.settings.roadWidth) * 0.2;
+          s.setScale(scale, scale);
+          let a = Math.min(1, scale * 15); //todo pop in.
+          s.setAlpha(a);
+
+          if (Phaser.Geom.Rectangle.Overlaps(s.getBounds(), this._car.bounds)) {
+            model.used = true;
+            this._state.speed *= 0.25;
+            this.hitSound.play();
+            this.cameras.main.shake(250, 0.02);
+            console.log("hit");
+          }
+        } else {
+          //todo: render "used" iceberg 
         }
-      } else {
-        //todo: render "used" iceberg 
-      }
 
-        
+
 
 
       }
 
 
       //we are going to cull certain road segments now if they overlap for performance.
-      if (Math.round(seg.p1.screen.y) === Math.round(previousPosition) || previousPosition === -1 ) {
+      if (Math.round(seg.p1.screen.y) === Math.round(previousPosition) || previousPosition === -1) {
         //overlap cull
         previousPosition = seg.p1.screen.y;
         continue;
@@ -1120,17 +1091,17 @@ export default class Drive2Scene extends BaseScene {
       // alternate tints based on track properties.
       visual.fg.setFrame((seg.alt) ? "blank_road.png" : "road_alt.png");
 
-      
+
       visual.fg.tint = (seg.alt) ? 0xffffff : 0xeeeeee;
 
 
-      
 
 
-      if(seg.alt != previousAlt){
+
+      if (seg.alt != previousAlt) {
         previousAlt = seg.alt;
-        let shade = this.getInterpoadtedColor(this.settings._closeColour,this.settings._farColour, seg.p1.camera.z, this.settings.drawDistance * this.settings.segmentLength , previousAlt);
-      
+        let shade = this.getInterpoadtedColor(this.settings._closeColour, this.settings._farColour, seg.p1.camera.z, this.settings.drawDistance * this.settings.segmentLength, previousAlt);
+
         tint = shade.color;// Phaser.Display.Color;//tint.//(seg.alt) ? this.settings.closeColour : this.settings.farColour;
       }
       visual.bg.tint = tint
@@ -1142,32 +1113,32 @@ export default class Drive2Scene extends BaseScene {
 
 
     }
-    
+
     // console.log("Pool sizes used (scenery, track)", this.benchCount, this.benchCountRoad)
 
   }
 
-  private getInterpoadtedColor(color1:number, color2:number,value: number, total:number, alternating?: boolean):Phaser.Display.Color {
-   
-    let color:ColorObject = Phaser.Display.Color.Interpolate.ColorWithColor(
-      Phaser.Display.Color.ValueToColor(color1), 
-      Phaser.Display.Color.ValueToColor(color2), 
-      total, 
+  private getInterpoadtedColor(color1: number, color2: number, value: number, total: number, alternating?: boolean): Phaser.Display.Color {
+
+    let color: ColorObject = Phaser.Display.Color.Interpolate.ColorWithColor(
+      Phaser.Display.Color.ValueToColor(color1),
+      Phaser.Display.Color.ValueToColor(color2),
+      total,
       value
-      );
+    );
 
     // @ts-ignore
     let shade = new Phaser.Display.Color(color.r, color.g, color.b);
-   
-      if(alternating !== undefined){
-        if (alternating) {
-          shade.lighten(3);
-        }
-        else {
-          shade.darken(3);
-        }
+
+    if (alternating !== undefined) {
+      if (alternating) {
+        shade.lighten(3);
       }
-   
+      else {
+        shade.darken(3);
+      }
+    }
+
     return shade;
   }
 
@@ -1197,7 +1168,7 @@ export default class Drive2Scene extends BaseScene {
       const seg = this.trackDisplaySegments[i];
 
       if (!seg.hasBeenUsed) {
-        this.benchCountRoad ++;
+        this.benchCountRoad++;
         seg.hasBeenUsed = true;
         return seg;
       }
@@ -1217,7 +1188,7 @@ export default class Drive2Scene extends BaseScene {
       const s = this._scenery[i];
 
       if (!s.hasBeenUsed) {
-        this.benchCount ++;
+        this.benchCount++;
         s.hasBeenUsed = true;
         return s;
       }

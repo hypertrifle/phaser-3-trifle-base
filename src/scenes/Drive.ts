@@ -8,7 +8,7 @@ import TrackSystem, { ViewPortSettings, TrackCorner } from "../components/race/T
 import { ControlSystem } from "../components/race/Controls";
 import Car from "../components/race/Car";
 import { runInThisContext } from "vm";
-import PickUp from "../components/race/PickUp";
+import Obstacle from "../components/race/Obstacle";
 
 export default class DriveScene extends BaseScene {
 
@@ -34,7 +34,7 @@ export default class DriveScene extends BaseScene {
   private _currentSpeed: Phaser.GameObjects.Text;
 
 
-  private _pickups: PickUp[];
+  private _pickups: Obstacle[];
 
 
   // private _scenery:
@@ -123,7 +123,7 @@ export default class DriveScene extends BaseScene {
 
       let offsetMax = (this._track.gameplay.lapDistance / (this._track.gameplay.pickupsPerLap + 3)) * 0.1;
 
-      let s = new PickUp(this, {
+      let s = new Obstacle(this, {
         frame: "palm_shadow_left.png",
         totalBands: this.viewPort.totalBands,
         owner: this,
