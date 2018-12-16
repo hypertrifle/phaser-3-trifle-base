@@ -151,7 +151,7 @@ body {
     right:0;
 }
 
-#container, #orientation, #overlay {
+#container, #orientation {
     top:0; left:0; right:0; bottom: 0;
     position: absolute;
     overflow: visible !important;
@@ -169,8 +169,7 @@ canvas {
 
 #overlay {
     background-color: #00c0ff;
-    padding:50px;
-    display: none;
+    display: visible;
 
 }
 
@@ -209,6 +208,167 @@ form p {
     width: auto;
 }
 
+/* alex styles */
+.forms fieldset {
+  border:0;
+}
+#overlay {
+    display: none;
+    background: #00c0ff;
+    /*background:#000;*/
+    background:rgba(0,0,0,.8);
+    padding:30px 10px;
+    color:#fff;
+    width:85%;
+    height:70%;
+    position:absolute;
+    z-index: 10;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    overflow-y:auto;
+}
+#overlay .close{
+  position:absolute;
+  top:15px;
+  right:15px;
+  color:#fff;
+  font-size:20px;
+  text-decoration:none;
+  font-family:"arial",sans-serif;
+}
+#overlay input, #overlay button {
+    font-size: 0.9em;
+    padding: .25em .4em;
+}
+form {
+  margin: 0;
+  text-align:center;
+  line-height:1.6;
+}
+form p {
+    font-size: 0.8em;
+    padding: .25em .4em;
+}
+form a{
+    color:#00c0ff;
+}
+#orientation {
+    background: rgba(0,0,0,0);
+    color: #FFFFFF;
+    text-align: center;
+    display: none;
+
+}
+#phaser-content {
+    width: auto;
+}
+.score-intro{
+  padding-bottom:20px;
+  border-bottom:1px solid rgba(255,255,255,.3);
+  margin-bottom:10px;
+}
+.score-intro p{
+  font-weight:bold;
+  font-size:25px;
+  text-align:center;
+}
+.score-intro .score{
+  font-size:45px;
+  margin-top:5px;
+}
+.forms legend{
+  font-size:25px;
+}
+.forms label{
+  font-size:23px;
+}
+.forms .half{
+  box-sizing:border-box;
+  width:100%;
+  display:inline-block;
+  padding:0 10px;
+  margin-top:0;
+  text-align:left;
+  font-size:23px;
+}
+.forms .half input{
+  width:100%;
+  box-sizing:border-box;
+}
+#overlay input[type="text"],#overlay input[type="email"]{
+  margin:9px auto;
+  padding:15px 13px;
+  font-size:20px;
+}
+.checkbox{
+  text-align:left;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  align-items:stretch;
+}
+.checkbox input[type="checkbox"]{
+  display:inline-block;
+  vertical-align: top;
+  margin-top:12px;
+  margin-right:15px;
+}
+.checkbox label{
+  display:inline-block;
+  margin:0;
+}
+
+#overlay.forms button{
+  margin-top:25px;
+  background:#82bd29;
+  color:#fff;
+  text-transform:uppercase;
+  font-size:35px;
+  border-radius:3px;
+  border:0;
+  position:relative;
+  padding:4px 25px;
+}
+#overlay.forms button::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:6px;
+  background:rgba(255,255,255,.3);
+  z-index: 0;
+}
+#overlay.forms button::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  height:12px;
+  background:rgba(0,0,0,.3);
+  z-index: 0;
+}
+#overlay.forms button span{
+  position:relative;
+  z-index:1;
+}
+#overlay.forms button:hover{
+  background:#95d03d;
+}
+
+@media only screen and (min-width: 48em){
+ #overlay{
+  padding:50px;
+ }
+ .forms .half{
+  width:49.5%;
+ }
+}
+/* end alex styles */
+
     </style>
 </head>
 
@@ -217,38 +377,33 @@ form p {
 <div id="container">
 </div>
 <div id="overlay" class="forms">
-        <form> 
-            <h2></h2>
-                <fieldset> 
-                    <legend>To be added to the high scores:</legend>
-                    <label>
-                        <b>Name *</b>
-                        <input type="text" placeholder="name", maxlength="6">
-                    </label>
-                    <p>&nbsp;<br>&nbsp;</p>
-                    <div><button type="submit">Just add me to the leader board</button></div> 
+	<a href="#" class="close">X</a>
+	<div class="score-intro">
+	  <p>Your score is:</p>
+	  <p class="score">1 minute 59s</p>
+	</div>
+	<form> 
+		<fieldset> 
+		    <legend>Enter your name &amp; email to submit your high score, and you could win a prize:</legend>
+		    <label class="half">
+		        <b>Your Name *</b>
+		        <input type="text" placeholder="name", maxlength="6" required>
+		    </label>
+		    <label class="half">
+		        <b>Your Email</b>
+		        <input type="email" placeholder="email" required >
+		    </label>
+		    <div class="checkbox">
+		      <input type="checkbox" id="termscheck">
+		        <label for="termscheck">By supplying your email address you agree to accept our <a href="#">privacy policy</a> and <a href="#">terms and conditions</a></label>
+		    </div>
+		    <div><button type="submit"><span>Submit</span></button></div> 
 
-                </fieldset>
-                <fieldset> 
-                    <legend>And to enter your score to win prize:</legend>
-                    <label>
-                        <b>Email</b>
-                        <input type="text" placeholder="email" >
-                    </label>
-                    <div>
-                        <p>By supplying your email address<br>you agree to accept our privacy policy</p>
-                        <button type="submit">Enter me into the competition</button>
-                    </div> 
-
-                </fieldset>
-
-        </form>
-        <form>
-                <button type="submit">No thanks</button>
-
-        </form>
-
+		</fieldset>
+	</form>
+	<form>
+		<button type="submit"><span>No thanks</span></button>
+	</form>
 </div>
-
 </body>
 </html>

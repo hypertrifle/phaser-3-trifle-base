@@ -766,8 +766,12 @@ export default class Drive2Scene extends BaseScene {
   }
 
 
-  showScoresDisplay(submitData?:any) {
+  showScoresDisplay(submitData?:{name:string, email:string}) {
     this.wingroup = this.add.container(this.dimensions.x / 2, this.dimensions.y / 2);
+
+  
+
+   
 
     let bg = this.add.graphics({});
     bg.fillStyle(0x000000, 0.8);
@@ -787,8 +791,20 @@ export default class Drive2Scene extends BaseScene {
 
     let scoreString = "";
 
+    //if we have submitted our score.
     if(submitData){
-      scoreString ="?s=" + btoa(JSON.stringify(submitData));
+
+
+      let scores:{score:number, name?:string, client_secret:string, email?:string} = 
+      
+      {
+        score: this._currentTimeValue,
+        name: submitData.name,
+        client_secret : DataUtils.getTokenForKey("nu"),
+        email: submitData.email
+      }
+
+      scoreString ="?s=" + btoa(JSON.stringify(scores));
       console.log(scoreString);
     }
 
