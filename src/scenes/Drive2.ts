@@ -5,6 +5,7 @@ import { ViewPortSettings } from "../components/race/TrackSystem";
 import Scenery from "../components/race/Scenery";
 import Car from "../components/race/Car";
 import Obstacle from "../components/race/Obstacle";
+import PickUp from "../components/race/PickUp";
 import { GUI } from "dat.gui";
 import DataUtils from "../plugins/utils/DataUtils";
 
@@ -129,6 +130,7 @@ export default class Drive2Scene extends BaseScene {
 
   private _skyBox: Phaser.GameObjects.Image;
   private _scenery: Scenery[];
+
   private _car: Car;
   private _state: CurrentState;
 
@@ -153,7 +155,8 @@ export default class Drive2Scene extends BaseScene {
   private _formElement:Element;
 
 
-  private _pickups: Obstacle[];
+  private _obstacles: Obstacle[];
+  private _pickups: PickUp[];
   constructor() {
     super({
       key: "Drive2Scene",
@@ -226,6 +229,8 @@ export default class Drive2Scene extends BaseScene {
       positionFromBottom: 40,
       scale: 1
     })
+
+
 
     this._controls = new ControlSystem(this);
 
@@ -471,6 +476,19 @@ export default class Drive2Scene extends BaseScene {
       this._scenery.push(sceneryItem);
     }
 
+    this.anims.create({ key: 'pickup-animation', frames: this.anims.generateFrameNames('atlas.png', {suffix:".png", prefix: 'pickup/pickup_', start:17 , end: 29, zeroPad: 5 }), repeat: -1 });
+
+    this.anims.create({ key: 'pickup-kill', frames: this.anims.generateFrameNames('atlas.png', {suffix:".png", prefix: 'pickup/pickup_', start:29 , end: 36, zeroPad: 5 }), repeat: -1 });
+
+
+    this._pickups = [];
+
+    for (let i = 0; i < 5; i++) {
+      let pickup = new PickUp(this,{
+      });
+      this._pickups.push(pickup);
+    }
+
     //distrubut our items in the models throughout the track
     let sceneryDenisty = 100;
     let totalTrees = Math.floor(this.trackSegments.length / (sceneryDenisty)); //divide for 2 for bothsides.
@@ -522,7 +540,7 @@ export default class Drive2Scene extends BaseScene {
       offset: 0
     });
 
-    //distribute our obstacles / pickups.
+    //distribute our obstacles 
     let obstacleDensity = 2000;
     let totalObstacles = Math.floor(this.trackSegments.length / (obstacleDensity));
 
@@ -537,7 +555,7 @@ export default class Drive2Scene extends BaseScene {
     }
 
 
-    //distribute our obstacles / pickups.
+    //distribute our pickups.
     let pickupDesnity = 3001;
     let totalPickups = Math.floor(this.trackSegments.length / (pickupDesnity));
 
@@ -628,6 +646,15 @@ export default class Drive2Scene extends BaseScene {
 
   resetRoad() {
     this.trackSegments = [];
+
+    // this.addStraight(ROAD_LENGTH.LONG);
+    // this.addStraight(ROAD_LENGTH.LONG);
+    // this.addStraight(ROAD_LENGTH.LONG);
+    // this.addStraight(ROAD_LENGTH.LONG);
+    // this.addStraight(ROAD_LENGTH.LONG);
+    // this.addStraight(ROAD_LENGTH.LONG);
+    // this.addStraight(ROAD_LENGTH.LONG);
+
 
     this.addStraight(ROAD_LENGTH.SHORT / 4);
     this.addStraight(ROAD_LENGTH.MEDIUM);
@@ -728,7 +755,11 @@ export default class Drive2Scene extends BaseScene {
     }
 
     // topspeed
-    this._state.speed = Math.min(this._state.speed, this.settings.maxVelocity);
+    // this._state.speed = Math.min(this._state.speed, this.settings.maxVelocity);
+
+    if(this._state.speed > this.settings.maxVelocity){
+      this._state.speed -= delta/500;
+    }
 
     // no reverse
     this._state.speed = Math.max(this._state.speed, 0);
@@ -832,6 +863,7 @@ export default class Drive2Scene extends BaseScene {
 
     for (let i = 0; i < scores.length; i++) {
       let entry = scores[i];
+
 
       //rank
       scoresString += this.pad(entry.position.toString(), 4, " ");
@@ -1054,7 +1086,7 @@ export default class Drive2Scene extends BaseScene {
         }
       }
 
-      //any pickup items?
+      //any obstacle items?
       if (seg.obstacles && seg.obstacles.length > 0 && previousPosition !== -1) {
 
 
@@ -1092,6 +1124,54 @@ export default class Drive2Scene extends BaseScene {
             this.hitSound.play();
             this.cameras.main.shake(250, 0.02);
             console.log("hit");
+          }
+        } else {
+          //todo: render "used" iceberg 
+        }
+
+
+
+
+      }
+
+
+      //any pickup items?
+      if (seg.pickups && seg.pickups.length > 0 && previousPosition !== -1) {
+
+
+
+        //currently we can only have one item per segment so lets just grab that.
+        let model = seg.pickups[0];
+
+        if (!model.used) {
+
+          //grab one from the pool.
+          let s = this.getFirstAvaliblePickupItem();
+
+          s.visible = true;
+          // s.setFrame("iceberg.png");
+          s.play("pickup-animation");
+
+          //position.
+          s.y = seg.p1.screen.y;
+
+          // s.x = seg.p1.screen.x + ((seg.p1.screen.w *offset)*1000);
+          s.x = seg.p1.screen.x + (seg.p1.screen.w) * (0.24 * model.lane);
+
+
+          let scale = (seg.p1.scale * this.settings.roadWidth) * 0.8;
+          s.setScale(scale, scale);
+
+          let a = Math.min(1, scale * 15); //todo pop in.
+
+          s.setAlpha(a);
+
+          if (Phaser.Geom.Rectangle.Overlaps(s.getBounds(), this._car.bounds)) {
+            model.used = true;
+            this._state.speed *= 1.3;
+            // this.hitSound.play();
+            // this.cameras.main.shake(250, 0.02);
+            console.log("pickup");
           }
         } else {
           //todo: render "used" iceberg 
@@ -1193,6 +1273,12 @@ export default class Drive2Scene extends BaseScene {
       seg.visible = false;
 
     }
+    for (let i = 0; i < this._pickups.length; i++) {
+      const p = this._pickups[i];
+      p.hasBeenUsed = false;
+      p.visible = false;
+
+    }
   }
 
   getFirstAvalibleRoadItem(): TrackDisplaySegment {
@@ -1229,6 +1315,20 @@ export default class Drive2Scene extends BaseScene {
 
     }
     // console.log("out of road scenery visual elements");
+  }
+
+  getFirstAvaliblePickupItem(): PickUp {
+    //returns the first pickup item not in use..
+    for (let i = 0; i < this._pickups.length; i++) {
+      const s = this._pickups[i];
+
+      if (!s.hasBeenUsed) {
+        s.hasBeenUsed = true;
+        return s;
+      }
+
+
+    }
   }
 
   shutdown() {
