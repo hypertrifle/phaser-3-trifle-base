@@ -18,6 +18,7 @@ export default class PickUp extends Phaser.GameObjects.Sprite {
    owner: DriveScene;
    roadPosition: number;
 
+   animation:any;
 
    constructor(scene: Phaser.Scene,config: PickUpConfig) {
      super(scene,0,-1000,"atlas.png","test-sprite.png");
@@ -39,6 +40,17 @@ export default class PickUp extends Phaser.GameObjects.Sprite {
 
    //   this.anims.
    //TODO: add animation
+
+      var anim:AnimationConfig = {
+        key: 'walk',
+        frames: scene.anims.generateFrameNumbers('pickup_',{
+
+        }),
+        frameRate: 6,
+        repeat: 1
+    };
+
+    this.animation = scene.anims.create(anim);
 
      scene.add.existing(this);
 

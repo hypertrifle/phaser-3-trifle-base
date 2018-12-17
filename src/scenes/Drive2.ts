@@ -148,6 +148,11 @@ export default class Drive2Scene extends BaseScene {
   private _horizonItems: Phaser.GameObjects.Image[] = []
 
 
+
+  private _overlayContainer:Element;
+  private _formElement:Element;
+
+
   private _pickups: Obstacle[];
   constructor() {
     super({
@@ -167,6 +172,11 @@ export default class Drive2Scene extends BaseScene {
     // // gui.add(this.settings,"drawDistance",10, 300);
     // gui.add(this.settings, "FOV", 50, 100);
     // // gui.add(this.settings,"fogDensity");
+
+
+
+    this._overlayContainer = document.getElementById("overlay");
+    this._formElement = document.getElementById("mainForm");
 
 
   }
@@ -796,7 +806,6 @@ export default class Drive2Scene extends BaseScene {
 
 
       let scores:{score:number, name?:string, client_secret:string, email?:string} = 
-      
       {
         score: this._currentTimeValue,
         name: submitData.name,
@@ -818,6 +827,9 @@ export default class Drive2Scene extends BaseScene {
     let scoresString = "";
     let scores: ScoreEntry[] = this.cache.json.get("high_score_results");
 
+
+    if(scores !== undefined){
+
     for (let i = 0; i < scores.length; i++) {
       let entry = scores[i];
 
@@ -828,6 +840,11 @@ export default class Drive2Scene extends BaseScene {
       scoresString += "\n";
 
     }
+
+  } else {
+    //invalid scores recived
+    scoresString = "  UNABLE TO LOAD SCORES\nPLEASE TRY AGAIN LATER..."
+  }
 
     let scoreText = this.add.text(2, -140, scoresString, {
       fontFamily: "charybdisregular",
