@@ -52,8 +52,8 @@ export default class Boot extends BaseScene {
     console.groupCollapsed("PLUGINS");
 
     // first install out data controller, this is going to be both data models, and anything to do with content Tracking. TODO:I'm going to leave the data tools in as is a nice way for quick config / translation, but casting these loose object to types doing catch warning on compile... and we are back to ol' reliable javascritp:/
-    this.sys.plugins.install("_data", GameData, true, "_data");
-    this._data = this.sys.plugins.get("_data") as GameData;
+    // this.sys.plugins.install("_data", GameData, true, "_data");
+    // this._data = this.sys.plugins.get("_data") as GameData;
 
     // we are going to load all our related sponge helpers in the sponge class now.
     this.sys.plugins.install("tools", Tools, true, "tools");
@@ -88,6 +88,10 @@ export default class Boot extends BaseScene {
 
   init ()
 {
+
+  console.log = function(e:any){
+    return;
+  }
 
   console.log("Boot init - for fonts.")
     //  Inject our CSS

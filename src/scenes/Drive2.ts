@@ -1,13 +1,12 @@
-import BaseScene from "./BaseScene";
-import Tools from "../plugins/global/Tools";
-import { ControlSystem } from "../components/race/Controls";
-import { ViewPortSettings } from "../components/race/TrackSystem";
-import Scenery from "../components/race/Scenery";
-import Car from "../components/race/Car";
-import Obstacle from "../components/race/Obstacle";
-import PickUp from "../components/race/PickUp";
-import { GUI } from "dat.gui";
-import DataUtils from "../plugins/utils/DataUtils";
+import Car from '../components/race/Car';
+import { ControlSystem } from '../components/race/Controls';
+import Obstacle from '../components/race/Obstacle';
+import PickUp from '../components/race/PickUp';
+import Scenery from '../components/race/Scenery';
+import { FormSubmissionData } from '../plugins/global/HTMLUtils';
+import Tools from '../plugins/global/Tools';
+import DataUtils from '../plugins/utils/DataUtils';
+import BaseScene from './BaseScene';
 
 enum ROAD_LENGTH {
   NONE = 0,
@@ -257,13 +256,22 @@ export default class Drive2Scene extends BaseScene {
     this.addUI();
 
 
-    console.log("encodetest", DataUtils.encode("teststring"));
 
-    this.win();
+    // this.win();
+    this.ended = true;
+    this.showScoresDisplay();
+
+
+    this._controls.addPromt();
+
+
 
 
 
   }
+
+
+
 
 
   private _spedo: Phaser.GameObjects.Image;
@@ -466,33 +474,11 @@ export default class Drive2Scene extends BaseScene {
     }
   }
 
-  generateScenery() {
-
-    this._scenery = [];
-
-    //generate our visual items to use.
-    for (let i = 0; i < 25; i++) {
-      let sceneryItem = new Scenery(this, {});
-      this._scenery.push(sceneryItem);
-    }
-
-    this.anims.create({ key: 'pickup-animation', frames: this.anims.generateFrameNames('atlas.png', {suffix:".png", prefix: 'pickup/pickup_', start:17 , end: 29, zeroPad: 5 }), repeat: -1 });
-
-    this.anims.create({ key: 'pickup-kill', frames: this.anims.generateFrameNames('atlas.png', {suffix:".png", prefix: 'pickup/pickup_', start:29 , end: 36, zeroPad: 5 }), repeat: -1 });
-
-
-    this._pickups = [];
-
-    for (let i = 0; i < 5; i++) {
-      let pickup = new PickUp(this,{
-      });
-      this._pickups.push(pickup);
-    }
-
-    //distrubut our items in the models throughout the track
-    let sceneryDenisty = 100;
-    let totalTrees = Math.floor(this.trackSegments.length / (sceneryDenisty)); //divide for 2 for bothsides.
-
+  resetRoadExtras(){
+        //distrubut our items in the models throughout the track
+        let sceneryDenisty = 100;
+        let totalTrees = Math.floor(this.trackSegments.length / (sceneryDenisty)); //divide for 2 for bothsides.
+    
     for (let i = 0; i < totalTrees; i++) {
       let roadPosition = i * sceneryDenisty;
       this.trackSegments[i * sceneryDenisty].scenery = [];
@@ -556,7 +542,7 @@ export default class Drive2Scene extends BaseScene {
 
 
     //distribute our pickups.
-    let pickupDesnity = 3001;
+    let pickupDesnity = 3566;
     let totalPickups = Math.floor(this.trackSegments.length / (pickupDesnity));
 
     for (let i = 0; i < totalPickups; i++) {
@@ -571,7 +557,39 @@ export default class Drive2Scene extends BaseScene {
 
 
 
+  }
 
+  generateScenery() {
+
+    this.anims.create({ key: 'pickup-animation', frames: this.anims.generateFrameNames('atlas.png', {suffix:".png", prefix: 'pickup/pickup_', start:17 , end: 29, zeroPad: 5 }), repeat: -1 });
+
+    this.anims.create({ key: 'pickup-kill', frames: this.anims.generateFrameNames('atlas.png', {suffix:".png", prefix: 'pickup/pickup_', start:29 , end: 36, zeroPad: 5 }), repeat: -1 });
+
+    this._pickups = [];
+
+    for (let i = 0; i < 5; i++) {
+      let pickup = new PickUp(this,{
+      });
+      this._pickups.push(pickup);
+    }
+
+
+
+    this._scenery = [];
+
+    //generate our visual items to use.
+    for (let i = 0; i < 25; i++) {
+      let sceneryItem = new Scenery(this, {});
+      this._scenery.push(sceneryItem);
+    }
+
+    
+
+
+  
+
+
+    this.resetRoadExtras();
   }
 
   gerenateAndDistributePickups() {
@@ -794,20 +812,22 @@ export default class Drive2Scene extends BaseScene {
     this.ended = true;
 
 
-    //TODO: show HTML form and listen for submit.
-    this.showScoresDisplay(
-    //   {
-    //     "score":55765,
-    //     "name":"TESTIN",
-    //     "client_secret":"test_entry_data",
-    //     "email":""
-    // }
-    );
+    this.tools.html.addFormAndlistenForSubmit(this.onHTMLFormSubmit, this, this.timeString(this._currentTimeValue));
+
 
   }
 
+  onHTMLFormSubmit(object?:FormSubmissionData){
+    if(object){
+      this.showScoresDisplay(object);
+    } else {
+      this.showScoresDisplay();
 
-  showScoresDisplay(submitData?:{name:string, email:string}) {
+    }
+  }
+
+
+  showScoresDisplay(submitData?:FormSubmissionData) {
     this.wingroup = this.add.container(this.dimensions.x / 2, this.dimensions.y / 2);
 
   
@@ -838,7 +858,7 @@ export default class Drive2Scene extends BaseScene {
 
       let scores:{score:number, name?:string, client_secret:string, email?:string} = 
       {
-        score: this._currentTimeValue,
+        score: Math.round(this._currentTimeValue),
         name: submitData.name,
         client_secret : DataUtils.getTokenForKey("nu"),
         email: submitData.email
@@ -849,7 +869,8 @@ export default class Drive2Scene extends BaseScene {
     }
 
     //  load the scores for the current player.
-    this.load.json('high_score_results', "//localhost/scores/scores.php"+scoreString);
+    this.cache.json.remove("high_score_results");
+    this.load.json('high_score_results', "http://localhost/scores/scores.php"+scoreString);
 
     this.load.start();
   }
@@ -898,6 +919,8 @@ export default class Drive2Scene extends BaseScene {
     if (this.wingroup) {
       this.wingroup.destroy();
     }
+    this.resetRoad();
+    this.resetRoadExtras();
 
     this._currentTimeValue = -3;
     this._state.position = 0;//this.settings.trackLength -1000;
@@ -927,6 +950,8 @@ export default class Drive2Scene extends BaseScene {
 
   update(time: number, delta: number) {
     super.update(time, delta);
+
+    this._controls.checkPrompt();
 
     this.updateUI(this._state.speed / this.settings.maxVelocity);
 
@@ -988,8 +1013,8 @@ export default class Drive2Scene extends BaseScene {
       this._controls.cursorValues.x *= 0.8;
       return;
     }
-
     this._controls.update(time, delta, this._car, this);
+
     this.checkGameState(delta);
 
   }
@@ -1150,7 +1175,7 @@ export default class Drive2Scene extends BaseScene {
 
           s.visible = true;
           // s.setFrame("iceberg.png");
-          s.play("pickup-animation");
+          // s.play("pickup-animation");
 
           //position.
           s.y = seg.p1.screen.y;
@@ -1159,7 +1184,7 @@ export default class Drive2Scene extends BaseScene {
           s.x = seg.p1.screen.x + (seg.p1.screen.w) * (0.24 * model.lane);
 
 
-          let scale = (seg.p1.scale * this.settings.roadWidth) * 0.8;
+          let scale = (seg.p1.scale * this.settings.roadWidth) * 2;
           s.setScale(scale, scale);
 
           let a = Math.min(1, scale * 15); //todo pop in.
@@ -1171,7 +1196,6 @@ export default class Drive2Scene extends BaseScene {
             this._state.speed *= 1.3;
             // this.hitSound.play();
             // this.cameras.main.shake(250, 0.02);
-            console.log("pickup");
           }
         } else {
           //todo: render "used" iceberg 

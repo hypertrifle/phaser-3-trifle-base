@@ -15,6 +15,27 @@ $tbl_name="entries"; // Table name
 
 $insert = "";
 $offset = 0;
+
+function truncate($text, $chars = 25) {
+    if (strlen($text) <= $chars) {
+        return $text;
+    }
+    $text = $text." ";
+    $text = substr($text,0,$chars);
+    return $text;
+}
+
+ //attempt to establish connection to the database
+ $mysqli = new mysqli($host, $username, $password, $db_name);
+  //Error with connection
+  if ($mysqli->connect_errno) {
+
+    //  echo "Error: Failed to make a MySQL connection,\n";
+    //  echo "Errno: " . $mysqli->connect_errno . "\n";
+    //  echo "Error: " . $mysqli->connect_error . "\n";
+     exit;
+ }
+
 if (isset($_GET['s'])) {
      //we have a set parameter
      $s = (string) $_GET['s'];
@@ -22,9 +43,23 @@ if (isset($_GET['s'])) {
 
      try {
           $entry = json_decode(base64_decode($s));
+        //   print_r($entry);
           //error checking on the object after decoding
-     
+          if(!property_exists($entry, "name") || !property_exists($entry, "client_secret") || !property_exists($entry, "score") || !property_exists($entry, "email")){
+              exit;
+          }
+
+          //uppercase name?
+          $entry->name = strtoupper(truncate($entry->name));
+
+          
+          //limit name length?
+          
           //format ready for DB entry
+          $entry->name = $mysqli->real_escape_string($entry->name);
+          $entry->client_secret = $mysqli->real_escape_string($entry->client_secret);
+          $entry->score = $mysqli->real_escape_string($entry->score);
+          $entry->email = $mysqli->real_escape_string($entry->email);
 
           //generate insert
           $insert = "INSERT INTO `$db_name`.`entries` (`name`,`score`,`email`,`client_secret`) VALUES ('$entry->name','$entry->score','$entry->email','$entry->client_secret');";
@@ -41,17 +76,9 @@ if (isset($_GET['s'])) {
 
 
 
- //attempt to establish connection to the database/
- $mysqli = new mysqli($host, $username, $password, $db_name);
- 
- //Error with connection
- if ($mysqli->connect_errno) {
 
-     echo "Error: Failed to make a MySQL connection,\n";
-     echo "Errno: " . $mysqli->connect_errno . "\n";
-     echo "Error: " . $mysqli->connect_error . "\n";
-     exit;
- }
+ 
+
 
  $last_id = -1;
 
@@ -63,15 +90,17 @@ if (isset($_GET['s'])) {
         $last_id = $mysqli->insert_id;
      
           //The query returned false 
-          echo 'There was a problem saving your score. Please try again later.';
-          echo "Error: Our query failed to execute and here is why: \n";
-          echo "Query: " . $insert . "\n";
-          echo "Errno: " . $mysqli->errno . "\n";
-          echo "Error: " . $mysqli->error . "\n";
+        //   echo 'There was a problem saving your score. Please try again later.';
+        //   echo "Error: Our query failed to execute and here is why: \n";
+        //   echo "Query: " . $insert . "\n";
+        //   echo "Errno: " . $mysqli->errno . "\n";
+        //   echo "Error: " . $mysqli->error . "\n";
      
      } else {
         //insert went fine.
-       $offsetQuery = "SELECT count(*) FROM `entries` WHERE score <=".$entry->score." AND state = 0";
+        // print($entry->score);
+        // print("-");
+       $offsetQuery = "SELECT count(*) FROM `entries` WHERE score < ".$entry->score." AND state = 0";
        if ($result = $mysqli->query($offsetQuery)) {
         $offset = $result->fetch_assoc()['count(*)']; //TODO: is this safe / error checking.
 
@@ -85,10 +114,10 @@ if (isset($_GET['s'])) {
  }
 
 
-
+// print($offset);
  
  // get all the scores objects.
- $sql = "SELECT name, score, id FROM entries WHERE 'state' = 0 ORDER BY score LIMIT 6 OFFSET ".$offset;
+ $sql = "SELECT name, score FROM entries WHERE 'state' = 0 ORDER BY score LIMIT 6 OFFSET ".$offset. "";
 
  //TODO: here we might want to format all the object ()
  
@@ -112,7 +141,7 @@ if (isset($_GET['s'])) {
  }
  
  $entires = array();
- $pos = 0;
+ $pos = $offset;
  while ($entry = $result->fetch_assoc()) {
      $pos ++;
 

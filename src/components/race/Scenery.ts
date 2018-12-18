@@ -1,5 +1,4 @@
-import Drive2Scene from "../../scenes/Drive2";
-import BaseScene from "../../scenes/BaseScene";
+import Drive2Scene from '../../scenes/Drive2';
 
  interface SceneryConfig extends GameObjectConfig {
 

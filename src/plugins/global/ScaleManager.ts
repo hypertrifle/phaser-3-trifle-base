@@ -1,4 +1,3 @@
-import GameData from "./GameData";
 import "phaser";
 import { ScalingModel } from "../../models/GameModel";
 
@@ -134,9 +133,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     console.log("ScaleManager::boot");
     // when everything is ready :)
     // grab our settings configuration object.
-    this._scaleConfig = (this.pluginManager.get(
-      "_data"
-    ) as GameData).getDataFor("scaling") as ScalingModel;
+    this._scaleConfig = new ScalingModel();
 
     // initilise our position manager
     this.position = new PositionManager(
@@ -159,11 +156,9 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     this.landscape = this.canvas.width >= this.canvas.height ? true : false;
 
     // generate our "overlay" dom element container, used for HTML items, but use the same scaling as the game
-    this.forgroundHTML = document.createElement("div");
-    this.forgroundHTML.setAttribute("id", "phaser_overlay");
+    this.forgroundHTML = document.getElementById("overlay");
 
     // here we are goign to append the overlay HTML element over the top of the canvas object of the game
-    this.canvas.parentElement.appendChild(this.forgroundHTML);
 
     if (this._scaleConfig.expandToParent) {
         // lets listen to when the browser is resized and if so re-apply any scaling we require to.
@@ -199,14 +194,14 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
   handleFontResizing(): void {
     // we will need to scale fonts based on our scale.
-    let fonts = (this.pluginManager.get("_data") as GameData).getDataFor(
-      "fonts"
-    ); // grab the fotns.
+    // let fonts = (this.pluginManager.get("_data") as GameData).getDataFor(
+    //   "fonts"
+    // ); // grab the fotns.
 
-    // apply scalar to each font.
-    for (let i in fonts) {
-      this.applyFontScalar(fonts[i]);
-    }
+    // // apply scalar to each font.
+    // for (let i in fonts) {
+    //   this.applyFontScalar(fonts[i]);
+    // }
   }
 
   /**

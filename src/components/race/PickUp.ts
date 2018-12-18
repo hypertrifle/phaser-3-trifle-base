@@ -1,4 +1,3 @@
-import DriveScene from "../../scenes/Drive";
 import Drive2Scene from "../../scenes/Drive2";
 
  interface PickUpConfig extends GameObjectConfig {
@@ -11,7 +10,6 @@ export default class PickUp extends Phaser.GameObjects.Sprite {
    isLeft: boolean;
    frameName: string;
    totalBands: number;
-   owner: Drive2Scene;
    roadPosition: number;
 
    animation:any;
@@ -25,12 +23,11 @@ export default class PickUp extends Phaser.GameObjects.Sprite {
 
    //   Object.assign(this,config);
 
-      console.log("added pickup");
+      // console.log("added pickup");
 
-      this.owner = scene as Drive2Scene;
 
-      this.x = this.owner.dimensions.x/2;
-      this.y = this.owner.dimensions.y/2;
+      this.x = (this.scene as Drive2Scene).dimensions.x/2;
+      this.y = (this.scene as Drive2Scene).dimensions.y/2;
  
 
    //   this.anims.

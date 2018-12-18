@@ -1,6 +1,5 @@
-import SaveDataModel from "./SaveModel";
-import { TitleSceneModel } from "../../KEEP/TitleSceneModel";
-import UIModel from "./UIModels";
+import SaveDataModel from './SaveModel';
+import UIModel from './UIModels';
 
 
 /**
@@ -42,8 +41,8 @@ export class ScalingModel {
   expandToParent: boolean = true;
   shouldForceOrientationOnMobile: boolean = true;
   shouldForceLandscaprOnMobile: boolean = true;
-  maxWidth: number|null = 1280;
-  maxHeight: number|null = 720;
+  maxWidth: number|null = null;
+  maxHeight: number|null = null;
 }
 
 export class RacingModel {

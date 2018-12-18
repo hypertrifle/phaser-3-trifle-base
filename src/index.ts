@@ -69,7 +69,7 @@ window.onload = () => {
 
 
   if (DEBUG)
-  console.log("final game config",config);
+  // console.log("final game config",config);
 
   Game = new Phaser.Game(config); // finally launch our game.
 };

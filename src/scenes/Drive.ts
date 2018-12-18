@@ -74,7 +74,7 @@ export default class DriveScene extends BaseScene {
   create() {
     super.create();
 
-    this._track.trackData = this.tools.data.getDataFor("track") as TrackCorner[];
+    // this._track.trackData = this.tools.data.getDataFor("track") as TrackCorner[];
     this._track.gameplay.currentVelocity = 0;
 
     console.log("TRAK LLOADED",this._track.trackData );
@@ -140,7 +140,7 @@ export default class DriveScene extends BaseScene {
 
   private buildUI() {
 
-      console.log(this.tools.data.getDataFor("fonts.speed"));
+      // console.log(this.tools.data.getDataFor("fonts.speed"));
 
 
     this._currentTime = this.add.text(this.dimensions.x - 130,5,"00:00:00",{

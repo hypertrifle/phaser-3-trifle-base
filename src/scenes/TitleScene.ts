@@ -1,7 +1,5 @@
-import GameData from "../plugins/global/GameData";
-import Sponge from "../plugins/global/Tools";
-import { TitleSceneModel } from "../../KEEP/TitleSceneModel";
-import BaseScene from "./BaseScene";
+import { TitleSceneModel } from '../../KEEP/TitleSceneModel';
+import BaseScene from './BaseScene';
 
 export default class TitleScreen extends BaseScene {
   /**
@@ -31,12 +29,11 @@ export default class TitleScreen extends BaseScene {
    * @memberof TitleScreen
    */
   backgroundLayer: Phaser.GameObjects.Container;
-
   create() {
     console.log(this.tools);
-    this.sceneDataModel = this.tools.data.getDataFor(
-      "titleScene"
-    ) as TitleSceneModel; // cast
+    // this.sceneDataModel = this.tools.data.getDataFor(
+    //   "titleScene"
+    // ) as TitleSceneModel; // cast
 
     // create a background layer for objects that exist in BG.
     this.backgroundLayer = new Phaser.GameObjects.Container(this);

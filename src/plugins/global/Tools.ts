@@ -1,9 +1,8 @@
-import GameData from "./GameData";
-import HTMLUtils from "./HTMLUtils";
-import ScaleManager from "./ScaleManager";
-import Utils from "../utils/Utils";
-import Boot from "../../scenes/Boot";
-import { GameObjects } from "phaser";
+// import GameData from "./GameData";
+import Boot from '../../scenes/Boot';
+import Utils from '../utils/Utils';
+import HTMLUtils from './HTMLUtils';
+import ScaleManager from './ScaleManager';
 
 
 export default class Tools extends Phaser.Plugins.BasePlugin {
@@ -20,7 +19,7 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
     console.log("Tools::constructor");
 
     // we might need this in the boot / controller class.
-    this.data = pluginManager.get("_data") as GameData;
+    // this.data = pluginManager.get("_data") as GameData;
 
     // boot up out HTMLUtils plugin and make it accessible, this is used for popups, forms as well as other non canvas / webGL content.
     pluginManager.install("_html", HTMLUtils, true, "_html");
@@ -36,17 +35,17 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
     });
     this.scale = pluginManager.get("_scale") as ScaleManager;
 
-    if (this.data.getDataFor("global.debugMode")) {
-      // this.debugGUI = new dat.GUI();
+    // if (this.data.getDataFor("global.debugMode")) {
+    //   // this.debugGUI = new dat.GUI();
 
-      // global debug stuff?
+    //   // global debug stuff?
 
-      // let global:dat.GUI = this.debugGUI.addFolder("Global");
-      // let nav:dat.GUI = global.addFolder("Navigation");
-      // this.debugGUI.add(this, "titleScene");
+    //   // let global:dat.GUI = this.debugGUI.addFolder("Global");
+    //   // let nav:dat.GUI = global.addFolder("Navigation");
+    //   // this.debugGUI.add(this, "titleScene");
 
-      console.log(this.game.scene);
-    }
+    //   console.log(this.game.scene);
+    // }
   }
 
   public postBoot(bootState: Boot) {
@@ -70,7 +69,7 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
    * @type {GameData}
    * @memberof Sponge
    */
-  public data: GameData;
+  // public data: GameData;
   /**
    * access to HTML, popups and forms
    *
