@@ -42,7 +42,7 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
 		        <input id="emailInput" type="email" placeholder="email" required >
 		    </label>
 		    <div class="checkbox">
-		      <!--<input type="checkbox" id="termscheck">-->
+		     <input type="checkbox" id="termsCheck" required value="true">
 		        <label for="termscheck">By supplying your email address you agree to accept our <a href="#">privacy policy</a> and <a href="#">terms and conditions</a></label>
 		    </div>
 		    <div><button id="submitDataButton" type="submit"><span>Submit</span></button></div> 
@@ -85,17 +85,37 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
     el.classList.add("show");
   } 
 
+  validateEmail(email:string) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+
   onFormSubmit(capture:boolean = false){
 
     if(capture){
       //any minor validation?
       //return if there is.
 
+      //@ts-ignore
+      console.log(document.getElementById("termsCheck").checked);
+      //@ts-ignore
+      let termsFilled = document.getElementById("termsCheck").checked;
+      //@ts-ignore
+      let nameEntered = (document.getElementById("nameInput").value !== "");
+      //@ts-ignore
+      let emailValid = this.validateEmail(document.getElementById("emailInput").value);
+
+      if(!termsFilled || !nameEntered || ! emailValid){
+        document.getElementById("mainForm").classList.add("error");
+        return;
+      }
+
+
       this.callback.apply(this.context,[{
         //@ts-ignore
         name: document.getElementById("nameInput").value,
         //@ts-ignore
-        email: document.getElementById("nameInput").value
+        email: document.getElementById("emailInput").value
       }]);
 
       //return the object.

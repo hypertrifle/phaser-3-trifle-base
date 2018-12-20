@@ -1,6 +1,6 @@
 <?php
-header('Access-Control-Allow-Origin: *');
-
+require("filterlist.php");
+header('Access-Control-Allow-Origin: *');  
 $host="localhost:3307"; // Host name 
 $username="highscores"; // Mysql username 
 $password="highscores"; // Mysql password 
@@ -8,13 +8,19 @@ $db_name="highscores"; // Database name
 $tbl_name="entries"; // Table name
 
 
-// $test_data = "eyJzY29yZSI6NTU3NjUsIm5hbWUiOiJURVNUSU4iLCJjbGllbnRfc2VjcmV0IjoidGVzdF9lbnRyeV9kYXRhIiwiZW1haWwiOiIifQ==";
-// $object = json_decode(base64_decode($test_data));
-// print_r($object);
-// exit;
 
 $insert = "";
 $offset = 0;
+
+function clean($text, $filter_list){
+    for ($j=0; $j < count($filter_list); ++$j) {
+        if (stripos($text, $filter_list[$j]) !== false) {
+            $text = str_ireplace($filter_list[$j], substr("*****************************************************************************",0,strlen($filter_list[$j])),$text);
+        }
+    }
+
+    return $text;
+}
 
 function truncate($text, $chars = 25) {
     if (strlen($text) <= $chars) {
@@ -36,13 +42,13 @@ function truncate($text, $chars = 25) {
      exit;
  }
 
-if (isset($_GET['s'])) {
+if (isset($_POST['s'])) {
      //we have a set parameter
-     $s = (string) $_GET['s'];
+     $s = (string) $_POST['s'];
 
 
      try {
-          $entry = json_decode(base64_decode($s));
+          $entry = json_decode(base64_decode(str_rot13($s)));
         //   print_r($entry);
           //error checking on the object after decoding
           if(!property_exists($entry, "name") || !property_exists($entry, "client_secret") || !property_exists($entry, "score") || !property_exists($entry, "email")){
@@ -127,10 +133,10 @@ if (isset($_GET['s'])) {
  
      // Again, do not do this on a public site, but we'll show you how
      // to get the error information
-     echo "Error: Our query failed to execute and here is why: \n";
-     echo "Query: " . $sql . "\n";
-     echo "Errno: " . $mysqli->errno . "\n";
-     echo "Error: " . $mysqli->error . "\n";
+    //  echo "Error: Our query failed to execute and here is why: \n";
+    //  echo "Query: " . $sql . "\n";
+    //  echo "Errno: " . $mysqli->errno . "\n";
+    //  echo "Error: " . $mysqli->error . "\n";
      exit;
  }
  
@@ -147,6 +153,9 @@ if (isset($_GET['s'])) {
 
      $obj = $entry;
      $obj["position"] = $pos;
+
+
+     $obj["name"] = clean($obj["name"], $filter_list);
 
      array_push($entires, $obj);
  }

@@ -89,9 +89,9 @@ export default class Boot extends BaseScene {
   init ()
 {
 
-  console.log = function(e:any){
-    return;
-  }
+  // console.log = function(e:any){
+  //   return;
+  // }
 
   console.log("Boot init - for fonts.")
     //  Inject our CSS

@@ -192,6 +192,7 @@ export default class Drive2Scene extends BaseScene {
     this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3', 'assets/audio/car-3-pitch-3.ogg']);
     this.load.audio('car_engine_4', ['assets/audio/car-3-pitch-4.mp3', 'assets/audio/car-3-pitch-4.ogg']);
     this.load.audio('ice_berg_crash', ['assets/audio/hit.mp3', 'assets/audio/Hit.ogg']);
+    this.load.audio('pickup', ['assets/audio/sfx_coin_cluster5.mp3', 'assets/audio/sfx_coin_cluster5.ogg']);
     this.load.audio('rumble', ['assets/audio/rumble.mp3', 'assets/audio/rumble.ogg']);
     this.load.audio('ready', ['assets/audio/ready.mp3', 'assets/audio/ready.ogg']);
     this.load.audio('go', ['assets/audio/go.mp3', 'assets/audio/go.ogg']);
@@ -209,6 +210,7 @@ export default class Drive2Scene extends BaseScene {
   _goSound: Phaser.Sound.BaseSound;
   _brakeSound: Phaser.Sound.BaseSound;
   _music: Phaser.Sound.BaseSound;
+  _pickupSound: Phaser.Sound.BaseSound;
 
 
   create() {
@@ -237,6 +239,7 @@ export default class Drive2Scene extends BaseScene {
 
 
     this.hitSound = this.sound.add("ice_berg_crash", { volume: 1 });
+    this._pickupSound = this.sound.add("pickup", { volume: 1 });
     this._rumbleSound = this.sound.add("rumble", { volume: 0.3 });
     this._readySound = this.sound.add("ready", { volume: 0.5 });
     this._goSound = this.sound.add("go", { volume: 0.5 });
@@ -347,6 +350,7 @@ export default class Drive2Scene extends BaseScene {
   }
 
   updateUI(speedPercent: number, time: number = 10000) {
+    speedPercent = Math.min(1,speedPercent);
     this._spedoMask.clear();
     this._spedoMask.fillStyle(0xffffff, 1);
     this._spedoMask.fillRect(this._spedo.x, this._spedo.y, this._spedo.width * this._spedo.scaleX * speedPercent, this._spedo.height * this._spedo.scaleY);
@@ -675,15 +679,15 @@ export default class Drive2Scene extends BaseScene {
 
 
     this.addStraight(ROAD_LENGTH.SHORT / 4);
-    this.addStraight(ROAD_LENGTH.MEDIUM);
-    this.addSCurves();
-    this.addStraight(ROAD_LENGTH.SHORT);
-    this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.HARD);
-    this.addStraight(ROAD_LENGTH.SHORT);
-    this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.MEDIUM);
-    this.addCurve(ROAD_LENGTH.LONG, ROAD_CURVE.MEDIUM);
-    this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.EASY);
-    this.addStraight(ROAD_LENGTH.SHORT);
+    // this.addStraight(ROAD_LENGTH.MEDIUM);
+    // this.addSCurves();
+    // this.addStraight(ROAD_LENGTH.SHORT);
+    // this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.HARD);
+    // this.addStraight(ROAD_LENGTH.SHORT);
+    // this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.MEDIUM);
+    // this.addCurve(ROAD_LENGTH.LONG, ROAD_CURVE.MEDIUM);
+    // this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.EASY);
+    // this.addStraight(ROAD_LENGTH.SHORT);
     this.settings.trackLength = this.trackSegments.length * this.settings.segmentLength;
     this.addStraight();
     this.addStraight();
@@ -848,14 +852,13 @@ export default class Drive2Scene extends BaseScene {
     replaybutton.on("pointerup", this.reset.bind(this));
     this.wingroup.add(replaybutton);
 
-    this.load.once('complete', this.popuplateScores, this);
-
+    
     let scoreString = "";
-
+    
     //if we have submitted our score.
     if(submitData){
-
-
+      
+      
       let scores:{score:number, name?:string, client_secret:string, email?:string} = 
       {
         score: Math.round(this._currentTimeValue),
@@ -863,21 +866,43 @@ export default class Drive2Scene extends BaseScene {
         client_secret : DataUtils.getTokenForKey("nu"),
         email: submitData.email
       }
+      
+      scoreString ="s=" + btoa(JSON.stringify(scores)).replace(/[a-zA-Z]/g,
+        function(c){
+          //@ts-ignore
+          return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);
+        });
+        console.log(scoreString);
+      }
+      
+      //  load the scores for the current player.
+        let http = new XMLHttpRequest();
+        let url = 'http://localhost/scores/scores.php';
+        let params = scoreString;
+        http.open('POST', url, true);
 
-      scoreString ="?s=" + btoa(JSON.stringify(scores));
-      console.log(scoreString);
-    }
+        //Send the proper header information along with the request
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-    //  load the scores for the current player.
-    this.cache.json.remove("high_score_results");
-    this.load.json('high_score_results', "http://localhost/scores/scores.php"+scoreString);
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4 && http.status == 200) {
+                this.popuplateScores(http.responseText);
+            }
+        }.bind(this);
+
+        http.send(params);
+      
+
+
 
     this.load.start();
   }
 
-  popuplateScores() {
+  popuplateScores(scoresJSON?:any) {
     let scoresString = "";
-    let scores: ScoreEntry[] = this.cache.json.get("high_score_results");
+    // let scores: ScoreEntry[] = this.cache.json.get("high_score_results");
+
+    let scores: ScoreEntry[] = JSON.parse(scoresJSON);
 
 
     if(scores !== undefined){
@@ -1194,6 +1219,8 @@ export default class Drive2Scene extends BaseScene {
           if (Phaser.Geom.Rectangle.Overlaps(s.getBounds(), this._car.bounds)) {
             model.used = true;
             this._state.speed *= 1.3;
+            this._pickupSound.play();
+
             // this.hitSound.play();
             // this.cameras.main.shake(250, 0.02);
           }

@@ -108,7 +108,7 @@
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
-            <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
+            <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
             <key>forceSquared</key>
             <true/>
             <key>maxRects</key>
@@ -183,6 +183,20 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">../img/accelerate-overlay-smaller.png</key>
+            <key type="filename">../img/brake-overlay-smaller.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>20,11,40,21</rect>
+                <key>scale9Paddings</key>
+                <rect>20,11,40,21</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
             <key type="filename">../img/bar_back.png</key>
             <key type="filename">../img/bar_front.png</key>
             <struct type="IndividualSpriteSettings">
@@ -296,7 +310,6 @@
                 <false/>
             </struct>
             <key type="filename">../img/instructions/instructionsDesktop.png</key>
-            <key type="filename">../img/instructions/instructionsMobile.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -415,6 +428,19 @@
                 <rect>10,10,21,20</rect>
                 <key>scale9Paddings</key>
                 <rect>10,10,21,20</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../img/steer-overlay-smaller.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>80,13,160,27</rect>
+                <key>scale9Paddings</key>
+                <rect>80,13,160,27</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

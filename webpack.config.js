@@ -39,7 +39,7 @@ function prepareJSONFiles(content) {
 }
 
 module.exports = {
-
+    // mode: 'production',
     entry: './src/index.ts',
 
     // optimization: {
@@ -83,7 +83,7 @@ module.exports = {
     }, 
 
     plugins: [
-
+        new webpack.optimize.UglifyJsPlugin({minimize: true}),
         new webpack.DefinePlugin({
             "typeof CANVAS_RENDERER": JSON.stringify(true),
             "typeof WEBGL_RENDERER": JSON.stringify(true),
@@ -106,27 +106,29 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
             [ 
                 //standard assets, - this will be changed to Texture packer eventually
                 { from: 'assets/atlas', to: 'assets/atlas' },
-                { from: 'assets/json/*.json', to: '' },
+                // { from: 'assets/json/*.json', to: '' },
                 { from: 'assets/fonts', to: 'assets/fonts' },
-                { from: 'assets/audio', to: 'assets/audio' },
+                { from: 'assets/audio/*.mp3', to: '' },
+                { from: 'assets/audio/*.ogg', to: '' },
+                { from: 'server', to: '.' },
                 // { from: 'assets/img', to: 'assets/img' },
                 
                 
                 // { from: 'assets/json/content.jsonc', to: 'assets/json/content.json'
 
                 //our JSON files, we want to strip comments essentially and convert to stadard json files (avoid mime type issues.)
-                { from: 'assets/json/content.jsonc', to: 'assets/json/content.json',
-                transform (content, path) {
-                    return Promise.resolve(prepareJSONFiles(content))
-                }
-                },
+                // { from: 'assets/json/content.jsonc', to: 'assets/json/content.json',
+                // transform (content, path) {
+                //     return Promise.resolve(prepareJSONFiles(content))
+                // }
+                // },
 
-                //settings file
-                { from: 'assets/json/settings.jsonc', to: 'assets/json/settings.json',
-                transform (content, path) {
-                    return Promise.resolve(prepareJSONFiles(content))
-                }
-                },
+                // //settings file
+                // { from: 'assets/json/settings.jsonc', to: 'assets/json/settings.json',
+                // transform (content, path) {
+                //     return Promise.resolve(prepareJSONFiles(content))
+                // }
+                // },
 
                 //index, flatten it so its in the root and apply our package.json varibles.
                 { from: 'supporting/index.html', to: './index.html', flatten:true, 
@@ -135,16 +137,16 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
                 },
 
                 //indexlms - used by some LMSs
-                { from: 'supporting/index.html', to: './indexlms.html', flatten:true, 
-                transform (content, path) {
-                    return Promise.resolve(applyPackageVars(content));}
-                },
+                // { from: 'supporting/index.html', to: './indexlms.html', flatten:true, 
+                // transform (content, path) {
+                //     return Promise.resolve(applyPackageVars(content));}
+                // },
 
-                //story.html - used by some LMSs
-                { from: 'supporting/index.html', to: './story.html', flatten:true, 
-                transform (content, path) {
-                    return Promise.resolve(applyPackageVars(content));}
-                },
+                // //story.html - used by some LMSs
+                // { from: 'supporting/index.html', to: './story.html', flatten:true, 
+                // transform (content, path) {
+                //     return Promise.resolve(applyPackageVars(content));}
+                // },
                 //IMSManifest - required for valid scorm package.
                 { from: 'supporting/manifest.json', to: './manifest.json', flatten:true, 
                 transform (content, path) {
