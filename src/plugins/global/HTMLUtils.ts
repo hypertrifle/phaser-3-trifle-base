@@ -43,7 +43,7 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
 		    </label>
 		    <div class="checkbox">
 		     <input type="checkbox" id="termsCheck" required value="true">
-		        <label for="termscheck">By supplying your email address you agree to accept our <a href="#">privacy policy</a> and <a href="#">terms and conditions</a></label>
+		        <label for="termsCheck">By supplying your email address you agree to accept our <a href="#">privacy policy</a> and <a href="#">terms and conditions</a></label>
 		    </div>
 		    <div><button id="submitDataButton" type="submit"><span>Submit</span></button></div> 
 
@@ -67,7 +67,11 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
 
     document.getElementById("scoreString").innerHTML = score;
 
-
+    //@ts-ignore
+    document.getElementById("nameInput").value = this.prevName;
+    //@ts-ignore
+    document.getElementById("emailInput").value = this.prevEmail;
+    
     document.getElementById("submitDataButton").addEventListener("click", function(ev:TouchEvent){
       this.onFormSubmit(true);
       ev.stopImmediatePropagation();
@@ -90,6 +94,10 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
     return re.test(String(email).toLowerCase());
 }
 
+
+  prevEmail:string = "";
+  prevName:string = "";
+
   onFormSubmit(capture:boolean = false){
 
     if(capture){
@@ -111,11 +119,13 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
       }
 
 
+
+
       this.callback.apply(this.context,[{
         //@ts-ignore
-        name: document.getElementById("nameInput").value,
+        name: this.prevName = document.getElementById("nameInput").value,
         //@ts-ignore
-        email: document.getElementById("emailInput").value
+        email: this.prevEmail = document.getElementById("emailInput").value
       }]);
 
       //return the object.

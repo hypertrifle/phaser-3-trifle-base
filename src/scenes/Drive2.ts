@@ -877,7 +877,7 @@ export default class Drive2Scene extends BaseScene {
       
       //  load the scores for the current player.
         let http = new XMLHttpRequest();
-        let url = 'http://localhost/scores/scores.php';
+        let url = '/scores.php';
         let params = scoreString;
         http.open('POST', url, true);
 
