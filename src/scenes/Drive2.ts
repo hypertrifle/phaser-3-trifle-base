@@ -679,15 +679,15 @@ export default class Drive2Scene extends BaseScene {
 
 
     this.addStraight(ROAD_LENGTH.SHORT / 4);
-    // this.addStraight(ROAD_LENGTH.MEDIUM);
-    // this.addSCurves();
-    // this.addStraight(ROAD_LENGTH.SHORT);
-    // this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.HARD);
-    // this.addStraight(ROAD_LENGTH.SHORT);
-    // this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.MEDIUM);
-    // this.addCurve(ROAD_LENGTH.LONG, ROAD_CURVE.MEDIUM);
-    // this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.EASY);
-    // this.addStraight(ROAD_LENGTH.SHORT);
+    this.addStraight(ROAD_LENGTH.MEDIUM);
+    this.addSCurves();
+    this.addStraight(ROAD_LENGTH.SHORT);
+    this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.HARD);
+    this.addStraight(ROAD_LENGTH.SHORT);
+    this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.MEDIUM);
+    this.addCurve(ROAD_LENGTH.LONG, ROAD_CURVE.MEDIUM);
+    this.addCurve(ROAD_LENGTH.LONG, -ROAD_CURVE.EASY);
+    this.addStraight(ROAD_LENGTH.SHORT);
     this.settings.trackLength = this.trackSegments.length * this.settings.segmentLength;
     this.addStraight();
     this.addStraight();
@@ -875,7 +875,7 @@ export default class Drive2Scene extends BaseScene {
         console.log(scoreString);
       }
       
-      //  load the scores for the current player.
+        //  load the scores for the current player.
         let http = new XMLHttpRequest();
         let url = '/scores.php';
         let params = scoreString;
