@@ -1,6 +1,4 @@
 import Car from "./Car";
-import { ViewPortSettings } from "./TrackSystem";
-import DriveScene from "../../scenes/Drive";
 import BaseScene from "../../scenes/BaseScene";
 import Drive2Scene from "../../scenes/Drive2";
 
@@ -19,7 +17,6 @@ export class ControlSystemSettings {
 
 export class ControlSystem {
   settings: ControlSystemSettings;
-  private _viewPort: ViewPortSettings;
 
   leftAnalougePosition: number;
   righAnalougePosition: number;

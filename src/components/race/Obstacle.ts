@@ -1,10 +1,10 @@
-import DriveScene from "../../scenes/Drive";
+import Drive2Scene from "../../scenes/Drive2";
 
  interface ObstacleConfig extends GameObjectConfig {
    frame: string;
    lane: number;
    totalBands: number;
-   owner: DriveScene;
+   owner: Drive2Scene;
    roadPosition: number;
 
 }
@@ -15,7 +15,7 @@ export default class Obstacle extends Phaser.GameObjects.Image {
    isLeft: boolean;
    frameName: string;
    totalBands: number;
-   owner: DriveScene;
+   owner: Drive2Scene;
    roadPosition: number;
 
 

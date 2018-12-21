@@ -107,7 +107,7 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
                 //standard assets, - this will be changed to Texture packer eventually
                 { from: 'assets/atlas', to: 'assets/atlas' },
                 // { from: 'assets/json/*.json', to: '' },
-                { from: 'assets/fonts', to: 'assets/fonts' },
+                // { from: 'assets/fonts', to: 'assets/fonts' },
                 { from: 'assets/audio/*.mp3', to: '' },
                 { from: 'assets/audio/*.ogg', to: '' },
                 { from: 'server', to: '.' },

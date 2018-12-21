@@ -1,4 +1,4 @@
-import DriveScene from "../../scenes/Drive";
+import Drive2Scene from "../../scenes/Drive2";
 
 export interface CarConfig extends SpriteConfig {
    positionFromBottom: number;
@@ -7,7 +7,7 @@ export interface CarConfig extends SpriteConfig {
 
 export default class Car extends Phaser.GameObjects.Sprite {
 
-   private _scene: DriveScene;
+   private _scene: Drive2Scene;
    private _config: CarConfig;
 
    private _rumbleLeft:Phaser.GameObjects.Image;
@@ -18,7 +18,7 @@ export default class Car extends Phaser.GameObjects.Sprite {
 
    constructor(scene: Phaser.Scene, config: CarConfig) {
       super(scene, 0,0, "atlas.png", "car_neutral.png");
-      this._scene = scene as DriveScene;
+      this._scene = scene as Drive2Scene;
       this._config = config;
 
       this.setOrigin(0.5,0.9);

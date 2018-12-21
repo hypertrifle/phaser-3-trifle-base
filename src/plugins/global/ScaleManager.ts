@@ -146,6 +146,11 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     // asign our canvas.
     this.canvas = this.game.canvas;
 
+
+    if(this.game.device.browser.ie){
+      this.canvas.style.position = "fixed !important";
+    }
+
     // decide if we are on a mobile device.
     this.mobile =
       !this.game.device.os.windows &&
@@ -285,7 +290,13 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
         // "width:" +
         // canvas.width + "px;";
 
-    this.canvas.setAttribute("style", styleString);
+        let extraStlye = "";
+
+        if(this.game.device.browser.ie){
+          styleString += "position:static !important;";
+        }
+
+    this.canvas.setAttribute("style", styleString+extraStlye);
 
     this.forgroundHTML.setAttribute("style", styleString);
   }

@@ -175,10 +175,10 @@ export default class Boot extends BaseScene {
 
 
     // load content.
-    this.load.json("content", "assets/json/content.json"); // required
+    // this.load.json("content", "assets/json/content.json"); // required
 
-    // settings.
-    this.load.json("settings", "assets/json/settings.json"); // required
+    // // settings.
+    // this.load.json("settings", "assets/json/settings.json"); // required
 
     // todo:
 
@@ -193,14 +193,14 @@ export default class Boot extends BaseScene {
     * as we change the resolution, we change the zoom as well keeping fededlity.
     */
 
-   // we now have an SVGScale
-   this.load.svg({
-     key: "atlas.svg",
-     url: "assets/atlas/atlas.svg",
-     svgConfig: { scale: this.game.config.zoom }
-    });
+  //  // we now have an SVGScale
+  //  this.load.svg({
+  //    key: "atlas.svg",
+  //    url: "assets/atlas/atlas.svg",
+  //    svgConfig: { scale: this.game.config.zoom }
+  //   });
 
-    this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
+  //   this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
 
     this.load.script(
       "webfont",
@@ -266,13 +266,13 @@ export default class Boot extends BaseScene {
   webFontsLoaded() {
     console.log("Boot::create::webfotnsloaded");
     // lets generate this atlas.
-    let svgAtlasTexture = this.textures.get("atlas.svg");
-    let svgAtlasData = this.game.cache.json.get("atlas.json");
+    // let svgAtlasTexture = this.textures.get("atlas.svg");
+    // let svgAtlasData = this.game.cache.json.get("atlas.json");
 
-    this.transFormAtlasDataToScale(svgAtlasData);
+    // this.transFormAtlasDataToScale(svgAtlasData);
 
-    // @ts-ignore
-    Phaser.Textures.Parsers.JSONArray(svgAtlasTexture, 0, svgAtlasData);
+    // // @ts-ignore
+    // Phaser.Textures.Parsers.JSONArray(svgAtlasTexture, 0, svgAtlasData);
 
     // load our sponge plugins.
     this.loadPlugins();
