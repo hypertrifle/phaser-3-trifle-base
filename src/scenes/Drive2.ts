@@ -8,6 +8,11 @@ import Tools from '../plugins/global/Tools';
 import DataUtils from '../plugins/utils/DataUtils';
 import BaseScene from './BaseScene';
 
+/**
+ * the length of a single segment
+ *
+ * @enum {number}
+ */
 enum ROAD_LENGTH {
   NONE = 0,
   SHORT = 200,
@@ -15,6 +20,11 @@ enum ROAD_LENGTH {
   LONG = 1000
 }
 
+/**
+ * the curve factor of a segment of road
+ *
+ * @enum {number}
+ */
 enum ROAD_CURVE {
   NONE = 0,
   EASY = 0.015,
@@ -22,7 +32,18 @@ enum ROAD_CURVE {
   HARD = 0.08
 }
 
+/**
+ * global properties used but the rendering / physics engine
+ *
+ * @class RaceSettings
+ */
 class RaceSettings {
+  /**
+   * abitry width of road - not based with any screen based varibles
+   *
+   * @type {number}
+   * @memberof RaceSettings
+   */
   roadWidth: number = 4000;
   cameraHeight: number = 1500;
   drawDistance: number = 1500;
@@ -58,6 +79,11 @@ class RaceSettings {
   }
 }
 
+/**
+ * state of gameplay
+ *
+ * @class CurrentState
+ */
 class CurrentState {
   speed: number = 0;
   position: number = 0;
@@ -66,29 +92,45 @@ class CurrentState {
 
 }
 
+/**
+ * settings & properties for a single scenery item
+ *
+ * @interface SceneryItem
+ */
 interface SceneryItem {
   frameName: string,
   isLeft: boolean,
   offset: number
 }
 
+/**
+ * what our sever expects for a single score entry
+ *
+ * @interface ScoreEntry
+ */
 interface ScoreEntry {
   name: string;
   position: number;
   score: number;
 }
 
-// interface ScoreResults {
-//   above?:ScoreEntry[];
-//   me:ScoreEntry;
-//   below?:ScoreEntry[];
-// }
 
+/**
+ * properties of a single pickup (model)
+ *
+ * @interface Pickup
+ */
 interface Pickup {
   lane: number,
   used: boolean
 }
 
+/**
+ * on micro segment of a track, what we render in bands, a track segment is made up 
+ * of many of these (segment size)
+ *
+ * @interface TrackSegment
+ */
 interface TrackSegment {
   index: number;
   p1: WCS;
@@ -101,6 +143,11 @@ interface TrackSegment {
   pickups?: Pickup[];
 }
 
+/**
+ * a display object consisiting of a single band of the drawing system
+ *
+ * @interface TrackDisplaySegment
+ */
 interface TrackDisplaySegment {
   bg: Phaser.GameObjects.Image;
   fg: Phaser.GameObjects.Image;
@@ -112,6 +159,15 @@ const ROAD = {
   CURVE: { NONE: 0, EASY: 2, MEDIUM: 4, HARD: 6 }
 };
 
+
+/**
+ * world, camera, screen - these are the basic models of where items are in the world
+ * where they should appear in the camera viewport and where they should be on the screen
+ * mainly handled by the the project method.
+ * 
+ *
+ * @interface WCS
+ */
 interface WCS {
   world: Phaser.Math.Vector3;
   camera: Phaser.Math.Vector3;
@@ -119,70 +175,166 @@ interface WCS {
   scale: number;
 }
 
+/**
+ * this is our whole gameplay scene, not ideal having
+ * all of this on one class but nature of project means 
+ * this was the best way to work.
+ *
+ * @export
+ * @class Drive2Scene
+ * @extends {BaseScene}
+ */
 export default class Drive2Scene extends BaseScene {
 
+  /**
+   * tools is a coolection of plugins that are useful in phaser, created by tricky.
+   *
+   * @type {Tools}
+   * @memberof Drive2Scene
+   */
   public tools: Tools;
 
+  /**
+   * controls handels both keyboard and touch input,
+   * both produce an x and y value based on input
+   * and handles control instructions.
+   *
+   * @private
+   * @type {ControlSystem}
+   * @memberof Drive2Scene
+   */
   private _controls: ControlSystem;
+  /**
+   * settings of this gameplay
+   *
+   * @type {RaceSettings}
+   * @memberof Drive2Scene
+   */
   settings: RaceSettings;
 
 
-  private _skyBox: Phaser.GameObjects.Image;
+  /**
+   * our cenery pool, a group of display items to use for scenery.
+   *
+   * @private
+   * @type {Scenery[]}
+   * @memberof Drive2Scene
+   */
   private _scenery: Scenery[];
 
+  /**
+   * car class, mainly a display item,
+   * physics is handle in this class
+   *
+   * @private
+   * @type {Car}
+   * @memberof Drive2Scene
+   */
   private _car: Car;
+
+  /**
+   *
+   * gameplay state
+   * @private
+   * @type {CurrentState}
+   * @memberof Drive2Scene
+   */
   private _state: CurrentState;
 
 
+  /**
+   * model of track
+   *
+   * @private
+   * @type {TrackSegment[]}
+   * @memberof Drive2Scene
+   */
   private trackSegments: TrackSegment[];
+  /**
+   * pool of track display items.
+   *
+   * @private
+   * @type {TrackDisplaySegment[]}
+   * @memberof Drive2Scene
+   */
   private trackDisplaySegments: TrackDisplaySegment[];
 
-  private _currentLapTime: number = 0;
-  private _currentDistance: number = 0;
 
+  /**
+   * dimension of this game, phaser game.config.width|height is typed as any,
+   * this is always of number type.
+   *
+   * @type {Phaser.Geom.Point}
+   * @memberof Drive2Scene
+   */
   dimensions: Phaser.Geom.Point;
 
+  /**
+   * current game time (this lap)
+   *
+   * @private
+   * @type {number}
+   * @memberof Drive2Scene
+   */
   private _currentTimeValue: number = 0;
+  /**
+   * time display tesxt
+   *
+   * @private
+   * @type {Phaser.GameObjects.Text}
+   * @memberof Drive2Scene
+   */
   private _currentTime: Phaser.GameObjects.Text;
+  /**
+   * speed display text
+   *
+   * @private
+   * @type {Phaser.GameObjects.Text}
+   * @memberof Drive2Scene
+   */
   private _currentSpeed: Phaser.GameObjects.Text;
 
+  /**
+   * an array of items displays above the horizon
+   *
+   * @private
+   * @type {Phaser.GameObjects.Image[]}
+   * @memberof Drive2Scene
+   */
   private _horizonItems: Phaser.GameObjects.Image[] = []
 
 
-
-  private _overlayContainer:Element;
-  private _formElement:Element;
-
-
-  private _obstacles: Obstacle[];
+  /**
+   * pickup display pool
+   *
+   * @private
+   * @type {PickUp[]}
+   * @memberof Drive2Scene
+   */
   private _pickups: PickUp[];
+
+
   constructor() {
+
     super({
       key: "Drive2Scene",
       active: false
     });
+
     console.log("Drive2Scene::constructor");
 
+    //initilise settings.
     this.settings = new RaceSettings();
+
+    //initilise state.
     this._state = new CurrentState();
-    // const gui: GUI = new GUI({
-
-    // });
-
-    // gui.add(this.settings, "roadWidth", 500, 2100);
-    // gui.add(this.settings, "cameraHeight", 650, 2000);
-    // // gui.add(this.settings,"drawDistance",10, 300);
-    // gui.add(this.settings, "FOV", 50, 100);
-    // // gui.add(this.settings,"fogDensity");
-
-
-
-    this._overlayContainer = document.getElementById("overlay");
-    this._formElement = document.getElementById("mainForm");
-
-
   }
 
+  /**
+   * any items to load
+   *
+   * @memberof Drive2Scene
+   */
   preload() {
     console.log("Drive2Scene::preload");
 
@@ -213,6 +365,11 @@ export default class Drive2Scene extends BaseScene {
   _pickupSound: Phaser.Sound.BaseSound;
 
 
+  /**
+   * phasers main entry point for creating display items.
+   *
+   * @memberof Drive2Scene
+   */
   create() {
     super.create();
     this.dimensions = new Phaser.Geom.Point(this.game.config.width as number, this.game.config.height as number);
@@ -280,6 +437,11 @@ export default class Drive2Scene extends BaseScene {
   private _spedo: Phaser.GameObjects.Image;
   private _spedoMask: Phaser.GameObjects.Graphics;
 
+  /**
+   * build UI visuals
+   *
+   * @memberof Drive2Scene
+   */
   addUI() {
 
 
@@ -349,6 +511,13 @@ export default class Drive2Scene extends BaseScene {
     this.updateUI(0.5);
   }
 
+  /**
+   *update ui to reflect current game state
+   *
+   * @param {number} speedPercent
+   * @param {number} [time=10000]
+   * @memberof Drive2Scene
+   */
   updateUI(speedPercent: number, time: number = 10000) {
     speedPercent = Math.min(1,speedPercent);
     this._spedoMask.clear();
@@ -387,6 +556,13 @@ export default class Drive2Scene extends BaseScene {
 
 
 
+  /**
+   * format millisections into a string if format mm:ss:msms
+   *
+   * @param {number} time
+   * @returns {string}
+   * @memberof Drive2Scene
+   */
   timeString(time: number): string {
 
     if (time <= 0) {
@@ -401,9 +577,23 @@ export default class Drive2Scene extends BaseScene {
 
   }
 
+  /**
+   * pad a string toa certain length with a certain charecter
+   *
+   * @param {string} n
+   * @param {number} width
+   * @param {string} [z="0"]
+   * @returns
+   * @memberof Drive2Scene
+   */
   pad(n: string, width: number, z: string = "0") {
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
   }
+  /**
+   * build visuals above horizon
+   *
+   * @memberof Drive2Scene
+   */
   gernerateAboveHorizon() {
     let sky = this.add.graphics();
 
@@ -416,7 +606,7 @@ export default class Drive2Scene extends BaseScene {
     }
 
 
-
+    //bacgroound clouds
     let cloud = this.add.image(this.dimensions.x / 2, 60, "atlas.png", "clouds_0.png");
     cloud.setDataEnabled();
     cloud.data.set("paralax", 0.2);
@@ -428,7 +618,7 @@ export default class Drive2Scene extends BaseScene {
 
     for (let i = 2; i >= 0; i--) {
       let position = 0;
-
+      //offset the city visuals to left then right.
       if (i === 2) {
         position -= 100;
       } else if (i === 1) {
@@ -445,6 +635,7 @@ export default class Drive2Scene extends BaseScene {
       this._horizonItems.push(item);
     }
 
+    //forground clouds
     let cloud2 = this.add.image(this.dimensions.x / 2, 60, "atlas.png", "clouds_1.png");
     cloud2.setDataEnabled();
     cloud2.data.set("paralax", 0.2);
@@ -461,6 +652,13 @@ export default class Drive2Scene extends BaseScene {
   }
 
 
+  /**
+   * move our skybox items
+   *
+   * @param {number} changeInXVel
+   * @param {number} delta
+   * @memberof Drive2Scene
+   */
   updateAboveHorizon(changeInXVel: number, delta: number) {
     for (let i = 0; i < this._horizonItems.length; i++) {
 
@@ -478,6 +676,11 @@ export default class Drive2Scene extends BaseScene {
     }
   }
 
+  /**
+   * reset the models of scenery, pickups and obstacles
+   *
+   * @memberof Drive2Scene
+   */
   resetRoadExtras(){
         //distrubut our items in the models throughout the track
         let sceneryDenisty = 100;
@@ -563,6 +766,11 @@ export default class Drive2Scene extends BaseScene {
 
   }
 
+  /**
+   * genreate our scenery display pool
+   *
+   * @memberof Drive2Scene
+   */
   generateScenery() {
 
     this.anims.create({ key: 'pickup-animation', frames: this.anims.generateFrameNames('atlas.png', {suffix:".png", prefix: 'pickup/pickup_', start:17 , end: 29, zeroPad: 5 }), repeat: -1 });
@@ -596,10 +804,14 @@ export default class Drive2Scene extends BaseScene {
     this.resetRoadExtras();
   }
 
-  gerenateAndDistributePickups() {
 
-  }
-
+  /**
+   * generate our road display item pool,
+   * made up of a background (full width of screen)
+   * and the road (projected based on camera)
+  *
+   * @memberof Drive2Scene
+   */
   genRoadDisplayPool() {
     this.trackDisplaySegments = [];
     for (var n = 0; n < 200; n++) { // arbitrary amount of images to 
@@ -621,6 +833,12 @@ export default class Drive2Scene extends BaseScene {
 
   }
 
+  /**
+   * take a road segment and build the mini segments that make that curve.
+   *
+   * @param {number} curve
+   * @memberof Drive2Scene
+   */
   addSegment(curve: number) {
     var n = this.trackSegments.length;
     this.trackSegments.push({
@@ -633,6 +851,15 @@ export default class Drive2Scene extends BaseScene {
     });
   }
 
+  /**
+   * andd a single segment with properties.
+   *
+   * @param {number} enter
+   * @param {number} hold
+   * @param {number} leave
+   * @param {number} curve
+   * @memberof Drive2Scene
+   */
   addRoadSegment(enter: number, hold: number, leave: number, curve: number) {
     var n;
     for (n = 0; n < enter; n++)
@@ -643,9 +870,17 @@ export default class Drive2Scene extends BaseScene {
       this.addSegment(this.easeInOut(curve, 0, n / leave));
   }
 
+  /**
+   * add a striaght bit of road.
+   *
+   * @param {number} [num=ROAD_LENGTH.MEDIUM]
+   * @memberof Drive2Scene
+   */
   addStraight(num: number = ROAD_LENGTH.MEDIUM) {
     this.addRoadSegment(num, num, num, 0);
   }
+
+  
 
   addCurve(num: number = ROAD_LENGTH.MEDIUM, curve: number = ROAD_CURVE.MEDIUM) {
     this.addRoadSegment(num, num, num, curve);
