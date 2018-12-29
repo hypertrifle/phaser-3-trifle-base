@@ -7,17 +7,10 @@
     "help": "node scripts/help.js",
     "dev": "webpack-dev-server --mode development --open-page webpack-dev-server/build/ --host 192.168.178.22 --config webpack.config.js",
     "build": "webpack --config webpack.config.js --mode production",
-    "pre-dev": "npm run generate-svg-atlas",
     "generate-atlas": "TexturePacker --sheet assets/atlas/atlas.png --data assets/atlas/atlaspng.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
-    "generate-svg-atlas": "svg-sprite  --shape-spacing-padding 2,2,2,2 --view --view-render-css --view-render-css-template ./supporting/atlas-template.json.hbs --view-render-css-dest atlas.json --view-dest ./assets/atlas --view-sprite atlas.svg assets/svg/**/*.svg && MOVE .\\assets\\atlas\\atlas.json.css .\\assets\\atlas\\atlas.json && MOVE .\\assets\\atlas\\atlas-*.svg .\\assets\\atlas\\atlas.svg",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "lint": "tslint --fix src/**/*.ts",
-    "docs": "typedoc --includeDeclarations --includes ./phaser.d.ts --ignoreCompilerErrors --excludeExternals --out ./docs/ ./src/ && http-server docs -c-1 -o",
-    "generate-schema": "typescript-json-schema src/interfaces/test.ts * --titles --defaultProps --ignoreErrors --propOrder -o schema.json"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git@git.spongeuk.com:sponge/boilerplates/sponge-phaser-3.0-luigi.git"
+    "docs": "typedoc --includeDeclarations --includes ./phaser.d.ts --ignoreCompilerErrors --excludeExternals --out ./docs/ ./src/ && http-server docs -c-1 -o"
   },
   "author": "Rich Searle - hypertrifle.com",
   "license": "UNLICENCED",

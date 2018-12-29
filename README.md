@@ -1,46 +1,27 @@
-```sql
-CREATE TABLE `scores` (
-   `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-   `name` VARCHAR(10) NOT NULL DEFAULT 'anonymous',
-   `score` INT(10) UNSIGNED NOT NULL DEFAULT '0'
-)
-TYPE=MyISAM;
-```
+# NU-heat outrun style racing game
+
+## setup
+`npm i` a package-lock is included from last successful release
 
 
-# assets
-scaled horizon art
+## useage
+this is all run through webpack 4, see webpack config file for configutation, there are a few npm / node scripts that are useful:
 
+`npm run dev` - build | watch | serve | and open a source-mapped / development version of the game.
+`npm run build` - create a production package for the game at ./build (currently doesn't clean the folder on build)
 
+`npm run generate-atlas` - generate an atlas of the imge src files, these files are also commited but texturepacker licence will be require to re-generate.
 
+the phaser3 typescript definitions that are used at time of build will be commited, but to upgrade to the atest stable phaser and update TSDEF files you can run `npm run upgrade`
 
-# Phaser 3 Webpack Project Template
+## layout
+Typescript / Javscript source is in src, server files that are not included in an `npm run dev` are located in the server folder, other templates, such as index and manifest are in the supporting folder.
 
-Based off of [Richard Davey's Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template)
+## notes
 
-Originally planed & written by [Rich Searle](//hypertrifle.com) for Work, since then I have removed any unnicery code that I deemed bloated on not useful for small game projects (any any made for Work specifications.)
+tsconfig and tslint files incuded, but may not include my system defaults, so pinch of salt.
 
-All this work is my own, (with help from the Phaser commuity and is currently UNLCICENCED)
+## contact
 
-## getting started
-its the same as every other javascript project -> why not `npm i` ?
-
-TYPESCRIPT!! - any where I can use typescript I can, I know some don't like it.. probs find another repo honestly.
-
-webpack 4 for dev and build processes, check the `npm run` scripts initially, as lots of auto tools for my method of working, it defaults a load of both svg and png atla generation, svg alows us to scale UP but with less support, examples will be in here somewhere....
-
-# I love GLSL
-I think there is an example in here already, I'm not sure of, actually... I better go check what that is..
-there will be eventially *more* shaders here, I've a few post-effects in the pipline and will be sure to include in this boilerplate.
-
-# PLUGINS
-
-plugins.global.Tools is my utility belt (main plugin), I'm almost certain I'm not doing this with the right design pattern in mind but it works for me :),  everything else is wonderful Phaser and Typescript.
-
-# DATA
-
-Data sytem loads 2 models from settings.jsonc and content.jsonc, they are loaded through Javascript, IE load your models, in the DataUtils and error check then, non-object primitives will be fine. - if things need to be instanciated you will need to do this. Settings.json take priority, and content would be for localisations / translations.
-
-*NOTE! overriting doesn't recursive a whole data model onth the top level elements.*
-
-### GLHF NERDS
+Rich Searle
+ricardo.searle@gmail.com
