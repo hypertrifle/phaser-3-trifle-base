@@ -33,13 +33,13 @@ CREATE TABLE IF NOT EXISTS `entries` (
   `email` varchar(511) CHARACTER SET latin1 NOT NULL,
   `client_secret` varchar(255) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=41 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `entries`
 --
 
-INSERT INTO `entries` (`id`, `timestamp`, `state`, `name`, `score`, `email`, `client_secret`) VALUES
-(1, '2018-12-16 13:56:15', 0, 'BURT', 56765, 'test_email@domain.com', 'test_data'),
-(2, '2018-12-16 13:56:15', 0, 'TOD', 56720, '', 'test_data');
-COMMIT;
+-- INSERT INTO `entries` (`id`, `timestamp`, `state`, `name`, `score`, `email`, `client_secret`) VALUES
+-- (1, '2018-12-16 13:56:15', 0, 'BURT', 56765, 'test_email@domain.com', 'test_data'),
+-- (2, '2018-12-16 13:56:15', 0, 'TOD', 56720, '', 'test_data');
+-- COMMIT;

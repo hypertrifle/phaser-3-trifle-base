@@ -5,14 +5,13 @@
   "main": "src/index.js",
   "scripts": {
     "help": "node scripts/help.js",
+    "dev": "webpack-dev-server --mode development --open-page webpack-dev-server/build/ --host 192.168.178.22 --config webpack.config.js",
+    "build": "webpack --config webpack.config.js --mode production",
     "pre-dev": "npm run generate-svg-atlas",
     "generate-atlas": "TexturePacker --sheet assets/atlas/atlas.png --data assets/atlas/atlaspng.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
     "generate-svg-atlas": "svg-sprite  --shape-spacing-padding 2,2,2,2 --view --view-render-css --view-render-css-template ./supporting/atlas-template.json.hbs --view-render-css-dest atlas.json --view-dest ./assets/atlas --view-sprite atlas.svg assets/svg/**/*.svg && MOVE .\\assets\\atlas\\atlas.json.css .\\assets\\atlas\\atlas.json && MOVE .\\assets\\atlas\\atlas-*.svg .\\assets\\atlas\\atlas.svg",
-    "dev": " webpack && webpack-dev-server -d --port=8081 --open-page webpack-dev-server/build/ --host 192.168.178.22",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
-    "build-ci": "webpack -p --env.NODE_ENV=ci",
     "lint": "tslint --fix src/**/*.ts",
-    "build": "webpack -p",
     "docs": "typedoc --includeDeclarations --includes ./phaser.d.ts --ignoreCompilerErrors --excludeExternals --out ./docs/ ./src/ && http-server docs -c-1 -o",
     "generate-schema": "typescript-json-schema src/interfaces/test.ts * --titles --defaultProps --ignoreErrors --propOrder -o schema.json"
   },
@@ -38,12 +37,12 @@
     "raw-loader": "^0.5.1",
     "readline-sync": "^1.4.9",
     "svg-sprite": "^1.5.0",
-    "ts-loader": "^3.5.0",
+    "ts-loader": "^5.3.2",
     "typescript": "^2.8.1",
     "uglifyjs-webpack-plugin": "^2.0.1",
-    "webpack": "^3.4.1",
-    "webpack-dev-server": "^2.11.0",
-    "webpack-shell-plugin": "^0.5.0"
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
     "@types/stats.js": "^0.17.0",
@@ -51,12 +50,10 @@
     "dat.gui": "^0.7.2",
     "easystarjs": "^0.4.3",
     "http-server": "^0.11.1",
-    "path-override-webpack-plugin": "^0.1.2",
     "phaser": "^3.15.1",
     "strip-json-comments": "^2.0.1",
     "stripcomment-loader": "^0.1.0",
     "svgo": "^1.1.1",
-    "ts-loader": "^3.5.0",
     "tslint": "^5.11.0",
     "typedoc": "^0.12.0",
     "typescript-json-schema": "^0.32.0"

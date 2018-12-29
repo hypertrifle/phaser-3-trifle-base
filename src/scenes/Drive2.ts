@@ -338,6 +338,7 @@ export default class Drive2Scene extends BaseScene {
   preload() {
     console.log("Drive2Scene::preload");
 
+    //load all required sounds
     this.load.audio('car_engine_1', ['assets/audio/car-3-pitch-1.mp3', 'assets/audio/car-3-pitch-1.ogg']);
     this.load.audio('car_engine_2', ['assets/audio/car-3-pitch-2.mp3', 'assets/audio/car-3-pitch-2.ogg']);
     this.load.audio('car_engine_3', ['assets/audio/car-3-pitch-3.mp3', 'assets/audio/car-3-pitch-3.ogg']);
@@ -355,6 +356,12 @@ export default class Drive2Scene extends BaseScene {
 
   }
 
+  /**
+   * array of sengine sounds (they are still de-tunes but give illusion of gears)
+   *
+   * @type {Phaser.Sound.BaseSound[]}
+   * @memberof Drive2Scene
+   */
   engineSounds: Phaser.Sound.BaseSound[] = [];
   hitSound: Phaser.Sound.BaseSound;
   _rumbleSound: Phaser.Sound.BaseSound;
@@ -374,27 +381,33 @@ export default class Drive2Scene extends BaseScene {
     super.create();
     this.dimensions = new Phaser.Geom.Point(this.game.config.width as number, this.game.config.height as number);
 
+    //model
     this.resetRoad();
 
-
+    //view
     this.gernerateAboveHorizon();
 
+    //disaply items
     this.genRoadDisplayPool();
 
-
+    //add scenery to model
     this.generateScenery();
+
+    //init car
     this._car = new Car(this, {
       positionFromBottom: 40,
       scale: 1
     })
 
 
-
+    //init controls
     this._controls = new ControlSystem(this);
 
+    //update just to normalise
     this._controls.update(0, 16, this._car, this);
 
 
+    //load sounds.
     this.hitSound = this.sound.add("ice_berg_crash", { volume: 1 });
     this._pickupSound = this.sound.add("pickup", { volume: 1 });
     this._rumbleSound = this.sound.add("rumble", { volume: 0.3 });
@@ -413,15 +426,17 @@ export default class Drive2Scene extends BaseScene {
     }
 
 
+    //top layer UI items.
     this.addUI();
 
-
-
-    // this.win();
+    //start the game endend
     this.ended = true;
+
+    //with leaderboard disaply.
     this.showScoresDisplay();
 
 
+    //add controls propmpt if nessicery on first load.
     this._controls.addPromt();
 
 
@@ -434,7 +449,21 @@ export default class Drive2Scene extends BaseScene {
 
 
 
+  /**
+   * coloured bar of speedo contents
+   *
+   * @private
+   * @type {Phaser.GameObjects.Image}
+   * @memberof Drive2Scene
+   */
   private _spedo: Phaser.GameObjects.Image;
+  /**
+   * masked used for speedo.
+   *
+   * @private
+   * @type {Phaser.GameObjects.Graphics}
+   * @memberof Drive2Scene
+   */
   private _spedoMask: Phaser.GameObjects.Graphics;
 
   /**
