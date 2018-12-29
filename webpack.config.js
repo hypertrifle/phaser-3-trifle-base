@@ -3,14 +3,11 @@
 const webpack = require('webpack');
 const path = require('path');
 
-const WebpackShellPlugin = require('webpack-shell-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const PathOverridePlugin = require('path-override-webpack-plugin');
 const phaserModule = path.join(__dirname, '/node_modules/phaser/');
 const phaser = path.join(phaserModule, 'src/phaser.js');
 const strip = require('strip-json-comments');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
 
 const pkg = require("./package.json");
 
@@ -42,11 +39,17 @@ module.exports = {
     // mode: 'production',
     entry: './src/index.ts',
 
-    // optimization: {
-    //     minimizer: [new UglifyJsPlugin({
-    //         test: /\.js(\?.*)?$/i
-    //     })],
-    //   },
+    optimization: {
+        minimizer: [
+          new UglifyJsPlugin({
+            uglifyOptions: {
+              output: {
+                comments: false
+              }
+            }
+          })
+        ]
+      },
 
     output: {
         path: path.resolve(__dirname, 'build'),
@@ -72,25 +75,24 @@ module.exports = {
                 exclude: /node_modules/
             }
         ],
-        loaders: [{
-            test: /\.es6$/,
-            loader: 'babel-loader',
-            query: {
-                presets: ['es2015']
-            }
-        }
-    ]
+    //     loaders: [{
+    //         test: /\.es6$/,
+    //         loader: 'babel-loader',
+    //         query: {
+    //             presets: ['es2015']
+    //         }
+    //     }
+    // ]
     }, 
 
     plugins: [
-        new webpack.optimize.UglifyJsPlugin({minimize: true}),
         new webpack.DefinePlugin({
             "typeof CANVAS_RENDERER": JSON.stringify(true),
             "typeof WEBGL_RENDERER": JSON.stringify(true),
             "typeof EXPERIMENTAL": JSON.stringify(false),
             "typeof PLUGIN_CAMERA3D": JSON.stringify(false),
             "typeof PLUGIN_FBINSTANT": JSON.stringify(false)
-        }),
+        })
 
         // new CleanWebpackPlugin(['dist']),    
 ],
