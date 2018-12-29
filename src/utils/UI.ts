@@ -1,5 +1,4 @@
 import { Scene, GameObjects } from "phaser";
-import { Corners } from "../models/UIModels";
 
 export class CanvasTools {
   static rectangle(canvas: GameObjects.Graphics, config: any) {

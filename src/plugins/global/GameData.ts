@@ -1,6 +1,5 @@
 import GameModel from "../../models/GameModel";
 import SaveModel from "../../models/SaveModel";
-import HyperScorm from "../../libs/HyperScorm";
 
 /**
  * An ENUM to keep track of different Tracking modes that we can connect to.
@@ -51,15 +50,6 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     super(pluginManager);
     console.log("GameData::constructor");
   }
-
-  /**
-   * our instnace of the pipwreks-esque scorm wrapper
-   *
-   * @type {HyperScorm}
-   * @memberof GameData
-   */
-  private _scorm: HyperScorm;
-
   /**
    * any unitilise function
    *
@@ -210,25 +200,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
    * @memberof GameData
    */
   private detectTrackingVersion() {
-    // if our tracking is explicitly disabled, lets jus set it off and return
-    if (!this.raw.save.shouldPersistData) {
-      this.trackingMode = TrackingMode.Off;
-      return;
-    }
-
-    // try our instance of HyperScorm.
-    this._scorm = HyperScorm.Instance;
-
-    // if connected used that
-    if (this._scorm.connected) {
-      this.trackingMode = TrackingMode.Scorm;
-    } else {
-      // if not use offline storage.
-      this._scorm = null; // drop an instance of if for MM
-      this.trackingMode = TrackingMode.OfflineStoage;
-    }
-
-    console.log("tracking enabled with: ", this.trackingMode);
+  
   }
 
   /**
@@ -249,7 +221,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
         raw = localStorage.getItem(this.save.identifier);
         break;
       case TrackingMode.Scorm:
-        raw = this._scorm.suspendData;
+        // raw = this._scorm.suspendData;
       default:
         break;
     }
@@ -298,7 +270,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
       case TrackingMode.Scorm:
         // set the scorm suspend_data Item
-        let raw = (this._scorm.suspendData = serilized);
+        // let raw = (this._scorm.suspendData = serilized);
         break;
 
       default:

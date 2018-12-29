@@ -1,5 +1,4 @@
 import SaveDataModel from './SaveModel';
-import UIModel from './UIModels';
 
 
 /**
@@ -29,7 +28,6 @@ export default class GameModel {
    */
   save: SaveDataModel; // add we will add functionallity to the model class, we will include but we can always type some of the code we are expecting.
   scaling: ScalingModel;
-  userInterface: UIModel;
   fonts: Array<Phaser.GameObjects.Text.TextStyle>;
 
   racingModel: RacingModel = new RacingModel();
