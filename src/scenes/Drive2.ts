@@ -1339,20 +1339,15 @@ export default class Drive2Scene extends BaseScene {
 
   renderRoad(time: number, delta: number) {
 
-    //todo:reset all road display items
     this.resetDisplayItems();
-
-
 
     let previousPosition: number = -1;
 
 
-    let i = -1;
     let previousAlt: boolean = false;
     let tint: number = this.settings._farColour;
     //now we can render each strip?
     for (let n = this.trackSegments.length - 1; n >= 0; n--) {
-      i++;
       let seg = this.trackSegments[n];
 
       //if this segment isn't in draw distance / we have gone past it we dont need to render.
@@ -1361,7 +1356,7 @@ export default class Drive2Scene extends BaseScene {
       }
 
       //set the track scales.
-      const y = Math.abs(seg.p2.screen.y - seg.p1.screen.y) / (this.settings.segmentLength / 10);//TODO: work out why we need to /8
+      const y = Math.abs(seg.p2.screen.y - seg.p1.screen.y) / (this.settings.segmentLength / 10); // this 10 is not really based on anything, I think it is to do with camerea projection.
 
 
       //any scenery items?
@@ -1394,7 +1389,7 @@ export default class Drive2Scene extends BaseScene {
           //maybe camera.z? factor in track distance and segment legnth?
           let scale = (seg.p1.scale * this.settings.roadWidth) * 1;
           s.setScale((model.isLeft) ? scale * -1 : scale, scale);
-          let a = Math.min(1, scale * 12); //todo pop in.
+          let a = Math.min(1, scale * 12); //pop in.
           s.setAlpha(a);
 
         }
@@ -1429,7 +1424,7 @@ export default class Drive2Scene extends BaseScene {
           //maybe camera.z? factor in track distance and segment legnth?
           let scale = (seg.p1.scale * this.settings.roadWidth) * 0.2;
           s.setScale(scale, scale);
-          let a = Math.min(1, scale * 15); //todo pop in.
+          let a = Math.min(1, scale * 15); //pop in.
           s.setAlpha(a);
 
           if (Phaser.Geom.Rectangle.Overlaps(s.getBounds(), this._car.bounds)) {
@@ -1439,8 +1434,6 @@ export default class Drive2Scene extends BaseScene {
             this.cameras.main.shake(250, 0.02);
             console.log("hit");
           }
-        } else {
-          //todo: render "used" iceberg 
         }
 
 
@@ -1476,7 +1469,7 @@ export default class Drive2Scene extends BaseScene {
           let scale = (seg.p1.scale * this.settings.roadWidth) * 2;
           s.setScale(scale, scale);
 
-          let a = Math.min(1, scale * 15); //todo pop in.
+          let a = Math.min(1, scale * 15); //pop in.
 
           s.setAlpha(a);
 
@@ -1484,13 +1477,9 @@ export default class Drive2Scene extends BaseScene {
             model.used = true;
             this._state.speed *= 1.3;
             this._pickupSound.play();
-
-            // this.hitSound.play();
             // this.cameras.main.shake(250, 0.02);
           }
-        } else {
-          //todo: render "used" iceberg 
-        }
+        } 
 
 
 

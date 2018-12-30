@@ -1,7 +1,16 @@
 # NU-heat outrun style racing game
 
+there are a few components that mainly are visual images / sprites that can be pooled, but must happens in the Drive2.ts Scene.
+
+Unfortunatly no time to refactor out the big scene into somthing more manageable, but It all should be documented, if you have an outline viewer in you IDE itworks fine.
+
 ## setup
 `npm i` a package-lock is included from last successful release
+in the package.json file the dev command currently reads:
+
+`webpack-dev-server --mode development --open-page webpack-dev-server/build/ --host 192.168.178.22 --config webpack.config.js`
+
+you can omit the `--host 192.168.178.22` entirely to work on local host, but if you are testing on networked devices you will need to supply your hostname `ipconfig` will give you this.
 
 
 ## useage

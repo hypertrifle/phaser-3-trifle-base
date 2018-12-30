@@ -21,12 +21,9 @@ let container: HTMLElement;
 const config: GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
-// @ts-ignore
-  scale: {
-// @ts-ignore
+
     width: 640,
-    height: 360
-},
+    height: 360,
 
   zoom: 4,
   render: {
