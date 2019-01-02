@@ -1,10 +1,9 @@
 import BaseScene from "./BaseScene";
 
-const POST = require("../../assets/glsl/post.frag");
+  //@ts-ignore
+const POST = require('../../assets/glsl/post.frag');
 
-
-export class FullScreeenShader extends Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline {
-
+export class TexturedShader extends Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline {
    constructor(game: Phaser.Game, shaderSource: string) {
 
        super({
@@ -16,7 +15,7 @@ export class FullScreeenShader extends Phaser.Renderer.WebGL.Pipelines.TextureTi
 
 }
 
-export default class GameOneScene extends BaseScene {
+export default class PostEffectTestsScene extends BaseScene {
 
    postShader: Phaser.Renderer.WebGL.WebGLPipeline;
    shaderTime: number = 0;
@@ -25,51 +24,24 @@ export default class GameOneScene extends BaseScene {
 
   constructor() {
     super({
-      key: "GameOneScene",
+      key: "PostEffectTestScene",
       active: false
     });
-    console.log("GameOneScene::constructor");
+    console.log("PostEffectTestsScene::constructor");
   }
 
   preload() {
-    console.log("GameOneScene::preload");
-    this.load.image("post_texture", "assets/img/jump_texture.png");
+    console.log("PostEffectTestsScene::preload");
 
 
 
   }
 
-  gameWidth: number;
-  gameHeight: number;
-  zoomLevel: number = 16;
-
-
-  private _backStitchColour: number;
-
-
-  set backStitchColour(v: number) {
-   this._backStitchColour = v;
-   let c: Phaser.Display.Color = Phaser.Display.Color.ValueToColor(this._backStitchColour);
-
-
-   this.postShader.setFloat3(
-      "backStitchColour",
-      c.red / 256,
-      c.green / 256,
-      c.blue / 256
-      );
-
-}
-
-get backStitchColour(): number {
-   return this._backStitchColour;
-}
-
-initPostShader() {
+initShader() {
       // create our background shader pipline.
       this.postShader = (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).addPipeline(
          "Custom",
-         new FullScreeenShader(this.game,POST
+         new TexturedShader(this.game,POST
          ));
 
     this.postShader.setFloat2(
@@ -78,8 +50,7 @@ initPostShader() {
     this.game.config.height as number
     );
 
-    this.postShader.setFloat1("zoomLevel", this.zoomLevel);
-    this.backStitchColour = 0x300404;
+    // this.postShader.setFloat1("zoomLevel", this.zoomLevel);
 
 
     let TEXTURE_SLOT = 1; // 0 is I assume phasers output.
@@ -94,21 +65,13 @@ initPostShader() {
   create() {
     super.create();
 
-  //  this.initPostShader();
-
-   console.log("GameOneScene::Create");
-    this.cameras.main.setBounds(0, 0, this.game.canvas.width, this.game.canvas.height);
-    this.cameras.main.setZoom(16);
-
-    console.log(this.game.canvas);
-
-    this.gameHeight = this.game.canvas.height;
-    this.gameWidth = this.game.canvas.width;
+    let test = this.add.image(this.dimensions.x/2, this.dimensions.y/2, "atlas.png", "test-sprite.png");
 
 
-   let bg = this.add.graphics({});
-   bg.fillStyle(0xff00aa,1);
-   bg.fillRect(0,0,this.gameWidth,this.gameHeight);
+
+  console.log("PostEffectTestsScene::Create");
+    // this.cameras.main.setBounds(0, 0, this.game.canvas.width, this.game.canvas.height);
+    // this.cameras.main.setZoom(16);
 
 
 
@@ -130,9 +93,6 @@ initPostShader() {
    }
 
   shutdown() {
-    // drop references to anything we have in create
-    this.tools = null;
-
     super.shutdown();
   }
 }

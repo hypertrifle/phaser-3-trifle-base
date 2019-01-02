@@ -1,9 +1,8 @@
 import TitleScene from "./TitleScene";
 import GameData from "../plugins/global/GameData";
 import Tools from "../plugins/global/Tools";
-import Sponge from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
-import GameOneScene from "./GameOneScene";
+import PostEffectTestsScene from "./PostEffectTests";
 
 // const atlas = require("svg-inline-loader?../../assets/svg/gameplay/gameplay-tile-door.svg") as string;
 
@@ -28,7 +27,7 @@ export default class Boot extends BaseScene {
     // it means better bundle size but requuires a re-compile on changing orders.
 
     this.scene.add("TitleScene", TitleScene, false);
-    this.scene.add("GameOneScene", GameOneScene, false);
+    this.scene.add("PostEffectTestScene", PostEffectTestsScene, false);
 
     console.log(this._data);
 
@@ -152,15 +151,15 @@ export default class Boot extends BaseScene {
     // TODO: inline json for package size.
 
 
-    // load content.
+    // // load content.
     this.load.json("content", "assets/json/content.json"); // required
 
-    // settings.
+    // // settings.
     this.load.json("settings", "assets/json/settings.json"); // required
 
-    // todo:
+    // // todo:
 
-    this.load.json("atlaspng.json", "assets/atlas/atlaspng.json"); // our png atlas
+    // this.load.json("atlaspng.json", "assets/atlas/atlaspng.json"); // our png atlas
 
     this.load.atlas('atlas.png', 'assets/atlas/atlaspng.png', 'assets/atlas/atlaspng.json');
 
@@ -172,13 +171,13 @@ export default class Boot extends BaseScene {
     */
 
    // we now have an SVGScale
-   this.load.svg({
-     key: "atlas.svg",
-     url: "assets/atlas/atlas.svg",
-     svgConfig: { scale: this.game.config.zoom }
-    });
+  //  this.load.svg({
+  //    key: "atlas.svg",
+  //    url: "assets/atlas/atlas.svg",
+  //    svgConfig: { scale: this.game.config.zoom }
+  //   });
 
-    this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
+  //   this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
 
     this.load.script(
       "webfont",
@@ -240,13 +239,13 @@ export default class Boot extends BaseScene {
    */
   webFontsLoaded() {
     // lets generate this atlas.
-    let svgAtlasTexture = this.textures.get("atlas.svg");
-    let svgAtlasData = this.game.cache.json.get("atlas.json");
+    // let svgAtlasTexture = this.textures.get("atlas.svg");
+    // let svgAtlasData = this.game.cache.json.get("atlas.json");
 
-    this.transFormAtlasDataToScale(svgAtlasData);
+    // this.transFormAtlasDataToScale(svgAtlasData);
 
-    // @ts-ignore
-    Phaser.Textures.Parsers.JSONArray(svgAtlasTexture, 0, svgAtlasData);
+    // // @ts-ignore
+    // Phaser.Textures.Parsers.JSONArray(svgAtlasTexture, 0, svgAtlasData);
 
     // load our sponge plugins.
     this.loadPlugins();
@@ -261,7 +260,7 @@ export default class Boot extends BaseScene {
     console.groupEnd();
 
     // TODO: Entry Point.
-    this.scene.run("GameOneScene");
+    this.scene.run("PostEffectTestScene");
   }
 
   generateTiles() {}

@@ -5,6 +5,7 @@ export interface BaseSceneConfig {
 }
 export default class BaseScene extends Phaser.Scene {
   public tools: Tools;
+  public dimensions:Phaser.Geom.Point;
 
   constructor(config: BaseSceneConfig) {
 
@@ -15,6 +16,8 @@ export default class BaseScene extends Phaser.Scene {
       key: config.key,
       active: active
     });
+
+  
 
     try {
       this.tools = this.sys.plugins.get("tools") as Tools; // cast
@@ -31,6 +34,13 @@ export default class BaseScene extends Phaser.Scene {
   }
 
   create() {
+
+      //save a reference to our game dimensions.
+      this.dimensions = new Phaser.Geom.Point(    
+        this.game.config.width as number,
+        this.game.config.height as number
+    );
+    
    // grab our utils
    if (!this.tools) {
     this.tools = this.sys.plugins.get("tools") as Tools; // cast

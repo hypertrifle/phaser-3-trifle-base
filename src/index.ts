@@ -17,12 +17,8 @@ const config: GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
 // @ts-ignore
-  scale: {
-// @ts-ignore
-    mode: Phaser.DOM.CONTAIN,
     width: 800,
-    height: 600
-},
+    height: 600,
   zoom: 1,
   render: {
     pixelArt: true,

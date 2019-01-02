@@ -9,6 +9,7 @@
    // second sampler if neeeeded.
    // uniform sampler2D uPostTexture;
    // a vector can of course be any size.
+
    // uniform vec3 backStitchColour;
 
    //this is whats is passed from our vertex shader, for post processing or simple effects, its the x,y position.
@@ -29,7 +30,7 @@
         {
 
             // the basics with no modification to the pixel (or point) would be:
-            vec4 inColour = getPixelColour();
+            vec4 inColour = getPixelColour(outTexCoord);
 
             //make modifications
 
