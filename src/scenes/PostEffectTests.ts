@@ -50,15 +50,15 @@ initShader() {
     this.game.config.height as number
     );
 
-    // this.postShader.setFloat1("zoomLevel", this.zoomLevel);
+    this.postShader.setFloat1("time", this.shaderTime);
 
-
-    let TEXTURE_SLOT = 1; // 0 is I assume phasers output.
-    let postImage: Phaser.GameObjects.Image = this.add.image(0,0,"post_texture");
-    postImage.visible = false;
-    this.postShader.renderer.setTexture2D(postImage.texture.source[0].glTexture, TEXTURE_SLOT); // TODO: check array length
-    this.postShader.renderer.setInt1(this.postShader.program, 'uPostTexture', TEXTURE_SLOT);
-    this.cameras.main.setRenderToTexture(this.postShader);
+    
+    // let TEXTURE_SLOT = 1; // 0 is I assume phasers output.
+    // let postImage: Phaser.GameObjects.Image = this.add.image(0,0,"post_texture");
+    // postImage.visible = false;
+    // this.postShader.renderer.setTexture2D(postImage.texture.source[0].glTexture, TEXTURE_SLOT); // TODO: check array length
+    // this.postShader.renderer.setInt1(this.postShader.program, 'uPostTexture', TEXTURE_SLOT);
+    // this.cameras.main.setRenderToTexture(this.postShader);
 }
 
 

@@ -38,17 +38,17 @@ module.exports = {
     // mode: 'production',
     entry: './src/index.ts',
 
-    optimization: {
-        minimizer: [
-          new UglifyJsPlugin({
-            uglifyOptions: {
-              output: {
-                comments: false
-              }
-            }
-          })
-        ]
-      },
+    // optimization: {
+    //     minimizer: [
+    //       new UglifyJsPlugin({
+    //         uglifyOptions: {
+    //           output: {
+    //             comments: false
+    //           }
+    //         }
+    //       })
+    //     ]
+    //   },
 
     output: {
         path: path.resolve(__dirname, 'build'),
