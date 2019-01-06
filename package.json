@@ -24,7 +24,6 @@
   "license": "UNLICENCED",
   "private": true,
   "devDependencies": {
-    "@types/activex-excel": "^14.0.4",
     "@types/dat.gui": "^0.7.2",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",

@@ -33,6 +33,8 @@
             vec4 inColour = getPixelColour(outTexCoord);
 
             //make modifications
+            // inColour.r = outTexCoord.x*inColour.a;
+            // inColour.b = outTexCoord.y*inColour.a;
 
             //save to the output
             gl_FragColor = inColour;

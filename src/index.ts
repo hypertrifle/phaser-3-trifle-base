@@ -1,6 +1,6 @@
 /**
  * @author       Hypertrifle <ricardo.searle@gmail.com>
- * @copyright    2018 Hypertrifle
+ * @copyright    2019 Hypertrifle
  * @description  Phaser3 Boilerplate
  * @license      UNLICENCED
  */
@@ -14,7 +14,7 @@ import Boot from "./scenes/Boot";
 window.onload = () => {
 
   // some development options, this console.clear resets a developer console on webpack refresh which I find handy.
-// console.clear();
+console.clear();
 const DEBUG: boolean = true;
 
 // @ts-ignore
@@ -38,12 +38,14 @@ const config: GameConfig = {
       // console.warn('post callback', this);
     }
   },
-  // input: {
-  //   keyboard: true,
-  //   mouse: true,
-  //   touch: false,
-  //   gamepad: false
-  // },
+  input: {
+    keyboard: true,
+    mouse: true,
+    touch:{
+      target:document.getElementById("container"),
+      capture:true
+    }
+  },
   backgroundColor: 0x111111,
 
 };

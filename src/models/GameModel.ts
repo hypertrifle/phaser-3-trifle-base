@@ -39,6 +39,6 @@ export class ScalingModel {
   expandToParent: boolean = true;
   shouldForceOrientationOnMobile: boolean = true;
   shouldForceLandscaprOnMobile: boolean = true;
-  maxWidth: number = 1280;
-  maxHeight: number = 720;
+  maxWidth: number = undefined;
+  maxHeight: number = undefined;
 }
