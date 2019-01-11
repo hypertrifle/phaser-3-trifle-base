@@ -7,6 +7,7 @@
    uniform float size;
    uniform float delay;
    uniform vec2 resolution;
+   uniform vec3 colour;
 
 
    // second sampler if neeeeded.
@@ -27,14 +28,15 @@
        return 1.-f;
    }
 
-    float applySheen(in float size,in float offset, in float position, in float progress){
-        return 1.;
-    }
 
     float cubicIn(float t) {
-        return t * t * t*t;
+        return t * t * t * t;
     }
 
+    float hype(float a, float o){
+        return sqrt((a*a)+(o*o));
+    }
+#pragma glslify: noise = require('glsl-noise/simplex/3d')
 
     //main entry point
     // GLSL it's mainly math based functions, operating on colour channels, everything
@@ -48,27 +50,30 @@
             // the basics with no modification to the pixel (or point) would be:
             vec4 inColour = getPixelColour(outTexCoord);
 
-            //just take the alpha value of this pixel for now.
-            vec4 sheenColour = vec4(inColour.a);
+            // generate our shene colour based on the tint * the alpha level of source.
+            vec4 sheenColour = colour.rgbb* inColour.a; 
 
-            //position of the wipe 0 -1;
-            float position = ((outTexCoord.x+outTexCoord.y)/2.);
+            // position of the wipe 0 -1;
+            float position = ((outTexCoord.x*outTexCoord.y)/2.) + size;
+            // float position = hype(outTexCoord.x , outTexCoord.y);
+            // float position = 0.5;
 
-            //calulate the distance from start of sheen to end
+            // calulate the distance from start of sheen to end
             float progress = cubicIn(mod(time*speed,1.+delay));
 
-            //initilise our vibrance vaible which will
-            //use for the mix at the end
+            // initilise our vibrance vaible which will
+            // use for the mix at the end
             float vibrance = 0.;
 
             // apply a first gradient modifier
             vibrance = 1.-smoothstep(progress,progress+size, position);
 
-            //then apply a hard edge at the furthers point.
+            // then apply a hard edge at the furthers point.
             vibrance = mix(vibrance, 1.,  step(progress+size, position ));
 
-            //save to the output
+            // save to the output
             gl_FragColor = mix(inColour, sheenColour ,(1.-vibrance));
 
 
         }
+ 
