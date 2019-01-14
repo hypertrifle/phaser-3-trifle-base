@@ -4,9 +4,7 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.6.3</string>
-        <key>fileName</key>
-        <string>C:/dev/web/phaser/phaser-3-trifle-base/assets/src/atlas.tps</string>
+        <string>4.8.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -206,6 +204,19 @@
                 <rect>66,39,133,78</rect>
                 <key>scale9Paddings</key>
                 <rect>66,39,133,78</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">../img/test-sprite-3.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>33,27,66,53</rect>
+                <key>scale9Paddings</key>
+                <rect>33,27,66,53</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
