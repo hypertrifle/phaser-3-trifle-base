@@ -1,9 +1,9 @@
 {
-    "name": "HYPERTRIFLE - $title$ - v0.0.1ALPHA",
-    "short_name": "$title$",
+    "name": "NUHeat - Fastdeck - Outrun inspired mini game",
+    "short_name": "NU HEAT",
     "start_url": ".",
     "background_color": "#000",
-    "description": "some bleddy unit",
+    "description": "",
     "display": "fullscreen",
     "orientation": "landscape"
   }

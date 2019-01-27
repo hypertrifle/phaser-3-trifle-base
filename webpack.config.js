@@ -52,7 +52,7 @@ module.exports = {
               
             },
             extractComments : {
-                banner: true
+                banner: false
             }
           })
         ]
