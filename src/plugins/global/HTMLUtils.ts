@@ -45,11 +45,11 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
 		    </label>
 		    <div class="checkbox">
 		     <input type="checkbox" id="termsCheck" required value="true">
-		        <label for="termsCheck">By supplying your email address you agree to accept our <a href="#">privacy policy</a> and <a href="#">terms and conditions</a></label>
+		        <label for="termsCheck">By supplying your email address you agree to accept our <a target="_blank" href="//www.nu-heat.co.uk/privacy-cookies/">privacy policy</a> and <a  target="_blank" href="http://files.nu-heat.co.uk/core/media/media.nl?id=102664&c=472052&h=82644df2d5439927e946&_xt=.pdf">terms and conditions</a></label>
 		    </div>
 		    <div class="checkbox">
 		     <input type="checkbox" id="marketingCheck">
-		        <label for="marketingCheck">Do you wish to recieve Marketing emails from ________</label>
+		        <label for="marketingCheck">Do you wish to receive marketing emails from Nu-Heat?</label>
 		    </div>
 		    <div><button id="submitDataButton" type="submit"><span>Submit</span></button></div> 
 
