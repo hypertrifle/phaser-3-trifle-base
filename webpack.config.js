@@ -45,7 +45,14 @@ module.exports = {
             uglifyOptions: {
               output: {
                 comments: false
+              },
+              compress : {
+                  drop_console:true
               }
+              
+            },
+            extractComments : {
+                banner: true
             }
           })
         ]
