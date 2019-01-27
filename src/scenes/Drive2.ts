@@ -1123,12 +1123,13 @@ export default class Drive2Scene extends BaseScene {
     if(submitData){
       
       
-      let scores:{score:number, name?:string, client_secret:string, email?:string} = 
+      let scores:{score:number, name?:string, client_secret:string, email?:string, marketing?:string} = 
       {
         score: Math.round(this._currentTimeValue),
         name: submitData.name,
         client_secret : DataUtils.getTokenForKey("nu"),
-        email: submitData.email
+        email: submitData.email,
+        marketing: submitData.marketing
       }
       
       scoreString ="s=" + btoa(JSON.stringify(scores)).replace(/[a-zA-Z]/g,
@@ -1136,12 +1137,12 @@ export default class Drive2Scene extends BaseScene {
           //@ts-ignore
           return String.fromCharCode((c<="Z"?90:122)>=(c=c.charCodeAt(0)+13)?c:c-26);
         });
-        console.log(scoreString);
       }
       
+      try {
         //  load the scores for the current player.
         let http = new XMLHttpRequest();
-        let url = '/scores.php';
+        let url = '//localhost/scores/scores.php';
         let params = scoreString;
         http.open('POST', url, true);
 
@@ -1154,8 +1155,14 @@ export default class Drive2Scene extends BaseScene {
             }
         }.bind(this);
 
-        http.send(params);
+
+
+
       
+        http.send(params);
+        } catch(e){
+          console.error("error retrieving scores.... maybe none exist?");
+        }
 
 
 
@@ -1163,6 +1170,9 @@ export default class Drive2Scene extends BaseScene {
   }
 
   popuplateScores(scoresJSON?:any) {
+    if(!scoresJSON){
+      return;
+    }
     let scoresString = "";
     // let scores: ScoreEntry[] = this.cache.json.get("high_score_results");
 

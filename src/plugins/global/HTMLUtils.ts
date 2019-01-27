@@ -1,6 +1,7 @@
 export interface FormSubmissionData {
   name?:string;
   email?:string;
+  marketing?: string;
 
 }
 
@@ -29,7 +30,8 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
 	<div class="score-intro">
 	  <p>Your score is:</p>
 	  <p id="scoreString" class="score">1 minute 59s</p>
-	</div>
+    <a href="https://twitter.com/intent/tweet?text=I%20just%20scored%20$$SCORE$$%20on%20the%20Nuheat%20Fastdeck%20Game%20https://www.nu-heat.co.uk/fastdeck/&hashtags=nuheat%2Cfastdeck%2Cgame" class="twitter-btn" id="b" target="_blank"><i></i><span class="label">Tweet your score</span></a>
+  </div>
 	<form id="mainForm"> 
 		<fieldset> 
 		    <legend>Enter your name &amp; email to submit your high score, and you could win a prize:</legend>
@@ -44,6 +46,10 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
 		    <div class="checkbox">
 		     <input type="checkbox" id="termsCheck" required value="true">
 		        <label for="termsCheck">By supplying your email address you agree to accept our <a href="#">privacy policy</a> and <a href="#">terms and conditions</a></label>
+		    </div>
+		    <div class="checkbox">
+		     <input type="checkbox" id="marketingCheck">
+		        <label for="marketingCheck">Do you wish to recieve Marketing emails from ________</label>
 		    </div>
 		    <div><button id="submitDataButton" type="submit"><span>Submit</span></button></div> 
 
@@ -60,9 +66,9 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
 
     this.callback = onComplete;
     this.context = completeContext;
-
+    
     let el:Element = document.getElementById("overlay");
-    el.innerHTML = this.markup;
+    el.innerHTML = this.markup.replace("$$SCORE$$", encodeURIComponent(score));
    
 
     document.getElementById("scoreString").innerHTML = score;
@@ -105,7 +111,7 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
       //return if there is.
 
       //@ts-ignore
-      console.log(document.getElementById("termsCheck").checked);
+      console.log(document.getElementById("marketingCheck").checked);
       //@ts-ignore
       let termsFilled = document.getElementById("termsCheck").checked;
       //@ts-ignore
@@ -117,15 +123,18 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
         document.getElementById("mainForm").classList.add("error");
         return;
       }
-
-
+      //@ts-ignore
+      console.log(document.getElementById("marketingCheck").value);
+      
 
 
       this.callback.apply(this.context,[{
         //@ts-ignore
         name: this.prevName = document.getElementById("nameInput").value,
         //@ts-ignore
-        email: this.prevEmail = document.getElementById("emailInput").value
+        email: this.prevEmail = document.getElementById("emailInput").value,
+        //@ts-ignore
+        marketing: (document.getElementById("marketingCheck").checked) ? "1" : "0",
       }]);
 
       //return the object.

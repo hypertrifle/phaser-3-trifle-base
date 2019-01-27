@@ -1,6 +1,6 @@
 <?php
-require("filterlist.php");
 header('Access-Control-Allow-Origin: *');  
+require("filterlist.php");
 $host="localhost:3307"; // Host name 
 $username="highscores"; // Mysql username 
 $password="highscores"; // Mysql password 
@@ -51,7 +51,7 @@ if (isset($_POST['s'])) {
           $entry = json_decode(base64_decode(str_rot13($s)));
         //   print_r($entry);
           //error checking on the object after decoding
-          if(!property_exists($entry, "name") || !property_exists($entry, "client_secret") || !property_exists($entry, "score") || !property_exists($entry, "email")){
+          if(!property_exists($entry, "name") || !property_exists($entry, "client_secret") || !property_exists($entry, "score") || !property_exists($entry, "email")|| !property_exists($entry, "marketing")){
               exit;
           }
 
@@ -66,9 +66,10 @@ if (isset($_POST['s'])) {
           $entry->client_secret = $mysqli->real_escape_string($entry->client_secret);
           $entry->score = $mysqli->real_escape_string($entry->score);
           $entry->email = $mysqli->real_escape_string($entry->email);
+          $entry->marketing = $mysqli->real_escape_string($entry->marketing);
 
           //generate insert
-          $insert = "INSERT INTO `$db_name`.`entries` (`name`,`score`,`email`,`client_secret`) VALUES ('$entry->name','$entry->score','$entry->email','$entry->client_secret');";
+          $insert = "INSERT INTO `$db_name`.`entries` (`name`,`score`,`email`,`client_secret`,`marketing`) VALUES ('$entry->name','$entry->score','$entry->email','$entry->client_secret','$entry->marketing');";
 
 
      } catch (Exception $e) {
