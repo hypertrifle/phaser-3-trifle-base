@@ -4,7 +4,7 @@ const SOURCE = require('../../../assets/glsl/shene.glsl');
 // @ts-ignore
 const glsl = require('glslify');
 
-interface Vec3 {
+export interface Vec3 {
    r: number;g: number;b: number;
 }
 
@@ -65,7 +65,6 @@ export default class SheneEffect extends BaseEffect {
 
 
        super(game, id, glsl(SOURCE) );
-       console.log(glsl(SOURCE));
        // init uniforms
          this.size = (config) ? config.size : 0.02;
          this.speed = (config) ? config.speed : 1.5;

@@ -7,11 +7,8 @@ Thumbs.db
 *.sublime-workspace
 json.schema
 
-
-
 # Vendors
 node_modules/
-assets
 # Build
 docs/
 build/

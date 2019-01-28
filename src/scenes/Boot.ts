@@ -3,6 +3,7 @@ import GameData from "../plugins/global/GameData";
 import Tools from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
 import PostEffectTestsScene from "./PostEffectTests";
+import PersistentScene from "./PersistentScene";
 
 // const atlas = require("svg-inline-loader?../../assets/svg/gameplay/gameplay-tile-door.svg") as string;
 
@@ -37,7 +38,7 @@ export default class Boot extends BaseScene {
     // }
 
     // finallly add our on top / HUD layer. - fuck this.
-    // this.scene.add("HUD", HUDOverlay, true); // true as we always want that badboy running in the forground.
+    this.scene.add("HUD", PersistentScene, true); // true as we always want that badboy running in the forground.
 
         // we are ending the console group here as any subsequent logs should be visible.
         console.groupEnd();

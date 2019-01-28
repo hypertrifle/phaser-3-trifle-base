@@ -1,22 +1,25 @@
 import BaseScene from "./BaseScene";
 
-export default class REPLACEMEScene extends BaseScene {
+export default class PersistentScene extends BaseScene {
 
   constructor() {
     super({
-      key: "REPLACEMEScene",
-      active: false
+      key: "PersistentScene",
+      active: true // we are always active.
     });
-    console.log("REPLACEMEScene::constructor");
+    console.log("PersistentScene::constructor");
   }
 
   preload() {
-    console.log("REPLACEMEScene::preload");
+    console.log("PersistentScene::preload");
 
   }
 
   create() {
     super.create();
+
+    
+    this.add.graphics({});
   }
 
   update(time: number, delta: number) {

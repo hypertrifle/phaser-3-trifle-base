@@ -1,0 +1,60 @@
+{"frames": [
+
+{
+	"filename": "jump_texture.png",
+	"frame": {"x":921,"y":2,"w":32,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":32,"h":32},
+	"sourceSize": {"w":32,"h":32}
+},
+{
+	"filename": "test-sprite-2.png",
+	"frame": {"x":788,"y":109,"w":111,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":111,"h":104},
+	"sourceSize": {"w":111,"h":104}
+},
+{
+	"filename": "test-sprite-3.png",
+	"frame": {"x":788,"y":2,"w":132,"h":106},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":132,"h":106},
+	"sourceSize": {"w":132,"h":106}
+},
+{
+	"filename": "test-sprite.png",
+	"frame": {"x":643,"y":2,"w":144,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":144,"h":108},
+	"sourceSize": {"w":144,"h":108}
+},
+{
+	"filename": "tiles.png",
+	"frame": {"x":2,"y":2,"w":640,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":640,"h":64},
+	"sourceSize": {"w":640,"h":64}
+},
+{
+	"filename": "tree_2.png",
+	"frame": {"x":954,"y":2,"w":18,"h":21},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":18,"h":21},
+	"sourceSize": {"w":18,"h":21}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "atlaspng.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:c59dbe00c76e41de6d990f9cf7d8ff01:cb908f09ebc1b596b974a86664e6b6ae:6e19d5344fcf9633293462ce49223046$"
+}
+}

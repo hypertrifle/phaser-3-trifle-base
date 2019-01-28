@@ -24,9 +24,14 @@ const config: GameConfig = {
     width: 800,
     height: 600,
   zoom: 1,
+  resolution:1,  // this this works with sprites and omage but not with bitmap font
+  fps:{
+    min:30,
+    target:60
+  },
+  
   render: {
-    pixelArt: true,
-    antialias: false,
+    antialias: true,
 
   },
   type: Phaser.WEBGL,

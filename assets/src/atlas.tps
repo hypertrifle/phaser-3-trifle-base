@@ -4,7 +4,9 @@
         <key>fileFormatVersion</key>
         <int>4</int>
         <key>texturePackerVersion</key>
-        <string>4.8.0</string>
+        <string>4.6.3</string>
+        <key>fileName</key>
+        <string>C:/dev/web/phaser/phaser-3-trifle-base/assets/src/atlas.tps</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -70,7 +72,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>2</uint>
+        <uint>1</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -106,9 +108,9 @@
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
-            <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
+            <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
             <key>forceSquared</key>
-            <false/>
+            <true/>
             <key>maxRects</key>
             <struct type="AlgorithmMaxRectsSettings">
                 <key>heuristic</key>
@@ -149,7 +151,7 @@
             <string></string>
         </struct>
         <key>autoAliasEnabled</key>
-        <true/>
+        <false/>
         <key>trimSpriteNames</key>
         <false/>
         <key>prependSmartFolderName</key>
@@ -163,7 +165,7 @@
             <key>scaleMode</key>
             <enum type="ScaleMode">Smooth</enum>
             <key>extrude</key>
-            <uint>1</uint>
+            <uint>0</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMargin</key>
@@ -201,9 +203,9 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>66,39,133,78</rect>
+                <rect>28,26,55,52</rect>
                 <key>scale9Paddings</key>
-                <rect>66,39,133,78</rect>
+                <rect>28,26,55,52</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -227,9 +229,9 @@
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>62,85,124,170</rect>
+                <rect>36,27,72,54</rect>
                 <key>scale9Paddings</key>
-                <rect>62,85,124,170</rect>
+                <rect>36,27,72,54</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

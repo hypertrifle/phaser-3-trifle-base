@@ -17,7 +17,7 @@ export interface Uniform{
 export default class BaseEffect extends Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline {
     
     private _time:number = 0;  
-    private _resolution:{x:number, y:number};
+    private _resolution:{x:number, y:number} = {x:0,y:0};
 
 
   
@@ -41,11 +41,13 @@ export default class BaseEffect extends Phaser.Renderer.WebGL.Pipelines.TextureT
     }
   
   
-     constructor(game: Phaser.Game,id:string, source:string, config?:any ) {
+     constructor(game: Phaser.Game,id:string, source:string, config?:any, vertexSource?:string ) {
+       
        super({
          game: game,
          renderer: game.renderer,
-         fragShader: source
+         fragShader: source,
+         vertShader:vertexSource
         });
         
          //add to the games renderer as as pipline with the id supplied
