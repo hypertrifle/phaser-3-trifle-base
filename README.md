@@ -1,5 +1,14 @@
 # Phaser 3 Webpack Project Template
 
+# todo 
+
+- port utils and clean up from drive game - session token from ymu
+- constant debug overlay, helpers for dat.GUI, persistant state.
+- Drop helper helper class and just define in there?
+- Base scene impliments resize event.
+
+
+
 Based off of [Richard Davey's Phaser 3 Webpack Project Template](https://github.com/photonstorm/phaser3-project-template)
 
 Originally planed & written by [Rich Searle](//hypertrifle.com) for Work, since then I have removed any unnicery code that I deemed bloated on not useful for small game projects (any any made for Work specifications.)

@@ -53,14 +53,26 @@
 
 
             vec2 position = (outPosition - offset)/size;
-
+            
+            // dither the position?
+            
 
 
             vec4 col = vec4(position.x, position.y, 1., colour.a  ) * colour.r;
+            vec4 col2 = vec4(position.x, position.y-0.05, 1., colour.a  ) * colour.r;
+            vec4 col3 = vec4(position.x-0.05, position.y, 1., colour.a  ) * colour.r;
 
             // col.r = mix(1.-col.a,outPosition.x,col.r);
             // col.a = outPosition.x;
-            gl_FragColor =  col;
+
+            vec2 scaledTime = vec2(time *-0.0005,time *-0.0);
+            vec2 gridDensity = vec2(0.5)* size;
+
+            float x_mix = sin((position.x+scaledTime.x)*gridDensity.x);
+
+            float y_mix = sin((position.y+scaledTime.y)*gridDensity.y);
+
+            gl_FragColor =  mix(col, mix(col2,col3,sign(y_mix)),sign(x_mix));
 
 
         }

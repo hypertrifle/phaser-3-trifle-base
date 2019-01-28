@@ -21,9 +21,8 @@ const DEBUG: boolean = true;
 const config: GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
-    width: 800,
-    height: 600,
-  zoom: 1,
+    width: 10,
+    height: 10,
   resolution:1,  // this this works with sprites and omage but not with bitmap font
   fps:{
     min:30,

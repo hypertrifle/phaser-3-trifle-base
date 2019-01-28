@@ -3,7 +3,13 @@ export interface BaseSceneConfig {
    key: string;
    active?: boolean;
 }
-export default class BaseScene extends Phaser.Scene {
+
+export interface TrifleUseful {
+  create:()=>void;
+  redraw:(dimensions:{width:number,height:number})=>void;
+}
+
+export default class BaseScene extends Phaser.Scene implements TrifleUseful {
   public tools: Tools;
   public dimensions:Phaser.Geom.Point;
 
@@ -58,6 +64,11 @@ export default class BaseScene extends Phaser.Scene {
 
   sleep() {}
   wake() {}
+
+  redraw(dimensions:{width:number,height:number}){
+    this.dimensions.x = dimensions.width;
+    this.dimensions.y = dimensions.height;
+  }
 
   shutdown() {
     // drop references to anything we have in create

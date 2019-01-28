@@ -85,6 +85,7 @@ export default class PostEffectTestsScene extends BaseScene {
     this.testFont.setOrigin(0.5, 0);
     this.testFont.setPipeline("text");
     this.text = "poot";
+    
 
     let textDebug = this.debugGUI.addFolder("Text");
     textDebug.add(this,"text",0,0.2);
@@ -100,7 +101,7 @@ export default class PostEffectTestsScene extends BaseScene {
     // console.log("LONGER STRING", this.testFont2.getTextBounds());
 
     let testSprite = this.add.image(this.dimensions.x / 2, this.dimensions.y -10, "atlas.png", "test-sprite-2.png");
-    testSprite.setScale(2);   
+    testSprite.setScale(0.5);   
     testSprite.setOrigin(0.5,1);   
     testSprite.setPipeline("glint");
 
