@@ -81,10 +81,10 @@ export default class PostEffectTestsScene extends BaseScene {
     this.initDebugTools();
     this.initShader();
 
-    this.testFont = this.add.dynamicBitmapText(this.dimensions.x/2,230,"lot","SCOOP",256);
+    this.testFont = this.add.dynamicBitmapText(this.dimensions.x/2,30,"lot","SCOOP", 128);
     this.testFont.setOrigin(0.5, 0);
     this.testFont.setPipeline("text");
-    this.text = "poot";
+    this.text = "hypertrifle";
     
 
     let textDebug = this.debugGUI.addFolder("Text");
@@ -101,7 +101,7 @@ export default class PostEffectTestsScene extends BaseScene {
     // console.log("LONGER STRING", this.testFont2.getTextBounds());
 
     let testSprite = this.add.image(this.dimensions.x / 2, this.dimensions.y -10, "atlas.png", "test-sprite-2.png");
-    testSprite.setScale(0.5);   
+    testSprite.setScale(1);   
     testSprite.setOrigin(0.5,1);   
     testSprite.setPipeline("glint");
 
