@@ -31,10 +31,10 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
     this.utils = pluginManager.get("_utils") as Utils;
 
     // // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
-    // pluginManager.install("_scale", ScaleManager, true, "_scale", {
-    //   scale: this.game.config.zoom
-    // });
-    // this.scale = pluginManager.get("_scale") as ScaleManager;
+    pluginManager.install("_scale", ScaleManager, true, "_scale", {
+      scale: this.game.config.zoom
+    });
+    this.scale = pluginManager.get("_scale") as ScaleManager;
 
     if (this.data.getDataFor("global.debugMode")) {
       // this.debugGUI = new dat.GUI();

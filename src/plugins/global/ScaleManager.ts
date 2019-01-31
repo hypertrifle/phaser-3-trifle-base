@@ -117,7 +117,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    */
   public landscape: boolean = true;
 
-  private gameSize: Phaser.Geom.Point;
+  public dimensions: Phaser.Geom.Point;
 
   /**
    * initial moot of the scale magager, this sets up our scaling as well as alters font sizes in place.
@@ -125,7 +125,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   public boot() {
-    this.gameSize = new Phaser.Geom.Point(
+    this.dimensions = new Phaser.Geom.Point(
       (this.game.config.width as number) * this.game.config.zoom,
       (this.game.config.height as number) * this.game.config.zoom
     );
@@ -165,15 +165,13 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     // here we are goign to append the overlay HTML element over the top of the canvas object of the game
 
-    if (this._scaleConfig.expandToParent) {
+    if (this._scaleConfig.resizeToParent || this._scaleConfig.expandToParent) {
       // lets listen to when the browser is resized and if so re-apply any scaling we require to.
       window.addEventListener('resize', () => {
         this.resizeCanvas();
       });
-
       // force a reload on initial build
       this.resizeCanvas();
-
     }
   }
 
@@ -184,17 +182,29 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   public resizeCanvas() {
-    // if (this.mobile) {
-    //   this.handleOrientationMode();
-    // }
 
-    this.handleCanvasScale(this.canvas);
+    if (this._scaleConfig.resizeToParent) {
+      
+      //set dimensions and get outta here
+      let parent = this.game.canvas.parentElement.parentElement.parentElement;
+      console.log(parent.clientWidth, parent.clientHeight)
+      this.dimensions.setTo(parent.clientWidth, parent.clientHeight);
 
-    // emit a global event incase anyone wants to hook into a resize the canvas.
-    this.game.events.emit(
-      "game.resize",
-      new Phaser.Geom.Point(this.canvas.width, this.canvas.height)
-    );
+      //TODO:delay this 
+      this.game.resize(this.dimensions.x,this.dimensions.y);
+      // emit a global event incase anyone wants to hook into a resize the canvas.
+      this.game.events.emit("game.resize");
+
+
+      
+
+    } else {
+      //doe some contain style scaling
+      this.handleCanvasScale(this.canvas);
+    }
+
+
+
   }
 
   handleFontResizing(): void {

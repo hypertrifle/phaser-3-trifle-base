@@ -14,12 +14,11 @@
         "./phaser.d.ts"
   ],
   "include": [
-        "src/**/*", "KEEP/TitleSceneModel.ts", "KEEP/LabelButton.ts", "KEEP/HUDModel.ts"
+        "src/**/*.ts"
     ],
     "exclude": [
         "node_modules",
         "**/*.spec.ts",
-        "phaser.d.ts",
         "scripts/*.*",
         "examples_and_snippets/*.*",
         "assets/*.*"

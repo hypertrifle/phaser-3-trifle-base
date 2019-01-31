@@ -12,7 +12,6 @@ import PersistentScene from "./PersistentScene";
 export default class Boot extends BaseScene {
   private _data: GameData;
 
-  testsprites: Phaser.GameObjects.Sprite[];
 
   /**
    * because of importing and typescripts, heres where we will manually add states,
@@ -70,6 +69,9 @@ export default class Boot extends BaseScene {
 
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();
+
+
+    
   }
   /**
    *
@@ -84,7 +86,6 @@ export default class Boot extends BaseScene {
       { key: "Boot", active: true } // we are always going to be active.
     );
 
-    this.testsprites = [];
   }
 
   /**
@@ -275,11 +276,6 @@ export default class Boot extends BaseScene {
    * @memberof Boot
    */
   update(t: number, dt: number) {
-    // console.log(dt);
-    // this is run every frame, regardless of loaded scene.
-    // for (let i in this.testsprites) {
-    //     this.testsprites[i].x += 10*(dt/1000);
-    //     this.testsprites[i].y += 10*(dt/1000);
-    // }
+    super.update(t,dt);
   }
 }
