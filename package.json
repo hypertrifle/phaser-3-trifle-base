@@ -28,7 +28,7 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "copy-webpack-plugin": "^4.5.2",
-    "jshint": "^2.9.5",
+    "jshint": "^2.9.7",
     "jshint-loader": "^0.8.4",
     "raw-loader": "^0.5.1",
     "readline-sync": "^1.4.9",
@@ -38,7 +38,7 @@
     "uglifyjs-webpack-plugin": "^2.0.1",
     "webpack": "^4.28.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
     "@types/stats.js": "^0.17.0",
