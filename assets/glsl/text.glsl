@@ -19,7 +19,7 @@
    //this is whats is passed from our vertex shader, for post processing or simple effects, its the x,y position.
    varying vec2 outTexCoord;
    varying vec2 outPosition;
-   varying vec2 outLetter;
+//    varying vec2 outLetter;
 
    // we can have functions.
    vec4 getPixelColour( in vec2 uv){

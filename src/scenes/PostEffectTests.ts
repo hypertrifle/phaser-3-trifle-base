@@ -3,16 +3,13 @@ import SheneEffect from "../utils/effects/SheneEffect";
 import { GUI } from "dat.gui";
 import BaseEffect from "../utils/effects/BaseEffect";
 import RetroTextEffect from "../utils/effects/RetroTextEffects";
-import Utils from "../plugins/utils/Utils";
-import { GameObjects } from "phaser";
-
+import WaveFillEffect from "../utils/effects/WaveFillEffect";
 
 export default class PostEffectTestsScene extends BaseScene {
-
   shaderTime: number = 0;
   tree: Phaser.GameObjects.Image;
   testSprite: Phaser.GameObjects.Image;
-  shaders: {shader: BaseEffect, id: string}[];
+  shaders: { shader: BaseEffect; id: string }[];
 
   debugGUI: GUI;
   constructor() {
@@ -26,35 +23,39 @@ export default class PostEffectTestsScene extends BaseScene {
   preload() {
     console.log("PostEffectTestsScene::preload");
 
+    this.load.bitmapFont(
+      "cast-iron",
+      "assets/fonts/cast-iron_0.png",
+      "assets/fonts/cast-iron.fnt"
+    );
 
-
-    this.load.bitmapFont('cast-iron', 'assets/fonts/cast-iron_0.png', 'assets/fonts/cast-iron.fnt');
-
-    this.load.bitmapFont('lot', 'assets/fonts/lot_0.png', 'assets/fonts/lot.fnt');
-
-
-
+    this.load.bitmapFont(
+      "lot",
+      "assets/fonts/lot_0.png",
+      "assets/fonts/lot.fnt"
+    );
   }
 
   initShader() {
     this.shaders = [];
-
 
     // create our background shader pipline.
     let postShader: SheneEffect = new SheneEffect(this.game, "glint", {
       speed: 1.5,
       size: 0.3,
       delay: 3,
-      colour: {r: 255,g: 255,b: 255}
+      colour: { r: 255, g: 255, b: 255 }
     });
     let postDebug = this.debugGUI.addFolder("Glint");
-    postDebug.add(postShader,"size",0,0.2);
-    postDebug.add(postShader,"speed",0,5);
-    postDebug.add(postShader,"delay",0,10);
+    postDebug.add(postShader, "size", 0, 0.2);
+    postDebug.add(postShader, "speed", 0, 5);
+    postDebug.add(postShader, "delay", 0, 10);
     postDebug.addColor(postShader, "colour");
 
-    let textShader: RetroTextEffect = new RetroTextEffect(this.game,"text");
+    let textShader: RetroTextEffect = new RetroTextEffect(this.game, "text");
 
+
+    let fullFillShader: WaveFillEffect = new WaveFillEffect(this.game,"fill" );
 
     this.shaders.push(
       {
@@ -65,7 +66,10 @@ export default class PostEffectTestsScene extends BaseScene {
         shader: textShader,
         id: "text"
       },
-
+      {
+        shader: fullFillShader,
+        id: "waveFill"
+      }
     );
   }
 
@@ -82,38 +86,35 @@ export default class PostEffectTestsScene extends BaseScene {
     this.initDebugTools();
     this.initShader();
 
-    this.testFont = this.add.dynamicBitmapText(this.dimensions.x / 2,30,"lot","SCOOP", 128);
+    this.testFont = this.add.dynamicBitmapText(
+      this.dimensions.x / 2,
+      30,
+      "lot",
+      "SCOOP",
+      128
+    );
+
     this.testFont.setCenterAlign();
     this.testFont.setOrigin(0.5, 0);
     this.testFont.setPipeline("text");
-    this.text = "hyper\ntrifle";
-
+    this.text = "some\ntext";
 
     let textDebug = this.debugGUI.addFolder("Text");
-    textDebug.add(this,"text",0,0.2);
+    textDebug.add(this, "text", 0, 0.2);
 
-
-    // this.testFont2 = this.add.bitmapText(this.dimensions.x/2,330,"lot","longer string",128);
-    // this.testFont2.setOrigin(0.5, 0);
-    // this.testFont2.setPipeline("text");
-
-    // console.clear();
-
-    console.log("SCOOP", this.testFont.getTextBounds());
-    // console.log("LONGER STRING", this.testFont2.getTextBounds());
-
-    this.testSprite = this.add.image(this.dimensions.x / 2, this.dimensions.y - 10, "atlas.png", "test-sprite-2.png");
-    this.testSprite.setScale(1);
-    this.testSprite.setOrigin(0.5,1);
-    this.testSprite.setPipeline("glint");
-
-
-
+    // this.testSprite = this.add.image(
+    //   this.dimensions.x / 2,
+    //   this.dimensions.y - 10,
+    //   "atlas.png",
+    //   "test-sprite-2.png"
+    // );
+    // this.testSprite.setScale(1);
+    // this.testSprite.setOrigin(0.5, 1);
+    // this.testSprite.setPipeline("glint");
 
     console.log("PostEffectTestsScene::Create");
     // this.cameras.main.setBounds(0, 0, this.game.canvas.width, this.game.canvas.height);
     // this.cameras.main.setZoom(16);
-
 
     // this.input.on('pointermove', this.moveText,this);
   }
@@ -125,28 +126,34 @@ export default class PostEffectTestsScene extends BaseScene {
   set text(text: string) {
     this.testFont.text = text;
     let bounds: BitmapTextSize = this.testFont.getTextBounds();
-
     this.setUniformsForText(this.testFont);
-
   }
 
   get text(): string {
-    return  "";
+    return "";
   }
 
-  setUniformsForText(object: Phaser.GameObjects.BitmapText) {
+  setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
     let bounds: BitmapTextSize = object.getTextBounds();
-    object.pipeline.setFloat2('offset',bounds.global.x,bounds.global.y);
-    object.pipeline.setFloat2('size',bounds.global.width,bounds.global.height);
+    object.pipeline.setFloat2("offset", bounds.global.x, bounds.global.y);
+    object.pipeline.setFloat2(
+      "size",
+      bounds.global.width,
+      bounds.global.height
+    );
   }
 
   redraw() {
-    // this.testFont.y = this.dimensions.x +20;
-    // console.log(this);
-    this.testFont.x = this.testSprite.x = this.dimensions.x / 2;
-    this.setUniformsForText(this.testFont);
+    super.redraw();
+    if (this.testFont) {
+      this.testFont.x = this.dimensions.x / 2;
+      this.setUniformsForText(this.testFont);
+    }
 
-    this.testSprite.y = this.dimensions.y - 10;
+    if (this.testSprite) {
+      this.testSprite.x = this.dimensions.x / 2;
+      this.testSprite.y = this.dimensions.y - 10;
+    }
   }
 
   update(time: number, delta: number) {
@@ -154,21 +161,17 @@ export default class PostEffectTestsScene extends BaseScene {
 
     this.shaderTime += delta / 1000;
 
-    for (let i = 0; i < this.shaders.length; i ++) {
+    for (let i = 0; i < this.shaders.length; i++) {
       this.shaders[i].shader.setFloat1("time", this.shaderTime);
 
       // this.setText(Math.random().toString());
-
     }
   }
   moveText(pointer: PointerEvent) {
-
     if (this.testFont && pointer) {
       this.testFont.x = pointer.x;
       this.testFont.y = pointer.y;
     }
-
-
   }
 
   shutdown() {

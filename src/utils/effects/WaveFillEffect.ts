@@ -8,11 +8,10 @@ export interface Vec3 {
    r: number;g: number;b: number;
 }
 
-export default class SheneEffect extends BaseEffect {
+export default class WaveFillEffect extends BaseEffect {
 
     private _speed: number = 1;
     private _size: number = 0.02;
-    private _delay: number = 2;
     private _colour: Vec3;
 
 

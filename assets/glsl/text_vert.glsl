@@ -19,6 +19,7 @@ void main ()
 
     outTexCoord = inTexCoord;
     outPosition = inPosition;
+    
 
     gl_Position = uProjectionMatrix * uViewMatrix * uModelMatrix * vec4(inPosition, 1.0, 1.0);
 }

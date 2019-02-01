@@ -1,59 +1,11 @@
-import TitleScene from "./TitleScene";
 import GameData from "../plugins/global/GameData";
 import Tools from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
-import PostEffectTestsScene from "./PostEffectTests";
-import PersistentScene from "./PersistentScene";
-
-// const atlas = require("svg-inline-loader?../../assets/svg/gameplay/gameplay-tile-door.svg") as string;
 
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
 export default class Boot extends BaseScene {
-  private _data: GameData;
 
-
-  /**
-   * because of importing and typescripts, heres where we will manually add states,
-   * we can still add configuration to the setting.json but this is to produce nice ol bundles.
-   *
-   * @memberof Boot
-   */
-  private loadStates() {
-    console.groupCollapsed("STATES");
-    console.log("Boot::Initilising all required states");
-
-       // we are ending the console group here as any subsequent logs should be visible.
-        console.groupEnd();
-  }
-
-  /**
-   * load our global plugins, these extend Phaser global functionallity with plugins like Scorm / data and Html helpers.
-   *
-   * @private
-   * @memberof Boot
-   */
-  private loadPlugins() {
-    console.groupCollapsed("PLUGINS");
-
-    // first install out data controller, this is going to be both data models, and anything to do with content Tracking. TODO:I'm going to leave the data tools in as is a nice way for quick config / translation, but casting these loose object to types doing catch warning on compile... and we are back to ol' reliable javascritp:/
-    this.sys.plugins.install("_data", GameData, true, "_data");
-    this._data = this.sys.plugins.get("_data") as GameData;
-
-    // we are going to load all our related sponge helpers in the sponge class now.
-    this.sys.plugins.install("tools", Tools, true, "tools");
-    this.tools = this.sys.plugins.get("tools") as Tools;
-
-    // if (this.tools.debugGUI) {
-    //   // TODO: add custom items to dat.GUI here, as boot is always active any state based switching will work here.
-    // }
-
-    // TODO: add post processing
-    // this.cameras.main.pipeline
-
-    // we are ending the console group here as any subsequent logs should be visible.
-    console.groupEnd();
-  }
   /**
    *
    * Creates an instance of Boot state.
@@ -66,7 +18,6 @@ export default class Boot extends BaseScene {
     super(
       { key: "Boot", active: true } // we are always going to be active.
     );
-
   }
 
   /**
@@ -87,21 +38,7 @@ export default class Boot extends BaseScene {
         "font-size: 12px; background: #85F7BF;",
         "font-size: 12px; background: #1C005F;"
       ];
-
       console.log.apply(console, args);
-
-    //   let args2 = [
-    //     "%c %c %c %c 🔎 _GAME_NAME_ _GAME_VERSION_ ALPHA 🔭 %c %c %c ", // // https://getemoji.com/
-    //     "font-size: 8px; background: #F0C25A", //custom colours
-    //     "font-size: 10px; background: #33A995",
-    //     "font-size: 12px; background: #F0394F;",
-    //     "color: #DAEAF0; font-size: 12px; background: #233648;",
-    //     "font-size: 12px; background: #F0394F;",
-    //     "font-size: 10px; background: #33A995",
-    //     "font-size: 8px; background: #F0C25A"
-    //   ];
-
-    //   console.log.apply(console, args2);
     }
 
     // we are going to colapse any log messages here unitl we are fully booted.
@@ -119,9 +56,9 @@ export default class Boot extends BaseScene {
       // 'as number' - this counts as casting as game config accepts strings for these props.
       progress.fillRect(
         0,
-        (this.sys.game.config.height as number) / 2,
-        (this.sys.game.config.width as number) * value,
-        60
+        (1 - value) * (this.sys.game.config.height as number),
+        (this.sys.game.config.width as number),
+        (this.sys.game.config.height as number) * value
       );
     });
 
@@ -130,21 +67,15 @@ export default class Boot extends BaseScene {
       progress.destroy();
     });
 
-    // TODO: try and load content, if not skip those libs.
-    // TODO: inline json for package size.
+    // TODO: try and load any game wide content, usually globabl settings and translation files.
 
-
-    // // load content.
+    // load content.
     this.load.json("content", "assets/json/content.json"); // required
 
-    // // settings.
+    // settings.
     this.load.json("settings", "assets/json/settings.json"); // required
 
-    // // todo:
-
-    // this.load.json("atlaspng.json", "assets/atlas/atlaspng.json"); // our png atlas
-
-    this.load.atlas('atlas.png', 'assets/atlas/atlaspng.png', 'assets/atlas/atlaspng.json');
+    // LOAD any game wide atlas' but iff assets are yo be used in one state, best to preload and handle in that state.
 
 
     /* with SVGs we now want to start thinking about making games that we can scale up if required. *
@@ -211,7 +142,8 @@ export default class Boot extends BaseScene {
       custom: {
          families: ["pixel"]
       },
-      active: this.webFontsLoaded.bind(this)
+      active: this.webFontsLoaded.bind(this),
+      deactivate: this.webFontsLoaded.bind(this,false)
     });
   }
 
@@ -220,24 +152,15 @@ export default class Boot extends BaseScene {
    *
    * @memberof Boot
    */
-  webFontsLoaded() {
-    // lets generate this atlas.
-    // let svgAtlasTexture = this.textures.get("atlas.svg");
-    // let svgAtlasData = this.game.cache.json.get("atlas.json");
-
-    // this.transFormAtlasDataToScale(svgAtlasData);
-
-    // // @ts-ignore
-    // Phaser.Textures.Parsers.JSONArray(svgAtlasTexture, 0, svgAtlasData);
-
-    // load our sponge plugins.
-    this.loadPlugins();
-
-    // load our states for this experience.
-    this.loadStates();
+  webFontsLoaded(success: boolean = true) {
     console.log("Boot::create::end");
 
-    this.tools.postBoot(this);
+
+    let tools  = this.game.plugins.get("tools") as Tools;
+    if (tools) {
+      tools.postBoot(this);
+    }
+    tools = null;
 
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();

@@ -146,7 +146,6 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
     // asign our canvas.
     this.canvas = this.game.canvas;
 
-
     if (this.game.device.browser.ie) {
       this.canvas.style.position = "fixed !important";
     }
@@ -167,7 +166,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
     if (this._scaleConfig.resizeToParent || this._scaleConfig.expandToParent) {
       // lets listen to when the browser is resized and if so re-apply any scaling we require to.
-      window.addEventListener('resize', () => {
+      window.addEventListener("resize", () => {
         this.resizeCanvas();
       });
       // force a reload on initial build
@@ -182,41 +181,40 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   public resizeCanvas() {
-
     if (this._scaleConfig.resizeToParent) {
-      
-      //set dimensions and get outta here
+      // this feels a bit savage, but best way to get browser viewport.
       let parent = this.game.canvas.parentElement.parentElement.parentElement;
-      console.log(parent.clientWidth, parent.clientHeight)
+
+      // set our global dimensions, all scenes that extend BaseScene will have a reference to this object.
       this.dimensions.setTo(parent.clientWidth, parent.clientHeight);
 
-      //TODO:delay this 
-      this.game.resize(this.dimensions.x,this.dimensions.y);
+      // resize the game canvas
+      this.game.resize(this.dimensions.x, this.dimensions.y);
+
+      // if we have cameras in our game lets resize these to fit the viewport.
+      if (this.systems && this.systems.cameras) {
+        for (let i = 0; i < this.systems.cameras.cameras.length; i++) {
+          if (this.systems.cameras.cameras[i]) {
+
+            this.systems.cameras.cameras[i].setSize(
+              this.dimensions.x,
+              this.dimensions.y
+            );
+          }
+
+        }
+      }
+
       // emit a global event incase anyone wants to hook into a resize the canvas.
       this.game.events.emit("game.resize");
-
-
-      
-
     } else {
-      //doe some contain style scaling
+      // doe some contain style scaling
       this.handleCanvasScale(this.canvas);
     }
-
-
-
   }
 
   handleFontResizing(): void {
-    // we will need to scale fonts based on our scale.
-    // let fonts = (this.pluginManager.get("_data") as GameData).getDataFor(
-    //   "fonts"
-    // ); // grab the fotns.
 
-    // // apply scalar to each font.
-    // for (let i in fonts) {
-    //   this.applyFontScalar(fonts[i]);
-    // }
   }
 
   /**
@@ -255,7 +253,6 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
    * @memberof ScaleManager
    */
   handleCanvasScale(canvas: HTMLCanvasElement) {
-
     // console.error("handle canvas scale");
 
     // get the container our both our game canvas and any extra content to be supplied over the top.
@@ -267,12 +264,12 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
       Math.min(window.innerHeight, parent.clientHeight) / canvas.height
     );
 
-
-
-
     // TODO: we want to restrict the game to any mini max size? this will tie in the tih
 
-    if (this._scaleConfig.maxWidth !== null && this._scaleConfig.maxHeight != null) {
+    if (
+      this._scaleConfig.maxWidth !== null &&
+      this._scaleConfig.maxHeight != null
+    ) {
       // if we are bigger than the max width or height defined in our configuration we need to re calculated the scale to fit all content
       if (
         canvas.width * requiredScaling > this._scaleConfig.maxWidth ||
@@ -283,7 +280,6 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
           this._scaleConfig.maxWidth / canvas.width
         );
       }
-
     }
 
     // requiredScaling = 16;//this.game.config.zoom;
@@ -293,9 +289,11 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
       // requiredScaling + "," + requiredScaling +
       // ");" +
       "height:" +
-      canvas.height * requiredScaling + "px;" +
+      canvas.height * requiredScaling +
+      "px;" +
       "width:" +
-      canvas.width * requiredScaling + "px;";
+      canvas.width * requiredScaling +
+      "px;";
     // +
     // "width:" +
     // canvas.width + "px;";
