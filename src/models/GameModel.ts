@@ -16,11 +16,7 @@ import UIModel from "./UIModels";
 
 export default class GameModel {
 
-
   // constants are good for quick checks of things.
-
-
-
   /**
    * reference to our sae data model
    *
