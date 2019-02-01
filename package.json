@@ -11,7 +11,7 @@
     "build-ci": "webpack --config webpack.config.js --mode production --env.NODE_ENV=ci",
     "lint": "tslint --fix src/**/*.ts",
     "docs": "typedoc --includeDeclarations --includes ./phaser.d.ts --ignoreCompilerErrors --excludeExternals --out ./docs/ ./src/ && http-server docs -c-1 -o",
-    "generate-schema": "typescript-json-schema ./tsconfig.json TYPE"
+    "generate-schema": "typescript-json-schema ./src/models/**/*.ts GameData --titles -o game.schema"
   },
   "repository": {
     "type": "git",
