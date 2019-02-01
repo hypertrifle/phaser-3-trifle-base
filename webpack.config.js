@@ -6,15 +6,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const phaserModule = path.join(__dirname, '/node_modules/phaser/');
 const phaser = path.join(phaserModule, 'src/phaser.js');
 const strip = require('strip-json-comments');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-
 const pkg = require("./package.json");
-
-const {
-    exec
-} = require('child_process');
-
-
 
 //used to replace certain strings within out supporting files. (Title in html files, ID in imsmanafest.)
 const replacements = [
