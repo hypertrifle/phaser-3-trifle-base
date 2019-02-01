@@ -6,7 +6,8 @@ export interface BaseSceneConfig {
 
 export interface TrifleUseful {
   create:()=>void;
-  redraw:(dimensions:{width:number,height:number})=>void;
+  redraw:(dimensions:Phaser.Geom.Point)=>void;
+
 }
 
 export default class BaseScene extends Phaser.Scene implements TrifleUseful {
@@ -40,18 +41,20 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
   }
 
   create() {
+    this.game.events.on(
+      "game.resize",
+      this.redraw,this
+    );
 
       //save a reference to our game dimensions.
-      this.dimensions = new Phaser.Geom.Point(    
-        this.game.config.width as number,
-        this.game.config.height as number
-    );
+      // grab our utils
+      if (!this.tools) {
+        this.tools = this.sys.plugins.get("tools") as Tools; // cast
+      }
+      console.log(this.tools.scale.dimensions)
+      this.dimensions = this.tools.scale.dimensions;// i think this is a reference.
+      
     
-   // grab our utils
-   if (!this.tools) {
-    this.tools = this.sys.plugins.get("tools") as Tools; // cast
-   }
-
    // listen to events.
    this.events.on("sleep", this.sleep, this);
    this.events.on("wake", this.wake, this);
@@ -64,10 +67,8 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
 
   sleep() {}
   wake() {}
-
-  redraw(dimensions:{width:number,height:number}){
-    this.dimensions.x = dimensions.width;
-    this.dimensions.y = dimensions.height;
+ 
+  redraw(){
   }
 
   shutdown() {

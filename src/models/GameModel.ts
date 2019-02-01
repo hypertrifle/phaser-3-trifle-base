@@ -36,6 +36,7 @@ export default class GameModel {
 
 /* small so just whack it here */
 export class ScalingModel {
+  resizeToParent:boolean = true; //priority.
   expandToParent: boolean = true;
   shouldForceOrientationOnMobile: boolean = true;
   shouldForceLandscaprOnMobile: boolean = true;

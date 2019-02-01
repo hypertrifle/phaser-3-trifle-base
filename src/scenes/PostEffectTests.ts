@@ -4,13 +4,14 @@ import { GUI } from "dat.gui";
 import BaseEffect from "../utils/effects/BaseEffect";
 import RetroTextEffect from "../utils/effects/RetroTextEffects";
 import Utils from "../plugins/utils/Utils";
+import { GameObjects } from "phaser";
 
 
 export default class PostEffectTestsScene extends BaseScene {
 
   shaderTime: number = 0;
   tree: Phaser.GameObjects.Image;
-
+  testSprite: Phaser.GameObjects.Image;
   shaders: {shader: BaseEffect, id: string}[];
 
   debugGUI: GUI;
@@ -82,9 +83,10 @@ export default class PostEffectTestsScene extends BaseScene {
     this.initShader();
 
     this.testFont = this.add.dynamicBitmapText(this.dimensions.x / 2,30,"lot","SCOOP", 128);
+    this.testFont.setCenterAlign();
     this.testFont.setOrigin(0.5, 0);
     this.testFont.setPipeline("text");
-    this.text = "hypertrifle";
+    this.text = "hyper\ntrifle";
 
 
     let textDebug = this.debugGUI.addFolder("Text");
@@ -100,10 +102,10 @@ export default class PostEffectTestsScene extends BaseScene {
     console.log("SCOOP", this.testFont.getTextBounds());
     // console.log("LONGER STRING", this.testFont2.getTextBounds());
 
-    let testSprite = this.add.image(this.dimensions.x / 2, this.dimensions.y - 10, "atlas.png", "test-sprite-2.png");
-    testSprite.setScale(1);
-    testSprite.setOrigin(0.5,1);
-    testSprite.setPipeline("glint");
+    this.testSprite = this.add.image(this.dimensions.x / 2, this.dimensions.y - 10, "atlas.png", "test-sprite-2.png");
+    this.testSprite.setScale(1);
+    this.testSprite.setOrigin(0.5,1);
+    this.testSprite.setPipeline("glint");
 
 
 
@@ -124,13 +126,27 @@ export default class PostEffectTestsScene extends BaseScene {
     this.testFont.text = text;
     let bounds: BitmapTextSize = this.testFont.getTextBounds();
 
-    this.testFont.pipeline.setFloat2('offset',bounds.global.x,bounds.global.y);
-    this.testFont.pipeline.setFloat2('size',bounds.global.width,bounds.global.height);
+    this.setUniformsForText(this.testFont);
 
   }
 
   get text(): string {
     return  "";
+  }
+
+  setUniformsForText(object: Phaser.GameObjects.BitmapText) {
+    let bounds: BitmapTextSize = object.getTextBounds();
+    object.pipeline.setFloat2('offset',bounds.global.x,bounds.global.y);
+    object.pipeline.setFloat2('size',bounds.global.width,bounds.global.height);
+  }
+
+  redraw() {
+    // this.testFont.y = this.dimensions.x +20;
+    // console.log(this);
+    this.testFont.x = this.testSprite.x = this.dimensions.x / 2;
+    this.setUniformsForText(this.testFont);
+
+    this.testSprite.y = this.dimensions.y - 10;
   }
 
   update(time: number, delta: number) {

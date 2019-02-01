@@ -19,6 +19,7 @@
 
       /*scaling options used for changing size etc*/
       "scaling": {
+            "resizeToParent": true,
             "expandToParent": true,
             "shouldForceOrientationOnMobile": true,
             "shouldForceLandscaprOnMobile": true
