@@ -35,18 +35,6 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
       scale: this.game.config.zoom
     });
     this.scale = pluginManager.get("_scale") as ScaleManager;
-
-    if (this.data.getDataFor("global.debugMode")) {
-      // this.debugGUI = new dat.GUI();
-
-      // global debug stuff?
-
-      // let global:dat.GUI = this.debugGUI.addFolder("Global");
-      // let nav:dat.GUI = global.addFolder("Navigation");
-      // this.debugGUI.add(this, "titleScene");
-
-      console.log(this.game.scene);
-    }
   }
 
   public postBoot(bootState: Boot) {

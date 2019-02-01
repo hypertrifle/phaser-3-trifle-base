@@ -18,7 +18,7 @@ export default class PersistentScene extends BaseScene {
   create() {
     super.create();
 
-    
+
     this.add.graphics({});
   }
 

@@ -1,5 +1,5 @@
 {
-  "name": "HYPERTRIFLE-PHASER-TEMPALTE",
+  "name": "hypertrifle-phaser-tempalte",
   "version": "1.1.0",
   "description": "A Phaser 3 Typescript Setup with useful common funtionallity",
   "main": "src/index.js",
@@ -8,7 +8,7 @@
     "pre-dev": "npm run generate-svg-atlas && npm run generate-atlas",
     "generate-atlas": "TexturePacker --sheet assets/atlas/atlas.png --data assets/atlas/atlaspng.json --format phaser --multipack --shape-padding 2 --border-padding 2 --trim-mode Trim assets/img",
     "generate-svg-atlas": "svg-sprite  --shape-spacing-padding 2,2,2,2 --view --view-render-css --view-render-css-template ./supporting/atlas-template.json.hbs --view-render-css-dest atlas.json --view-dest ./assets/atlas --view-sprite atlas.svg assets/svg/**/*.svg && MOVE .\\assets\\atlas\\atlas.json.css .\\assets\\atlas\\atlas.json && MOVE .\\assets\\atlas\\atlas-*.svg .\\assets\\atlas\\atlas.svg",
-    "dev": "webpack-dev-server --mode development --open-page webpack-dev-server/build/ --host 192.168.178.22 --hot --inline --config webpack.config.js",
+    "dev": "webpack-dev-server --mode development --open-page webpack-dev-server/build/ --hot --inline --config webpack.config.js",
     "build": "webpack --config webpack.config.js --mode production",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "build-ci": "webpack --config webpack.config.js --mode production --env.NODE_ENV=ci",

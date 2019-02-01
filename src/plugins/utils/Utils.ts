@@ -1,7 +1,6 @@
 import MathUtils from "./MathUtils";
 import DataUtils from "./DataUtils";
 import DisplayUtils from "./DisplayUtils";
-import { DataUtls } from "../../utils/DataUtls";
 
 export default class Utils extends Phaser.Plugins.BasePlugin {
   /**
@@ -14,7 +13,7 @@ export default class Utils extends Phaser.Plugins.BasePlugin {
     super(pluginManager);
     console.log("Utils::constructor");
 
-    this.data = new DataUtls();
+    this.data = new DataUtils();
     this.math = new MathUtils();
     this.display = new DisplayUtils();
   }

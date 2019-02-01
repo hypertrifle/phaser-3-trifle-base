@@ -23,23 +23,7 @@ export default class Boot extends BaseScene {
     console.groupCollapsed("STATES");
     console.log("Boot::Initilising all required states");
 
-    // add all our scenes, we are going to have to do this pragmatically now with webpack and ts,
-    // it means better bundle size but requuires a re-compile on changing orders.
-
-    this.scene.add("TitleScene", TitleScene, false);
-    this.scene.add("PostEffectTestScene", PostEffectTestsScene, false);
-
-    console.log(this._data);
-
-    // if (this._data.getDataFor("global.debugMode")) {
-    //   console.warn("!!! GLOBAL DEBUG MODE IS ACTIVE !!!");
-    //   this.scene.add("debug", DebugOverlay, true);
-    // }
-
-    // finallly add our on top / HUD layer. - fuck this.
-    this.scene.add("HUD", PersistentScene, true); // true as we always want that badboy running in the forground.
-
-        // we are ending the console group here as any subsequent logs should be visible.
+       // we are ending the console group here as any subsequent logs should be visible.
         console.groupEnd();
   }
 
@@ -69,9 +53,6 @@ export default class Boot extends BaseScene {
 
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();
-
-
-    
   }
   /**
    *

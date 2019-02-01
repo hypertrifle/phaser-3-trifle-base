@@ -1,6 +1,3 @@
-import { BitmapData } from 'phaser-ce';
-
-
 export function getCookieToken(): string {
   let name = 'token=';
 
@@ -22,41 +19,12 @@ export function getCookieToken(): string {
   return '';
 }
 
-
-export function colorToSigned24Bit(s: string): number {
-
+export function hexToBase16Number(s: string): number {
   return parseInt(s.replace('#', ''), 16);
 }
 
-
-
-export function wrapBitmapText(textObject: Phaser.BitmapText, maxWidth?: number) {
-
-  textObject.visible = false;
-
-  if (!maxWidth) {
-    maxWidth = textObject.game.width - 100;
-  }
-
-  let words = textObject.text.split(' ');
-
-  let finalString: string = '';
-  while (words.length > 0) {
-    let w = words.shift();
-
-
-    textObject.text =  finalString + ' ' + w;
-    if (textObject.textWidth > maxWidth) {
-      finalString.substring(finalString.length - (w.length + 1) );
-      finalString += '\n' + w;
-    } else {
-      finalString += (' ' + w);
-    }
-
-  }
-
-  textObject.visible = true;
-
+export function base16NumberToHex(num: number) {
+  return "#" + num.toString(16);
 }
 
 export function getToken(): string {
@@ -83,7 +51,6 @@ export function getToken(): string {
   return token;
 }
 
-
 export function getURLHashSegment(defaultValue: string = ''): string {
   let ret = defaultValue;
 
@@ -93,7 +60,6 @@ export function getURLHashSegment(defaultValue: string = ''): string {
 
   return ret;
 }
-
 
 // merges two objects properties together, this will prioritise the second objects properties to the first.
 export function MergeObjectRecursive(obj1: any, obj2: any): any {
@@ -115,7 +81,7 @@ export function MergeObjectRecursive(obj1: any, obj2: any): any {
 
 
 
-export function track(action, label) {
+export function track(action: string, label: string) {
   // @ts-ignore
   if (typeof gtag === 'function') {
     console.log('sending to google analytics', action, label);
@@ -182,15 +148,6 @@ export function decode(message: string) {
   return atob(message);
 }
 
-
-
-export function checkOverlap(spriteA: Phaser.Image | Phaser.Sprite, spriteB: Phaser.Image | Phaser.Sprite) {
-  let boundsA = spriteA.getBounds();
-  let boundsB = spriteB.getBounds();
-  return Phaser.Rectangle.intersects(boundsA as Phaser.Rectangle, boundsB as Phaser.Rectangle);
-
-}
-
 export function shuffle(array: any[]) {
   let counter = array.length;
 
@@ -213,223 +170,36 @@ export function shuffle(array: any[]) {
 }
 
 
-// ==========================================================
-//
-//  ####    ##   ####  #####   ##        ###    ##    ##
-//  ##  ##  ##  ##     ##  ##  ##       ## ##    ##  ##
-//  ##  ##  ##   ###   #####   ##      ##   ##    ####
-//  ##  ##  ##     ##  ##      ##      #######     ##
-//  ####    ##  ####   ##      ######  ##   ##     ##
-//
-// ==========================================================
-
-
-export function moveAnchor(obj: Phaser.Image | Phaser.Sprite, anchor: Phaser.Point) {
-  // reposition
-  obj.x = obj.x + (anchor.x - obj.anchor.x) * obj.width;
-  obj.y = obj.y + (anchor.y - obj.anchor.y) * obj.height;
-
-  // set anchor
-  obj.anchor.setTo(anchor.x, anchor.y);
-}
-
-export function addScaleOnOver(game: Game, obj: Phaser.Image | Phaser.Sprite, hasSound: boolean) {
-
-  if (obj.anchor.x !== 0.5 || obj.anchor.y !== 0.5) {
-    moveAnchor(obj, new Phaser.Point(0.5, 0.5));
-
-  }
-
-  obj.scale.setTo(0.9);
-  obj.inputEnabled = true;
-  obj.events.onInputOver.add(function () {
-    if (hasSound) {
-      game.audio.playSound('ui-feedback');
-    }
-    game.add.tween(this.scale).to({
-      x: 1,
-      y: 1
-    }, 100, undefined, true);
-  }, obj);
-  obj.events.onInputOut.add(function () {
-    game.add.tween(this.scale).to({
-      x: 0.9,
-      y: 0.9
-    }, 100, undefined, true);
-  }, obj);
-
-}
 
 
 
-export function defuzzText(textObj: Phaser.Text) {
+
+
+
+export function roundPosition(gameObject: Phaser.GameObjects.Text | Phaser.GameObjects.Image | Phaser.GameObjects.Sprite) {
 
   // make sure position is a round number
-  textObj.x = Math.round(textObj.x);
-  textObj.y = Math.round(textObj.y);
-
-  // make sure the anchor is not making the text postion subpixels.
-  textObj.anchor.x = Math.round(textObj.width * textObj.anchor.x) / textObj.width;
-  textObj.anchor.y = Math.round(textObj.height * textObj.anchor.x) / textObj.height;
+  gameObject.x = Math.round(gameObject.x);
+  gameObject.y = Math.round(gameObject.y);
+  gameObject.setOrigin(Math.round(gameObject.width * gameObject.originX) / gameObject.width, Math.round(gameObject.height * gameObject.originY) / gameObject.height);
 }
 
 
 
 // draw a rounded corner rectangle
-export function RoundedRect(bmd: BitmapData, x: number, y: number, w: number, h: number, r: number, color: string): BitmapData {
-  if (w < 2 * r) r = w / 2;
-  if (h < 2 * r) r = h / 2;
-  bmd.ctx.beginPath();
-  bmd.ctx.moveTo(x + r, y);
-  bmd.ctx.arcTo(x + w, y, x + w, y + h, r);
-  bmd.ctx.arcTo(x + w, y + h, x, y + h, r);
-  bmd.ctx.arcTo(x, y + h, x, y, r);
-  bmd.ctx.arcTo(x, y, x + w, y, r);
-  bmd.ctx.closePath();
-  bmd.ctx.fillStyle = color;
-  bmd.ctx.fill();
-  return bmd;
+export function RoundedRect(gfx: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number, r: number, color: string): Phaser.GameObjects.Graphics {
+  return gfx;
 }
 
-export function MakePanel(game: Game, w: number, h: number, r: number, color: string): BitmapData {
-  let bmd: BitmapData = game.add.bitmapData(w, h);
-  return RoundedRect(bmd, 0, 0, w, h, r, color);
-
-}
-
-export function MakePanelImg(game: Game, w: number, h: number, r: number, color: string, x: number, y: number): Phaser.Image {
-
-  let key = 'panelimg' + w + h + r + color;
-  if (!game.cache.checkKey(Phaser.Cache.IMAGE, key)) {
-    let bmd: BitmapData = MakePanel(game, w, h, r, color);
-    game.cache.addSpriteSheet(key, '', bmd.canvas, w, h);
-
-  }
-  return game.add.image((x || 1), (y || 1), key );
-
-}
-
-export function MakePanelImgWithPadding(game: Game, w: number, h: number, r: number, color: string, x: number, y: number, padding: number = 20): Phaser.Image {
-
-  let key = 'panelimg' + w + h + r + color + padding;
-  if (!game.cache.checkKey(Phaser.Cache.IMAGE, key)) {
-    let bmd: BitmapData = game.add.bitmapData(w + (padding * 2), h + (padding * 2));
-    bmd = RoundedRect(bmd, padding, padding, w, h, r, color);
-    game.cache.addSpriteSheet(key, '', bmd.canvas, w + (padding * 2), h + (padding * 2));
-
-  }
-  return game.add.image((x || 1), (y || 1), key );
-
-}
-
-
-// export function MakeCircle(game, r, color) {
-//   let bmd: BitmapData = game.add.bitmapData(r * 2, r * 2);
-
-// }
-
-export function RoundedRectOutline(bmd: BitmapData, x: number, y: number, w: number, h: number, r: number, color: string, strokeWidth: number): BitmapData {
-
-  bmd.ctx.imageSmoothingEnabled = false;
-  strokeWidth = strokeWidth || 3;
-
-  if (w < 2 * r) r = w / 2;
-  if (h < 2 * r) r = h / 2;
-
-  bmd.ctx.beginPath();
-  bmd.ctx.moveTo(x + r, y);
-  bmd.ctx.arcTo(x + w, y, x + w, y + h, r);
-  bmd.ctx.arcTo(x + w, y + h, x, y + h, r);
-  bmd.ctx.arcTo(x, y + h, x, y, r);
-  bmd.ctx.arcTo(x, y, x + w, y, r);
-  bmd.ctx.closePath();
-  bmd.ctx.lineWidth = strokeWidth;
-  bmd.ctx.strokeStyle = color;
-  bmd.ctx.stroke();
-  return bmd;
-}
-
-export function debugSprite(game: Game, x: number, y: number, w: number, h: number, color: string): Phaser.Sprite {
+export function debugSprite(scene: Phaser.Scene, x: number, y: number, w: number, h: number, color: number | string): Phaser.GameObjects.Graphics {
   // just gerneates a coloured box.
-  let bmd = game.add.bitmapData(w, h);
-
-  bmd.ctx.beginPath();
-  bmd.ctx.rect(0, 0, w, h);
-  bmd.ctx.fillStyle = color;
-
-  bmd.ctx.fill();
-
-  // use the bitmap data as the texture for the sprite
-  let sprite = game.add.sprite(x, y, bmd);
-
-  return sprite;
+  let canvas = scene.add.graphics();
+  let col: number = (typeof(color) === "string") ? hexToBase16Number(color) : color;
+  canvas.fillStyle(col,1);
+  canvas.fillRect(0,0,w,h);
+  return canvas;
 }
 
-export function drawGrid(game: Game, width: number, height: number, gridSize: number, lineCol: number): Phaser.Image {
-
-  let key = 'grid' + width + height + gridSize + lineCol;
-  if (!game.cache.checkKey(Phaser.Cache.IMAGE, key)) {
-
-    // @ts-ignore
-    let grid: BitmapData = game.create.grid(key, width, height, gridSize, gridSize, '#' + lineCol.toString(16), false) as Phaser.BitmapData;
-    game.cache.addSpriteSheet(key, '', grid.canvas, width, height);
-
-  }
-
-  return game.add.image(0, 0, key);
-
-}
-
-export function drawGradientBackground(game: Game, width: number, height: number, ret: boolean = true): Phaser.Image {
-
-  let key = 'drawGradientBackground' + width + height;
-
-  if (!game.cache.checkKey(Phaser.Cache.IMAGE, key)) {
-
-
-    let myBitmap = game.add.bitmapData(width, height);
-    let grd = myBitmap.context.createLinearGradient(0, 0, 0, height);
-    grd.addColorStop(0, '#14353d');
-    grd.addColorStop(0.4, '#114f6a');
-    grd.addColorStop(0.6, '#114f6a');
-    grd.addColorStop(1, '#14353d');
-    myBitmap.context.fillStyle = grd;
-    myBitmap.context.fillRect(0, 0, width, height);
-    game.cache.addSpriteSheet(key, '', myBitmap.canvas, width, height);
-  }
-
-  if (ret) {
-    let t = game.add.image(0, 0, key);
-    return t;
-
-  }
-
-
-}
-
-export function drawCustomGradientBackground(game: Game, width, height, colorArray): Phaser.Image {
-
-  let key = 'drawCustomGradientBackground' + width + height + colorArray.toString();
-
-  if (!game.cache.checkKey(Phaser.Cache.IMAGE, key)) {
-
-
-    let myBitmap = game.add.bitmapData(width, height);
-    let grd = myBitmap.context.createLinearGradient(0, 0, 0, height);
-    let colorStops = colorArray;
-    console.log(colorStops);
-    for (let i = 0; i < colorStops.length; i++) {
-      grd.addColorStop(colorStops[i][0], colorStops[i][1]);
-    }
-
-    myBitmap.context.fillStyle = grd;
-    myBitmap.context.fillRect(0, 0, width, height);
-    game.cache.addSpriteSheet(key, '', myBitmap.canvas, width, height);
-
-  }
-  let t = game.add.image(0, 0, key);
-  return t;
-}
 
 enum eCharType {
   UNDEFINED = -1,

@@ -5,14 +5,14 @@ export interface BaseSceneConfig {
 }
 
 export interface TrifleUseful {
-  create:()=>void;
-  redraw:(dimensions:Phaser.Geom.Point)=>void;
+  create: () => void;
+  redraw: (dimensions: Phaser.Geom.Point) => void;
 
 }
 
 export default class BaseScene extends Phaser.Scene implements TrifleUseful {
   public tools: Tools;
-  public dimensions:Phaser.Geom.Point;
+  public dimensions: Phaser.Geom.Point;
 
   constructor(config: BaseSceneConfig) {
 
@@ -24,7 +24,7 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
       active: active
     });
 
-  
+
 
     try {
       this.tools = this.sys.plugins.get("tools") as Tools; // cast
@@ -41,20 +41,23 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
   }
 
   create() {
+    if (!this.tools) {
+      this.tools = this.sys.plugins.get("tools") as Tools; // cast
+    }
     this.game.events.on(
       "game.resize",
       this.redraw,this
     );
 
-      //save a reference to our game dimensions.
+      // save a reference to our game dimensions.
       // grab our utils
       if (!this.tools) {
         this.tools = this.sys.plugins.get("tools") as Tools; // cast
       }
-      console.log(this.tools.scale.dimensions)
+      console.log(this.tools);
       this.dimensions = this.tools.scale.dimensions;// i think this is a reference.
-      
-    
+
+
    // listen to events.
    this.events.on("sleep", this.sleep, this);
    this.events.on("wake", this.wake, this);
@@ -66,9 +69,13 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
   }
 
   sleep() {}
-  wake() {}
- 
-  redraw(){
+  wake() {
+    if (!this.tools) {
+      this.tools = this.sys.plugins.get("tools") as Tools; // cast
+    }
+  }
+
+  redraw() {
   }
 
   shutdown() {

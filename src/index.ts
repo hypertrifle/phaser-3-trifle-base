@@ -7,6 +7,10 @@
 
 import "phaser";
 import Boot from "./scenes/Boot";
+import PostEffectTestsScene from "./scenes/PostEffectTests";
+import TitleScreen from "./scenes/TitleScene";
+import PersistentScene from "./scenes/PersistentScene";
+import Tools from "./plugins/global/Tools";
 
 
 
@@ -23,19 +27,24 @@ const config: GameConfig = {
   version: "1.0",
     width: 10,
     height: 10,
-  resolution:1,  // this this works with sprites and omage but not with bitmap font
-  fps:{
-    min:30,
-    target:60
+  resolution: 1,  // this this works with sprites and omage but not with bitmap font
+  fps: {
+    min: 30,
+    target: 60
   },
-  
+
   render: {
     antialias: true,
 
   },
   type: Phaser.WEBGL,
   parent: "container", // this div to be loaded into - LEAVE AS IS!
-  scene: Boot, // we are going to use boot as our main controller, we can add / control scenes from within there.
+  scene: [Boot, PostEffectTestsScene, PersistentScene], // we are going to use boot as our main controller, then an other states ew require after that.
+  plugins: {
+    global: [
+        { key: 'tools', plugin: Tools, start: true}
+    ]
+},
   // these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.
   callbacks: {
     postBoot: () => {
@@ -45,9 +54,9 @@ const config: GameConfig = {
   input: {
     keyboard: true,
     mouse: true,
-    touch:{
-      target:document.getElementById("container"),
-      capture:true
+    touch: {
+      target: document.getElementById("container"), // this allows us to capture all input regardless if on page or the game canvas.
+      capture: true
     }
   },
   backgroundColor: 0x111111,
