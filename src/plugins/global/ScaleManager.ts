@@ -192,7 +192,7 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
 
       console.log("resize to",this.dimensions.x, this.dimensions.y )
 
-      this.game.reszise(this.dimensions.x, this.dimensions.y);
+      this.game.resize(this.dimensions.x, this.dimensions.y);
 
       // if we have cameras in our game lets resize these to fit the viewport.
       if (this.systems && this.systems.cameras) {
