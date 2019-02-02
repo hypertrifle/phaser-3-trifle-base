@@ -136,11 +136,11 @@ export default class PostEffectTestsScene extends BaseScene {
 
   setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
     let bounds: BitmapTextSize = object.getTextBounds();
-    object.pipeline.setFloat2("offset", bounds.global.x/this.testFont.scaleX, bounds.global.y/this.testFont.scaleY);
+    object.pipeline.setFloat2("offset", bounds.global.x, bounds.global.y);
     object.pipeline.setFloat2(
       "size",
-      this.testFont.width/this.testFont.scaleX,
-      this.testFont.height/this.testFont.scaleY
+      this.testFont.width,
+      this.testFont.height
     );
   }
 
