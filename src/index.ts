@@ -14,6 +14,8 @@ import Tools from "./plugins/global/Tools";
 
 
 
+export const DEBUG = true;
+
 // when the page is loaded, create our game instance (entry point, this is what will change per tech)
 window.onload = () => {
 

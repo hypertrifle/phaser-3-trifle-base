@@ -4,6 +4,7 @@ import { GUI } from "dat.gui";
 import BaseEffect from "../utils/effects/BaseEffect";
 import RetroTextEffect from "../utils/effects/RetroTextEffects";
 import WaveFillEffect from "../utils/effects/WaveFillEffect";
+import { bestFit } from "../utils/Utils";
 
 export default class PostEffectTestsScene extends BaseScene {
   shaderTime: number = 0;
@@ -135,18 +136,22 @@ export default class PostEffectTestsScene extends BaseScene {
 
   setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
     let bounds: BitmapTextSize = object.getTextBounds();
-    object.pipeline.setFloat2("offset", bounds.global.x, bounds.global.y);
+    object.pipeline.setFloat2("offset", bounds.global.x/this.testFont.scaleX, bounds.global.y/this.testFont.scaleY);
     object.pipeline.setFloat2(
       "size",
-      bounds.global.width,
-      bounds.global.height
+      this.testFont.width/this.testFont.scaleX,
+      this.testFont.height/this.testFont.scaleY
     );
   }
 
   redraw() {
     super.redraw();
+
     if (this.testFont) {
+      console.log("test font", this.testFont.width, this.testFont.height, bestFit(this.testFont.width,this.testFont.height,this.dimensions.x -100, this.dimensions.y -100), this.testFont.scaleX, this.testFont.scaleY);
+
       this.testFont.x = this.dimensions.x / 2;
+      this.testFont.setScale(bestFit(this.testFont.width/this.testFont.scaleX,this.testFont.height/this.testFont.scaleY,this.dimensions.x -100, this.dimensions.y -100));
       this.setUniformsForText(this.testFont);
     }
 

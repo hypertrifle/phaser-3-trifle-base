@@ -2,9 +2,12 @@ import GameData from "../plugins/global/GameData";
 import Tools from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
 
+import  * as WebFont from 'webfontloader';
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
 export default class Boot extends BaseScene {
+
+  static debug:dat.GUI;
 
   /**
    *
@@ -93,10 +96,7 @@ export default class Boot extends BaseScene {
 
   //   this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
 
-    this.load.script(
-      "webfont",
-      "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"
-    );
+  
 
     console.log("Boot::preload::end"); // and our scale manager
   }
@@ -143,7 +143,7 @@ export default class Boot extends BaseScene {
          families: ["pixel"]
       },
       active: this.webFontsLoaded.bind(this),
-      deactivate: this.webFontsLoaded.bind(this,false)
+      inactive: this.webFontsLoaded.bind(this,false)
     });
   }
 
@@ -153,9 +153,13 @@ export default class Boot extends BaseScene {
    * @memberof Boot
    */
   webFontsLoaded(success: boolean = true) {
-    console.log("Boot::create::end");
+
+    if(!success){
+      // we may need to look into font fallback at thes point
+    }
 
 
+    console.log("Boot::webFontsLoaded::success?",  success);
     let tools  = this.game.plugins.get("tools") as Tools;
     if (tools) {
       tools.postBoot(this);

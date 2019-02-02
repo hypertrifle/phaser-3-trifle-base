@@ -4,6 +4,8 @@ import ScaleManager from "./ScaleManager";
 import Utils from "../utils/Utils";
 import Boot from "../../scenes/Boot";
 import { GameObjects } from "phaser";
+import { GUI } from "dat.gui";
+import { DEBUG } from "../..";
 
 
 export default class Tools extends Phaser.Plugins.BasePlugin {
@@ -39,6 +41,13 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
 
   public postBoot(bootState: Boot) {
     this._boot = bootState;
+
+    if(DEBUG){
+      console.log("setting up debug related tools");
+      this.debugGUI = new GUI();
+    }
+
+
     // this is called when all states and systems are loaded.
 
   }
@@ -89,7 +98,7 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
    * @type {(dat.GUI | null)}
    * @memberof Sponge
    */
-  // public debugGUI: dat.GUI | null = null;
+  public debugGUI: dat.GUI | null = null;
 
   // private stats: Stat;
 
