@@ -96,9 +96,9 @@ export default class PostEffectTestsScene extends BaseScene {
     );
 
     this.testFont.setCenterAlign();
-    this.testFont.setOrigin(0.5, 0);
+    this.testFont.setOrigin(0.5, 0.5);
     this.testFont.setPipeline("text");
-    this.text = "some\ntext";
+    this.text = "hyper\ntrifle";
 
     let textDebug = this.debugGUI.addFolder("Text");
     textDebug.add(this, "text", 0, 0.2);
@@ -118,6 +118,7 @@ export default class PostEffectTestsScene extends BaseScene {
     // this.cameras.main.setZoom(16);
 
     // this.input.on('pointermove', this.moveText,this);
+    this.redraw();
   }
 
   onLetterCallback(wut: any) {
@@ -136,28 +137,31 @@ export default class PostEffectTestsScene extends BaseScene {
 
   setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
     let bounds: BitmapTextSize = object.getTextBounds();
+
     object.pipeline.setFloat2("offset", bounds.global.x, bounds.global.y);
+    object.pipeline.setFloat2("resolution", this.dimensions.x, this.dimensions.y);
     object.pipeline.setFloat2(
       "size",
-      this.testFont.width,
-      this.testFont.height
+      this.testFont.width/this.testFont.scaleX,
+      this.testFont.height/this.testFont.scaleY
     );
+
+    // console.log(object.pipeline);
   }
 
   redraw() {
     super.redraw();
 
     if (this.testFont) {
-      console.log("test font", this.testFont.width, this.testFont.height, bestFit(this.testFont.width,this.testFont.height,this.dimensions.x -100, this.dimensions.y -100), this.testFont.scaleX, this.testFont.scaleY);
-
       this.testFont.x = this.dimensions.x / 2;
-      this.testFont.setScale(bestFit(this.testFont.width/this.testFont.scaleX,this.testFont.height/this.testFont.scaleY,this.dimensions.x -100, this.dimensions.y -100));
-      this.setUniformsForText(this.testFont);
+      this.testFont.y = this.dimensions.y / 2;
+      this.testFont.setScale(bestFit(this.testFont.width/this.testFont.scaleX,this.testFont.height/this.testFont.scaleY,this.dimensions.x *0.6, this.dimensions.y*0.6));
+      // this.setUniformsForText(this.testFont);
     }
 
     if (this.testSprite) {
       this.testSprite.x = this.dimensions.x / 2;
-      this.testSprite.y = this.dimensions.y - 10;
+      this.testSprite.y = this.dimensions.y /2;
     }
   }
 

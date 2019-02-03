@@ -169,6 +169,9 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
       window.addEventListener("resize", () => {
         this.resizeCanvas();
       });
+
+
+      
       // force a reload on initial build
       this.resizeCanvas();
     }
@@ -189,9 +192,6 @@ export default class ScaleManager extends Phaser.Plugins.BasePlugin {
       this.dimensions.setTo(parent.clientWidth, parent.clientHeight);
 
       // resize the game canvas
-
-      console.log("resize to",this.dimensions.x, this.dimensions.y )
-
       this.game.resize(this.dimensions.x, this.dimensions.y);
 
       // if we have cameras in our game lets resize these to fit the viewport.

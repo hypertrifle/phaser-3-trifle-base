@@ -52,21 +52,22 @@
             vec4 colour = getPixelColour(outTexCoord);
 
 
-            vec2 position = (outPosition - offset)/size;
+            // vec2 position = (outPosition - offset)/size +vec2(1.,0.5);
+            vec2 position = (outPosition / resolution);
             
             // dither the position?
             
 
 
             vec4 col = vec4(position.x, position.y, 1., colour.a  ) * colour.r;
-            vec4 col2 = vec4(position.x, position.y-0.05, 1., colour.a  ) * colour.r;
-            vec4 col3 = vec4(position.x-0.05, position.y, 1., colour.a  ) * colour.r;
+            vec4 col2 = vec4(position.x, position.y-0.1, 1., colour.a  ) * colour.r;
+            vec4 col3 = vec4(position.x-0.1, position.y, 1., colour.a  ) * colour.r;
 
             // col.r = mix(1.-col.a,outPosition.x,col.r);
             // col.a = outPosition.x;
 
-            vec2 scaledTime = vec2(time *-0.0005,time *-0.0);
-            vec2 gridDensity = vec2(0.5)* size;
+            vec2 scaledTime = vec2(time *-0.000005,time *-0.01);
+            vec2 gridDensity = vec2(50.);
 
             float x_mix = sin((position.x+scaledTime.x)*gridDensity.x);
 
