@@ -39,6 +39,37 @@
         return sqrt((a*a)+(o*o));
     }
 
+    float random (in vec2 st) {
+    return fract(sin(dot(st.xy,
+                         vec2(12.9898,78.233)))
+                 * 43758.5453123);
+}
+
+// 2D Noise based on Morgan McGuire @morgan3d
+// https://www.shadertoy.com/view/4dS3Wd
+float noisegen (in vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+
+    // Four corners in 2D of a tile
+    float a = random(i);
+    float b = random(i + vec2(1.0, 0.0));
+    float c = random(i + vec2(0.0, 1.0));
+    float d = random(i + vec2(1.0, 1.0));
+
+    // Smooth Interpolation
+
+    // Cubic Hermine Curve.  Same as SmoothStep()
+    vec2 u = f*f*(3.0-2.0*f);
+    // u = smoothstep(0.,1.,f);
+
+    // Mix 4 coorners percentages
+    return mix(a, b, u.x) +
+            (c - a)* u.y * (1.0 - u.x) +
+            (d - b) * u.x * u.y;
+}
+
+
     //main entry point
     // GLSL it's mainly math based functions, operating on colour channels, everything
     //usually scales between 0-1 so the vec4(1.,0.,0.,1.) would be red.
@@ -56,24 +87,32 @@
             vec2 position = (outPosition / resolution);
             
             // dither the position?
-            
+
+            // float bounds = mix(colour.r,colour.b, sin(time)*position.x);
+            float bounds = sin(time)*(colour.b-colour.r) ;//  (colour.b-colour.r) * position.x-(offset.x/resolution.x); //sin(time) ;
 
 
-            vec4 col = vec4(position.x, position.y, 1., colour.a  ) * colour.r;
-            vec4 col2 = vec4(position.x, position.y-0.1, 1., colour.a  ) * colour.r;
-            vec4 col3 = vec4(position.x-0.1, position.y, 1., colour.a  ) * colour.r;
+            float noise = max(0.,colour.r - noisegen(position*resolution)*0.3);
+
+            vec4 col = vec4(position.x, position.y, 1., colour.a  ) *noise ;
+            vec4 col2 = vec4(position.x, position.y-0.05, 1., colour.a  ) * noise;
+            vec4 col3 = vec4(position.x-0.05, position.y, 1., colour.a  ) * noise;
+
+
 
             // col.r = mix(1.-col.a,outPosition.x,col.r);
             // col.a = outPosition.x;
 
-            vec2 scaledTime = vec2(cos(time *-0.5),sin(time*0.5) );
-            vec2 gridDensity = vec2(0.10)*size;
+            vec2 scaledTime = vec2(cos(time *-0.2),sin(time*0.2) );
+            vec2 gridDensity = vec2(0.40,0.8)*size;
 
             float x_mix = sin((position.x+position.y+scaledTime.x)*gridDensity.x);
 
-            float y_mix = sin((position.y+-position.x+scaledTime.y)*gridDensity.y);
+            float y_mix = sin((position.y-position.x+scaledTime.y)*gridDensity.y);
 
-            gl_FragColor =  mix(col, mix(col2,col3,sign(y_mix)),sign(x_mix));
+            vec4 strokeColour = vec4(1., 0.0, 1., colour.b);
+            
+            gl_FragColor =  mix(mix(col, mix(col2,col3,sign(y_mix)),sign(x_mix)),strokeColour, bounds);
 
 
         }

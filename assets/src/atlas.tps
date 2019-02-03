@@ -72,7 +72,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>1</uint>
+        <uint>2</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -183,16 +183,16 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">../img/jump_texture.png</key>
+            <key type="filename">../img/near-buildings-bg.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>8,8,16,16</rect>
+                <rect>123,52,247,105</rect>
                 <key>scale9Paddings</key>
-                <rect>8,8,16,16</rect>
+                <rect>123,52,247,105</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -248,16 +248,16 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">../img/tree_2.png</key>
+            <key type="filename">../img/v-truck.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
                 <key>scale9Enabled</key>
                 <false/>
                 <key>scale9Borders</key>
-                <rect>5,5,9,11</rect>
+                <rect>64,26,129,52</rect>
                 <key>scale9Paddings</key>
-                <rect>5,5,9,11</rect>
+                <rect>64,26,129,52</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

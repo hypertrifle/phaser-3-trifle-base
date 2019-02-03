@@ -9,7 +9,7 @@ import { bestFit } from "../utils/Utils";
 export default class PostEffectTestsScene extends BaseScene {
   shaderTime: number = 0;
   tree: Phaser.GameObjects.Image;
-  testSprite: Phaser.GameObjects.Image;
+  testSprite: Phaser.GameObjects.TileSprite;
   shaders: { shader: BaseEffect; id: string }[];
 
   constructor() {
@@ -22,6 +22,8 @@ export default class PostEffectTestsScene extends BaseScene {
 
   preload() {
     console.log("PostEffectTestsScene::preload");
+
+    this.load.atlas("atlas.png","assets/atlas/atlaspng.png","assets/atlas/atlaspng.json")
 
     this.load.bitmapFont(
       "cast-iron",
@@ -41,15 +43,15 @@ export default class PostEffectTestsScene extends BaseScene {
 
     // create our background shader pipline.
     let postShader: SheneEffect = new SheneEffect(this.game, "glint", {
-      speed: 1.5,
-      size: 0.3,
-      delay: 3,
-      colour: { r: 255, g: 255, b: 255 }
+      speed: 5,
+      size: 0.5,
+      delay: 20,
+      colour: { r: 255, g: 100, b: 255 }
     });
 
     if(this.tools.debugGUI){
     let postDebug = this.tools.debugGUI.addFolder("Glint");
-    postDebug.add(postShader, "size", 0, 0.2);
+    postDebug.add(postShader, "size", 0, 0.4);
     postDebug.add(postShader, "speed", 0, 5);
     postDebug.add(postShader, "delay", 0, 10);
     postDebug.addColor(postShader, "colour");
@@ -84,35 +86,37 @@ export default class PostEffectTestsScene extends BaseScene {
 
     this.initShaders();
 
-    //add our title
-    this.testFont = this.add.dynamicBitmapText(
-      this.dimensions.x / 2,
-      30,
-      "lot",
-      "SCOOP",
-      128
+
+    this.testSprite = this.add.tileSprite(0,this.dimensions.y - 209,this.dimensions.x,209,
+      "atlas.png",
+      "near-buildings-bg.png"
     );
-
-    this.testFont.setCenterAlign();
-    this.testFont.setOrigin(0.5, 0.5);
-    this.testFont.setPipeline("text");
-    this.text = "hyper\ntrifle";
+    this.testSprite.setScale(1);
+    this.testSprite.setOrigin(0.5, 1);
+    this.testSprite.setPipeline("glint");
 
 
-    if(this.tools.debugGUI){
-      let textDebug = this.tools.debugGUI.addFolder("Text");
-      textDebug.add(this, "text", 0, 0.2);
-    }
-
-    // this.testSprite = this.add.image(
-    //   this.dimensions.x / 2,
-    //   this.dimensions.y - 10,
-    //   "atlas.png",
-    //   "test-sprite-2.png"
-    // );
-    // this.testSprite.setScale(1);
-    // this.testSprite.setOrigin(0.5, 1);
-    // this.testSprite.setPipeline("glint");
+        //add our title
+        this.testFont = this.add.dynamicBitmapText(
+          this.dimensions.x / 2,
+          30,
+          "lot",
+          "SCOOP",
+          128
+        );
+    
+        this.testFont.setCenterAlign();
+        this.testFont.letterSpacing += 18;
+        this.testFont.setOrigin(0.5, 0.5);
+        this.testFont.setPipeline("text");
+        this.text = "HYPER\nTRIFLE";
+    
+    
+        if(this.tools.debugGUI){
+          let textDebug = this.tools.debugGUI.addFolder("Text");
+          textDebug.add(this, "text", 0, 0.2);
+        }
+    
 
     console.log("PostEffectTestsScene::Create");
     // this.cameras.main.setBounds(0, 0, this.game.canvas.width, this.game.canvas.height);
@@ -127,9 +131,10 @@ export default class PostEffectTestsScene extends BaseScene {
   }
 
   set text(text: string) {
-    this.testFont.text = text;
+    this.testFont.text = text.toUpperCase();
     let bounds: BitmapTextSize = this.testFont.getTextBounds();
-    this.setUniformsForText(this.testFont);
+     this.setUniformsForText(this.testFont);
+    this.redraw();
   }
 
   get text(): string {
@@ -155,14 +160,15 @@ export default class PostEffectTestsScene extends BaseScene {
 
     if (this.testFont) {
       this.testFont.x = this.dimensions.x / 2;
-      this.testFont.y = this.dimensions.y / 2;
-      this.testFont.setScale(bestFit(this.testFont.width/this.testFont.scaleX,this.testFont.height/this.testFont.scaleY,this.dimensions.x *0.6, this.dimensions.y*0.6));
+      this.testFont.y = this.dimensions.y / 3;
+      this.testFont.setScale(bestFit(this.testFont.width/this.testFont.scaleX,this.testFont.height/this.testFont.scaleY,this.dimensions.x *0.7, this.dimensions.y*0.7));
       // this.setUniformsForText(this.testFont);
     }
 
     if (this.testSprite) {
       this.testSprite.x = this.dimensions.x / 2;
-      this.testSprite.y = this.dimensions.y /2;
+      this.testSprite.y = this.dimensions.y;
+      this.testSprite.width = this.dimensions.x*2;
     }
   }
 
