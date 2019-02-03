@@ -21,6 +21,8 @@ export default class Boot extends BaseScene {
     super(
       { key: "Boot", active: true } // we are always going to be active.
     );
+
+    
   }
 
   /**
@@ -132,8 +134,8 @@ export default class Boot extends BaseScene {
   create() {
     console.log("Boot::create::start");
 
-    // this.webFontsLoaded();
-    // return;
+    this.webFontsLoaded();
+    return;
 
     // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
@@ -168,6 +170,10 @@ export default class Boot extends BaseScene {
 
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();
+
+
+
+
 
     // TODO: Entry Point.
     this.scene.run("PostEffectTestScene");

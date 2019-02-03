@@ -12,7 +12,6 @@ export default class PostEffectTestsScene extends BaseScene {
   testSprite: Phaser.GameObjects.Image;
   shaders: { shader: BaseEffect; id: string }[];
 
-  debugGUI: GUI;
   constructor() {
     super({
       key: "PostEffectTestScene",
@@ -37,7 +36,7 @@ export default class PostEffectTestsScene extends BaseScene {
     );
   }
 
-  initShader() {
+  initShaders() {
     this.shaders = [];
 
     // create our background shader pipline.
@@ -47,11 +46,14 @@ export default class PostEffectTestsScene extends BaseScene {
       delay: 3,
       colour: { r: 255, g: 255, b: 255 }
     });
-    let postDebug = this.debugGUI.addFolder("Glint");
+
+    if(this.tools.debugGUI){
+    let postDebug = this.tools.debugGUI.addFolder("Glint");
     postDebug.add(postShader, "size", 0, 0.2);
     postDebug.add(postShader, "speed", 0, 5);
     postDebug.add(postShader, "delay", 0, 10);
     postDebug.addColor(postShader, "colour");
+    }
 
     let textShader: RetroTextEffect = new RetroTextEffect(this.game, "text");
 
@@ -74,19 +76,15 @@ export default class PostEffectTestsScene extends BaseScene {
     );
   }
 
-  initDebugTools() {
-    this.debugGUI = new GUI();
-  }
-
   testFont: Phaser.GameObjects.BitmapText;
   testFont2: Phaser.GameObjects.BitmapText;
 
   create() {
     super.create();
-    // this.cameras.main.setZoom(2);
-    this.initDebugTools();
-    this.initShader();
 
+    this.initShaders();
+
+    //add our title
     this.testFont = this.add.dynamicBitmapText(
       this.dimensions.x / 2,
       30,
@@ -100,8 +98,11 @@ export default class PostEffectTestsScene extends BaseScene {
     this.testFont.setPipeline("text");
     this.text = "hyper\ntrifle";
 
-    let textDebug = this.debugGUI.addFolder("Text");
-    textDebug.add(this, "text", 0, 0.2);
+
+    if(this.tools.debugGUI){
+      let textDebug = this.tools.debugGUI.addFolder("Text");
+      textDebug.add(this, "text", 0, 0.2);
+    }
 
     // this.testSprite = this.add.image(
     //   this.dimensions.x / 2,

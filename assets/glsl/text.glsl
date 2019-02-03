@@ -66,12 +66,12 @@
             // col.r = mix(1.-col.a,outPosition.x,col.r);
             // col.a = outPosition.x;
 
-            vec2 scaledTime = vec2(time *-0.000005,time *-0.01);
-            vec2 gridDensity = vec2(50.);
+            vec2 scaledTime = vec2(cos(time *-0.5),sin(time*0.5) );
+            vec2 gridDensity = vec2(0.10)*size;
 
-            float x_mix = sin((position.x+scaledTime.x)*gridDensity.x);
+            float x_mix = sin((position.x+position.y+scaledTime.x)*gridDensity.x);
 
-            float y_mix = sin((position.y+scaledTime.y)*gridDensity.y);
+            float y_mix = sin((position.y+-position.x+scaledTime.y)*gridDensity.y);
 
             gl_FragColor =  mix(col, mix(col2,col3,sign(y_mix)),sign(x_mix));
 
