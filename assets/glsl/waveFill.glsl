@@ -47,32 +47,15 @@
     void main(void)
         {
 
-            // the basics with no modification to the pixel (or point) would be:
-            vec4 inColour = getPixelColour(outTexCoord);
 
-            // generate our shene colour based on the tint * the alpha level of source.
-            vec4 sheenColour = colour.rgbb* inColour.a; 
 
-            // position of the wipe 0 -1;
-            float position = ((outTexCoord.x*outTexCoord.y)/2.) + size;
-            // float position = hype(outTexCoord.x , outTexCoord.y);
-            // float position = 0.5;
+            float hoirizon = 0.5;
 
-            // calulate the distance from start of sheen to end
-            float progress = cubicIn(mod(time*speed,1.+delay));
+            vec4 col1 = vec4(outTexCoord.x,outTexCoord.x,1.,1.);
+            vec4 col2 = vec4(outTexCoord.y,outTexCoord.y,1.,0);
 
-            // initilise our vibrance vaible which will
-            // use for the mix at the end
-            float vibrance = 0.;
 
-            // apply a first gradient modifier
-            vibrance = 1.-smoothstep(progress,progress+size, position);
-
-            // then apply a hard edge at the furthers point.
-            vibrance = mix(vibrance, 1.,  step(progress+size, position ));
-
-            // save to the output
-            gl_FragColor = mix(inColour, sheenColour ,(1.-vibrance));
+            gl_FragColor =mix(col1,col2, hoirizon);
 
 
         }
