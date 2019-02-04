@@ -169,6 +169,7 @@ export default class PostEffectTestsScene extends BaseScene {
       this.testSprite.x = this.dimensions.x / 2;
       this.testSprite.y = this.dimensions.y;
       this.testSprite.width = this.dimensions.x*2;
+      
     }
   }
 
