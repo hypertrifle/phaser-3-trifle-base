@@ -36,7 +36,7 @@
     float hype(float a, float o){
         return sqrt((a*a)+(o*o));
     }
-#pragma glslify: noise = require('glsl-noise/simplex/3d')
+
 
     //main entry point
     // GLSL it's mainly math based functions, operating on colour channels, everything
@@ -47,9 +47,8 @@
     void main(void)
         {
 
-
-
-            float hoirizon = 0.5;
+            float hoirizon = 0.5 + (sin(outTexCoord.x*10. + time)*0.01);
+        
 
             vec4 col1 = vec4(outTexCoord.x,outTexCoord.x,1.,1.);
             vec4 col2 = vec4(outTexCoord.y,outTexCoord.y,1.,0);
