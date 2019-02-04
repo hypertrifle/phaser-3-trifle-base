@@ -102,25 +102,25 @@ export default class PostEffectTestsScene extends BaseScene {
 
 
         // // add our title
-        // this.testFont = this.add.dynamicBitmapText(
-        //   this.dimensions.x / 2,
-        //   30,
-        //   "lot",
-        //   "SCOOP",
-        //   128
-        // );
+        this.testFont = this.add.dynamicBitmapText(
+          this.dimensions.x / 2,
+          30,
+          "lot",
+          "SCOOP",
+          128
+        );
 
-        // this.testFont.setCenterAlign();
-        // this.testFont.letterSpacing += 18;
-        // this.testFont.setOrigin(0.5, 0.5);
-        // this.testFont.setPipeline("text");
-        // this.text = "HYPER\nTRIFLE";
+        this.testFont.setCenterAlign();
+        this.testFont.letterSpacing += 18;
+        this.testFont.setOrigin(0.5, 0.5);
+        this.testFont.setPipeline("text");
+        this.text = "HYPER\nTRIFLE";
 
 
-        // if (this.tools.debugGUI) {
-        //   let textDebug = this.tools.debugGUI.addFolder("Text");
-        //   textDebug.add(this, "text", 0, 0.2);
-        // }
+        if (this.tools.debugGUI) {
+          let textDebug = this.tools.debugGUI.addFolder("Text");
+          textDebug.add(this, "text", 0, 0.2);
+        }
 
 
     console.log("PostEffectTestsScene::Create");

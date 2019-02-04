@@ -89,10 +89,10 @@ float noisegen (in vec2 st) {
             // dither the position?
 
             // float bounds = mix(colour.r,colour.b, sin(time)*position.x);
-            float bounds = sin(time)*(colour.b-colour.r) ;//  (colour.b-colour.r) * position.x-(offset.x/resolution.x); //sin(time) ;
+            float bounds = sin(time*5.)*(colour.b-colour.r) ;//  (colour.b-colour.r) * position.x-(offset.x/resolution.x); //sin(time) ;
 
 
-            float noise = max(0.,colour.r - noisegen(position*resolution)*0.3);
+            float noise = max(0.,colour.r - noisegen(position*resolution)*0.1);
 
             vec4 col = vec4(position.x, position.y, 1., colour.a  ) *noise ;
             vec4 col2 = vec4(position.x, position.y-0.05, 1., colour.a  ) * noise;
@@ -112,7 +112,7 @@ float noisegen (in vec2 st) {
 
             vec4 strokeColour = vec4(1., 0.0, 1., colour.b);
             
-            gl_FragColor =  mix(mix(col, mix(col2,col3,sign(y_mix)),sign(x_mix)),strokeColour, bounds);
+            gl_FragColor =  mix(mix(col, mix(col2,col3,smoothstep(0.1,0.9,y_mix)),smoothstep(0.1,0.9,x_mix)),strokeColour, bounds);
 
 
         }
