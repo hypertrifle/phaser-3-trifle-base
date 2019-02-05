@@ -34,6 +34,8 @@
     "babel-loader": "^7.1.4",
     "copy-webpack-plugin": "^4.5.2",
     "dat.gui": "^0.7.2",
+    "glsl-hsl2rgb": "^1.1.0",
+    "glsl-hsv2rgb": "^1.0.0",
     "glsl-noise": "0.0.0",
     "glslify": "^7.0.0",
     "glslify-loader": "^2.0.0",

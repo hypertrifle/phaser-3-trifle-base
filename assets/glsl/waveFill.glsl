@@ -37,6 +37,24 @@
         return sqrt((a*a)+(o*o));
     }
 
+    vec3 hsv2rgb(vec3 c)
+{
+    vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+    vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+    return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
+vec3 rgb2hsv(vec3 c)
+{
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+    float d = q.x - min(q.w, q.y);
+    float e = 1.0e-10;
+    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + e)), d / (q.x + e), q.x);
+}
+
 
      float random (in vec2 st) {
     return fract(sin(dot(st.xy,
@@ -69,6 +87,7 @@ float noisegen (in vec2 st) {
 }
 
 
+
     //main entry point
     // GLSL it's mainly math based functions, operating on colour channels, everything
     //usually scales between 0-1 so the vec4(1.,0.,0.,1.) would be red.
@@ -79,19 +98,19 @@ float noisegen (in vec2 st) {
         {
             
 
-            float hoirizonWobble1 = (sin(outTexCoord.x*50. + time*4.)*0.03); //TODO: smoothstep
-            float hoirizonWobble2 = (sin(outTexCoord.x*33. + time*2.)*0.03); //TODO: smoothstep
+            float hoirizonWobble1 = (sin(outTexCoord.x*2. + time*1.)*0.01); //TODO: smoothstep
+            float hoirizonWobble2 = (sin(outTexCoord.x*3. + time*2.)*0.03); //TODO: smoothstep
 
         
 
             float noise = max(0.,noisegen(outTexCoord*resolution)*1.);
 
-            vec4 col1 = vec4(outTexCoord.y,0.,1.-outTexCoord.x, noise);
-            vec4 col2 = vec4(outTexCoord.y,0.,outTexCoord.x,noise);
-            vec4 col3 = vec4(outTexCoord.x,0.,outTexCoord.x,noise);
+            vec4 col1 = vec4(outTexCoord.y,0.,1.-outTexCoord.x, noise); //middle / main area
+            vec4 col2 = vec4(outTexCoord.y,0.,outTexCoord.x,noise); //bottom bar
+            vec4 col3 = vec4(outTexCoord.x,0.,outTexCoord.x,noise); //top section
 
 
-            gl_FragColor = mix(col3, mix( col1, col2, sign(outTexCoord.y-(0.48+hoirizonWobble1))),sign(outTexCoord.y-(0.21+hoirizonWobble2)) );
+            gl_FragColor = mix(col3, mix( col1, col2, sign(outTexCoord.y-(0.9+hoirizonWobble1))),sign(outTexCoord.y-(0.41+hoirizonWobble2)) );
 
 
         }
