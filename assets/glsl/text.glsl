@@ -89,7 +89,7 @@ float noisegen (in vec2 st) {
             // dither the position?
 
             // float bounds = mix(colour.r,colour.b, sin(time)*position.x);
-            float bounds = sin(time*5.)*(colour.b-colour.r) ;//  (colour.b-colour.r) * position.x-(offset.x/resolution.x); //sin(time) ;
+            float bounds = sin(time*2.)*(colour.b-colour.r) ;//  (colour.b-colour.r) * position.x-(offset.x/resolution.x); //sin(time) ;
 
 
             float noise = max(0.,colour.r - noisegen(position*resolution)*0.1);

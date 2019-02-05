@@ -43,7 +43,7 @@ export default class PostEffectTestsScene extends BaseScene {
 
     // create our background shader pipline.
     let postShader: SheneEffect = new SheneEffect(this.game, "glint", {
-      speed: 5,
+      speed: 2,
       size: 0.5,
       delay: 20,
       colour: { r: 255, g: 100, b: 255 }
