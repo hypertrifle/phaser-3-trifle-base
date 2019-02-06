@@ -148,9 +148,14 @@ export default class PostEffectTestsScene extends BaseScene {
           );
     
           this.buttons[i].setOrigin(0.5,0.5);
+          this.buttons[i].setInteractive();
+          this.buttons[i].on("pointerover", this.overBaseButton);
         }
         this.redraw();
 
+  }
+  overBaseButton(e:PointerEvent,x:number, y:number,button:Phaser.GameObjects.Image){
+    console.log(e, button);
   }
 
   onLetterCallback(wut: any) {
