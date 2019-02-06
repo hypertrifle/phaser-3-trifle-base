@@ -105,15 +105,9 @@ float noisegen (in vec2 st) {
 
             float noise = max(0.,noisegen(outTexCoord*resolution)*1.);
 
-<<<<<<< HEAD
-            vec4 col1 = vec4(outTexCoord.y,0.,outTexCoord.x, noise) * 0.9;
-            vec4 col2 = vec4(outTexCoord.y,0.,outTexCoord.x,noise) ;
-            vec4 col3 = vec4(outTexCoord.y,0.,outTexCoord.x,noise)*0.6;
-=======
             vec4 col1 = vec4(outTexCoord.y,0.,1.-outTexCoord.x, noise); //middle / main area
             vec4 col2 = vec4(outTexCoord.y,0.,outTexCoord.x,noise); //bottom bar
             vec4 col3 = vec4(outTexCoord.x,0.,outTexCoord.x,noise); //top section
->>>>>>> 958eafe680d7168cd124ae7653535d43a9661e8b
 
 
             gl_FragColor = mix(col3, mix( col1, col2, sign(outTexCoord.y-(0.9+hoirizonWobble1))),sign(outTexCoord.y-(0.41+hoirizonWobble2)) );
