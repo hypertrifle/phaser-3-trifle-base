@@ -62,10 +62,12 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
   }
 
   redraw() {
-    if (this.cameras) {
-      this.cameras.resize(this.dimensions.x, this.dimensions.y);
+    this.cameras.resize(this.dimensions.x, this.dimensions.y);
+    console.log("BASESCENE REDRAW",this.dimensions, this.cameras);
+
+    for (let i = 0; i < this.cameras.cameras.length; i++) {
+      this.cameras.cameras[i].setViewport(0,0,this.dimensions.x, this.dimensions.y);
     }
-    console.log("BASESCENE REDRAW", this.dimensions);
   }
 
   shutdown() {

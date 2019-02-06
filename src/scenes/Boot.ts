@@ -133,7 +133,7 @@ export default class Boot extends BaseScene {
   ) {
     let width = gameSize.width;
     let height = gameSize.height;
-    console.log(this, gameSize);
+
     this.tools.dimensions.setTo(width, height);
 
 

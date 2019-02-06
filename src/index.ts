@@ -44,7 +44,6 @@ const config: GameConfig = {
 
   },
   type: Phaser.WEBGL,
-  parent: "container", // this div to be loaded into - LEAVE AS IS!
   scene: [Boot, PostEffectTestsScene, PersistentScene], // we are going to use boot as our main controller, then an other states ew require after that.
   plugins: {
     global: [
