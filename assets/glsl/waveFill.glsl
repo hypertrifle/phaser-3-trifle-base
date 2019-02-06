@@ -66,7 +66,7 @@ vec3 rgb2hsv(vec3 c)
 }
 
 
-     float random (in vec2 st) {
+float random (in vec2 st) {
     return fract(sin(dot(st.xy,
                          vec2(12.9898,78.233)))
                  * 43758.5453123);
@@ -74,7 +74,7 @@ vec3 rgb2hsv(vec3 c)
 
 // 2D Noise based on Morgan McGuire @morgan3d
 // https://www.shadertoy.com/view/4dS3Wd
-float noisegen (in vec2 st) {
+float smoothNoise (in vec2 st) {
     vec2 i = floor(st);
     vec2 f = fract(st);
 
@@ -114,7 +114,7 @@ float noisegen (in vec2 st) {
 
 
             //noise gives up some texture without loading anythign onto the GPU
-            float noise = max(0.,noisegen(outTexCoord*resolution)*1.);
+            float noise = max(0.,smoothNoise(outTexCoord*resolution)*1.);
 
 
 
@@ -125,6 +125,7 @@ float noisegen (in vec2 st) {
                 progress(0.65,1.,outTexCoord.x),
                 progress(0.62,0.87,outTexCoord.x)
             );
+            //convert to RBG and apply out noise
             vec4 col3 = vec4(hsv2rgb(hsv3), noise); //top section
 
             
@@ -135,6 +136,7 @@ float noisegen (in vec2 st) {
                 progress(0.69,0.71,outTexCoord.x),
                 progress(0.3,0.51,outTexCoord.x)
             );
+            //convert to RBG and apply out noise
             vec4 col1 = vec4(hsv2rgb(hsv1), noise); //mid section
 
 
@@ -144,6 +146,7 @@ float noisegen (in vec2 st) {
                 1.,
                 progress(0.62,0.72,outTexCoord.x)
             );
+            //convert to RBG and apply out noise
             vec4 col2 = vec4(hsv2rgb(hsv2), noise); //bottom bar
 
             
