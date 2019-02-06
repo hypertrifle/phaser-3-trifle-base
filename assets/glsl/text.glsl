@@ -104,7 +104,7 @@ float noisegen (in vec2 st) {
             // col.a = outPosition.x;
 
             vec2 scaledTime = vec2(cos(time *-0.2),sin(time*0.2) );
-            vec2 gridDensity = vec2(0.40,0.8)*size;
+            vec2 gridDensity = vec2(0.10,0.8)*size;
 
             float x_mix = sin((position.x+position.y+scaledTime.x)*gridDensity.x);
 
@@ -112,8 +112,8 @@ float noisegen (in vec2 st) {
 
             vec4 strokeColour = vec4(1., 0.0, 1., colour.b);
             
-            gl_FragColor =  mix(mix(col, mix(col2,col3,smoothstep(0.1,0.9,y_mix)),smoothstep(0.1,0.9,x_mix)),strokeColour, bounds);
-
+            // gl_FragColor =  mix(mix(col, mix(col2,col3,smoothstep(0.1,0.9,y_mix)),smoothstep(0.1,0.9,x_mix)),strokeColour, bounds);
+            gl_FragColor =  vec4(1.,1.,1.,col.a)*noise;
 
         }
  

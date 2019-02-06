@@ -134,15 +134,15 @@ export default class Boot extends BaseScene {
   create() {
     console.log("Boot::create::start");
 
-    this.webFontsLoaded();
-    return;
+    // this.webFontsLoaded();
+    // return;
 
     // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
     WebFont.load({
 
       custom: {
-         families: ["pixel"]
+         families: ["pixel", "porticovintage"]
       },
       active: this.webFontsLoaded.bind(this),
       inactive: this.webFontsLoaded.bind(this,false)
