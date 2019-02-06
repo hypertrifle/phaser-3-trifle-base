@@ -27,8 +27,12 @@ const DEBUG: boolean = true;
 const config: GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
-    width: 10,
-    height: 10,
+  scale: {
+    mode: Phaser.Scale.RESIZE,
+    parent: 'container',
+    width: '100%',
+    height: '100%'
+},
   resolution: 1,  // this this works with sprites and omage but not with bitmap font
   fps: {
     min: 30,

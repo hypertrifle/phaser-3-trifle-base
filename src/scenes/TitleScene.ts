@@ -51,8 +51,8 @@ export default class TitleScreen extends BaseScene {
     g.fillRect(
       0,
       0,
-      this.tools.scale.percentX(100),
-      this.tools.scale.percentY(100)
+      this.tools.dimensions.x,
+      this.tools.dimensions.y
     );
     g.generateTexture("titlescreen_texture");
 

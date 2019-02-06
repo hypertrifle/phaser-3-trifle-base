@@ -1,6 +1,5 @@
 import GameData from "./GameData";
 import HTMLUtils from "./HTMLUtils";
-import ScaleManager from "./ScaleManager";
 import Utils from "../utils/Utils";
 import Boot from "../../scenes/Boot";
 import { GameObjects } from "phaser";
@@ -18,6 +17,7 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
     super(pluginManager);
 
     this.game = pluginManager.game;
+    this.dimensions = new Phaser.Geom.Point(0, 0);
 
     console.log("Tools::constructor");
 
@@ -32,17 +32,13 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
     pluginManager.install("_utils", Utils, true, "_utls");
     this.utils = pluginManager.get("_utils") as Utils;
 
-    // // boot our scale helpers, not sure what to do with these yet, but will take the games zoom a (scalr of the designed document).
-    pluginManager.install("_scale", ScaleManager, true, "_scale", {
-      scale: this.game.config.zoom
-    });
-    this.scale = pluginManager.get("_scale") as ScaleManager;
+
   }
 
   public postBoot(bootState: Boot) {
     this._boot = bootState;
 
-    if(DEBUG){
+    if (DEBUG) {
       console.log("setting up debug related tools");
       this.debugGUI = new GUI();
     }
@@ -52,14 +48,11 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
 
   }
 
-  private _hightlightOriginalParent: Phaser.GameObjects.Container;
-  private _hightlightBlackout: Phaser.GameObjects.Graphics;
-  private _highlightContainer: Phaser.GameObjects.Container;
-  private _highlightItem: Phaser.GameObjects.GameObject;
-  private _highlightScene: Phaser.Scene;
-  private _highlightTTText: Phaser.GameObjects.Text;
 
   public game: Phaser.Game;
+
+
+  public dimensions: Phaser.Geom.Point;
 
   /**
    * access to data and tracking functions
@@ -76,13 +69,6 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
    */
   public html: HTMLUtils;
 
-  /**
-   * access to scaling and positional options
-   *
-   * @type {ScaleManager}
-   * @memberof Sponge
-   */
-  public scale: ScaleManager;
 
   /**
    * access to utils.

@@ -35,19 +35,19 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
     if (!this.tools) {
       this.tools = this.sys.plugins.get("tools") as Tools; // cast
     }
-    this.game.events.on("game.resize", this.redraw, this);
-
     // save a reference to our game dimensions.
     // grab our utils
     if (!this.tools) {
       this.tools = this.sys.plugins.get("tools") as Tools; // cast
     }
     console.log(this.tools);
-    this.dimensions = this.tools.scale.dimensions; // i think this is a reference.
+    this.dimensions = this.tools.dimensions; // i think this is a reference.
 
     // listen to events.
     this.events.on("sleep", this.sleep, this);
     this.events.on("wake", this.wake, this);
+    this.game.scale.on("resize", this.redraw,this);
+
   }
 
   update(time: number, delta: number) {
@@ -62,7 +62,10 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
   }
 
   redraw() {
-    this.cameras.main.setSize(this.dimensions.x, this.dimensions.y);
+    if (this.cameras) {
+      this.cameras.resize(this.dimensions.x, this.dimensions.y);
+    }
+    console.log("BASESCENE REDRAW", this.dimensions);
   }
 
   shutdown() {

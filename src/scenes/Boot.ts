@@ -2,12 +2,12 @@ import GameData from "../plugins/global/GameData";
 import Tools from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
 
-import  * as WebFont from 'webfontloader';
+import * as WebFont from "webfontloader";
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
 export default class Boot extends BaseScene {
-
-  static debug:dat.GUI;
+  static debug: dat.GUI;
+  public tools: Tools;
 
   /**
    *
@@ -21,8 +21,6 @@ export default class Boot extends BaseScene {
     super(
       { key: "Boot", active: true } // we are always going to be active.
     );
-
-    
   }
 
   /**
@@ -31,7 +29,6 @@ export default class Boot extends BaseScene {
    * @memberof Boot
    */
   preload() {
-
     // this.scene.add("Background", Background, true); // false is to stop it launching now we'll choose to launch it when we need.
 
     if (!this.game.device.browser.ie) {
@@ -62,7 +59,7 @@ export default class Boot extends BaseScene {
       progress.fillRect(
         0,
         (1 - value) * (this.sys.game.config.height as number),
-        (this.sys.game.config.width as number),
+        this.sys.game.config.width as number,
         (this.sys.game.config.height as number) * value
       );
     });
@@ -82,23 +79,20 @@ export default class Boot extends BaseScene {
 
     // LOAD any game wide atlas' but iff assets are yo be used in one state, best to preload and handle in that state.
 
-
     /* with SVGs we now want to start thinking about making games that we can scale up if required. *
-    * to start, we can determine a scale for SVG assets, this way when converted to textures they are enlarged / reduced based on our game size
-    * note - this doesn't redraw on resize, its calculated from gameconfig width / height at entry.
-    * as we change the resolution, we change the zoom as well keeping fededlity.
-    */
+     * to start, we can determine a scale for SVG assets, this way when converted to textures they are enlarged / reduced based on our game size
+     * note - this doesn't redraw on resize, its calculated from gameconfig width / height at entry.
+     * as we change the resolution, we change the zoom as well keeping fededlity.
+     */
 
-   // we now have an SVGScale
-  //  this.load.svg({
-  //    key: "atlas.svg",
-  //    url: "assets/atlas/atlas.svg",
-  //    svgConfig: { scale: this.game.config.zoom }
-  //   });
+    // we now have an SVGScale
+    //  this.load.svg({
+    //    key: "atlas.svg",
+    //    url: "assets/atlas/atlas.svg",
+    //    svgConfig: { scale: this.game.config.zoom }
+    //   });
 
-  //   this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
-
-  
+    //   this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
 
     console.log("Boot::preload::end"); // and our scale manager
   }
@@ -110,28 +104,45 @@ export default class Boot extends BaseScene {
    * @param {*} atlasModel
    * @memberof Boot
    */
-  transFormAtlasDataToScale(atlasModel: any) {
-    for (let i in atlasModel.frames) {
-      let frame = atlasModel.frames[i];
+  // transFormAtlasDataToScale(atlasModel: any) {
+  //   for (let i in atlasModel.frames) {
+  //     let frame = atlasModel.frames[i];
 
-      // alter all frame properties
-      for (let prop in frame.frame) {
-        frame.frame[prop] *= this.game.config.zoom;
-      }
+  //     // alter all frame properties
+  //     for (let prop in frame.frame) {
+  //       frame.frame[prop] *= this.game.config.zoom;
+  //     }
 
-      // alter all frame properties
-      for (let prop in frame.spriteSourceSize) {
-        frame.spriteSourceSize[prop] *= this.game.config.zoom;
-      }
+  //     // alter all frame properties
+  //     for (let prop in frame.spriteSourceSize) {
+  //       frame.spriteSourceSize[prop] *= this.game.config.zoom;
+  //     }
 
-      // alter all frame properties
-      for (let prop in frame.sourceSize) {
-        frame.sourceSize[prop] *= this.game.config.zoom;
-      }
-    }
-  }
+  //     // alter all frame properties
+  //     for (let prop in frame.sourceSize) {
+  //       frame.sourceSize[prop] *= this.game.config.zoom;
+  //     }
+  //   }
+  // }
+
+  resize(
+    gameSize: any,
+    baseSize: any,
+    displaySize: any,
+    resolution: any
+  ) {
+    let width = gameSize.width;
+    let height = gameSize.height;
+    console.log(this, gameSize);
+    this.tools.dimensions.setTo(width, height);
+
+
+}
 
   create() {
+    // global resizeHandler now handled here:
+    this.game.scale.on("resize", this.resize,this);
+
     console.log("Boot::create::start");
 
     // this.webFontsLoaded();
@@ -140,12 +151,11 @@ export default class Boot extends BaseScene {
     // @ts-ignore - see https://github.com/typekit/webfontloader for configuration, this is fine for development, but TODO: possible time out handling.
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
     WebFont.load({
-
       custom: {
-         families: ["pixel", "porticovintage"]
+        families: ["pixel", "porticovintage"]
       },
       active: this.webFontsLoaded.bind(this),
-      inactive: this.webFontsLoaded.bind(this,false)
+      inactive: this.webFontsLoaded.bind(this, false)
     });
   }
 
@@ -155,25 +165,18 @@ export default class Boot extends BaseScene {
    * @memberof Boot
    */
   webFontsLoaded(success: boolean = true) {
-
-    if(!success){
+    if (!success) {
       // we may need to look into font fallback at thes point
     }
 
-
-    console.log("Boot::webFontsLoaded::success?",  success);
-    let tools  = this.game.plugins.get("tools") as Tools;
-    if (tools) {
-      tools.postBoot(this);
+    console.log("Boot::webFontsLoaded::success?", success);
+    this.tools = this.game.plugins.get("tools") as Tools;
+    if (this.tools) {
+      this.tools.postBoot(this);
     }
-    tools = null;
 
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();
-
-
-
-
 
     // TODO: Entry Point.
     this.scene.run("PostEffectTestScene");
@@ -190,6 +193,6 @@ export default class Boot extends BaseScene {
    * @memberof Boot
    */
   update(t: number, dt: number) {
-    super.update(t,dt);
+    super.update(t, dt);
   }
 }
