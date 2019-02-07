@@ -76,54 +76,9 @@ export default class Boot extends BaseScene {
 
     // settings.
     this.load.json("settings", "assets/json/settings.json"); // required
-
-    // LOAD any game wide atlas' but iff assets are yo be used in one state, best to preload and handle in that state.
-
-    /* with SVGs we now want to start thinking about making games that we can scale up if required. *
-     * to start, we can determine a scale for SVG assets, this way when converted to textures they are enlarged / reduced based on our game size
-     * note - this doesn't redraw on resize, its calculated from gameconfig width / height at entry.
-     * as we change the resolution, we change the zoom as well keeping fededlity.
-     */
-
-    // we now have an SVGScale
-    //  this.load.svg({
-    //    key: "atlas.svg",
-    //    url: "assets/atlas/atlas.svg",
-    //    svgConfig: { scale: this.game.config.zoom }
-    //   });
-
-    //   this.load.json("atlas.json", "assets/atlas/atlas.json"); // our SVG atlas
-
     console.log("Boot::preload::end"); // and our scale manager
   }
 
-  /**
-   * Formates a JSON atlas frame data object to the new render resolution size.
-   * Edits in place.
-   *
-   * @param {*} atlasModel
-   * @memberof Boot
-   */
-  // transFormAtlasDataToScale(atlasModel: any) {
-  //   for (let i in atlasModel.frames) {
-  //     let frame = atlasModel.frames[i];
-
-  //     // alter all frame properties
-  //     for (let prop in frame.frame) {
-  //       frame.frame[prop] *= this.game.config.zoom;
-  //     }
-
-  //     // alter all frame properties
-  //     for (let prop in frame.spriteSourceSize) {
-  //       frame.spriteSourceSize[prop] *= this.game.config.zoom;
-  //     }
-
-  //     // alter all frame properties
-  //     for (let prop in frame.sourceSize) {
-  //       frame.sourceSize[prop] *= this.game.config.zoom;
-  //     }
-  //   }
-  // }
 
   resize(
     gameSize: any,
@@ -131,18 +86,36 @@ export default class Boot extends BaseScene {
     displaySize: any,
     resolution: any
   ) {
+
     let width = gameSize.width;
     let height = gameSize.height;
 
     this.tools.dimensions.setTo(width, height);
+
+    for (let i = 0; i <  this.cameras.cameras.length; i ++) {
+      this.cameras.cameras[i].setSize(width, height);
+    }
+
+    // for (let prop in (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).pipelines) {
+    //   // @ts-ignore
+    //   (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).pipelines[prop].width = width;
+    //   // @ts-ignore
+    //   (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).pipelines[prop].width = width;
+    // }
+
+
+
+
+
+    console.log("Boot::Resize", this.game.renderer);
 
 
 }
 
   create() {
     // global resizeHandler now handled here:
+    this.cameras.main.setBackgroundColor(0x00FFaa);
     this.game.scale.on("resize", this.resize,this);
-
     console.log("Boot::create::start");
 
     // this.webFontsLoaded();

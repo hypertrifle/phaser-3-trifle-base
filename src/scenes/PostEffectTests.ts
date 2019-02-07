@@ -155,7 +155,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
   }
   overBaseButton(e: PointerEvent,x: number, y: number,button: Phaser.GameObjects.Image) {
-    console.log(e, button);
+    // console.log(e, button);
   }
 
   onLetterCallback(wut: any) {
@@ -197,9 +197,9 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
       return;
     }
 
-    console.log(gameSize);
+    // console.log(gameSize);
 
-    console.log(this.dimensions);
+    // console.log(this.dimensions);
 
     if (this.testFont) {
       this.testFont.x = this.dimensions.x * 0.05;
@@ -207,6 +207,8 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
       this.testFont.setScale(bestFit(this.testFont.width / this.testFont.scaleX,this.testFont.height / this.testFont.scaleY,this.dimensions.x * 0.5, this.dimensions.y * 0.35));
       this.setUniformsForText(this.testFont);
     }
+
+
 
     if (this.testSprite) {
       this.testSprite.x = this.dimensions.x / 2;
@@ -216,7 +218,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
     }
 
     if (this.background) {
-      this.background.fillStyle(0xffffff,1);
+      this.background.fillStyle(0xff00aa,1);
       this.background.clear();
       this.background.fillRect(0,0,this.dimensions.x, this.dimensions.y);
 
