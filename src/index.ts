@@ -23,7 +23,7 @@ window.onload = () => {
 console.clear();
 const DEBUG: boolean = true;
 
-// @ts-ignore
+
 const config: GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
@@ -41,9 +41,12 @@ const config: GameConfig = {
 
   render: {
     antialias: true,
+    roundPixels:true
 
   },
   type: Phaser.WEBGL,
+  width: window.innerWidth,
+  height: window.innerHeight,
   scene: [Boot, PostEffectTestsScene, PersistentScene], // we are going to use boot as our main controller, then an other states ew require after that.
   plugins: {
     global: [
@@ -60,7 +63,6 @@ const config: GameConfig = {
     keyboard: true,
     mouse: true,
     touch: {
-      target: document.getElementById("container"), // this allows us to capture all input regardless if on page or the game canvas.
       capture: true
     }
   },

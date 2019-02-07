@@ -4,12 +4,12 @@ export interface BaseSceneConfig {
   active?: boolean;
 }
 
-export interface TrifleUseful {
+export interface IBaseScene {
   create: () => void;
-  redraw: (dimensions: Phaser.Geom.Point) => void;
+  redraw: (dimensions?:{width:number,height:number}) => void;
 }
 
-export default class BaseScene extends Phaser.Scene implements TrifleUseful {
+export default class BaseScene extends Phaser.Scene implements IBaseScene {
   public tools: Tools;
   public dimensions: Phaser.Geom.Point;
 
@@ -35,18 +35,14 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
     if (!this.tools) {
       this.tools = this.sys.plugins.get("tools") as Tools; // cast
     }
-    // save a reference to our game dimensions.
-    // grab our utils
-    if (!this.tools) {
-      this.tools = this.sys.plugins.get("tools") as Tools; // cast
-    }
-    console.log(this.tools);
     this.dimensions = this.tools.dimensions; // i think this is a reference.
 
     // listen to events.
     this.events.on("sleep", this.sleep, this);
     this.events.on("wake", this.wake, this);
-    this.game.scale.on("resize", this.redraw,this);
+
+    //@ts-ignore
+    this.scale.on("resize", this.redraw,this);
 
   }
 
@@ -61,12 +57,22 @@ export default class BaseScene extends Phaser.Scene implements TrifleUseful {
     }
   }
 
-  redraw() {
-    this.cameras.resize(this.dimensions.x, this.dimensions.y);
-    console.log("BASESCENE REDRAW",this.dimensions, this.cameras);
+  redraw(gameSize?:{width:number, height:number}) {
+
+    if(!gameSize){
+      return;
+    }
+    this.dimensions.setTo(Math.floor(gameSize.width), Math.floor(gameSize.height));
+
+    let w  = gameSize.width;
+    let h  = gameSize.width;
+
+    this.dimensions.setTo(Math.floor(1), Math.floor(h));
+
+    // this.cameras.resize(w, h);
 
     for (let i = 0; i < this.cameras.cameras.length; i++) {
-      this.cameras.cameras[i].setViewport(0,0,this.dimensions.x, this.dimensions.y);
+      this.cameras.cameras[i].setViewport(0,0,w, h);
     }
   }
 
