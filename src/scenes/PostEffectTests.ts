@@ -12,7 +12,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
   testSprite: Phaser.GameObjects.TileSprite;
   shaders: { shader: BaseEffect; id: string }[];
 
-  buttons:Phaser.GameObjects.Text[];
+  buttons: Phaser.GameObjects.Text[];
 
   constructor() {
     super({
@@ -134,19 +134,19 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
         this.buttons = [];
 
         let links = ["SKILLS", "DEMOS", "EMAIL", "LinkedIN"];
-    
-        let fontStyle:any = {
+
+        let fontStyle: any = {
          fontFamily: "porticovintage",
          fontSize: "32px",
          color: "#ffffff",
          align: "center"
-    }
-        
-        for(var i = 0; i < links.length; i ++){
+    };
+
+        for (let i = 0; i < links.length; i ++) {
           this.buttons.push(
             this.add.text(0,0,links[i],fontStyle)
           );
-    
+
           this.buttons[i].setOrigin(0.5,0.5);
           this.buttons[i].setInteractive();
           this.buttons[i].on("pointerover", this.overBaseButton);
@@ -154,7 +154,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
         this.redraw();
 
   }
-  overBaseButton(e:PointerEvent,x:number, y:number,button:Phaser.GameObjects.Image){
+  overBaseButton(e: PointerEvent,x: number, y: number,button: Phaser.GameObjects.Image) {
     console.log(e, button);
   }
 
@@ -176,7 +176,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
   setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
     let bounds: BitmapTextSize = object.getTextBounds();
 
-    object.pipeline.setFloat2("resolution", bounds.global.x -this.dimensions.x, bounds.global.y -this.dimensions.y);
+    object.pipeline.setFloat2("resolution", bounds.global.x - this.dimensions.x, bounds.global.y - this.dimensions.y);
     object.pipeline.setFloat2(
       "size",
       this.testFont.width / this.testFont.scaleX,
@@ -187,22 +187,22 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
 
 
-    
+
 
   }
 
-  redraw(gameSize?:{width:number, height:number}) {
+  redraw(gameSize?: {width: number, height: number}) {
 
-    if(!gameSize){
+    if (!gameSize) {
       return;
     }
 
-    console.log(gameSize)
-    
-    console.log(this.dimensions)
+    console.log(gameSize);
+
+    console.log(this.dimensions);
 
     if (this.testFont) {
-      this.testFont.x = this.dimensions.x*0.05;
+      this.testFont.x = this.dimensions.x * 0.05;
       this.testFont.y = this.dimensions.y / 5;
       this.testFont.setScale(bestFit(this.testFont.width / this.testFont.scaleX,this.testFont.height / this.testFont.scaleY,this.dimensions.x * 0.5, this.dimensions.y * 0.35));
       this.setUniformsForText(this.testFont);
@@ -222,10 +222,10 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     }
 
-    if(this.buttons && this.buttons.length > 0){
-      for(var i =0; i<this.buttons.length; i++){
-        this.buttons[i].y = this.dimensions.y*0.95;
-        this.buttons[i].x = (i+0.5) * this.dimensions.x / this.buttons.length+1;
+    if (this.buttons && this.buttons.length > 0) {
+      for (let i = 0; i < this.buttons.length; i++) {
+        this.buttons[i].y = this.dimensions.y * 0.95;
+        this.buttons[i].x = (i + 0.5) * this.dimensions.x / this.buttons.length + 1;
       }
     }
   }
@@ -252,4 +252,3 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
     super.shutdown();
   }
 }
- 

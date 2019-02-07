@@ -425,7 +425,7 @@ export class TextWrapper {
 }
 
 
-export function bestFit(currentWidth:number,currentHeight:number,maxWidth:number,maxHeight:number):number {
+export function bestFit(currentWidth: number,currentHeight: number,maxWidth: number,maxHeight: number): number {
   const w_scale = maxWidth / currentWidth;
   const h_scale = maxHeight / currentHeight;
   return Math.min(w_scale,h_scale);

@@ -6,7 +6,7 @@ export interface BaseSceneConfig {
 
 export interface IBaseScene {
   create: () => void;
-  redraw: (dimensions?:{width:number,height:number}) => void;
+  redraw: (dimensions?: {width: number,height: number}) => void;
 }
 
 export default class BaseScene extends Phaser.Scene implements IBaseScene {
@@ -41,7 +41,7 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
     this.events.on("sleep", this.sleep, this);
     this.events.on("wake", this.wake, this);
 
-    //@ts-ignore
+    // @ts-ignore
     this.scale.on("resize", this.redraw,this);
 
   }
@@ -57,9 +57,9 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
     }
   }
 
-  redraw(gameSize?:{width:number, height:number}) {
+  redraw(gameSize?: {width: number, height: number}) {
 
-    if(!gameSize){
+    if (!gameSize) {
       return;
     }
     this.dimensions.setTo(Math.floor(gameSize.width), Math.floor(gameSize.height));
