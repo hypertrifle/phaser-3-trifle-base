@@ -101,7 +101,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     this.background.setPipeline("fill");
 
-    // this.testSprite = this.add.tileSprite(0,this.dimensions.y - 209,this.dimensions.x,209,
+    // this.testSprite = this.add.tileSprite(0,this.game.scale.width - 209,this.game.scale.height,209,
     //   "atlas.png",
     //   "near-buildings-bg.png"
     // );
@@ -112,7 +112,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
         // // add our title
         this.testFont = this.add.dynamicBitmapText(
-          this.dimensions.x / 2,
+          this.game.scale.width / 2,
           30,
           "lazer",
           "SCOOP",
@@ -176,7 +176,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
   setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
     let bounds: BitmapTextSize = object.getTextBounds();
 
-    object.pipeline.setFloat2("resolution", bounds.global.x - this.dimensions.x, bounds.global.y - this.dimensions.y);
+    object.pipeline.setFloat2("resolution", bounds.global.x - this.game.scale.width, bounds.global.y - this.game.scale.height);
     object.pipeline.setFloat2(
       "size",
       this.testFont.width / this.testFont.scaleX,
@@ -191,43 +191,37 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
   }
 
-  redraw(gameSize?: {width: number, height: number}) {
+  redraw() {
+    super.redraw();
 
-    if (!gameSize) {
-      return;
-    }
-
-    // console.log(gameSize);
-
-    // console.log(this.dimensions);
+   // console.log(this.dimensions);
 
     if (this.testFont) {
-      this.testFont.x = this.dimensions.x * 0.05;
-      this.testFont.y = this.dimensions.y / 5;
-      this.testFont.setScale(bestFit(this.testFont.width / this.testFont.scaleX,this.testFont.height / this.testFont.scaleY,this.dimensions.x * 0.5, this.dimensions.y * 0.35));
-      this.setUniformsForText(this.testFont);
+      this.testFont.x = this.game.scale.width * 0.05;
+      this.testFont.y = this.game.scale.height / 5;
+      this.testFont.setScale(bestFit(this.testFont.width / this.testFont.scaleX,this.testFont.height / this.testFont.scaleY,this.game.scale.width * 0.5, this.game.scale.height * 0.35));
+      // this.setUniformsForText(this.testFont);
     }
 
 
 
     if (this.testSprite) {
-      this.testSprite.x = this.dimensions.x / 2;
-      this.testSprite.y = this.dimensions.y;
-      this.testSprite.width = this.dimensions.x * 2;
+      this.testSprite.x = this.game.scale.width / 2;
+      this.testSprite.y = this.game.scale.height;
+      this.testSprite.width = this.game.scale.width * 2;
 
     }
 
     if (this.background) {
-      this.background.fillStyle(0xff00aa,1);
       this.background.clear();
-      this.background.fillRect(0,0,this.dimensions.x, this.dimensions.y);
-
+      this.background.fillStyle(0xff00aa,1);
+      this.background.fillRect(0,0,this.game.scale.width, this.game.scale.height);
     }
 
     if (this.buttons && this.buttons.length > 0) {
       for (let i = 0; i < this.buttons.length; i++) {
-        this.buttons[i].y = this.dimensions.y * 0.95;
-        this.buttons[i].x = (i + 0.5) * this.dimensions.x / this.buttons.length + 1;
+        this.buttons[i].y = this.game.scale.height * 0.95;
+        this.buttons[i].x = (i + 0.5) * this.game.scale.width / this.buttons.length + 1;
       }
     }
   }
@@ -239,6 +233,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     for (let i = 0; i < this.shaders.length; i++) {
       this.shaders[i].shader.setFloat1("time", this.shaderTime);
+      this.shaders[i].shader.resize(this.game.scale.width, this.game.scale.height, this.game.scale.resolution);
 
       // this.setText(Math.random().toString());
     }

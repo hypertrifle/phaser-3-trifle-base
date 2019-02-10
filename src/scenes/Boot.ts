@@ -80,42 +80,12 @@ export default class Boot extends BaseScene {
   }
 
 
-  resize(
-    gameSize: any,
-    baseSize: any,
-    displaySize: any,
-    resolution: any
-  ) {
 
-    let width = gameSize.width;
-    let height = gameSize.height;
-
-    this.tools.dimensions.setTo(width, height);
-
-    for (let i = 0; i <  this.cameras.cameras.length; i ++) {
-      this.cameras.cameras[i].setSize(width, height);
-    }
-
-    // for (let prop in (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).pipelines) {
-    //   // @ts-ignore
-    //   (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).pipelines[prop].width = width;
-    //   // @ts-ignore
-    //   (this.game.renderer as Phaser.Renderer.WebGL.WebGLRenderer).pipelines[prop].width = width;
-    // }
-
-
-
-
-
-    console.log("Boot::Resize", this.game.renderer);
-
-
-}
 
   create() {
     // global resizeHandler now handled here:
     this.cameras.main.setBackgroundColor(0x00FFaa);
-    this.game.scale.on("resize", this.resize,this);
+
     console.log("Boot::create::start");
 
     // this.webFontsLoaded();

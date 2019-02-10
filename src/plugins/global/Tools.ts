@@ -17,7 +17,6 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
     super(pluginManager);
 
     this.game = pluginManager.game;
-    this.dimensions = new Phaser.Geom.Point(0, 0);
 
     console.log("Tools::constructor");
 

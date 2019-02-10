@@ -11,7 +11,7 @@ export interface IBaseScene {
 
 export default class BaseScene extends Phaser.Scene implements IBaseScene {
   public tools: Tools;
-  public dimensions: Phaser.Geom.Point;
+  // public dimensions: Phaser.Geom.Point;
 
   constructor(config: BaseSceneConfig) {
     // default scene to inactive at start.
@@ -35,7 +35,6 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
     if (!this.tools) {
       this.tools = this.sys.plugins.get("tools") as Tools; // cast
     }
-    this.dimensions = this.tools.dimensions; // i think this is a reference.
 
     // listen to events.
     this.events.on("sleep", this.sleep, this);
@@ -58,7 +57,7 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
   }
 
   redraw(gameSize?: {width: number, height: number}) {
-
+    this.cameras.resize(this.game.scale.width,this.game.scale.height);
   }
 
   shutdown() {
