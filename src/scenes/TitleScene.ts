@@ -34,9 +34,7 @@ export default class TitleScreen extends BaseScene {
 
   create() {
     console.log(this.tools);
-    this.sceneDataModel = this.tools.data.getDataFor(
-      "titleScene"
-    ) as TitleSceneModel; // cast
+    // this.sceneDataModel = this.tools.data.title;
 
     // create a background layer for objects that exist in BG.
     this.backgroundLayer = new Phaser.GameObjects.Container(this);

@@ -1,6 +1,14 @@
 {"frames": [
 
 {
+	"filename": "blank.png",
+	"frame": {"x":1016,"y":2,"w":1,"h":1},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1,"h":1},
+	"sourceSize": {"w":1,"h":1}
+},
+{
 	"filename": "near-buildings-bg.png",
 	"frame": {"x":2,"y":68,"w":493,"h":209},
 	"rotated": false,
@@ -55,6 +63,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:3d77fd280eae63b44124bd224c91ed01:80304c40bdfac9ce3df364c460e7fb02:6e19d5344fcf9633293462ce49223046$"
+	"smartupdate": "$TexturePacker:SmartUpdate:013090986240ff9b9d45a5e76759faee:de31558574b4337736b74cbb4d2c69eb:6e19d5344fcf9633293462ce49223046$"
 }
 }

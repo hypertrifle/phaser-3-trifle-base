@@ -97,6 +97,9 @@ export default class Boot extends BaseScene {
       custom: {
         families: ["pixel", "porticovintage"]
       },
+      google: {
+        families: ["Roboto+Mono"]
+      },
       active: this.webFontsLoaded.bind(this),
       inactive: this.webFontsLoaded.bind(this, false)
     });

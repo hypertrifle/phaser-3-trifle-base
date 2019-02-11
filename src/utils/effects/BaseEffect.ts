@@ -40,6 +40,8 @@ export default class BaseEffect extends Phaser.Renderer.WebGL.Pipelines.TextureT
       return this._resolution;
     }
 
+   
+
 
      constructor(game: Phaser.Game,id: string, source: string, config?: any, vertexSource?: string ) {
 
@@ -55,7 +57,7 @@ export default class BaseEffect extends Phaser.Renderer.WebGL.Pipelines.TextureT
 
          // defaults
          this.time = 0;
-         this.res = {x: this.game.config.width as number, y: this.game.config.height as number};
+         this.res = {x: this.game.scale.width, y: this.game.scale.height};
 
 
 

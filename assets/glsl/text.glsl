@@ -112,8 +112,8 @@ float noisegen (in vec2 st) {
 
             vec4 strokeColour = vec4(1., 0.0, 1., colour.b);
             
-            // gl_FragColor =  mix(mix(col, mix(col2,col3,smoothstep(0.1,0.9,y_mix)),smoothstep(0.1,0.9,x_mix)),strokeColour, bounds);
-            gl_FragColor =  vec4(1.,1.,1.,col.a)*noise;
+            gl_FragColor =  mix(mix(col, mix(col2,col3,smoothstep(0.1,0.9,y_mix)),smoothstep(0.1,0.9,x_mix)),strokeColour, bounds);
+            // gl_FragColor =  vec4(position.x,position.y,1.,col.a)*noise;
 
         }
  

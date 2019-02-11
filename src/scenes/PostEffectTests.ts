@@ -66,6 +66,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     let textShader: RetroTextEffect = new RetroTextEffect(this.game, "text");
     let fullFillShader: WaveFillEffect = new WaveFillEffect(this.game,"fill");
+    
 
     this.shaders.push(
       {
@@ -85,7 +86,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
   testFont: Phaser.GameObjects.BitmapText;
   testFont2: Phaser.GameObjects.BitmapText;
-  background: Phaser.GameObjects.Graphics;
+  background: Phaser.GameObjects.TileSprite;
 
   create() {
     super.create();
@@ -94,10 +95,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
 
 
-    this.background = this.add.graphics({
-      x: 0,
-      y: 0
-    });
+    this.background = this.add.tileSprite(0, 0, this.game.scale.width, this.game.scale.width,"atlas.png", "blank.png").setOrigin(0);
 
     this.background.setPipeline("fill");
 
@@ -133,18 +131,17 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
         this.buttons = [];
 
-        let links = ["SKILLS", "DEMOS", "EMAIL", "LinkedIN"];
-
+       
         let fontStyle: any = {
-         fontFamily: "porticovintage",
-         fontSize: "32px",
+         fontFamily: "'Roboto Mono'",
+         fontSize: "28px",
          color: "#ffffff",
          align: "center"
     };
 
-        for (let i = 0; i < links.length; i ++) {
+        for (let i = 0; i < this.tools.data.content.pages.length; i ++) {
           this.buttons.push(
-            this.add.text(0,0,links[i],fontStyle)
+            this.add.text(0,0,this.tools.data.content.pages[i].label,fontStyle)
           );
 
           this.buttons[i].setOrigin(0.5,0.5);
@@ -165,7 +162,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
   set text(text: string) {
     this.testFont.text = text.toUpperCase();
     let bounds: BitmapTextSize = this.testFont.getTextBounds();
-    //  this.setUniformsForText(this.testFont);
+     this.setUniformsForText(this.testFont);
     this.redraw();
   }
 
@@ -176,7 +173,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
   setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
     let bounds: BitmapTextSize = object.getTextBounds();
 
-    object.pipeline.setFloat2("resolution", bounds.global.x - this.game.scale.width, bounds.global.y - this.game.scale.height);
+    object.pipeline.setFloat2("resolution", bounds.global.width/this.game.scale.resolution, bounds.global.height/this.game.scale.resolution);
     object.pipeline.setFloat2(
       "size",
       this.testFont.width / this.testFont.scaleX,
@@ -200,7 +197,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
       this.testFont.x = this.game.scale.width * 0.05;
       this.testFont.y = this.game.scale.height / 5;
       this.testFont.setScale(bestFit(this.testFont.width / this.testFont.scaleX,this.testFont.height / this.testFont.scaleY,this.game.scale.width * 0.5, this.game.scale.height * 0.35));
-      // this.setUniformsForText(this.testFont);
+
     }
 
 
@@ -213,9 +210,9 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
     }
 
     if (this.background) {
-      this.background.clear();
-      this.background.fillStyle(0xff00aa,1);
-      this.background.fillRect(0,0,this.game.scale.width, this.game.scale.height);
+      this.background.setSize(this.game.scale.width, this.game.scale.height);
+
+      console.log(this.background.getBounds());
     }
 
     if (this.buttons && this.buttons.length > 0) {
@@ -233,7 +230,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     for (let i = 0; i < this.shaders.length; i++) {
       this.shaders[i].shader.setFloat1("time", this.shaderTime);
-      this.shaders[i].shader.resize(this.game.scale.width, this.game.scale.height, this.game.scale.resolution);
+      this.shaders[i].shader.res = {x: this.game.scale.width,y: this.game.scale.height}
 
       // this.setText(Math.random().toString());
     }

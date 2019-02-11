@@ -108,22 +108,24 @@ float smoothNoise (in vec2 st) {
         {
             
 
+            vec2 position = outTexCoord/resolution;
+
             //our seperation vectors this will change when views chnage, but for now they are hard coded.
-            float hoirizonWobble1 = (sin(outTexCoord.x*2. + time*1.)*0.01); //TODO: smoothstep
-            float hoirizonWobble2 = (sin(outTexCoord.x*3. + time*2.)*0.03); //TODO: smoothstep
+            float hoirizonWobble1 = (sin(position.x*2. + time*1.)*0.01); //TODO: smoothstep
+            float hoirizonWobble2 = (sin(position.x*3. + time*2.)*0.03); //TODO: smoothstep
 
 
             //noise gives up some texture without loading anythign onto the GPU
-            float noise = max(0.,smoothNoise(outTexCoord*resolution)*1.);
+            float noise = max(0.,smoothNoise(position));
 
 
 
 
             //this is a blue to teal
             vec3 hsv3 = vec3( 
-                h2f( progress(161.,241.,outTexCoord.x)),
-                progress(0.65,1.,outTexCoord.x),
-                progress(0.62,0.87,outTexCoord.x)
+                h2f( progress(161.,241.,position.x)),
+                progress(0.65,1.,position.x),
+                progress(0.62,0.87,position.x)
             );
             //convert to RBG and apply out noise
             vec4 col3 = vec4(hsv2rgb(hsv3), noise); //top section
@@ -132,9 +134,9 @@ float smoothNoise (in vec2 st) {
 
             //this is our dark to purple grad
             vec3 hsv1 = vec3( 
-                h2f( progress(255.,268.,outTexCoord.x)),
-                progress(0.69,0.71,outTexCoord.x),
-                progress(0.3,0.51,outTexCoord.x)
+                h2f( progress(255.,268.,position.x)),
+                progress(0.69,0.71,position.x),
+                progress(0.3,0.51,position.x)
             );
             //convert to RBG and apply out noise
             vec4 col1 = vec4(hsv2rgb(hsv1), noise); //mid section
@@ -142,9 +144,9 @@ float smoothNoise (in vec2 st) {
 
             //this is a pinky purpley gradient
             vec3 hsv2 = vec3( 
-                h2f( progress(274.,320.,outTexCoord.x)),
+                h2f( progress(274.,320.,position.x)),
                 1.,
-                progress(0.62,0.72,outTexCoord.x)
+                progress(0.62,0.72,position.x)
             );
             //convert to RBG and apply out noise
             vec4 col2 = vec4(hsv2rgb(hsv2), noise); //bottom bar
@@ -152,8 +154,11 @@ float smoothNoise (in vec2 st) {
             
 
 
-            gl_FragColor = mix(col3, mix( col1, col2, sign(outTexCoord.y-(0.9+hoirizonWobble1))),sign(outTexCoord.y-(0.41+hoirizonWobble2)) );
+            gl_FragColor = mix(col3, mix( col1, col2, sign(position.y-(0.9+hoirizonWobble1))),sign(position.y-(0.41+hoirizonWobble2)) );
 
+
+
+        // gl_FragColor = vec4(0.,position.y,position.x,1.);
 
         }
  

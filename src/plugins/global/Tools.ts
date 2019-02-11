@@ -21,6 +21,7 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
     console.log("Tools::constructor");
 
     // we might need this in the boot / controller class.
+    pluginManager.install("_data", GameData, true, "_data");
     this.data = pluginManager.get("_data") as GameData;
 
     // boot up out HTMLUtils plugin and make it accessible, this is used for popups, forms as well as other non canvas / webGL content.
