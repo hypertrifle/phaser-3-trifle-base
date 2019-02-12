@@ -49,30 +49,30 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
     this.shaders = [];
 
     // create our background shader pipline.
-    let postShader: SheneEffect = new SheneEffect(this.game, "glint", {
-      speed: 5,
-      size: 0.5,
-      delay: 20,
-      colour: { r: 255, g: 100, b: 255 }
-    });
+    // let postShader: SheneEffect = new SheneEffect(this.game, "glint", {
+    //   speed: 5,
+    //   size: 0.5,
+    //   delay: 20,
+    //   colour: { r: 255, g: 100, b: 255 }
+    // });
 
-    if (this.tools.debugGUI) {
-    let postDebug = this.tools.debugGUI.addFolder("Glint");
-    postDebug.add(postShader, "size", 0, 0.4);
-    postDebug.add(postShader, "speed", 0, 5);
-    postDebug.add(postShader, "delay", 0, 10);
-    postDebug.addColor(postShader, "colour");
-    }
+    // if (this.tools.debugGUI) {
+    // let postDebug = this.tools.debugGUI.addFolder("Glint");
+    // postDebug.add(postShader, "size", 0, 0.4);
+    // postDebug.add(postShader, "speed", 0, 5);
+    // postDebug.add(postShader, "delay", 0, 10);
+    // postDebug.addColor(postShader, "colour");
+    // }
 
     let textShader: RetroTextEffect = new RetroTextEffect(this.game, "text");
     let fullFillShader: WaveFillEffect = new WaveFillEffect(this.game,"fill");
-    
+
 
     this.shaders.push(
-      {
-        shader: postShader,
-        id: "glint"
-      },
+      // {
+      //   shader: postShader,
+      //   id: "glint"
+      // },
       {
         shader: textShader,
         id: "text"
@@ -109,19 +109,19 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
 
         // // add our title
-        this.testFont = this.add.dynamicBitmapText(
-          this.game.scale.width / 2,
-          30,
-          "lazer",
-          "SCOOP",
-          128
-        );
+        // this.testFont = this.add.dynamicBitmapText(
+        //   this.game.scale.width / 2,
+        //   30,
+        //   "lazer",
+        //   "SCOOP",
+        //   128
+        // );
 
-        this.testFont.setCenterAlign();
-        this.testFont.letterSpacing += 10;
-        this.testFont.setOrigin(0.0, 0.5);
-        this.testFont.setPipeline("text");
-        this.text = "HYPER\nTRIFLE";
+        // this.testFont.setCenterAlign();
+        // this.testFont.letterSpacing += 10;
+        // this.testFont.setOrigin(0.0, 0.5);
+        // this.testFont.setPipeline("text");
+        // this.text = "SOME\nTEXT";
 
 
         if (this.tools.debugGUI) {
@@ -131,7 +131,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
         this.buttons = [];
 
-       
+
         let fontStyle: any = {
          fontFamily: "'Share Tech Mono'",
          fontSize: "22px",
@@ -173,7 +173,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
   setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
     let bounds: BitmapTextSize = object.getTextBounds();
 
-    object.pipeline.setFloat2("resolution", bounds.global.width/this.game.scale.resolution, bounds.global.height/this.game.scale.resolution);
+    object.pipeline.setFloat2("resolution", bounds.global.width / this.game.scale.resolution, bounds.global.height / this.game.scale.resolution);
     object.pipeline.setFloat2(
       "size",
       this.testFont.width / this.testFont.scaleX,
@@ -212,7 +212,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
     if (this.background) {
       this.background.setSize(this.game.scale.width, this.game.scale.height);
 
-      console.log(this.background.getBounds());
+      console.log(this.background);
     }
 
     if (this.buttons && this.buttons.length > 0) {
@@ -230,7 +230,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     for (let i = 0; i < this.shaders.length; i++) {
       this.shaders[i].shader.time = this.shaderTime;
-      this.shaders[i].shader.res = {x: this.game.scale.width,y: this.game.scale.height}
+      this.shaders[i].shader.res = {x: this.game.scale.width,y: this.game.scale.height};
 
       // this.setText(Math.random().toString());
     }
