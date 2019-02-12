@@ -133,8 +133,8 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
        
         let fontStyle: any = {
-         fontFamily: "'Roboto Mono'",
-         fontSize: "28px",
+         fontFamily: "'Share Tech Mono'",
+         fontSize: "22px",
          color: "#ffffff",
          align: "center"
     };
@@ -217,7 +217,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     if (this.buttons && this.buttons.length > 0) {
       for (let i = 0; i < this.buttons.length; i++) {
-        this.buttons[i].y = this.game.scale.height * 0.95;
+        this.buttons[i].y = this.game.scale.height - 20;
         this.buttons[i].x = (i + 0.5) * this.game.scale.width / this.buttons.length + 1;
       }
     }
@@ -229,7 +229,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
     this.shaderTime += delta / 1000;
 
     for (let i = 0; i < this.shaders.length; i++) {
-      this.shaders[i].shader.setFloat1("time", this.shaderTime);
+      this.shaders[i].shader.time = this.shaderTime;
       this.shaders[i].shader.res = {x: this.game.scale.width,y: this.game.scale.height}
 
       // this.setText(Math.random().toString());
