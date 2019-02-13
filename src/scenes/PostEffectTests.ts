@@ -189,7 +189,8 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
   }
 
   redraw() {
-    super.redraw();
+    this.cameras.resize(this.game.scale.width,this.game.scale.height);
+
 
    // console.log(this.dimensions);
 
@@ -211,6 +212,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     if (this.background) {
       this.background.setSize(this.game.scale.width, this.game.scale.height);
+      this
 
       console.log(this.background);
     }
@@ -225,12 +227,16 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
   update(time: number, delta: number) {
     super.update(time, delta);
+    this.redraw();
 
     this.shaderTime += delta / 1000;
 
     for (let i = 0; i < this.shaders.length; i++) {
-      this.shaders[i].shader.time = this.shaderTime;
-      this.shaders[i].shader.res = {x: this.game.scale.width,y: this.game.scale.height};
+      this.shaders[i].shader.setFloat1("time", this.shaderTime);
+      this.shaders[i].shader.setFloat2("resolution", this.game.scale.width, this.game.scale.height);
+  
+      // this.shaders[i].shader.time = this.shaderTime;
+      // this.shaders[i].shader.res = {x: this.game.scale.width,y: this.game.scale.height};
 
       // this.setText(Math.random().toString());
     }

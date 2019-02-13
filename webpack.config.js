@@ -111,7 +111,7 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
 
                 { from: 'assets/audio/*.mp3', to: '' },
                 { from: 'assets/audio/*.ogg', to: '' },
-                // { from: 'assets/img', to: 'assets/img' },
+                { from: 'assets/img', to: 'assets/img' },
                 
                 //any other supporting files.
                 // { from: 'server', to: '.' },

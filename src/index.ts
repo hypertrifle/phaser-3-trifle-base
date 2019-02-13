@@ -11,6 +11,7 @@ import PostEffectTestsScene from "./scenes/PostEffectTests";
 import TitleScreen from "./scenes/TitleScene";
 import PersistentScene from "./scenes/PersistentScene";
 import Tools from "./plugins/global/Tools";
+import ResizeTestState from "./scenes/ResizeTestState";
 
 
 
@@ -47,7 +48,7 @@ const config: GameConfig = {
   type: Phaser.WEBGL,
   width: window.innerWidth,
   height: window.innerHeight,
-  scene: [Boot, PostEffectTestsScene, PersistentScene], // we are going to use boot as our main controller, then an other states ew require after that.
+  scene: [Boot, ResizeTestState], // we are going to use boot as our main controller, then an other states ew require after that.
   plugins: {
     global: [
         { key: 'tools', plugin: Tools, start: true}

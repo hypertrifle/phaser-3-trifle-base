@@ -125,7 +125,7 @@ export default class Boot extends BaseScene {
     console.groupEnd();
 
     // TODO: Entry Point.
-    this.scene.run("PostEffectTestScene");
+    this.scene.run("ResizeTestState");
   }
 
   generateTiles() {}

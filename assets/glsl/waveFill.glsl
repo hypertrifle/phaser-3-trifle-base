@@ -6,8 +6,10 @@
    uniform float speed;
    uniform float size;
    uniform float delay;
-   uniform vec2 resolution;
+      uniform vec2 resolution;
    uniform vec3 colour;
+
+
 
 
    // second sampler if neeeeded.
@@ -42,9 +44,7 @@
         return mod(deg / 360.,1.);
     }
 
-    float progress(float min_value, float max_value, float progress){
-        return (max_value - min_value)*progress + min_value;
-    }
+   
     
 
     vec3 hsv2rgb(vec3 c)
@@ -103,6 +103,12 @@ float smoothNoise (in vec2 st) {
     //usually scales between 0-1 so the vec4(1.,0.,0.,1.) would be red.
     // when working with floats (which you will, you need the decimal point regardless).
     // http://www.shaderific.com/glsl-functions/ is a nice break down of what functions you can use when working with GLSL Shaders (supported by WebGL)
+
+
+
+     float progress(float min_value, float max_value, float progress){
+        return (max_value - min_value)*progress + min_value;
+    }
     
     void main(void)
         {
@@ -111,50 +117,60 @@ float smoothNoise (in vec2 st) {
             vec2 position = outTexCoord/resolution;
 
             //our seperation vectors this will change when views chnage, but for now they are hard coded.
+
+
+
             float hoirizonWobble1 = (sin(position.x*2. + time*1.)*0.01); //TODO: smoothstep
             float hoirizonWobble2 = (sin(position.x*3. + time*2.)*0.03); //TODO: smoothstep
 
+            float wobble1Slant = 0.9;
+            float wobble2Slant = 0.41;
+
 
             //noise gives up some texture without loading anythign onto the GPU
-            float noise = max(0.,smoothNoise(position));
-
-
-
+            float noise = 1. - random(resolution)*0.01;
 
             //this is a blue to teal
-            vec3 hsv3 = vec3( 
-                h2f( progress(161.,241.,position.x)),
-                progress(0.65,1.,position.x),
-                progress(0.62,0.87,position.x)
+            vec3 topHSV = vec3( 
+                h2f( progress(33.,41.,position.x)),
+                progress(0.09,0.30,position.x),
+                progress(0.92,0.87,position.x)
             );
             //convert to RBG and apply out noise
-            vec4 col3 = vec4(hsv2rgb(hsv3), noise); //top section
+            vec4 topColour = vec4(hsv2rgb(topHSV), 1.); //top section
 
             
 
             //this is our dark to purple grad
-            vec3 hsv1 = vec3( 
-                h2f( progress(255.,268.,position.x)),
-                progress(0.69,0.71,position.x),
-                progress(0.3,0.51,position.x)
+            vec3 middleHSV = vec3( 
+                h2f( progress(341.,357.,position.x)),
+                progress(0.37,0.22,position.x),
+                progress(0.73,0.81,position.x)
             );
             //convert to RBG and apply out noise
-            vec4 col1 = vec4(hsv2rgb(hsv1), noise); //mid section
+            vec4 middleColour = vec4(hsv2rgb(middleHSV), 1.); //mid section
 
 
             //this is a pinky purpley gradient
-            vec3 hsv2 = vec3( 
-                h2f( progress(274.,320.,position.x)),
-                1.,
-                progress(0.62,0.72,position.x)
+            vec3 bottomHSV = vec3( 
+                h2f( progress(235.,247.,position.x)),
+                progress(0.62,0.75,position.x),
+                progress(0.47,0.40,position.x)
             );
             //convert to RBG and apply out noise
-            vec4 col2 = vec4(hsv2rgb(hsv2), noise); //bottom bar
+            vec4 bottomColour = vec4(hsv2rgb(bottomHSV), noise); //bottom bar
 
+
+            float seperationOne = smoothstep(0.,0.002, position.y - progress(0.2,0.18,position.x) );
+
+            vec4 topCompound = mix(topColour,middleColour,seperationOne);
+
+            float seperationTwo = smoothstep(0.,0.001, position.y - progress(0.8,0.85,position.x) );
+
+
+            gl_FragColor = mix(topCompound, bottomColour, seperationTwo);
             
-
-
-            gl_FragColor = mix(col3, mix( col1, col2, sign(position.y-(0.9+hoirizonWobble1))),sign(position.y-(0.41+hoirizonWobble2)) );
+            //  mix(topColour, mix( middleColour, bottomColour, sign(position.y-(wobble1Slant+hoirizonWobble1))),sign(position.y-(wobble2Slant+hoirizonWobble2)) );
 
 
 
