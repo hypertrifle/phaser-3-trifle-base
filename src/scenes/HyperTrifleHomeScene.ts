@@ -1,5 +1,5 @@
 import BaseEffect from "../utils/effects/BaseEffect";
-import WaveFillEffect from "../utils/effects/WaveFillEffect";
+import WaveFillEffect, { Vec2 } from "../utils/effects/WaveFillEffect";
 import { Scene } from "phaser";
 import BaseScene from "./BaseScene";
 import { FontStyle } from "../models/FontModels";
@@ -9,11 +9,17 @@ const PADDING = 40;
 export default class HyperTrifleHomeScene extends BaseScene {
   shaderTime: number = 0;
   testSprite: Phaser.GameObjects.TileSprite;
-  backgroundShader: Phaser.Renderer.WebGL.Pipelines.TextureTintPipeline;
+  backgroundShader: WaveFillEffect;
   background: Phaser.GameObjects.TileSprite;
   buttons: Phaser.GameObjects.Text[];
   testText: Phaser.GameObjects.Text;
   testTextTitle: Phaser.GameObjects.Text;
+
+
+  targetBackgroundSizes:{top:Vec2, bottom:Vec2} ={
+    top: {x:0.4, y:0.275 },
+    bottom: {x:0.66, y:0.82 }
+  }
 
 
   constructor() {
@@ -21,6 +27,7 @@ export default class HyperTrifleHomeScene extends BaseScene {
       key: "HyperTrifleHomeScene",
       active: false
     });
+
   }
 
   preload(){
@@ -41,6 +48,41 @@ export default class HyperTrifleHomeScene extends BaseScene {
     this.addBaseUI();
     
     this.redraw();
+
+    this.backgroundShader.upperSplitPosition;
+
+    this.randomiseShaderInfo();
+  }
+
+  randomiseShaderInfo(){
+
+    let leftSpit = Math.floor(100*Math.random())/100;
+    let rightSplit = Math.floor(100*Math.random())/100;
+    let leftOffset = (1-leftSpit)*Math.floor(100*Math.random())/100;
+    let rightOffset = (1-rightSplit)*Math.floor(100*Math.random())/100;
+
+    let top = {x:leftOffset,y:rightOffset};
+    let bottom = {x:leftOffset+leftSpit, y:rightOffset+rightSplit };
+
+    
+    this.add.tween({
+      targets:this.targetBackgroundSizes.top,
+      x:top.x,
+      y:top.y,
+      ease: 'Sine.easeInOut',
+      duration: 8000,
+    })
+  
+    this.add.tween({
+      targets:this.targetBackgroundSizes.bottom,
+      x:bottom.x,
+      y:bottom.y,
+      duration: 8000,
+      delay:8000,
+      ease: 'Sine.easeInOut',
+      onComplete: this.randomiseShaderInfo.bind(this)
+    })
+  
   }
 
   wake(){
@@ -50,30 +92,31 @@ export default class HyperTrifleHomeScene extends BaseScene {
   addBaseUI(){
     this.buttons = [];
 
-    let fontStyle: FontStyle = {
-      fontFamily: "'Roboto Condensed'",
-      fontSize: "32px",
-      fontStyle:"bold",
-      color: "#fff",
-      align: "left"
- };
+//     let fontStyle: FontStyle = {
+//       fontFamily: "'Roboto Condensed'",
+//       fontSize: "32px",
+//       fontStyle:"bold",
+//       color: "#fff",
+//       align: "left"
+//  };
 
-     for (let i = this.tools.data.content.pages.length-1; i >= 0; i--) {
+    //  for (let i = this.tools.data.content.pages.length-1; i >= 0; i--) {
 
-       let button = this.add.text(0,0,this.tools.data.content.pages[i].label,fontStyle)
-       button.setOrigin(0,0.5);
-       button.setScale(0.5,0.5);
-       button.setInteractive();
-        button.input.cursor = "pointer";
-       button.on("pointerover", function(){
-         this.scene.overBaseButton(this);
-       });
+    //    let button = this.add.text(0,0,this.tools.data.content.pages[i].label,fontStyle)
+    //    button.setOrigin(0,0.5);
+    //    button.setInteractive();
+    //    button.input.cursor = "pointer";
        
-       button.on("pointerout", function(){
-        this.scene.outBaseButton(this);
-      });
-       this.buttons.push( button );
-     }
+    //    button.setScale(0.5,0.5);
+    //    button.on("pointerover", function(){
+    //      this.scene.overBaseButton(this);
+    //    });
+       
+    //    button.on("pointerout", function(){
+    //     this.scene.outBaseButton(this);
+    //   });
+    //    this.buttons.push( button );
+    //  }
 
      let fontStyle2: FontStyle = {
       fontFamily: "'Roboto Condensed'",
@@ -133,7 +176,8 @@ export default class HyperTrifleHomeScene extends BaseScene {
     this.cameras.resize(this.game.scale.width,this.game.scale.height);
     this.backgroundShader.setFloat1("time", this.shaderTime);
     this.backgroundShader.setFloat2("resolution", this.game.scale.width, this.game.scale.height);
-
+    this.backgroundShader.upperSplitPosition = this.targetBackgroundSizes.top;
+    this.backgroundShader.lowerSplitPosition = this.targetBackgroundSizes.bottom;
     if (this.background) {
       this.background.setSize(this.game.scale.width, this.game.scale.height);
     }
@@ -144,8 +188,8 @@ export default class HyperTrifleHomeScene extends BaseScene {
     if (this.buttons && this.buttons.length > 0) {
       for (let i = 0; i < this.buttons.length; i++) {
         
-        let h = ((i + 0.5) * this.game.scale.height / this.buttons.length + 1) * 0.2 +(this.game.scale.height*0.04);
-        this.buttons[i].y = this.game.scale.height - PADDING - h;
+        let h = (i * this.game.scale.height / this.buttons.length) * 0.25 +(this.game.scale.height*0.04);
+        this.buttons[i].y = this.game.scale.height - h ;
 
         this.buttons[i].x = PADDING;
       }

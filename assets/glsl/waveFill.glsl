@@ -45,7 +45,7 @@
 
     //a 360 hue to 0-1 float calc.
     float h2f(float deg){
-        return mod(deg / 360.,1.);
+        return fract(deg / 360.);
     }
 
    
@@ -122,15 +122,15 @@ float smoothNoise (in vec2 st) {
 
 
             //some small sine based wobble based on x position
-            float hoirizonWobble1 = (sin(position.x*2. + time*0.2)*0.01);
+            float hoirizonWobble1 = (sin(position.x*2. + time*0.6)*0.01);
             float hoirizonWobble2 = (sin(position.x + time*0.5)*0.015);
 
             
             //the position of the speperation between top and middle colour, smoothstep is for basic AA
-            float seperationOne = smoothstep(0.,0.002, position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x)+hoirizonWobble1 );
+            float seperationOne = smoothstep(0.,0.0015, position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x)+hoirizonWobble1 );
 
             //the position of the speperation between middle and bottom colour, smoothstep is for basic AA
-            float seperationTwo = smoothstep(0.,0.002, position.y - progress(lowerSplitPosition.x,lowerSplitPosition.y,position.x)+hoirizonWobble2 );
+            float seperationTwo = smoothstep(0.,0.0015, position.y - progress(lowerSplitPosition.x,lowerSplitPosition.y,position.x)+hoirizonWobble2 );
 
             //calculate some level of "shadowing" between sections, just to add depth, will be applied to the V component of our hsv colour
 

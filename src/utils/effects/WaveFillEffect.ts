@@ -18,8 +18,8 @@ export default class WaveFillEffect extends BaseEffect {
     private _colour: Vec3;
 
 
-    private _upperSplitPosition: Vec2;
-    private _lowerSplitPosition: Vec2;
+     _upperSplitPosition: Vec2;
+     _lowerSplitPosition: Vec2;
 
     set upperSplitPosition(i: Vec2){
         this._upperSplitPosition = i;
@@ -27,6 +27,7 @@ export default class WaveFillEffect extends BaseEffect {
 
     }
     get upperSplitPosition():Vec2{
+      console.log("get",this._upperSplitPosition);
       return this._upperSplitPosition;
     }
 

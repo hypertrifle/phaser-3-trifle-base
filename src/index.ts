@@ -15,7 +15,7 @@ import HyperTrifleHomeScene from "./scenes/HyperTrifleHomeScene";
 
 
 
-export const DEBUG = true;
+export const DEBUG = false;
 
 // when the page is loaded, create our game instance (entry point, this is what will change per tech)
 window.onload = () => {
@@ -34,8 +34,8 @@ const config: GameConfig = {
     width: '100%',
     height: '100%'
 },
-  resolution: 1,  // this this works with sprites and omage but not with bitmap font
-  fps: {
+// resolution: 1/window.devicePixelRatio, 
+fps: {
     min: 30,
     target: 60
   },

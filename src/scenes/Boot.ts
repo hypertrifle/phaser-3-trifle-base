@@ -124,6 +124,10 @@ export default class Boot extends BaseScene {
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();
 
+    console.log("DPI:", window.devicePixelRatio);
+
+    // this.cameras.main.zoom = 1/window.devicePixelRatio;
+
     // TODO: Entry Point.
     this.scene.run("HyperTrifleHomeScene");
   }
