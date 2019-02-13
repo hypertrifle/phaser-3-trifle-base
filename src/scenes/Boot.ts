@@ -84,7 +84,7 @@ export default class Boot extends BaseScene {
 
   create() {
     // global resizeHandler now handled here:
-    this.cameras.main.setBackgroundColor(0x00FFaa);
+    // this.cameras.main.setBackgroundColor(0x00FFaa);
 
     console.log("Boot::create::start");
 

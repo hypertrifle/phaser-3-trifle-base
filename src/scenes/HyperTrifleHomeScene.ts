@@ -56,10 +56,10 @@ export default class HyperTrifleHomeScene extends BaseScene {
 
   randomiseShaderInfo(){
 
-    let leftSpit = Math.floor(100*Math.random())/100;
-    let rightSplit = Math.floor(100*Math.random())/100;
-    let leftOffset = (1-leftSpit)*Math.floor(100*Math.random())/100;
-    let rightOffset = (1-rightSplit)*Math.floor(100*Math.random())/100;
+    let leftSpit = Math.max(Math.random(),0.5);
+    let rightSplit =Math.max(Math.random(),0.5);
+    let leftOffset = (1-leftSpit)*Math.random();
+    let rightOffset = (1-rightSplit)*Math.random();
 
     let top = {x:leftOffset,y:rightOffset};
     let bottom = {x:leftOffset+leftSpit, y:rightOffset+rightSplit };
@@ -70,6 +70,7 @@ export default class HyperTrifleHomeScene extends BaseScene {
       x:top.x,
       y:top.y,
       ease: 'Sine.easeInOut',
+      delay:8000,
       duration: 8000,
     })
   
