@@ -38,6 +38,7 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
     // listen to events.
     this.events.on("sleep", this.sleep, this);
     this.events.on("wake", this.wake, this);
+    this.events.on("start", this.wake, this);
 
   }
 

@@ -42,7 +42,7 @@ const config: GameConfig = {
 
   render: {
     antialias: true,
-    roundPixels: true
+    roundPixels: false
 
   },
   type: Phaser.WEBGL,

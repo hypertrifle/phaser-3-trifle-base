@@ -124,15 +124,9 @@ float smoothNoise (in vec2 st) {
 
 
 
-            float hoirizonWobble1 = (sin(position.x*2. + time*1.)*0.01); //TODO: smoothstep
-            float hoirizonWobble2 = (sin(position.x*3. + time*2.)*0.03); //TODO: smoothstep
-
-            float wobble1Slant = 0.9;
-            float wobble2Slant = 0.41;
-
 
             //noise gives up some texture without loading anythign onto the GPU
-            float noise = smoothNoise(outTexCoord)*0.05;
+            float noise = smoothNoise(outTexCoord)*0.04;
 
             //this is a blue to teal
             vec3 topHSV = vec3( 
@@ -164,19 +158,19 @@ float smoothNoise (in vec2 st) {
             //convert to RBG and apply out noise
             vec4 bottomColour = vec4(hsv2rgb(bottomHSV), 1.); //bottom bar
 
+            float hoirizonWobble1 = (sin(position.x*2. + time*0.2)*0.01); //TODO: smoothstep
+            float hoirizonWobble2 = (sin(position.x + time*0.5)*0.015); //TODO: smoothstep
 
-            float seperationOne = smoothstep(0.,0.002, position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x) );
+
+            float seperationOne = smoothstep(0.,0.002, position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x)+hoirizonWobble1 );
 
             vec4 topCompound = mix(topColour,middleColour,seperationOne);
 
-            float seperationTwo = smoothstep(0.,0.002, position.y - progress(lowerSplitPosition.x,lowerSplitPosition.y,position.x) );
+            float seperationTwo = smoothstep(0.,0.002, position.y - progress(lowerSplitPosition.x,lowerSplitPosition.y,position.x)+hoirizonWobble2 );
 
 
             gl_FragColor = mix(topCompound, bottomColour, seperationTwo);
             
-            //  mix(topColour, mix( middleColour, bottomColour, sign(position.y-(wobble1Slant+hoirizonWobble1))),sign(position.y-(wobble2Slant+hoirizonWobble2)) );
-
-
 
         // gl_FragColor = vec4(0.,position.y,position.x,1.);
 
