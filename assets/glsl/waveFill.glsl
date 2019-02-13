@@ -10,6 +10,10 @@
    uniform vec3 colour;
 
 
+   uniform vec2 upperSplitPosition;
+   uniform vec2 lowerSplitPosition;
+
+
 
 
    // second sampler if neeeeded.
@@ -128,13 +132,13 @@ float smoothNoise (in vec2 st) {
 
 
             //noise gives up some texture without loading anythign onto the GPU
-            float noise = 1. - random(resolution)*0.01;
+            float noise = smoothNoise(outTexCoord)*0.05;
 
             //this is a blue to teal
             vec3 topHSV = vec3( 
                 h2f( progress(33.,41.,position.x)),
                 progress(0.09,0.30,position.x),
-                progress(0.92,0.87,position.x)
+                progress(0.92,0.87,position.x)+noise
             );
             //convert to RBG and apply out noise
             vec4 topColour = vec4(hsv2rgb(topHSV), 1.); //top section
@@ -145,7 +149,7 @@ float smoothNoise (in vec2 st) {
             vec3 middleHSV = vec3( 
                 h2f( progress(341.,357.,position.x)),
                 progress(0.37,0.22,position.x),
-                progress(0.73,0.81,position.x)
+                progress(0.73,0.81,position.x)+noise
             );
             //convert to RBG and apply out noise
             vec4 middleColour = vec4(hsv2rgb(middleHSV), 1.); //mid section
@@ -155,17 +159,17 @@ float smoothNoise (in vec2 st) {
             vec3 bottomHSV = vec3( 
                 h2f( progress(235.,247.,position.x)),
                 progress(0.62,0.75,position.x),
-                progress(0.47,0.40,position.x)
+                progress(0.47,0.40,position.x)+noise
             );
             //convert to RBG and apply out noise
-            vec4 bottomColour = vec4(hsv2rgb(bottomHSV), noise); //bottom bar
+            vec4 bottomColour = vec4(hsv2rgb(bottomHSV), 1.); //bottom bar
 
 
-            float seperationOne = smoothstep(0.,0.002, position.y - progress(0.2,0.18,position.x) );
+            float seperationOne = smoothstep(0.,0.002, position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x) );
 
             vec4 topCompound = mix(topColour,middleColour,seperationOne);
 
-            float seperationTwo = smoothstep(0.,0.001, position.y - progress(0.8,0.85,position.x) );
+            float seperationTwo = smoothstep(0.,0.002, position.y - progress(lowerSplitPosition.x,lowerSplitPosition.y,position.x) );
 
 
             gl_FragColor = mix(topCompound, bottomColour, seperationTwo);

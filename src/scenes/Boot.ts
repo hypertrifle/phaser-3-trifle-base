@@ -125,7 +125,7 @@ export default class Boot extends BaseScene {
     console.groupEnd();
 
     // TODO: Entry Point.
-    this.scene.run("ResizeTestState");
+    this.scene.run("HyperTrifleHomeScene");
   }
 
   generateTiles() {}
