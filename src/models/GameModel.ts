@@ -42,7 +42,7 @@ export class ContentModel {
       }
     ];
 
-  testParagraph:string = "Sunt vel porro saepe voluptatibus molestias qui eaque. Quae cumque cumque et unde consequatur. Quidem eius repellat dolores rerum eveniet laudantium earum odio et. Dolore sint sunt nam ut natus ut commodi deserunt autem. Voluptatum beatae totam qui.";
+  testParagraph:string = "Sunt vel porro saepe voluptatibus molestias qui eaque. Quae cumque cumque et unde consequatur. Quidem eius repellat dolores rerum eveniet laudantium earum odio et. ";
 
 
   testTitle:string = "Quae repellat labore atque culpa et.";

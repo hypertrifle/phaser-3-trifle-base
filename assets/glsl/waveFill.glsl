@@ -120,10 +120,28 @@ float smoothNoise (in vec2 st) {
 
             vec2 position = outTexCoord/resolution;
 
-            //our seperation vectors this will change when views chnage, but for now they are hard coded.
 
+            //some small sine based wobble based on x position
+            float hoirizonWobble1 = (sin(position.x*2. + time*0.2)*0.01);
+            float hoirizonWobble2 = (sin(position.x + time*0.5)*0.015);
 
+            
+            //the position of the speperation between top and middle colour, smoothstep is for basic AA
+            float seperationOne = smoothstep(0.,0.002, position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x)+hoirizonWobble1 );
 
+            //the position of the speperation between middle and bottom colour, smoothstep is for basic AA
+            float seperationTwo = smoothstep(0.,0.002, position.y - progress(lowerSplitPosition.x,lowerSplitPosition.y,position.x)+hoirizonWobble2 );
+
+            //calculate some level of "shadowing" between sections, just to add depth, will be applied to the V component of our hsv colour
+
+            float shadowIntesity = 0.08;
+            float shadowHeight = 0.025;
+            
+            float sep1Shadow = smoothstep(-shadowHeight,0., position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x)+hoirizonWobble1 )*shadowIntesity;
+
+            float sep2Shadow = smoothstep(-shadowHeight,0., position.y - progress(lowerSplitPosition.x,lowerSplitPosition.y,position.x)+hoirizonWobble2 )*shadowIntesity;
+
+            
 
             //noise gives up some texture without loading anythign onto the GPU
             float noise = smoothNoise(outTexCoord)*0.04;
@@ -132,8 +150,14 @@ float smoothNoise (in vec2 st) {
             vec3 topHSV = vec3( 
                 h2f( progress(33.,41.,position.x)),
                 progress(0.09,0.30,position.x),
-                progress(0.92,0.87,position.x)+noise
+                progress(0.92,0.87,position.x)+noise - sep1Shadow
             );
+
+            // topHSV.z -= sep1Shadow;
+
+
+
+
             //convert to RBG and apply out noise
             vec4 topColour = vec4(hsv2rgb(topHSV), 1.); //top section
 
@@ -143,7 +167,7 @@ float smoothNoise (in vec2 st) {
             vec3 middleHSV = vec3( 
                 h2f( progress(341.,357.,position.x)),
                 progress(0.37,0.22,position.x),
-                progress(0.73,0.81,position.x)+noise
+                progress(0.73,0.81,position.x)+noise - sep2Shadow
             );
             //convert to RBG and apply out noise
             vec4 middleColour = vec4(hsv2rgb(middleHSV), 1.); //mid section
@@ -158,17 +182,12 @@ float smoothNoise (in vec2 st) {
             //convert to RBG and apply out noise
             vec4 bottomColour = vec4(hsv2rgb(bottomHSV), 1.); //bottom bar
 
-            float hoirizonWobble1 = (sin(position.x*2. + time*0.2)*0.01); //TODO: smoothstep
-            float hoirizonWobble2 = (sin(position.x + time*0.5)*0.015); //TODO: smoothstep
 
 
-            float seperationOne = smoothstep(0.,0.002, position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x)+hoirizonWobble1 );
-
+            //MIX TOP AND MIDDLE COLOURS
             vec4 topCompound = mix(topColour,middleColour,seperationOne);
 
-            float seperationTwo = smoothstep(0.,0.002, position.y - progress(lowerSplitPosition.x,lowerSplitPosition.y,position.x)+hoirizonWobble2 );
-
-
+            ///MIX IN BOTTOM COLOUR
             gl_FragColor = mix(topCompound, bottomColour, seperationTwo);
             
 
