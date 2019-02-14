@@ -4,7 +4,9 @@ import { Scene } from "phaser";
 import BaseScene from "./BaseScene";
 import { FontStyle } from "../models/FontModels";
 
-const PADDING = 40;
+const DPI =window.devicePixelRatio;
+const PADDING = 40*DPI;
+
 
 export default class HyperTrifleHomeScene extends BaseScene {
   shaderTime: number = 0;
@@ -121,11 +123,11 @@ export default class HyperTrifleHomeScene extends BaseScene {
 
      let fontStyle2: FontStyle = {
       fontFamily: "'Roboto Condensed'",
-      fontSize: "32px",
+      fontSize: (32*DPI)+"px",
       // fontStyle:"bold",
       color: "#000000",
       align: "right",
-      wordWrap: { width: 520 }
+      wordWrap: { width: 520*DPI }
  };
 
  this.testText = this.add.text(this.game.scale.width-PADDING,PADDING,this.tools.data.content.testParagraph,fontStyle2);
@@ -134,11 +136,11 @@ export default class HyperTrifleHomeScene extends BaseScene {
 
  let fontStyle3: FontStyle = {
   fontFamily: "'Roboto Condensed'",
-  fontSize: "32px",
+  fontSize: (32*DPI)+"px",
   fontStyle:"bold",
   color: "#000000",
   align: "right",
-  wordWrap: { width: 520 }
+  wordWrap: { width: 520*DPI }
 };
 
  this.testTextTitle = this.add.text(this.game.scale.width-PADDING,PADDING,this.tools.data.content.testTitle,fontStyle3);
@@ -174,7 +176,7 @@ export default class HyperTrifleHomeScene extends BaseScene {
   
 
   redraw() {
-    this.cameras.resize(this.game.scale.width,this.game.scale.height);
+    this.cameras.resize(this.game.scale.width*this.game.scale.resolution,this.game.scale.height*this.game.scale.resolution);
     this.backgroundShader.setFloat1("time", this.shaderTime);
     this.backgroundShader.setFloat2("resolution", this.game.scale.width, this.game.scale.height);
     this.backgroundShader.upperSplitPosition = this.targetBackgroundSizes.top;

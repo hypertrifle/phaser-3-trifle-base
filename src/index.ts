@@ -78,12 +78,14 @@ fps: {
 
   let container = document.getElementById("container");
 
-  /// this works for now, fills our game to it's container, will work with scaling, centering and other optins within the scale amanager
-  config.width = container.clientWidth;
-  config.height = container.clientHeight;
+  container.style.zoom = ""+(1/window.devicePixelRatio); //holy dpi batman
+
+
 
   if (DEBUG)
   console.log("final game config",config);
+
+
 
   let game = new Phaser.Game(config); // finally launch our game.
 };
