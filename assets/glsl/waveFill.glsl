@@ -114,20 +114,33 @@ float smoothNoise (in vec2 st) {
         return (max_value - min_value)*progress + min_value;
     }
 
-    float gridProjection(vec2 position)
 
-{
+    float gridProjection(vec2 position){
 
+    //add slant
+    position.y += (position.y*0.8);
+    position.x += (position.y*0.4);
 
+    position.x *= 1.05;
+
+    //add vanishing point
+    // position.x *= 1.-(position.y*0.4);
 
 
 
     vec2 transformMovement = vec2(-time,2.*time);
-    vec2 grid = sin(position*resolution*0.2 + transformMovement);
+    vec2 grid = sin(position*resolution*0.1 + transformMovement);
 	float dist = max(grid.x, grid.y);
 
 	// return the result
-	return smoothstep(0.96,1.,dist);
+	return smoothstep(0.9,1.,dist);// + smoothNoise(position*resolution*0.7 + transformMovement)*0.2;
+}
+
+
+vec3 scanline(vec2 coord, vec3 screen)
+{
+  screen.rgb -= sin((coord.y*(0.9/1.) + (time * 2.0)))* 0.07;
+  return screen;
 }
     
     void main(void)
@@ -162,6 +175,9 @@ float smoothNoise (in vec2 st) {
             //noise gives up some texture without loading anythign onto the GPU
             float noise = smoothNoise(outTexCoord/1.3)*smoothNoise(outTexCoord/1.2)*-0.1;
 
+            vec2 movement = +vec2(-time,2.*time)*resolution;
+            float noiseBase = smoothNoise((outTexCoord+movement)/1.3)*smoothNoise((outTexCoord+movement)+vec2(-time,2.*time)/1.2)*-0.1;
+
             //this is a blue to teal
             vec3 topHSV = vec3( 
                 h2f( progress(33.,41.,position.x)),
@@ -193,13 +209,13 @@ float smoothNoise (in vec2 st) {
             vec3 bottomHSV = vec3( 
                 h2f( progress(235.,247.,position.x)),
                 progress(0.62,0.75,position.x),
-                progress(0.47,0.40,position.x)+noise
+                progress(0.47,0.40,position.x)+noiseBase
             );
 
 
-            	// We set the blue component of the result based on the IsGridLine() function
-	            bottomHSV.z += gridProjection(position);
-                bottomHSV.x += (gridProjection(position)*0.1);
+            // We set the blue component of the result based on the IsGridLine() function
+            bottomHSV.z += gridProjection(position);
+            bottomHSV.x += (gridProjection(position)*0.1);
 
 
 
@@ -207,6 +223,7 @@ float smoothNoise (in vec2 st) {
             //convert to RBG and apply out noise
             vec4 bottomColour = vec4(hsv2rgb(bottomHSV), 1.); //bottom bar
 
+            bottomColour.rgb = scanline(position*resolution,bottomColour.rgb);
 
 
 
