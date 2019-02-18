@@ -113,6 +113,22 @@ float smoothNoise (in vec2 st) {
      float progress(float min_value, float max_value, float progress){
         return (max_value - min_value)*progress + min_value;
     }
+
+    float gridProjection(vec2 position)
+
+{
+
+
+
+
+
+    vec2 transformMovement = vec2(-time,2.*time);
+    vec2 grid = sin(position*resolution*0.2 + transformMovement);
+	float dist = max(grid.x, grid.y);
+
+	// return the result
+	return smoothstep(0.96,1.,dist);
+}
     
     void main(void)
         {
@@ -134,7 +150,7 @@ float smoothNoise (in vec2 st) {
 
             //calculate some level of "shadowing" between sections, just to add depth, will be applied to the V component of our hsv colour
 
-            float shadowIntesity = 0.08;
+            float shadowIntesity = 0.16;
             float shadowHeight = 0.025;
             
             float sep1Shadow = smoothstep(-shadowHeight,0., position.y - progress(upperSplitPosition.x,upperSplitPosition.y,position.x)+hoirizonWobble1 )*shadowIntesity;
@@ -144,7 +160,7 @@ float smoothNoise (in vec2 st) {
             
 
             //noise gives up some texture without loading anythign onto the GPU
-            float noise = smoothNoise(outTexCoord)*0.04;
+            float noise = smoothNoise(outTexCoord/1.3)*smoothNoise(outTexCoord/1.2)*-0.1;
 
             //this is a blue to teal
             vec3 topHSV = vec3( 
@@ -179,8 +195,19 @@ float smoothNoise (in vec2 st) {
                 progress(0.62,0.75,position.x),
                 progress(0.47,0.40,position.x)+noise
             );
+
+
+            	// We set the blue component of the result based on the IsGridLine() function
+	            bottomHSV.z += gridProjection(position);
+                bottomHSV.x += (gridProjection(position)*0.1);
+
+
+
+
             //convert to RBG and apply out noise
             vec4 bottomColour = vec4(hsv2rgb(bottomHSV), 1.); //bottom bar
+
+
 
 
 

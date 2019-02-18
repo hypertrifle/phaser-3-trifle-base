@@ -23,13 +23,12 @@
   "devDependencies": {
     "@types/dat.gui": "^0.7.2",
     "@types/stats.js": "^0.17.0",
-    "babel-loader": "^7.1.4",
+    "@types/webfontloader": "^1.6.29",
     "ts-loader": "^5.3.2",
     "typescript-json-schema": "^0.34.0",
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "@types/webfontloader": "^1.6.29",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "copy-webpack-plugin": "^4.5.2",

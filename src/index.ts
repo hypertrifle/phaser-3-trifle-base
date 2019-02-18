@@ -77,7 +77,7 @@ fps: {
 
 
   let container = document.getElementById("container");
-
+  // container.style.transform = "scale("+(1/window.devicePixelRatio)+")";
   container.style.zoom = ""+(1/window.devicePixelRatio); //holy dpi batman
 
 
