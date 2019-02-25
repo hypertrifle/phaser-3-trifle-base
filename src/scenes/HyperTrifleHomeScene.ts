@@ -16,6 +16,7 @@ export default class HyperTrifleHomeScene extends BaseScene {
   buttons: Phaser.GameObjects.Text[];
   testText: Phaser.GameObjects.Text;
   testTextTitle: Phaser.GameObjects.Text;
+  title:Phaser.GameObjects.BitmapText;
 
 
   targetBackgroundSizes:{top:Vec2, bottom:Vec2} ={
@@ -34,6 +35,12 @@ export default class HyperTrifleHomeScene extends BaseScene {
 
   preload(){
     this.load.image("blank.png","assets/img/blank.png");
+    this.load.bitmapFont(
+      "lazer",
+      "assets/fonts/lazer_0.png",
+      "assets/fonts/lazer.fnt"
+    );
+
   }
 
   initShaders() {   
@@ -128,7 +135,8 @@ export default class HyperTrifleHomeScene extends BaseScene {
       color: "#000000",
       align: "right",
       wordWrap: { width: 520*DPI }
- };
+    };
+  
 
  this.testText = this.add.text(this.game.scale.width-PADDING,PADDING,this.tools.data.content.testParagraph,fontStyle2);
  this.testText.setOrigin(1,0);
@@ -147,7 +155,12 @@ export default class HyperTrifleHomeScene extends BaseScene {
  this.testTextTitle.setOrigin(1, 1);
  this.testTextTitle.setScale(0.5,0.5);
 
+ this.title = this.add.dynamicBitmapText(this.game.scale.width / 2, 30,  "lazer", "SCOOP",  128 );
 
+ this.title.setCenterAlign();
+ this.title.letterSpacing += 10;
+ this.title.setOrigin(0.0, 0.5);
+ this.title.setPipeline("text");
   }
 
   overBaseButton(button:Phaser.GameObjects.Text) {

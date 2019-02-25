@@ -1,12 +1,18 @@
    precision highp float;
 
+#define S(a,b,t) smoothstep(a,b,t)
+#define TWO_PI 6.28318530718
+#define MAX_LINES 128
+
+
    //the basics.
    uniform sampler2D uMainSampler;
    uniform float time;
    uniform float speed;
    uniform float size;
    uniform float delay;
-      uniform vec2 resolution;
+   uniform float dpi;
+   uniform vec2 resolution;
    uniform vec3 colour;
 
 
@@ -115,6 +121,18 @@ float smoothNoise (in vec2 st) {
     }
 
 
+    // float gridProjection(vec2 position){
+
+    //     vec2 zeroCenter = (position *2.)-1.;
+
+    //     zeroCenter = 
+
+    //     // vec2 transformMovement = vec2(-time,2.*time);
+
+    //     vec2 grid = sin(zeroCenter*resolution*0.05 + transformMovement)*1.;
+
+    //     return max(grid.x, grid.y);
+    // }
     float gridProjection(vec2 position){
 
     //add slant
@@ -129,11 +147,11 @@ float smoothNoise (in vec2 st) {
 
 
     vec2 transformMovement = vec2(-time,2.*time);
-    vec2 grid = sin(position*resolution*0.1 + transformMovement);
+    vec2 grid = sin(position*resolution*0.1 + transformMovement)*0.5;
 	float dist = max(grid.x, grid.y);
 
 	// return the result
-	return smoothstep(0.9,1.,dist);// + smoothNoise(position*resolution*0.7 + transformMovement)*0.2;
+	return smoothstep(0.32,0.75,dist)*2.;// + smoothNoise(position*resolution*0.7 + transformMovement)*0.2;
 }
 
 
@@ -141,6 +159,21 @@ vec3 scanline(vec2 coord, vec3 screen)
 {
   screen.rgb -= sin((coord.y*(0.9/1.) + (time * 2.0)))* 0.07;
   return screen;
+}
+
+float DistLine(vec2 p, vec2 a, vec2 b){
+	vec2 pa = p-a;
+    vec2 ba = b-a;
+    float t = clamp(dot(pa, ba)/dot(ba, ba),0., 1.);
+    return length(pa-ba*t);
+}
+
+
+float Line(vec2 p, vec2 a, vec2 b){
+	float d = DistLine(p,a,b);
+    float m = 0.5*S(.002,.00,d);
+    
+    return m;
 }
     
     void main(void)
@@ -201,9 +234,38 @@ vec3 scanline(vec2 coord, vec3 screen)
                 progress(0.37,0.22,position.x),
                 progress(0.73,0.81,position.x)+noise - sep2Shadow
             );
+
+            
+            vec2 uv = (outTexCoord-.5*resolution.xy)/resolution.y;
+
+            //float d = DistLine(uv, vec2(0), vec2(1));
+            float m = 0.;
+            
+            uv *=2.;
+            
+                float scaled_time = (time+5.)*0.3;
+            for(int i = 0;i<MAX_LINES;i++)
+            {
+                float j = float(i);
+                float max_lines = float(MAX_LINES);
+
+
+                // inner points
+                float x = 2.1*sin(scaled_time*.4)*sin((j*TWO_PI)/max_lines+scaled_time);
+                float y = 2.2*cos(scaled_time)*cos((j*TWO_PI)/max_lines+scaled_time);
+                // outer points
+                float x2 = 2.0*sin(scaled_time)*sin((j*TWO_PI)/max_lines+scaled_time*2.);
+                float y2 =2.3*cos((j*TWO_PI)/max_lines+scaled_time+.5);
+                m+=Line(uv,vec2(x,y),vec2(x2,y2));
+            }
+
+            middleHSV.z  += (m/2.);
+            middleHSV.x  -= (m/8.);
+
             //convert to RBG and apply out noise
             vec4 middleColour = vec4(hsv2rgb(middleHSV), 1.); //mid section
 
+            middleColour.rgb = scanline((position+scaled_time)*resolution,middleColour.rgb);
 
             //this is a pinky purpley gradient
             vec3 bottomHSV = vec3( 
