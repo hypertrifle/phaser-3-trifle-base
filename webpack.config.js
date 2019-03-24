@@ -10,7 +10,8 @@ const pkg = require("./package.json");
 
 //used to replace certain strings within out supporting files. (Title in html files, ID in imsmanafest.)
 const replacements = [
-    {from: "$title$", to:pkg.name}
+    {from: "$title$", to:pkg.name},
+    {from: "$author$", to:pkg.author}
 ]
 
 //this sessentially replaces the above replacements in supporting files such as index.html, imsmanefest etc.
@@ -28,7 +29,7 @@ function prepareJSONFiles(content) {
 
 module.exports = {
     // mode: 'production',
-    entry: './src/index.ts',
+    entry: './src/client/index.ts',
 
     // optimization: {
     //     minimizer: [

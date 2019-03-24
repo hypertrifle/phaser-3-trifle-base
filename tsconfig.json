@@ -14,7 +14,7 @@
         "./phaser.d.ts"
   ],
   "include": [
-        "src/**/*.ts"
+        "src/**/*.ts", "KEEP/FontModels.ts"
     ],
     "exclude": [
         "node_modules",
