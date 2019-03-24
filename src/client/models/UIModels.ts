@@ -30,3 +30,13 @@ export default class UIModel {
   settings: UISettings;
   buttons: ButtonSettings;
 }
+
+/* small so just whack it here */
+export class ScalingModel {
+  resizeToParent: boolean = true; // priority.
+  expandToParent: boolean = true;
+  shouldForceOrientationOnMobile: boolean = true;
+  shouldForceLandscaprOnMobile: boolean = true;
+  maxWidth: number = undefined;
+  maxHeight: number = undefined;
+}

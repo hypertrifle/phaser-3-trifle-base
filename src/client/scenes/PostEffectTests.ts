@@ -1,10 +1,10 @@
 import BaseScene, { IBaseScene } from "./BaseScene";
-import SheneEffect from "../utils/effects/SheneEffect";
 import { GUI } from "dat.gui";
 import BaseEffect from "../utils/effects/BaseEffect";
 import RetroTextEffect from "../utils/effects/RetroTextEffects";
 import WaveFillEffect from "../utils/effects/WaveFillEffect";
 import { bestFit } from "../utils/Utils";
+
 
 export default class PostEffectTestsScene extends BaseScene implements IBaseScene {
   shaderTime: number = 0;

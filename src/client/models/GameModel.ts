@@ -48,12 +48,3 @@ export class ContentModel {
   testTitle:string = "Quae repellat labore atque culpa et.";
 }
 
-/* small so just whack it here */
-export class ScalingModel {
-  resizeToParent: boolean = true; // priority.
-  expandToParent: boolean = true;
-  shouldForceOrientationOnMobile: boolean = true;
-  shouldForceLandscaprOnMobile: boolean = true;
-  maxWidth: number = undefined;
-  maxHeight: number = undefined;
-}

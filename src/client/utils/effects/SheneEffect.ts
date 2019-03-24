@@ -1,44 +1,19 @@
 import BaseEffect from "./BaseEffect";
 // @ts-ignore
-const SOURCE = require('../../../assets/glsl/waveFill.glsl');
+const SOURCE = require('../../../../assets/glsl/shene.glsl');
 // @ts-ignore
 const glsl = require('glslify');
 
 export interface Vec3 {
    r: number;g: number;b: number;
 }
-export interface Vec2 {
-   x: number;y:number;
-}
 
-export default class WaveFillEffect extends BaseEffect {
+export default class SheneEffect extends BaseEffect {
 
     private _speed: number = 1;
     private _size: number = 0.02;
+    private _delay: number = 2;
     private _colour: Vec3;
-
-
-     _upperSplitPosition: Vec2;
-     _lowerSplitPosition: Vec2;
-
-    set upperSplitPosition(i: Vec2){
-        this._upperSplitPosition = i;
-      this.setFloat2("upperSplitPosition",this._upperSplitPosition.x,this._upperSplitPosition.y);
-
-    }
-    get upperSplitPosition():Vec2{
-      console.log("get",this._upperSplitPosition);
-      return this._upperSplitPosition;
-    }
-
-    set lowerSplitPosition(i: Vec2){
-        this._lowerSplitPosition = i;
-      this.setFloat2("lowerSplitPosition",this._lowerSplitPosition.x,this._lowerSplitPosition.y);
-
-    }
-    get lowerSplitPosition():Vec2{
-      return this._lowerSplitPosition;
-    }
 
 
     set colour(i: Vec3) {
@@ -76,6 +51,15 @@ export default class WaveFillEffect extends BaseEffect {
       return this._size;
     }
 
+    set delay(i: number) {
+      this._delay = i;
+      this.setFloat1("delay", this._delay);
+    }
+
+    get delay(): number {
+      return this._delay;
+    }
+
 
      constructor(game: Phaser.Game,id: string, config?: {size: number,speed: number,delay: number, colour: Vec3}) {
 
@@ -84,10 +68,8 @@ export default class WaveFillEffect extends BaseEffect {
        // init uniforms
          this.size = (config) ? config.size : 0.02;
          this.speed = (config) ? config.speed : 1.5;
+         this.delay = (config) ? config.delay : 2;
          this.colour = (config) ? config.colour : {r: 255,g: 255,b: 255};
-
-         this.upperSplitPosition = {x:0.4, y:0.275 };
-         this.lowerSplitPosition = {x:0.66, y:0.82 };
 
 
      }

@@ -1,3 +1,5 @@
+import { Scene } from "phaser";
+
 export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
   /**
    * @constructor Creates an instance of the HTMLUtils plugin (that handles any non phaser HTML based content / functionallity).
@@ -14,4 +16,33 @@ export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
 
     // TODO: parse and validate all of our popups and look for issues now?
   }
+
+  get support():boolean{
+    return (!window || !window.location || !window.location.hash );
+       
+   }
+ 
+ 
+   public postBoot(bootState: Scene) {
+    // this is called when all states and systems are loaded.
+ 
+ 
+    this.restoryHistoryFragment();
+ 
+ 
+   }
+ 
+   navigate(fragment:string){
+ 
+   }
+ 
+ 
+ 
+   restoryHistoryFragment(){
+    if (this.support && window.location.hash.length > 1) {
+       let target = window.location.hash.replace("#","");
+ 
+       }
+ 
+   }
 }

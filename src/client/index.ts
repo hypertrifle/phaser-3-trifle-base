@@ -12,6 +12,8 @@ import TitleScreen from "./scenes/TitleScene";
 import PersistentScene from "./scenes/PersistentScene";
 import Tools from "./plugins/global/Tools";
 import HyperTrifleHomeScene from "./scenes/HyperTrifleHomeScene";
+import SocketExmaplesScene from "./scenes/SocketExmaplesScene";
+import SocketIOPlugin from "./plugins/global/SocketIOPlugin";
 
 
 
@@ -48,10 +50,14 @@ fps: {
   type: Phaser.WEBGL,
   width: window.innerWidth,
   height: window.innerHeight,
-  scene: [Boot, HyperTrifleHomeScene], // we are going to use boot as our main controller, then an other states ew require after that.
+  scene: [Boot, SocketExmaplesScene], // we are going to use boot as our main controller, then an other states ew require after that.
   plugins: {
     global: [
         { key: 'tools', plugin: Tools, start: true}
+    ],
+    scene: [
+      { key: 'socket.io', plugin: SocketIOPlugin, start: true}
+
     ]
 },
   // these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.

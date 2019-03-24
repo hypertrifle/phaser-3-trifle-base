@@ -46,6 +46,8 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
     super.update(time, delta);
   }
 
+  
+
   sleep() {}
   wake() {
     if (!this.tools) {

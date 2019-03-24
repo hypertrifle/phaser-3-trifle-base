@@ -1,6 +1,6 @@
-import { ContentModel, ScalingModel } from "../../models/GameModel";
+import { ContentModel } from "../../models/GameModel";
 import SaveModel from "../../models/SaveModel";
-import UIModel from "../../models/UIModels";
+import UIModel, { ScalingModel } from "../../models/UIModels";
 
 /**
  * An ENUM to keep track of different Tracking modes that we can connect to.
@@ -24,24 +24,22 @@ enum TrackingMode {
 export default class GameData extends Phaser.Plugins.BasePlugin {
 
   save: SaveModel;
-  trackingMode: TrackingMode;
-  scaling: ScalingModel;
-  userInterface: UIModel;
+  trackingMode: TrackingMode = TrackingMode.Off;
+  scaling: ScalingModel = new ScalingModel();
+  userInterface: UIModel = new UIModel();;
+  
   fonts: Array<Phaser.GameObjects.TextStyle>;
+
+
   content: ContentModel;
  
   constructor(pluginManager: Phaser.Plugins.PluginManager) {
     super(pluginManager);
     console.log("GameData::constructor");
 
-    this.save = new SaveModel();
-    this.trackingMode = TrackingMode.Off;
-    this.scaling = new ScalingModel();
-    this.userInterface = new UIModel();
+    //just define your content or settings here, preferbly as classes, remember the pros of using getters and setters, inheritance and interfaces.
     this.content = new ContentModel();
-    
-    // this.fonts = new Array<()Phaser.GameObjects.TextStyle>;
-    
+       
   }
   /**
    * any unitilise function

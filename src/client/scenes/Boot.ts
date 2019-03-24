@@ -1,8 +1,7 @@
-import GameData from "../plugins/global/GameData";
-import Tools from "../plugins/global/Tools";
 import BaseScene from "./BaseScene";
 
 import * as WebFont from "webfontloader";
+import Tools from "../plugins/global/Tools";
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
 export default class Boot extends BaseScene {

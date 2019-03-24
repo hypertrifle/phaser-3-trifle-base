@@ -1,6 +1,6 @@
 import BaseEffect from "./BaseEffect";
 // @ts-ignore
-const SOURCE = require('../../../assets/glsl/shene.glsl');
+const SOURCE = require('../../../../assets/glsl/shene.glsl');
 
   // @ts-ignore
   // import SHENE from 'raw-loader!glslify-loader!../../assets/glsl/shene.glsl';

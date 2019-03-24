@@ -1,8 +1,6 @@
-import BaseEffect from "../utils/effects/BaseEffect";
-import WaveFillEffect, { Vec2 } from "../utils/effects/WaveFillEffect";
 import { Scene } from "phaser";
 import BaseScene from "./BaseScene";
-import { FontStyle } from "../models/FontModels";
+import WaveFillEffect, { Vec2 } from "../utils/effects/WaveFillEffect";
 
 const DPI =window.devicePixelRatio;
 const PADDING = 40*DPI;
@@ -128,13 +126,14 @@ export default class HyperTrifleHomeScene extends BaseScene {
     //    this.buttons.push( button );
     //  }
 
-     let fontStyle2: FontStyle = {
+    //@ts-ignore - typscript defs for the text styles have not optional tags.
+     let fontStyle2: Phaser.GameObjects.TextStyle = {
       fontFamily: "'Roboto Condensed'",
       fontSize: (32*DPI)+"px",
       // fontStyle:"bold",
       color: "#000000",
       align: "right",
-      wordWrap: { width: 520*DPI }
+      fixedWidth : 520*DPI
     };
   
 
@@ -142,13 +141,15 @@ export default class HyperTrifleHomeScene extends BaseScene {
  this.testText.setOrigin(1,0);
  this.testText.setScale(0.5,0.5);
 
- let fontStyle3: FontStyle = {
+ 
+    //@ts-ignore - typscript defs for the text styles have not optional tags.
+ let fontStyle3: Phaser.GameObjects.TextStyle = {
   fontFamily: "'Roboto Condensed'",
   fontSize: (32*DPI)+"px",
   fontStyle:"bold",
   color: "#000000",
   align: "right",
-  wordWrap: { width: 520*DPI }
+  fixedWidth: 520*DPI
 };
 
  this.testTextTitle = this.add.text(this.game.scale.width-PADDING,PADDING,this.tools.data.content.testTitle,fontStyle3);

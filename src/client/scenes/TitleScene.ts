@@ -1,6 +1,3 @@
-import GameData from "../plugins/global/GameData";
-import Sponge from "../plugins/global/Tools";
-import { TitleSceneModel } from "../../KEEP/TitleSceneModel";
 import BaseScene from "./BaseScene";
 
 export default class TitleScreen extends BaseScene {
@@ -10,13 +7,15 @@ export default class TitleScreen extends BaseScene {
    * @type {TitleScreenModel}
    * @memberof TitleScreen
    */
-  sceneDataModel: TitleSceneModel;
+  sceneDataModel: any;
+
   constructor() {
     super({
       key: "TitleScene",
       active: false
     });
-    console.log("TitleScene::constructor");
+
+  console.log("TitleScene::constructor");
   }
 
   preload() {
@@ -30,6 +29,7 @@ export default class TitleScreen extends BaseScene {
    * @type {Phaser.GameObjects.Container}
    * @memberof TitleScreen
    */
+  
   backgroundLayer: Phaser.GameObjects.Container;
 
   create() {

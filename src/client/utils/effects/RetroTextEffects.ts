@@ -1,8 +1,8 @@
 import BaseEffect from "./BaseEffect";
 // @ts-ignore
-const SOURCE = require('../../../assets/glsl/text.glsl');
+const SOURCE = require('../../../../assets/glsl/text.glsl');
 // @ts-ignore
-const SOURCE_VERTEX = require('../../../assets/glsl/text_vert.glsl');
+const SOURCE_VERTEX = require('../../../../assets/glsl/text_vert.glsl');
 // @ts-ignore
 const glsl = require('glslify');
 
