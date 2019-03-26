@@ -1,6 +1,7 @@
 import { ServerAuthenticationController } from "./controllers/ServerAuthenticationController";
 import { RoomController } from "./controllers/RoomController";
 import { MessagerMiddlewareController as MessageMiddlewareController } from "./controllers/MessageMiddlewareController";
+import { IncomingMessage } from "http";
 
 const io:SocketIO.Server = require("socket.io");
 
@@ -42,6 +43,17 @@ server.on('disconnect', (socket:SocketIO.Socket) => {
 
 });
 
+//this is all your goona need
+server.on('response', (socket:SocketIO.Socket, request:RequestInfo) => 
+{
+   //pop to quuee for server expanadability.
+});
+
+//update respove and disptach required signalls
+
+
+
+
 
 
 
@@ -64,6 +76,9 @@ function restartServer(reason:string = "resart-request") {
    server = io.listen(5040); 
 
 }
+
+message(message:IRequestObject)
+message(message:IRequestObjec)
 
 //message helpers
 function rejectMessage(){

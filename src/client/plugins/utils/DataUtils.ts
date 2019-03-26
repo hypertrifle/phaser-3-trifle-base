@@ -8,7 +8,7 @@ export default class DataUtils {
   return encodeURIComponent(window.btoa(stringInput));
   }
 
-  static randomString(length: number, letterList: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") {
+  static quickHash(length: number = 10, letterList: string = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") {
 
     let text: string = "";
     for (let i = 0; i < length; i++)
@@ -18,11 +18,17 @@ export default class DataUtils {
 
   }
 
+  static reduceToDiff(orginal_object:any, new_object : any) {
+
+      
+
+  }
+
   static getTokenForKey(key: string) {
     let stored = localStorage.getItem(key);
 
     if (stored === null || stored === "") {
-      stored = this.randomString(10);
+      stored = this.quickHash(10);
       localStorage.setItem(key, stored);
     }
 
