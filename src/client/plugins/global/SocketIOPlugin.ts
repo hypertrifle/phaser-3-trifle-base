@@ -1,52 +1,24 @@
 import { Scene } from "phaser";
 import * as SocketIOCLient from 'socket.io-client';
 import DataUtils from "../utils/DataUtils";
+import { IRequestObject, RequestDestination, RequestState } from "../../../server/models/NetowrkRequest";
 
 export interface INetworkConnectionSettings {
-  host: string,
+  host: string;
 
 }
 
-export enum ClientDestination {
-  NONE = undefined,
-  ME = 0,
-  ROOM,
-  OTHERS_IN_ROOM,
-  ALL
-}
-
-export enum RequestState {
-  NONE = undefined,
-  PENDING = 0,
-  SENT,
-  COMPLETE,
-  FAILED,
-  CANCELLED
-}
-
-export interface IRequestObject {
-  key:string,
-  action: string,
-  packact?: any; //should be typed depending on action
-  respose?: any; //again should be typed depending on action
-  destination: ClientDestination,
-  onComplete?: (request?: IRequestObject) => void;
-  onFailed?: (request?: IRequestObject) => void;
-  state?: RequestState;
-  //todo:Mutantions?
-}
-
-//global properties for any connection model
+// global properties for any connection model
 export interface IGameStateDefaults {
-  uniqueID: string,
+  uniqueID: string;
 }
 
-//model of primatives, no instatiated models.
+// model of primatives, no instatiated models.
 export interface TestModel extends IGameStateDefaults {
   players: number[];
   options: {
     death: 2
-  }
+  };
 }
 
 // an instance of our model, add functionallity that can be infured from the model,
@@ -71,7 +43,7 @@ export default class SocketIOPlugin extends Phaser.Plugins.BasePlugin {
   private _requestQueue: IRequestObject[];
   private _resposeQueue: IRequestObject[];
 
-  //man we should be also able to handle multiple socket connections, but that can be added alter.
+  // man we should be also able to handle multiple socket connections, but that can be added alter.
   private _socket: SocketIOClient.Socket;
 
   public state: TestState = new TestState({
@@ -88,9 +60,9 @@ export default class SocketIOPlugin extends Phaser.Plugins.BasePlugin {
     this.game = pluginManager.game;
     console.log("SocketIOPlugin::constructor");
 
-   
 
-    StyleSheetList
+
+    StyleSheetList;
   }
 
 
@@ -103,41 +75,41 @@ export default class SocketIOPlugin extends Phaser.Plugins.BasePlugin {
     this.connect({
       host: "localhost",
       // port: 5040
-    })
+    });
 
     this._socket.on("respose",this.socketIn); // do I rallly need to bind?
-      
-  //finally connect    
-  this._socket.connect()
+
+  // finally connect
+  this._socket.connect();
 
   }
 
   requestAndSyncState() {
     this.request({
-      key:DataUtils.quickHash(),
+      key: DataUtils.quickHash(),
       action: "state-request",
-      destination: ClientDestination.ME,
+      destination: RequestDestination.SELF,
       onComplete: this.persisteGameState,
       onFailed: this.errorWithRequest.call(this, 0, "Failed to Sync")
-    })
+    });
   }
 
   persisteGameState(requestObject: IRequestObject) {
 
-    //almost definatly need error checking here.
+    // almost definatly need error checking here.
 
     this.state = Object.apply(this.state, requestObject.respose.state);
 
   }
 
-  errorWithRequest(level:number, reason: string|any){
+  errorWithRequest(level: number, reason: string|any) {
     console.warn("E:", reason);
   }
 
   request(requestObject: IRequestObject) {
 
     if (!this.socketAvalible) {
-      //mark as failed.
+      // mark as failed.
       requestObject.state = RequestState.CANCELLED;
       this._requestQueue.push(requestObject);
     }
@@ -159,33 +131,54 @@ export default class SocketIOPlugin extends Phaser.Plugins.BasePlugin {
 
 
   update() {
-    console.log("SocketUpdate")
+    console.log("SocketUpdate");
+    this.ResolveReqestQueue();
+    }
 
+  private ResolveReqestQueue() {
     if (this._requestQueue.length > 0) {
-      for (var i = 0; i < this._requestQueue.length; i++) {
+
+      // for each queue item
+      for (let i = 0; i < this._requestQueue.length; i++) {
 
         let serverAction: IRequestObject = this._requestQueue[i];
 
+        // depending on the state
         switch (serverAction.state) {
 
+          // we should emit
           case RequestState.PENDING:
             this.socketOut(serverAction);
-
             break;
+
+          // if previously sent, we should check to see if we have a respose.
           case RequestState.SENT:
-          //check fro requests
-          for(var r =0; this._resposeQueue.length; r++)
-          //check local reviece logs have returned sucesses. {
-            if(this._resposeQueue[r]
-              // compare objects? they are pointers raeally? or use a hash. 
-            )
-          }
 
+            // for each response
+            for (let r = 0; this._resposeQueue.length; r++)
+                this.matchAndResoveNetworkAction(this._requestQueue[i], this._resposeQueue[r]);
+
+          break;
+          default:
+          console.warn("UNKNOWN network connection state, ommiting", serverAction);
+          break;
         }
-
       }
     }
-  
+  }
+
+  private matchAndResoveNetworkAction(req: IRequestObject, res: IRequestObject): boolean {
+
+    if (req.key !== res.key) {
+      // these are not the same;
+      return false;
+    }
+
+    // this really should be the same request object, we just nee to confirm update status and apply any callbacks.
+
+    // if they match lets remove from repsonse queue to redoce duplucation.
+  }
+
 
   private socketOut(action: IRequestObject) {
     this._socket.send("request", action);
@@ -194,8 +187,8 @@ export default class SocketIOPlugin extends Phaser.Plugins.BasePlugin {
 
 
 
-  private socketIn(action: IRequestObject){
-    this._resposeQueue.push(action)
+  private socketIn(action: IRequestObject) {
+    this._resposeQueue.push(action);
   }
 
 

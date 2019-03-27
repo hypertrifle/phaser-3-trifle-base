@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "help": "node scripts/help.js",
-    "dev": "webpack-dev-server --mode development --open-page webpack-dev-server/build/ --hot --inline --config webpack.config.js --host 192.168.178.22",
+    "dev": "webpack-dev-server --mode development --open-page webpack-dev-server/build/ --hot --inline --config webpack.config.js",
     "build": "webpack --config webpack.config.js --mode production",
     "upgrade": "npm i --save phaser@latest && node scripts/update-ts-definitions.js",
     "build-ci": "webpack --config webpack.config.js --mode production --env.NODE_ENV=ci",

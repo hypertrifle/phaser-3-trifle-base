@@ -7,15 +7,15 @@
 
 import "phaser";
 import Boot from "./scenes/Boot";
+
 import PostEffectTestsScene from "./scenes/PostEffectTests";
 import TitleScreen from "./scenes/TitleScene";
 import PersistentScene from "./scenes/PersistentScene";
-import Tools from "./plugins/global/Tools";
 import HyperTrifleHomeScene from "./scenes/HyperTrifleHomeScene";
+
+import Tools from "./plugins/global/Tools";
 import SocketExmaplesScene from "./scenes/SocketExmaplesScene";
 import SocketIOPlugin from "./plugins/global/SocketIOPlugin";
-
-
 
 export const DEBUG = false;
 
@@ -36,7 +36,7 @@ const config: GameConfig = {
     width: '100%',
     height: '100%'
 },
-// resolution: 1/window.devicePixelRatio, 
+// resolution: 1/window.devicePixelRatio,
 fps: {
     min: 30,
     target: 60
@@ -84,7 +84,7 @@ fps: {
 
   let container = document.getElementById("container");
   // container.style.transform = "scale("+(1/window.devicePixelRatio)+")";
-  container.style.zoom = ""+(1/window.devicePixelRatio); //holy dpi batman
+  container.style.zoom = "" + (1 / window.devicePixelRatio); // holy dpi batman
 
 
 
@@ -93,5 +93,5 @@ fps: {
 
 
 
-  let game = new Phaser.Game(config); // finally launch our game.
+  new Phaser.Game(config); // finally launch our game.
 };

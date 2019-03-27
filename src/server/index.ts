@@ -1,90 +1,95 @@
 import { ServerAuthenticationController } from "./controllers/ServerAuthenticationController";
 import { RoomController } from "./controllers/RoomController";
-import { MessagerMiddlewareController as MessageMiddlewareController } from "./controllers/MessageMiddlewareController";
-import { IncomingMessage } from "http";
+import { IRequestObject } from "./models/NetowrkRequest";
+import NetworkEventQueue from "./controllers/NetworkEventQueue";
 
-const io:SocketIO.Server = require("socket.io");
+const io: SocketIO.Server = require("socket.io");
 
 
-//lets initilise out controlers into global scope.
+// lets initilise out controlers into global scope.
 
-//auth used for aithentivation.
-const auth:ServerAuthenticationController = new ServerAuthenticationController(io);
+// auth used for aithentivation.
+const auth: ServerAuthenticationController = new ServerAuthenticationController(io);
 
-//room control used to handle room delegation and relaying of messages
-const roomControl:RoomController = new RoomController(io);
+// room control used to handle room delegation and relaying of messages
+const roomControl: RoomController = new RoomController(io);
 
-/* message middleware being somthing we discussed, 
-but contains logical functions that could be required on a server
-randomising teams / questions can be done here, as client side with go out of sync, with that or we set a seed on a game session */
+// queue used to help scaling / batching and keeping track of game events.
+const eventQueue: NetworkEventQueue = new NetworkEventQueue(io);
 
-const messageMiddwareController:MessageMiddlewareController = new MessageMiddlewareController(io);
-
-//entry point. //can i type this?
-let server:SocketIO.Server; 
+// entry point. //can i type this?
+let server: SocketIO.Server;
 
 
 restartServer();
 
 export interface ServerResponse {
-   success:boolean
+   success: boolean;
 }
 
 export interface ServerRequest {
 
 }
 
-//I think these are the only "standard" socket events / enforced used by standard, but for most other messages we will probably create a more agnostic messaging protocol.
-server.on("connection", (socket:SocketIO.Socket) => {
+// I think these are the only "standard" socket events / enforced used by standard, but for most other messages we will probably create a more agnostic messaging protocol.
+server.on("connection", (socket: SocketIO.Socket) => {
 
 });
 
-server.on('disconnect', (socket:SocketIO.Socket) => {
+server.on('disconnect', (socket: SocketIO.Socket) => {
 
 });
 
-//this is all your goona need
-server.on('response', (socket:SocketIO.Socket, request:RequestInfo) => 
-{
-   //pop to quuee for server expanadability.
+// this is all your goona need
+server.on('request', (socket: SocketIO.Socket, request: IRequestObject) => {
+
+   // first assign our socket if not alread
+   request.socket = socket;
+
+   // pop to quuee for server expanadability.
+
+   // so we can infur a few more bits of data from this request, such as current room / namesapce.
+   let exisistInRoom = roomControl.getRoomForClient(socket);
+
+   if (exisistInRoom !== undefined) {
+      request.room = exisistInRoom;
+   }
+
+
 });
 
-//update respove and disptach required signalls
+// update respove and disptach required signalls
 
 
+function restartServer(reason: string = "resart-request") {
 
 
-
-
-
-function restartServer(reason:string = "resart-request") {
-
-   
-   //notify all clients (ask them to attempt to reload in a certain amount of time.)
-   server.clients().emit("force-close", {reason:reason});
-   //close connection
+   // notify all clients (ask them to attempt to reload in a certain amount of time.)
+   server.clients().emit("force-close", {reason: reason});
+   // close connection
 
    server.close();
 
-   //reset room status / clear clients
+   // reset room status / clear clients
    roomControl.reset();
    auth.reset();
 
-   //reload settings if required.
-   
-   //reboot our server 
-   server = io.listen(5040); 
+   // reload settings if required.
+
+   // reboot our server
+   server = io.listen(5040);
 
 }
 
-message(message:IRequestObject)
-message(message:IRequestObjec)
-
-//message helpers
-function rejectMessage(){
+function message(message: IRequestObject) {
 
 }
 
-function acceptMessage(){
+// message helpers
+function rejectMessage() {
+
+}
+
+function acceptMessage() {
 
 }
