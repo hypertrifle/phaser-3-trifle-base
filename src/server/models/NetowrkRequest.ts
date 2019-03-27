@@ -1,4 +1,5 @@
-import { Socket, Room } from "socket.io";
+import { Socket } from "socket.io";
+import { Room } from "../controllers/RoomController";
 
   export enum RequestState {
     NONE = undefined,

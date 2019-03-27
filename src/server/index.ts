@@ -1,5 +1,5 @@
 import { ServerAuthenticationController } from "./controllers/ServerAuthenticationController";
-import { RoomController } from "./controllers/RoomController";
+import { RoomController, Room } from "./controllers/RoomController";
 import { IRequestObject } from "./models/NetowrkRequest";
 import NetworkEventQueue from "./controllers/NetworkEventQueue";
 
@@ -52,7 +52,7 @@ server.on('request', (socket: SocketIO.Socket, request: IRequestObject) => {
    let exisistInRoom = roomControl.getRoomForClient(socket);
 
    if (exisistInRoom !== undefined) {
-      request.room = exisistInRoom;
+      request.room = exisistInRoom as Room;
    }
 
 
