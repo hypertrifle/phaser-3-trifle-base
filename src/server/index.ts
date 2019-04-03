@@ -17,19 +17,14 @@ const roomControl: RoomController = new RoomController(io);
 // queue used to help scaling / batching and keeping track of game events.
 const eventQueue: NetworkEventQueue = new NetworkEventQueue(io);
 
-// entry point. //can i type this?
+// server entry point for hosting files.
 let server: SocketIO.Server;
+
+let updateTimer: NodeJS.Timeout  = undefined;
 
 
 restartServer();
 
-export interface ServerResponse {
-   success: boolean;
-}
-
-export interface ServerRequest {
-
-}
 
 // I think these are the only "standard" socket events / enforced used by standard, but for most other messages we will probably create a more agnostic messaging protocol.
 server.on("connection", (socket: SocketIO.Socket) => {
@@ -46,8 +41,6 @@ server.on('request', (socket: SocketIO.Socket, request: IRequestObject) => {
    // first assign our socket if not alread
    request.socket = socket;
 
-   // pop to quuee for server expanadability.
-
    // so we can infur a few more bits of data from this request, such as current room / namesapce.
    let exisistInRoom = roomControl.getRoomForClient(socket);
 
@@ -56,12 +49,20 @@ server.on('request', (socket: SocketIO.Socket, request: IRequestObject) => {
    }
 
 
+   // finally pop to queue for server expanadability.
+   eventQueue.addToQueue(request);
+
 });
 
 // update respove and disptach required signalls
 
 
 function restartServer(reason: string = "resart-request") {
+
+   // clear our current running update loop.
+   if (updateTimer) {
+      clearInterval(updateTimer);
+   }
 
 
    // notify all clients (ask them to attempt to reload in a certain amount of time.)
@@ -79,6 +80,13 @@ function restartServer(reason: string = "resart-request") {
    // reboot our server
    server = io.listen(5040);
 
+   // set up a polling speed / and call
+   const FPS: number = 60;
+   updateTimer = setInterval(updateServer, 1000 / FPS);
+}
+
+function updateServer() {
+   eventQueue.parseQueue();
 }
 
 function message(message: IRequestObject) {
