@@ -12,7 +12,7 @@ import { Room } from "../controllers/RoomController";
 
   export interface IRequestObject {
     key: string;
-    socket: Socket;
+    socket?: Socket; // only really used for serverside operations, and should probably be stripped when sending / receiving messages
     room?: Room;
     namespace?: string;
     action: string;
