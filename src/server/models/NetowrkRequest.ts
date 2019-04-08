@@ -10,6 +10,15 @@ import { Room } from "../controllers/RoomController";
     CANCELLED
   }
 
+export enum RequestDestination {
+  NONE = undefined,
+  SELF= 0,
+  ROOM,
+  OTHERS_IN_ROOM,
+  NAMESPACE,
+  GLOBAL
+}
+
   export interface IRequestObject {
     key: string;
     socket?: Socket; // only really used for serverside operations, and should probably be stripped when sending / receiving messages
@@ -24,17 +33,3 @@ import { Room } from "../controllers/RoomController";
     state?: RequestState;
     // todo:Mutantions?
   }
-
-export enum RequestDestination {
-    NONE = undefined,
-    SELF= 0,
-    ROOM,
-    OTHERS_IN_ROOM,
-    NAMESPACE,
-    GLOBAL
- }
-
-export interface IMessage {
-    originalSocket: Socket;
-    destination: RequestDestination;
- }
