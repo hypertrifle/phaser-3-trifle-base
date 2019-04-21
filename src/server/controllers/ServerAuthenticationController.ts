@@ -1,16 +1,16 @@
 export class ServerAuthenticationController {
 
-   private _server:SocketIO.Server;
+   private _server: SocketIO.Server;
 
-   constructor(socketServer:SocketIO.Server){
+   constructor(socketServer: SocketIO.Server) {
       this._server = socketServer;
    }
 
-   authenticate(){
+   authenticate() {
       return true;
    }
 
-   reset(){
+   reset() {
 
    }
 

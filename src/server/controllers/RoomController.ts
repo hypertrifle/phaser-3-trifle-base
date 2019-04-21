@@ -1,4 +1,5 @@
 import { Socket } from "socket.io";
+import { IRequestObject } from "../models/NetowrkRequest";
 
 export enum RoomState {
    NONE= undefined,
@@ -40,6 +41,7 @@ export class RoomController {
 
 
    getRoomForClient(socket: Socket): Room | undefined {
+
       for (let r in this._rooms) {
          let room = this._rooms[r];
          for (let c in this._rooms[r].clients) {
@@ -47,28 +49,28 @@ export class RoomController {
                return room;
          }
       }
-
+      console.warn("client not in room");
       return undefined;
    }
 
 
-   clientJoinRoom() {
+   clientJoinRoom(socket: Socket, roomID: string) {
 
    }
 
-   registerCLient() {
+   registerClient(socket: Socket) {
 
    }
 
-   unregisterClient() {
+   unregisterClient(socket: Socket) {
 
    }
 
-   messageForAllRooms() {
+   messageForAllRooms(request: IRequestObject) {
 
    }
 
-   messageForMyRoom() {
+   messageForMyRoom(request: IRequestObject) {
 
    }
 
@@ -85,6 +87,7 @@ export class RoomController {
 
       let r =  this._rooms[name] = {
       };
+
 
       return r;
    }
