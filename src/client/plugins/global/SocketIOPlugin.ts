@@ -90,7 +90,8 @@ export default class SocketIOPlugin extends Phaser.Plugins.BasePlugin {
       action: "state-request",
       destination: RequestDestination.SELF,
       onComplete: this.persisteGameState,
-      onFailed: this.errorWithRequest.call(this, 0, "Failed to Sync")
+      onFailed: this.errorWithRequest.call(this, 0, "Failed to Sync"),
+      
     });
   }
 

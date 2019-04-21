@@ -20,10 +20,17 @@ const eventQueue: NetworkEventQueue = new NetworkEventQueue(io);
 // server entry point for hosting files.
 let server: SocketIO.Server;
 
-let updateTimer: NodeJS.Timeout  = undefined;
+let updateTimer: NodeJS.Timeout = undefined;
 
 
-restartServer();
+//to be overidded with some loading system
+
+interface IServerSettings {
+   FPS: number;
+   welcomeMessage: string;
+}
+
+var config: IServerSettings;
 
 
 // I think these are the only "standard" socket events / enforced used by standard, but for most other messages we will probably create a more agnostic messaging protocol.
@@ -41,9 +48,10 @@ server.on('request', (socket: SocketIO.Socket, request: IRequestObject) => {
    // first assign our socket if not alread
    request.socket = socket;
 
-   // so we can infur a few more bits of data from this request, such as current room / namesapce.
+   // so we can infer a few more bits of data from this request, such as current room / namesapce.
    let exisistInRoom = roomControl.getRoomForClient(socket);
 
+   //
    if (exisistInRoom !== undefined) {
       request.room = exisistInRoom as Room;
    }
@@ -57,7 +65,16 @@ server.on('request', (socket: SocketIO.Socket, request: IRequestObject) => {
 // update respove and disptach required signalls
 
 
-function restartServer(reason: string = "resart-request") {
+function restartServer(_config?: IServerSettings) {
+
+
+   if (!_config) {
+      config = {
+         FPS: 60,
+         welcomeMessage: "initial boot"
+      };
+   }
+
 
    // clear our current running update loop.
    if (updateTimer) {
@@ -66,7 +83,7 @@ function restartServer(reason: string = "resart-request") {
 
 
    // notify all clients (ask them to attempt to reload in a certain amount of time.)
-   server.clients().emit("force-close", {reason: reason});
+   server.clients().emit("force-close", { reason: config.welcomeMessage });
    // close connection
 
    server.close();
@@ -81,8 +98,7 @@ function restartServer(reason: string = "resart-request") {
    server = io.listen(5040);
 
    // set up a polling speed / and call
-   const FPS: number = 60;
-   updateTimer = setInterval(updateServer, 1000 / FPS);
+   updateTimer = setInterval(updateServer, 1000 / config.FPS);
 }
 
 function updateServer() {
@@ -101,3 +117,6 @@ function rejectMessage() {
 function acceptMessage() {
 
 }
+
+//final entry point.
+restartServer();
