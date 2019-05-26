@@ -28,6 +28,8 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
 
   preload() {
     console.log("BaseScene::preload");
+
+    //TODO: setup preload bar
   }
 
   create() {

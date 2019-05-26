@@ -1,13 +1,12 @@
 import GameData from "./GameData";
-import HTMLUtils from "./HTMLUtils";
-import Utils from "../utils/Utils";
+import HTMLUtilPlugin from "./HTMLUtilPlugin";
 import Boot from "../../scenes/Boot";
 import { GameObjects } from "phaser";
 import { GUI } from "dat.gui";
 import { DEBUG } from "../..";
 
 
-export default class Tools extends Phaser.Plugins.BasePlugin {
+export default class HyperToolsPlugin extends Phaser.Plugins.BasePlugin {
   /**
    * @constructor Creates an instance of the Generic tools now use for general game development..
    * @param {Phaser.Plugins.PluginManager} pluginManager
@@ -25,12 +24,10 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
     this.data = pluginManager.get("_data") as GameData;
 
     // boot up out HTMLUtils plugin and make it accessible, this is used for popups, forms as well as other non canvas / webGL content.
-    pluginManager.install("_html", HTMLUtils, true, "_html");
-    this.html = pluginManager.get("_html") as HTMLUtils;
+    pluginManager.install("_html", HTMLUtilPlugin, true, "_html");
+    this.html = pluginManager.get("_html") as HTMLUtilPlugin;
 
-    // boot up out generic utilitty classes
-    pluginManager.install("_utils", Utils, true, "_utls");
-    this.utils = pluginManager.get("_utils") as Utils;
+
 
 
   }
@@ -64,19 +61,11 @@ export default class Tools extends Phaser.Plugins.BasePlugin {
   /**
    * access to HTML, popups and forms
    *
-   * @type {HTMLUtils}
+   * @type {HTMLUtilPlugin}
    * @memberof Sponge
    */
-  public html: HTMLUtils;
+  public html: HTMLUtilPlugin;
 
-
-  /**
-   * access to utils.
-   *
-   * @type {Utils}
-   * @memberof Sponge
-   */
-  public utils: Utils;
 
   /**
    * a reference to dat.GUI - TODO: conditional inclusion only on debug mode.

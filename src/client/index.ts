@@ -13,7 +13,7 @@ import TitleScreen from "./scenes/TitleScene";
 import PersistentScene from "./scenes/PersistentScene";
 import HyperTrifleHomeScene from "./scenes/HyperTrifleHomeScene";
 
-import Tools from "./plugins/global/Tools";
+import Tools from "./plugins/global/HyperToolsPlugin";
 import SocketExmaplesScene from "./scenes/SocketExmaplesScene";
 import SocketIOPlugin from "./plugins/global/SocketIOPlugin";
 
@@ -27,7 +27,7 @@ console.clear();
 const DEBUG: boolean = true;
 
 
-const config: GameConfig = {
+const config: Phaser.Types.Core.GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
   scale: {
@@ -50,7 +50,7 @@ fps: {
   type: Phaser.WEBGL,
   width: window.innerWidth,
   height: window.innerHeight,
-  scene: [Boot, SocketExmaplesScene], // we are going to use boot as our main controller, then an other states ew require after that.
+  scene: [new Boot, new SocketExmaplesScene], // we are going to use boot as our main controller, then an other states ew require after that.
   plugins: {
     global: [
         { key: 'tools', plugin: Tools, start: true}

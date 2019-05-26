@@ -1,6 +1,6 @@
 import { Scene } from "phaser";
 
-export default class HTMLUtils extends Phaser.Plugins.BasePlugin {
+export default class HTMLUtilPlugin extends Phaser.Plugins.BasePlugin {
   /**
    * @constructor Creates an instance of the HTMLUtils plugin (that handles any non phaser HTML based content / functionallity).
    * @param {Phaser.Plugins.PluginManager} pluginManager

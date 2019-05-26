@@ -28,6 +28,7 @@ export default class Boot extends BaseScene {
    * @memberof Boot
    */
   preload() {
+    super.preload();
     // this.scene.add("Background", Background, true); // false is to stop it launching now we'll choose to launch it when we need.
 
     if (!this.game.device.browser.ie) {
