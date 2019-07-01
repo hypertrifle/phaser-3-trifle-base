@@ -16,10 +16,13 @@ export default class PingScene extends BaseScene {
     console.log("PingScene::constructor");
   }
 
+  // our players, this might want to be a map
   _pingers: Player[] = [undefined,undefined,undefined,undefined];
+
+  // our ball - to be made into new class
   _ball: Phaser.GameObjects.Rectangle;
 
-
+  // global settings relating to gameplay / physics etc
   _gamePlaySetting: IGameplaySettings = {
     maxHitCharge : 50,
     hitActiveFrames : 20
@@ -33,10 +36,14 @@ export default class PingScene extends BaseScene {
   create() {
     super.create();
     console.log("PingScene::create");
+
+
+    // zoom out and make this world bigger.
     this.cameras.main.zoom = 0.5;
     this.physics.world.setBounds(-1280 / 2,-720 / 2,1280 * 2,720 * 2);
 
 
+    // simple ball for  now
     this._ball = this.add.rectangle(640, 360, 20,20,0xffffff,1);
     this.physics.world.enableBody(this._ball, Phaser.Physics.Arcade.DYNAMIC_BODY);
     let _body: Phaser.Physics.Arcade.Body = this._ball.body as Phaser.Physics.Arcade.Body;
@@ -45,12 +52,13 @@ export default class PingScene extends BaseScene {
     _body.setVelocity(1500,1000);
     _body.setBounce(1,1);
 
-    // this.physics.world.on('worldstep', this.updatePhysics);
+    // this.physics.world.on('worldstep', this.updatePhysics); // this didn't actuallywork,.
   }
 
 
   update(time: number, delta: number) {
     super.update(time, delta);
+    // update pysics type items.
     this.updatePhysics();
 
     // set up new players if controller exists and player doesn't already exist.
@@ -60,17 +68,16 @@ export default class PingScene extends BaseScene {
     }
 
 
-
+    // for each player
     for (let i = 0; i < this._pingers.length; i++) {
 
       const _p: Player = this._pingers[i];
-
       if (_p === undefined) {
         continue;
       }
 
+    // update the visual for this player.
     _p.updatePlayerVisuals(this._gamePlaySetting);
-
     }
   }
 
