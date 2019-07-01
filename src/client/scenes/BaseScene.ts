@@ -29,7 +29,7 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
   preload() {
     console.log("BaseScene::preload");
 
-    //TODO: setup preload bar
+    // TODO: setup preload bar
   }
 
   create() {
@@ -48,7 +48,7 @@ export default class BaseScene extends Phaser.Scene implements IBaseScene {
     super.update(time, delta);
   }
 
-  
+
 
   sleep() {}
   wake() {

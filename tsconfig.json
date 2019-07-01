@@ -8,19 +8,15 @@
     "module": "commonjs",
     "target": "es5",
     "allowJs": true,
-    "lib": ["es5", "es6", "dom"]
+    "sourceMap":true
   },
-  "files": [
-    "node_modules/phaser/types/phaser.d.ts"
-  ],
   "include": [
-    "src/**/*.ts", "KEEP/FontModels.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
     "scripts/*.*",
-    "examples_and_snippets/*.*",
     "assets/*.*"
   ]
 }

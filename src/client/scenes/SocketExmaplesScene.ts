@@ -23,7 +23,7 @@ export default class SocketExmaplesScene extends BaseScene {
   create() {
     super.create();
 
-    
+
   }
 
   update(time: number, delta: number) {

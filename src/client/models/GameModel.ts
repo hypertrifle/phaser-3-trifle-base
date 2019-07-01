@@ -10,10 +10,10 @@
 /* These are defined in src/models/*.ts and unless they are small settings objects its a good place to abstract them to... */
 
 export interface PageModel {
-  id: string, 
-  sceneKey: string, 
-  label: string,
-  strings?:{[key:string]:string}[];
+  id: string;
+  sceneKey: string;
+  label: string;
+  strings?: {[key: string]: string}[];
 }
 
 
@@ -42,9 +42,9 @@ export class ContentModel {
       }
     ];
 
-  testParagraph:string = "Sunt vel porro saepe voluptatibus molestias qui eaque. Quae cumque cumque et unde consequatur. Quidem eius repellat dolores rerum eveniet laudantium earum odio et. ";
+  testParagraph: string = "Sunt vel porro saepe voluptatibus molestias qui eaque. Quae cumque cumque et unde consequatur. Quidem eius repellat dolores rerum eveniet laudantium earum odio et. ";
 
 
-  testTitle:string = "Quae repellat labore atque culpa et.";
+  testTitle: string = "Quae repellat labore atque culpa et.";
 }
 
