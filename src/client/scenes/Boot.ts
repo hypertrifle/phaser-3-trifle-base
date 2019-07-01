@@ -1,7 +1,7 @@
 import BaseScene from "./BaseScene";
 
 import * as WebFont from "webfontloader";
-import Tools from "../plugins/global/Tools";
+import Tools from "../plugins/global/HyperToolsPlugin";
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
 export default class Boot extends BaseScene {
@@ -129,7 +129,7 @@ export default class Boot extends BaseScene {
     // this.cameras.main.zoom = 1/window.devicePixelRatio;
 
     // TODO: Entry Point.
-    this.scene.run("HyperTrifleHomeScene");
+    this.scene.run("PingScene");
   }
 
   generateTiles() {}

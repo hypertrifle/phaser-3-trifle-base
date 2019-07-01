@@ -1,4 +1,4 @@
-import Tools from "../plugins/global/Tools";
+import Tools from "../plugins/global/HyperToolsPlugin";
 export interface BaseSceneConfig {
   key: string;
   active?: boolean;

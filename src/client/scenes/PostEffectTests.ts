@@ -161,7 +161,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
   set text(text: string) {
     this.testFont.text = text.toUpperCase();
-    let bounds: BitmapTextSize = this.testFont.getTextBounds();
+    let bounds: Phaser.Types.GameObjects.BitmapText.BitmapTextSize = this.testFont.getTextBounds();
      this.setUniformsForText(this.testFont);
     this.redraw();
   }
@@ -171,7 +171,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
   }
 
   setUniformsForText(object: Phaser.GameObjects.BitmapText): void {
-    let bounds: BitmapTextSize = object.getTextBounds();
+    let bounds: Phaser.Types.GameObjects.BitmapText.BitmapTextSize = object.getTextBounds();
 
     object.pipeline.setFloat2("resolution", bounds.global.width / this.game.scale.resolution, bounds.global.height / this.game.scale.resolution);
     object.pipeline.setFloat2(

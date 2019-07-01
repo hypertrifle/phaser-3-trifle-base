@@ -1,9 +1,8 @@
 import BaseScene from "./BaseScene";
-import SocketIOPlugin from "../plugins/global/SocketIOPlugin";
 
 export default class SocketExmaplesScene extends BaseScene {
 
-  socketController:SocketIOPlugin;
+  // socketController:SocketIOPlugin;
 
   constructor() {
     super({
@@ -16,7 +15,7 @@ export default class SocketExmaplesScene extends BaseScene {
   preload() {
     console.log("SocketExmaplesScene::preload");
 
-    this.socketController = this.sys.plugins.get("socket.io") as  SocketIOPlugin;//plugins.get("socket.io");
+    // this.socketController = this.sys.plugins.get("socket.io") as  SocketIOPlugin;//plugins.get("socket.io");
 
 
   }

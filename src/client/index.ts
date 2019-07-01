@@ -7,13 +7,14 @@
 
 import "phaser";
 import Boot from "./scenes/Boot";
-
-import PostEffectTestsScene from "./scenes/PostEffectTests";
 import TitleScreen from "./scenes/TitleScene";
-import PersistentScene from "./scenes/PersistentScene";
-import HyperTrifleHomeScene from "./scenes/HyperTrifleHomeScene";
+
+// import PostEffectTestsScene from "./scenes/PostEffectTests";
+// import PersistentScene from "./scenes/PersistentScene";
+// import HyperTrifleHomeScene from "./scenes/HyperTrifleHomeScene";
 
 import Tools from "./plugins/global/HyperToolsPlugin";
+import PingScene from "./scenes/PingScene";
 
 export const DEBUG = false;
 
@@ -29,10 +30,10 @@ const config: Phaser.Types.Core.GameConfig = {
   title: "Game", // apart from this
   version: "1.0",
   scale: {
-    mode: Phaser.Scale.RESIZE,
+    mode: Phaser.Scale.FIT,
     parent: 'container',
-    width: '100%',
-    height: '100%'
+    width: 1280,
+    height: 720
 },
 // resolution: 1/window.devicePixelRatio,
 fps: {
@@ -48,7 +49,7 @@ fps: {
   type: Phaser.WEBGL,
   width: window.innerWidth,
   height: window.innerHeight,
-  scene: [new Boot, new TitleScreen], // we are going to use boot as our main controller, then an other states ew require after that.
+  scene: [new Boot, new PingScene], // we are going to use boot as our main controller, then an other states ew require after that.
   plugins: {
     global: [
         { key: 'tools', plugin: Tools, start: true}
@@ -69,6 +70,17 @@ fps: {
     mouse: true,
     touch: {
       capture: true
+    },
+    gamepad:true
+  },
+  physics: {
+    default : "arcade",
+    arcade : {
+      debug:true,
+      gravity: {
+        y:8000,
+      }
+  
     }
   },
   backgroundColor: 0x111111,
