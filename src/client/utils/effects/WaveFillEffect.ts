@@ -8,7 +8,7 @@ export interface Vec3 {
    r: number;g: number;b: number;
 }
 export interface Vec2 {
-   x: number;y:number;
+   x: number;y: number;
 }
 
 export default class WaveFillEffect extends BaseEffect {
@@ -21,22 +21,22 @@ export default class WaveFillEffect extends BaseEffect {
      _upperSplitPosition: Vec2;
      _lowerSplitPosition: Vec2;
 
-    set upperSplitPosition(i: Vec2){
+    set upperSplitPosition(i: Vec2) {
         this._upperSplitPosition = i;
       this.setFloat2("upperSplitPosition",this._upperSplitPosition.x,this._upperSplitPosition.y);
 
     }
-    get upperSplitPosition():Vec2{
+    get upperSplitPosition(): Vec2 {
       console.log("get",this._upperSplitPosition);
       return this._upperSplitPosition;
     }
 
-    set lowerSplitPosition(i: Vec2){
+    set lowerSplitPosition(i: Vec2) {
         this._lowerSplitPosition = i;
       this.setFloat2("lowerSplitPosition",this._lowerSplitPosition.x,this._lowerSplitPosition.y);
 
     }
-    get lowerSplitPosition():Vec2{
+    get lowerSplitPosition(): Vec2 {
       return this._lowerSplitPosition;
     }
 
@@ -86,8 +86,8 @@ export default class WaveFillEffect extends BaseEffect {
          this.speed = (config) ? config.speed : 1.5;
          this.colour = (config) ? config.colour : {r: 255,g: 255,b: 255};
 
-         this.upperSplitPosition = {x:0.4, y:0.275 };
-         this.lowerSplitPosition = {x:0.66, y:0.82 };
+         this.upperSplitPosition = {x: 0.4, y: 0.275 };
+         this.lowerSplitPosition = {x: 0.66, y: 0.82 };
 
 
      }

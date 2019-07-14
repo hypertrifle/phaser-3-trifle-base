@@ -5,8 +5,8 @@ import Player from "../components/ping/Player";
 // const SPINE = require("../plugins//SpineWebGLPlugin.js");
 
 export interface IGameplaySettings {
-  maxHitCharge:number;
-  hitActiveFrames:number;
+  maxHitCharge: number;
+  hitActiveFrames: number;
 }
 
 export default class PingScene extends BaseScene {
@@ -19,11 +19,14 @@ export default class PingScene extends BaseScene {
     console.log("PingScene::constructor");
   }
 
-  _pingers:Player[] = [undefined,undefined,undefined,undefined];
-  _ball:Phaser.GameObjects.Rectangle;
+  // our players, this might want to be a map
+  _pingers: Player[] = [undefined,undefined,undefined,undefined];
 
+  // our ball - to be made into new class
+  _ball: Phaser.GameObjects.Rectangle;
 
-  _gamePlaySetting:IGameplaySettings = {
+  // global settings relating to gameplay / physics etc
+  _gamePlaySetting: IGameplaySettings = {
     maxHitCharge : 50,
     hitActiveFrames : 20
   };
@@ -58,9 +61,9 @@ export default class PingScene extends BaseScene {
     // this.createTempBall();
     
 
-    // this.physics.world.on('worldstep', this.updatePhysics);
+    // this.physics.world.on('worldstep', this.updatePhysics); // this didn't actuallywork,.
   }
-  
+
 
   private createTempBall() {
     this._ball = this.add.rectangle(640, 360, 20, 20, 0xffffff, 1);
@@ -74,67 +77,67 @@ export default class PingScene extends BaseScene {
 
   update(time: number, delta: number) {
     super.update(time, delta);
+    // update pysics type items.
     this.updatePhysics();
 
-    //set up new players if controller exists and player doesn't already exist.
-    for (let i = 0; i < this.input.gamepad.gamepads.length; i++){
-      if(this._pingers[i] === undefined)
+    // set up new players if controller exists and player doesn't already exist.
+    for (let i = 0; i < this.input.gamepad.gamepads.length; i++) {
+      if (this._pingers[i] === undefined)
         this.addPlayerAtNumber(i);
     }
 
 
+    // for each player
+    for (let i = 0; i < this._pingers.length; i++) {
 
-    for(let i = 0; i < this._pingers.length; i++){
-
-      const _p:Player = this._pingers[i];
-
-      if(_p === undefined){
+      const _p: Player = this._pingers[i];
+      if (_p === undefined) {
         continue;
       }
 
+    // update the visual for this player.
     _p.updatePlayerVisuals(this._gamePlaySetting);
-
     }
   }
 
-  updatePhysics(){
-     //update each player
-     for(let i = 0; i < this._pingers.length; i++){
+  updatePhysics() {
+     // update each player
+     for (let i = 0; i < this._pingers.length; i++) {
 
-      const _p:Player = this._pingers[i];
+      const _p: Player = this._pingers[i];
 
-      if(_p === undefined){
+      if (_p === undefined) {
         continue;
       }
 
 
       _p.updateHitLogic(this._gamePlaySetting);
-      _p.updateMovement(this._gamePlaySetting)
+      _p.updateMovement(this._gamePlaySetting);
 
 
-      
+
     }
   }
 
 
 
 
-  addPlayerAtNumber(i:number) {
+  addPlayerAtNumber(i: number) {
 
     console.log("Adding Player", i);
 
-      let team = i%2;
+      let team = i % 2;
 
-      let w = (this.game.config.width as number)/2;
+      let w = (this.game.config.width as number) / 2;
 
-      let startPosition = [w-200,w+200,w-400,w+400][i];
+      let startPosition = [w - 200,w + 200,w - 400,w + 400][i];
 
       this._pingers[i] = new Player(this,{
         controls: this.input.gamepad.gamepads[i],
-        intialX:startPosition,
-        intialY:300,
-        team:team, //depending on side.
-        skin:"test"
+        intialX: startPosition,
+        intialY: 300,
+        team: team, // depending on side.
+        skin: "test"
       });
   }
 

@@ -11,11 +11,6 @@ const SpineWebGLPlugin = require("./plugins/external/SpineWebGLPlugin.js");
 import "phaser";
 import Boot from "./scenes/Boot";
 import TitleScreen from "./scenes/TitleScene";
-
-// import PostEffectTestsScene from "./scenes/PostEffectTests";
-// import PersistentScene from "./scenes/PersistentScene";
-// import HyperTrifleHomeScene from "./scenes/HyperTrifleHomeScene";
-
 import Tools from "./plugins/global/HyperToolsPlugin";
 import PingScene from "./scenes/PingScene";
 
@@ -80,16 +75,16 @@ fps: {
     touch: {
       capture: true
     },
-    gamepad:true
+    gamepad: true
   },
   physics: {
     default : "arcade",
     arcade : {
-      debug:true,
+      debug: true,
       gravity: {
-        y:8000,
+        y: 8000,
       }
-  
+
     }
   },
   backgroundColor: 0xb21313,

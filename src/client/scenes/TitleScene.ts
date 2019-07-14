@@ -29,7 +29,7 @@ export default class TitleScreen extends BaseScene {
    * @type {Phaser.GameObjects.Container}
    * @memberof TitleScreen
    */
-  
+
   backgroundLayer: Phaser.GameObjects.Container;
 
   create() {

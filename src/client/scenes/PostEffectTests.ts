@@ -212,7 +212,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
 
     if (this.background) {
       this.background.setSize(this.game.scale.width, this.game.scale.height);
-      this
+      this;
 
       console.log(this.background);
     }
@@ -234,7 +234,7 @@ export default class PostEffectTestsScene extends BaseScene implements IBaseScen
     for (let i = 0; i < this.shaders.length; i++) {
       this.shaders[i].shader.setFloat1("time", this.shaderTime);
       this.shaders[i].shader.setFloat2("resolution", this.game.scale.width, this.game.scale.height);
-  
+
       // this.shaders[i].shader.time = this.shaderTime;
       // this.shaders[i].shader.res = {x: this.game.scale.width,y: this.game.scale.height};
 

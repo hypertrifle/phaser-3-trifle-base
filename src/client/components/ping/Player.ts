@@ -115,7 +115,7 @@ export default class Player extends GameObjects.GameObject {
          //reset active frames
          this.activeFrames = 0;
 
-         //we release hit TODO:cooldown
+         // we release hit TODO:cooldown
          this.hitBox.active = true;
       } else {
          //hand up
@@ -123,10 +123,10 @@ export default class Player extends GameObjects.GameObject {
          if (this.hitCharge > 0 && this.activeFrames === 0) {
             console.log("start attack");
 
-            //update hit visual?
+            // update hit visual?
             this.hitBox.alpha = 1;
 
-            //reset hitCharge
+            // reset hitCharge
             this.hitCharge = 0;
 
          } else if (this.activeFrames === config.hitActiveFrames) {

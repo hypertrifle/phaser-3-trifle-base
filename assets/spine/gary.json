@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "WrGaNlQ9eRBxqYuMKFBj6F2CBIw", "spine": "3.7.94", "width": 418.79, "height": 316.97, "images": "", "audio": "C:/Program Files (x86)/Spine/examples/spineboy" },
+"skeleton": { "hash": "0CPMoATr41nEY/9icg7vwsnaXJw", "spine": "3.7.94", "width": 418.79, "height": 316.97, "images": "", "audio": "C:/Program Files (x86)/Spine/examples/spineboy" },
 "bones": [
 	{ "name": "root", "rotation": -1.61 },
 	{ "name": "hip", "parent": "root", "x": -49.73, "y": -98.62 },
@@ -221,6 +221,24 @@
 			"root": {
 				"translate": [
 					{ "time": 0, "x": 0, "y": 0.39 }
+				]
+			},
+			"bone17": {
+				"rotate": [
+					{ "time": 0.5333, "angle": 4.59 },
+					{ "time": 0.8, "angle": -10.85 }
+				],
+				"translate": [
+					{ "time": 0.2333, "x": -0.04, "y": -0.66 },
+					{ "time": 0.5333, "x": -0.28, "y": 0.17 }
+				],
+				"scale": [
+					{ "time": 0, "x": 1, "y": 1 },
+					{ "time": 0.5333, "x": 1.519, "y": 1.236 },
+					{ "time": 1.1667, "x": 2.135, "y": 1.139 }
+				],
+				"shear": [
+					{ "time": 1.1667, "x": -2.4, "y": 0 }
 				]
 			}
 		}

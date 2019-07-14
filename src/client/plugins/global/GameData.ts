@@ -26,20 +26,20 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
   save: SaveModel;
   trackingMode: TrackingMode = TrackingMode.Off;
   scaling: ScalingModel = new ScalingModel();
-  userInterface: UIModel = new UIModel();;
-  
+  userInterface: UIModel = new UIModel();
+
   fonts: Array<Phaser.GameObjects.TextStyle>;
 
 
   content: ContentModel;
- 
+
   constructor(pluginManager: Phaser.Plugins.PluginManager) {
     super(pluginManager);
     console.log("GameData::constructor");
 
-    //just define your content or settings here, preferbly as classes, remember the pros of using getters and setters, inheritance and interfaces.
+    // just define your content or settings here, preferbly as classes, remember the pros of using getters and setters, inheritance and interfaces.
     this.content = new ContentModel();
-       
+
   }
   /**
    * any unitilise function
