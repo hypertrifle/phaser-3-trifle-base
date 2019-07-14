@@ -84,7 +84,7 @@ export default class Player extends GameObjects.GameObject {
       this.spineModel.on("spine.complete", (s: SpineGameObject, track: spine.TrackEntry) => {
          // console.log("spine.complete",s,track);
 
-         if(!track.loop && track.animation.name !== "charge"){
+         if(!track.loop && track.animation.name !== "charge"&& track.animation.name !== "jump"){
             this.spineModel.play("idle", true);
          }
       })
@@ -207,6 +207,12 @@ export default class Player extends GameObjects.GameObject {
    updatePlayerVisuals(config: IGameplaySettings) {
 
       this.spineModel.setPosition(this.hitBox.x, this.hitBox.y);
+
+      if(this.jumpTime === 1){
+      this.spineModel.play("jump", false);
+      } else if(this.jumpTime = -1){
+         // this.spineModel.play("idle",true);
+      }
 
       if(this.hitCharge === 1){
       this.spineModel.play("charge", false);

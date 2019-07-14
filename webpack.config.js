@@ -32,17 +32,17 @@ module.exports = {
     entry: './src/client/index.ts',
     devtool: "source-map",
 
-    optimization: {
-        minimizer: [new TerserPlugin({
-            extractComments: true,
-            sourceMap:true,
-            terserOptions: {
-            compress: {
-                booleans_as_integers:true
-            }
-        }
-        })],
-    },
+    // optimization: {
+    //     minimizer: [new TerserPlugin({
+    //         extractComments: true,
+    //         sourceMap:true,
+    //         terserOptions: {
+    //         compress: {
+    //             booleans_as_integers:true
+    //         }
+    //     }
+    //     })],
+    // },
 
     output: {
         path: path.resolve(__dirname, 'build'),
