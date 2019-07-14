@@ -1,6 +1,9 @@
 import BaseScene from "./BaseScene";
 import Player from "../components/ping/Player";
 
+// @ts-ignore;
+// const SPINE = require("../plugins//SpineWebGLPlugin.js");
+
 export interface IGameplaySettings {
   maxHitCharge:number;
   hitActiveFrames:number;
@@ -11,7 +14,7 @@ export default class PingScene extends BaseScene {
   constructor() {
     super({
       key: "PingScene",
-      active: false
+      active: false,
     });
     console.log("PingScene::constructor");
   }
@@ -25,29 +28,49 @@ export default class PingScene extends BaseScene {
     hitActiveFrames : 20
   };
 
+  // pack: {
+  //   files: [
+  //       // { type: 'scenePlugin', key: 'SpineWebGLPlugin', url: 'plugins/SpineWebGLPlugin.js', sceneKey: 'spine' }
+  //   ]
+// }
+
   preload() {
     console.log("PingScene::preload");
 
-  }
+    this.load.image("table", "assets/img/table.png");
+
+
+    this.load.setPath('assets/spine/');
+    //@ts-ignore
+    this.load.spine('gary', 'gary.json', 'gary.atlas');  }
 
   create() {
     super.create();
-    console.log("PingScene::create");
-    this.cameras.main.zoom = 0.5;
-    this.physics.world.setBounds(-1280/2,-720/2,1280*2,720*2);
+
+  
+
+    this.add.image(this.cameras.main.width/2 , this.cameras.main.height - 123,"table");
+    // console.log("PingScene::create");
+    // this.cameras.main.zoom = 0.5;
+    // this.physics.world.setBounds(-1280/2,-720/2,1280*2,720*2);
 
 
-    this._ball = this.add.rectangle(640, 360, 20,20,0xffffff,1);
-    this.physics.world.enableBody(this._ball, Phaser.Physics.Arcade.DYNAMIC_BODY);
-    let _body:Phaser.Physics.Arcade.Body = this._ball.body as Phaser.Physics.Arcade.Body
-    _body.setCollideWorldBounds(true);
-    _body.allowGravity = false;
-    _body.setVelocity(1500,1000);
-    _body.setBounce(1,1);
+    // this.createTempBall();
+    
 
     // this.physics.world.on('worldstep', this.updatePhysics);
   }
   
+
+  private createTempBall() {
+    this._ball = this.add.rectangle(640, 360, 20, 20, 0xffffff, 1);
+    this.physics.world.enableBody(this._ball, Phaser.Physics.Arcade.DYNAMIC_BODY);
+    let _body: Phaser.Physics.Arcade.Body = this._ball.body as Phaser.Physics.Arcade.Body;
+    _body.setCollideWorldBounds(true);
+    _body.allowGravity = false;
+    _body.setVelocity(1500, 1000);
+    _body.setBounce(1, 1);
+  }
 
   update(time: number, delta: number) {
     super.update(time, delta);

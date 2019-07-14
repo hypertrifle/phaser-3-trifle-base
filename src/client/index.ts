@@ -5,6 +5,9 @@
  * @license      UNLICENCED
  */
 
+//@ts-ignore
+const SpineWebGLPlugin = require("./plugins/external/SpineWebGLPlugin.js");
+
 import "phaser";
 import Boot from "./scenes/Boot";
 import TitleScreen from "./scenes/TitleScene";
@@ -15,6 +18,7 @@ import TitleScreen from "./scenes/TitleScene";
 
 import Tools from "./plugins/global/HyperToolsPlugin";
 import PingScene from "./scenes/PingScene";
+
 
 export const DEBUG = false;
 
@@ -42,21 +46,26 @@ fps: {
   },
 
   render: {
-    antialias: true,
-    roundPixels: false
+    antialias: false,
+    roundPixels: true
 
   },
+
   type: Phaser.WEBGL,
   width: window.innerWidth,
   height: window.innerHeight,
   scene: [new Boot, new PingScene], // we are going to use boot as our main controller, then an other states ew require after that.
   plugins: {
     global: [
-        { key: 'tools', plugin: Tools, start: true}
+        { key: 'tools', plugin: Tools, start: true},
     ],
     scene: [
-      // { key: 'socket.io', plugin: SocketIOPlugin, start: true}
-
+      {
+        key: 'SpineWebGLPlugin',
+        plugin: SpineWebGLPlugin,
+        start: true,
+        sceneKey: 'spine'
+      }
     ]
 },
   // these are some custom callbacks that you can define for phaser, we will use this to initilised run functionallity from out plugins.
@@ -83,7 +92,7 @@ fps: {
   
     }
   },
-  backgroundColor: 0x111111,
+  backgroundColor: 0xb21313,
 
 };
   // before we load the game into the page we are going to setup some items

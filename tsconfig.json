@@ -3,15 +3,17 @@
     "outDir": "./build/",
     "noImplicitAny": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "strict": false,
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "allowJs": true,
     "lib": ["es5", "es6", "dom"]
   },
   "files": [
-    "node_modules/phaser/types/phaser.d.ts"
+    "node_modules/phaser/types/phaser.d.ts",
+    "types/spine-core.d.ts"
   ],
   "include": [
     "src/**/*.ts", "KEEP/FontModels.ts"

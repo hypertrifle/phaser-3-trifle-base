@@ -1,0 +1,104 @@
+
+gary.png
+size: 512,64
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+eyes
+  rotate: false
+  xy: 99, 2
+  size: 11, 3
+  orig: 128, 256
+  offset: 72, 231
+  index: -1
+head
+  rotate: true
+  xy: 365, 21
+  size: 41, 50
+  orig: 128, 256
+  offset: 44, 205
+  index: -1
+lowerArm_no_paddle
+  rotate: false
+  xy: 232, 9
+  size: 49, 20
+  orig: 128, 256
+  offset: 32, 139
+  index: -1
+neck
+  rotate: true
+  xy: 455, 40
+  size: 22, 37
+  orig: 128, 256
+  offset: 53, 187
+  index: -1
+paddle
+  rotate: false
+  xy: 297, 2
+  size: 23, 33
+  orig: 128, 256
+  offset: 61, 154
+  index: -1
+shin
+  rotate: true
+  xy: 232, 31
+  size: 31, 63
+  orig: 128, 256
+  offset: 46, 25
+  index: -1
+shir_fgt
+  rotate: true
+  xy: 2, 2
+  size: 60, 95
+  orig: 128, 256
+  offset: 30, 120
+  index: -1
+shirtbg
+  rotate: false
+  xy: 322, 10
+  size: 24, 25
+  orig: 128, 256
+  offset: 52, 190
+  index: -1
+shoe
+  rotate: false
+  xy: 417, 32
+  size: 36, 30
+  orig: 128, 256
+  offset: 41, 1
+  index: -1
+shoe_bg
+  rotate: false
+  xy: 417, 22
+  size: 10, 8
+  orig: 128, 256
+  offset: 46, 23
+  index: -1
+shorts
+  rotate: false
+  xy: 99, 7
+  size: 79, 55
+  orig: 128, 256
+  offset: 30, 79
+  index: -1
+sweat
+  rotate: false
+  xy: 494, 45
+  size: 11, 17
+  orig: 128, 256
+  offset: 55, 227
+  index: -1
+thigh
+  rotate: false
+  xy: 180, 7
+  size: 50, 55
+  orig: 128, 256
+  offset: 31, 76
+  index: -1
+upperArm
+  rotate: true
+  xy: 297, 37
+  size: 25, 66
+  orig: 128, 256
+  offset: 25, 140
+  index: -1

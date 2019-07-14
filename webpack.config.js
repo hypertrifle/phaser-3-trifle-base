@@ -106,6 +106,7 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
             [ 
                 //standard assets, - this will be changed to Texture packer eventually
                 { from: 'assets/atlas', to: 'assets/atlas' },
+                { from: 'assets/spine', to: 'assets/spine' },
 
                 // { from: 'assets/json/*.json', to: '' },
                 { from: 'assets/fonts', to: 'assets/fonts' },
@@ -113,6 +114,7 @@ if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
                 { from: 'assets/audio/*.mp3', to: '' },
                 { from: 'assets/audio/*.ogg', to: '' },
                 { from: 'assets/img', to: 'assets/img' },
+                // { from: 'src/client/plugins/external', to: 'plugins' },
                 
                 //any other supporting files.
                 // { from: 'server', to: '.' },
