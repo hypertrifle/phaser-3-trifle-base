@@ -18,6 +18,7 @@ export interface SpineGameObject extends GameObjects.Image {
    timeScale: number;
    getAnimationList: () => string[];
    play: (animationName: string, loop: boolean) => void;
+   setAnimation:(track:number, animationName:string, loop:boolean)=>void;
 }
 
 
@@ -67,6 +68,8 @@ export default class Player extends GameObjects.GameObject {
 
       //@ts-ignore
       this.spineModel = scene.add.spine(200, 400, 'gary', "idle", true);
+      this.spineModel.setAnimation(1, "sweat", true);
+      this.spineModel.setAnimation(2, "eyeshake", true);
 
       this.spineModel.timeScale = 1;
       this.spineModel.stateData.defaultMix=0.2;
