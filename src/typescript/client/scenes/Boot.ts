@@ -112,7 +112,10 @@ export default class Boot extends BaseScene {
     // we are ending the console group here as any subsequent logs should be visible.
     console.groupEnd();
 
-    this.scene.run("");
+    //run the second scene defined in out index config
+    if(this.scene.manager.scenes[1]){
+      this.scene.run(this.scene.manager.scenes[1].scene.key);
+    }  
   }
 
   /**

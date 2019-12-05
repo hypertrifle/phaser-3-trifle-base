@@ -22,9 +22,10 @@ enum TrackingMode {
  */
 
 export default class GameData extends Phaser.Plugins.BasePlugin {
+  
+  trackingMode: TrackingMode = TrackingMode.Off;
 
   save: SaveModel;
-  trackingMode: TrackingMode = TrackingMode.Off;
   scaling: ScalingModel = new ScalingModel();
   userInterface: UIModel = new UIModel();
 

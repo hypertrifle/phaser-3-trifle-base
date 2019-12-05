@@ -83,7 +83,7 @@ fps: {
 
     }
   },
-  backgroundColor: 0xb21313,
+  backgroundColor: 0x000000,
 
 };
   // before we load the game into the page we are going to setup some items
@@ -91,16 +91,8 @@ fps: {
   // depending on the tech, we may wish to have these DOM elements in different locations or orders.
   // I'm hoping this is the section we can re-write to embed games into different techs.
 
-
-  // let container = document.getElementById("container");
-  // // container.style.transform = "scale("+(1/window.devicePixelRatio)+")";
-  // container.style.zoom = "" + (1 / window.devicePixelRatio); // holy dpi batman
-
-
-
   if (DEBUG)
   console.log("final game config",config);
-
 
 
   new Phaser.Game(config); // finally launch our game.

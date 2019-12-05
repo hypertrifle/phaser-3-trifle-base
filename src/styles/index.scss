@@ -20,8 +20,8 @@ body {
     position: absolute;
     overflow: visible !important;
     display: flex;
-    align-items: center;
-    justify-content: flex-end; /* to make the game stick to bottom of screen (better mobile experience) */
+    align-items: flex-end;
+    justify-content: center; /* to make the game stick to bottom of screen (better mobile experience) */
     }
 
 #orientation {
