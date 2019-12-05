@@ -1,0 +1,38 @@
+@import 'reset';
+@import '_vars';
+@import 'fonts';
+
+#container {
+    overflow: visible !important;
+}
+
+
+
+body {
+  font-family: "pixel", sans-serif !important; /* preload fonts */
+  font-weight: bold;
+  font-weight: normal;
+
+}
+
+#container, #orientation {
+    top:0; left:0; right:0; bottom: 0;
+    position: absolute;
+    overflow: visible !important;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* to make the game stick to bottom of screen (better mobile experience) */
+    }
+
+#orientation {
+    font-size:10em;
+    background: rgba(0,0,0,0.5);
+    color: #FFFFFF;
+    padding-top: 25%;
+    text-align: center;
+    display: none;
+}
+
+#phaser-content {
+    width: auto;
+}
