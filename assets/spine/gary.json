@@ -1,9 +1,9 @@
 {
-"skeleton": { "hash": "3AqhU6RROGUGOo8aN4YE7GaU38E", "spine": "3.7.94", "width": 418.79, "height": 316.97, "images": "", "audio": "C:/Program Files (x86)/Spine/examples/spineboy" },
+"skeleton": { "hash": "O4kTn2sJwPFRubc467eGL+Ha8dw", "spine": "3.7.94", "width": 402.73, "height": 307.64, "images": "", "audio": "C:/Program Files (x86)/Spine/examples/spineboy" },
 "bones": [
 	{ "name": "root", "rotation": -1.61 },
 	{ "name": "hip", "parent": "root", "x": -49.74, "y": -98.39 },
-	{ "name": "bone", "parent": "hip", "length": 67.05, "rotation": 83.01, "x": 49.72, "y": 101.53 },
+	{ "name": "bone", "parent": "hip", "length": 67.05, "rotation": 68.37, "x": 49.72, "y": 101.53 },
 	{ "name": "bone2", "parent": "bone", "length": 19.77, "rotation": -4.21, "x": 67.29, "y": 1.01 },
 	{ "name": "bone3", "parent": "bone2", "length": 12.94, "rotation": -42.77, "x": 24.22, "y": -2.52 },
 	{ "name": "bone4", "parent": "bone", "length": 48.88, "rotation": 160.96, "x": 68.37, "y": 15.51 },
@@ -27,7 +27,7 @@
 		"scaleY": -1
 	},
 	{ "name": "bone8", "parent": "bone", "length": 9.96, "rotation": 97.62, "x": -1.21, "y": 2.52 },
-	{ "name": "bone9", "parent": "bone", "length": 20.47, "rotation": -156, "x": -0.35, "y": -4.2 },
+	{ "name": "bone9", "parent": "bone", "length": 20.47, "rotation": -141.24, "x": -0.35, "y": -4.2 },
 	{ "name": "bone10", "parent": "bone8", "length": 61.24, "rotation": 104.84, "x": 10.91, "y": -0.09 },
 	{ "name": "bone11", "parent": "bone", "length": 56, "rotation": -114.06, "x": -0.95, "y": -11.96 },
 	{ "name": "bone12", "parent": "bone11", "length": 54.76, "rotation": -77.46, "x": 55.12, "y": -0.24 },
@@ -54,13 +54,22 @@
 		"scaleY": 1.002
 	},
 	{ "name": "bone18", "parent": "bone3", "length": 19.45, "rotation": -107.78, "x": 14.02, "y": 21.42 },
-	{ "name": "forground leg", "parent": "root", "x": -27.59, "y": -84.19, "color": "ff3f00ff" },
-	{ "name": "footPosition", "parent": "root", "x": 4.56, "y": -101.72, "color": "ff3f00ff" },
-	{ "name": "hand_target", "parent": "root", "rotation": 82.3, "x": -39.88, "y": 2.6, "color": "ff3f00ff" },
-	{ "name": "background_hand_constright", "parent": "root", "x": 39.97, "y": -2.02, "color": "ff3f00ff" },
-	{ "name": "head_neck_constright", "parent": "root", "x": 23.08, "y": 99.42, "color": "ff3f00ff" },
-	{ "name": "background_leg_constright", "parent": "root", "x": 35.67, "y": -79.05, "color": "ff3f00ff" },
-	{ "name": "toe target", "parent": "root", "x": 79.89, "y": -95.31, "color": "ff3f00ff" }
+	{ "name": "background_leg_constright", "parent": "hip", "x": 85.41, "y": 19.34, "color": "ff3f00ff" },
+	{ "name": "toe target", "parent": "background_leg_constright", "x": 44.22, "y": -16.26, "color": "ff3f00ff" },
+	{ "name": "forground leg", "parent": "hip", "x": 22.14, "y": 14.2, "color": "ff3f00ff" },
+	{ "name": "footPosition", "parent": "hip", "x": 54.3, "y": -3.33, "color": "ff3f00ff" },
+	{
+		"name": "hand_target",
+		"parent": "hip",
+		"rotation": 82.3,
+		"x": 9.04,
+		"y": 109.21,
+		"scaleX": 0.964,
+		"scaleY": 0.964,
+		"color": "ff3f00ff"
+	},
+	{ "name": "background_hand_constright", "parent": "hip", "x": 93.4, "y": 80, "color": "ff3f00ff" },
+	{ "name": "head_neck_constright", "parent": "hip", "x": 94.12, "y": 193.11, "color": "ff3f00ff" }
 ],
 "slots": [
 	{ "name": "shoe_bg2", "bone": "bone15", "attachment": "shoe_bg" },
@@ -299,7 +308,7 @@
 					{ "time": 0.2667, "x": 1, "y": 0.742 },
 					{ "time": 0.3, "x": 1, "y": 1.18 },
 					{ "time": 0.3333, "x": 1, "y": 1.188 },
-					{ "time": 0.3667, "x": 1, "y": 0.742 },
+					{ "time": 0.3667, "x": 1.034, "y": 0.767 },
 					{ "time": 0.4, "x": 1, "y": 1.18 }
 				]
 			}
@@ -328,6 +337,9 @@
 				]
 			},
 			"head_neck_constright": {
+				"rotate": [
+					{ "time": 0.1, "angle": 1.6 }
+				],
 				"translate": [
 					{
 						"time": 0,
@@ -466,6 +478,53 @@
 				"translate": [
 					{ "time": 0, "x": 0, "y": 0 },
 					{ "time": 0.4, "x": -6, "y": -18.78 }
+				]
+			}
+		}
+	},
+	"walk": {
+		"bones": {
+			"background_leg_constright": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 },
+					{ "time": 0.0667, "x": -52.02, "y": 4.99, "curve": "stepped" },
+					{ "time": 0.1333, "x": -52.02, "y": 4.99 },
+					{ "time": 0.2667, "x": 0, "y": 0 }
+				]
+			},
+			"forground leg": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 },
+					{ "time": 0.0667, "x": 63.12, "y": -7.77 },
+					{ "time": 0.2, "x": 0, "y": 0 }
+				]
+			},
+			"footPosition": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 },
+					{ "time": 0.0667, "x": 113.89, "y": -11.93 },
+					{ "time": 0.2, "x": 113.81, "y": -3.55 },
+					{ "time": 0.3667, "x": 0, "y": 0 }
+				]
+			},
+			"toe target": {
+				"translate": [
+					{ "time": 0.1333, "x": -1.64, "y": -11.89 },
+					{ "time": 0.3667, "x": 5.01, "y": -2.49 }
+				]
+			},
+			"bone": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 },
+					{ "time": 0.0667, "x": -3.56, "y": -5.8 },
+					{ "time": 0.3667, "x": 0, "y": 0 }
+				]
+			},
+			"head_neck_constright": {
+				"translate": [
+					{ "time": 0, "x": 0, "y": 0 },
+					{ "time": 0.0667, "x": 0.68, "y": -8.74 },
+					{ "time": 0.3667, "x": 0, "y": 0 }
 				]
 			}
 		}
