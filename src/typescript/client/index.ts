@@ -27,8 +27,8 @@ const config: Phaser.Types.Core.GameConfig = {
   scale: {
     mode: Phaser.Scale.FIT,
     parent: 'container',
-    width: 1280,
-    height: 720
+    width: 1920,
+    height: 1080
 },
 // resolution: 1/window.devicePixelRatio,
 fps: {
@@ -45,7 +45,7 @@ fps: {
   type: Phaser.WEBGL,
   width: window.innerWidth,
   height: window.innerHeight,
-  scene: [new Boot, /* new CustomSceneHere */], // we are going to use boot as our main controller, then an other states ew require after that.
+  scene: [new Boot/* new CustomSceneHere */], // we are going to use boot as our main controller, then an other states ew require after that.
   plugins: {
     global: [
         { key: 'tools', plugin: Tools, start: true},
@@ -74,13 +74,20 @@ fps: {
     gamepad: true
   },
   physics: {
-    default : "arcade",
+    default : "matter",
     arcade : {
       debug: true,
       gravity: {
         y: 8000,
       }
+      
 
+    },
+    matter : {
+      debug:true,
+      gravity: {
+        y: 0
+    },
     }
   },
   backgroundColor: 0x000000,

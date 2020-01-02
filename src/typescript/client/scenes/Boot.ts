@@ -113,9 +113,19 @@ export default class Boot extends BaseScene {
     console.groupEnd();
 
     //run the second scene defined in out index config
-    if(this.scene.manager.scenes[1]){
-      this.scene.run(this.scene.manager.scenes[1].scene.key);
-    }  
+    // if(this.scene.manager.scenes[1]){
+    //   this.scene.run(this.scene.manager.scenes[1].scene.key);
+    // }  
+
+    this.addAndLoadState("UITestsScene");
+    this.addAndLoadState("PhysicsTestsScene");
+  }
+
+  async addAndLoadState(sceneKey:string){
+    const Scene = await import(/* webpackChunkName: "game", webpackPreload: true */"./"+sceneKey); 
+    this.scene.manager.add(sceneKey,Scene.default);
+
+    this.scene.run(sceneKey);
   }
 
   /**

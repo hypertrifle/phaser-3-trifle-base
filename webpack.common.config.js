@@ -1,5 +1,4 @@
 'use strict';
-
   
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
@@ -34,25 +33,26 @@ function prepareJSONFiles(content) {
 
 module.exports = {
     // mode: 'production',
-    entry: './src/typescript/client/index.ts',
+    entry: ['@babel/polyfill','./src/typescript/client/index.ts'],
     devtool: "source-map",
 
-    optimization: {
-        minimizer: [new TerserPlugin({
-            extractComments: true,
-            sourceMap:true,
-            terserOptions: {
-            compress: {
-                booleans_as_integers:true
-            }
-        }
-        })],
-    },
+    // optimization: {
+    //     minimizer: [new TerserPlugin({
+    //         extractComments: true,
+    //         sourceMap:true,
+    //         terserOptions: {
+    //         compress: {
+    //             booleans_as_integers:true
+    //         }
+    //     }
+    //     })],
+    // },
 
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: '/build/',
-        filename: 'project.bundle.js'
+        filename: '[name].bundle.js',
+        chunkFilename: '[name].bundle.js',
     },
 
     resolve: {
