@@ -46,11 +46,7 @@ fps: {
   type: Phaser.WEBGL,
   width: window.innerWidth,
   height: window.innerHeight,
-<<<<<<< HEAD
-  scene: [new Boot,  new TestScene/* new CustomSceneHere */], // we are going to use boot as our main controller, then an other states ew require after that.
-=======
   scene: [new Boot/* new CustomSceneHere */], // we are going to use boot as our main controller, then an other states ew require after that.
->>>>>>> 957977fb60b376e6a8e8ab5e351c41485c7b9275
   plugins: {
     global: [
         { key: 'tools', plugin: Tools, start: true},
