@@ -9,6 +9,7 @@ import "phaser";
 import Boot from "./scenes/Boot";
 import Tools from "./plugins/global/HyperToolsPlugin";
 import '../../styles/index.scss';
+import TestScene from "./scenes/TestScene";
 
 
 export const DEBUG = false;
