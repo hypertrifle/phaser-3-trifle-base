@@ -1,0 +1,81 @@
+
+{
+      "save": {
+            "identifier": "spygame",
+            "version": "0.0.2",
+            "shouldPersistData": false
+      },
+      "global": {
+            "debugMode":true
+      },
+
+      "titleScene": {
+            "backgroundColor": "0x450710"
+      },
+
+      "scaling": {
+            "resizeToParent": true,
+            "expandToParent": true,
+            "shouldForceOrientationOnMobile": true,
+            "shouldForceLandscaprOnMobile": true
+      },
+
+      "HUDOverlay": {
+            "shouldShowSettings": true,
+            "hideDelay": 1
+      },
+      
+      "debugOverlay": {
+            "showBrowserSpecificion": true,
+            "showLinksToStates": true,
+            "showScormDebugOptions": true,
+            "showAvailiblePopups": true,
+            "showExportSaveDataButton": true,
+            "toggleFPSCounter" : true,
+            "resetSaveModel":true
+      },
+      "userInterface": {
+            "settings": {
+                  "radius": 0,
+                  "colors": {
+                        "primary": "#F34939",
+                        "secondary": "#FEBD19",
+                        "hover":  "#F25F52",
+                        "disabled": "#AAAAAA"
+                  }
+            },
+            "buttons": {}
+      },
+      "test": {
+            "priority": "settings"
+      },
+      "fonts": {
+            "h1": {
+                  "font": "Arial, Helvetica, sans-serif",
+                  "fontSize": 46,
+                  "fill": "#000000",
+                  "align": "center",
+                  "fontWeight": "700",
+                  "wordWrap": true,
+                  "wordWrapWidth": 900
+            },
+            "h2": {
+                  "font": "Arial, Helvetica, sans-serif",
+                  "fontSize": 36,
+                  "fill": "#000000",
+                  "align": "center",
+                  "fontWeight": "700",
+                  "wordWrap": true,
+                  "wordWrapWidth": 900
+            },
+            "body": {
+                  "font": "Arial, Helvetica, sans-serif",
+                  "fontSize": 16,
+                  "fill": "#000000",
+                  "align": "left",
+                  "fontWeight": "700",
+                  "wordWrap": true,
+                  "wordWrapWidth": 900
+            }
+      }
+}

@@ -14,6 +14,7 @@
   "files": [
     "node_modules/phaser/types/phaser.d.ts",
     "node_modules/phaser/types/matter.d.ts",
+    "src/custom.d.ts"
   ],
   "include": [
     "src/**/*.ts"

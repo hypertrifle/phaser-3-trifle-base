@@ -3,7 +3,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const phaserModule = path.join(__dirname, '/node_modules/phaser/');
 const phaser = path.join(phaserModule, 'src/phaser.js');
 const strip = require('strip-json-comments');
@@ -89,6 +88,11 @@ module.exports = {
               'sass-loader',
             ],
           },
+
+          {
+            test: /\.(gif|png|jpe?g|svg|xml)$/i,
+            use: "file-loader"
+          }
         ],
     }, 
 
@@ -106,57 +110,6 @@ module.exports = {
           template: 'src/html/index.ejs',
           filename: "./index.html",
         }),
-
-        // new CleanWebpackPlugin(['dist']),    
 ],
 
 };
-
-// console.log("enviroment", process.env);
-
-if (JSON.parse(process.env.npm_config_argv).original[1] !== "build-ci") {
-    console.log("adding assets copy to pipeline");
-    module.exports.plugins.push(
-        new CopyWebpackPlugin(   
-            [ 
-                //standard assets, - this will be changed to Texture packer eventually
-                { from: 'assets/atlas', to: 'assets/atlas' },
-                { from: 'assets/spine', to: 'assets/spine' },
-
-                // { from: 'assets/json/*.json', to: '' },
-                { from: 'assets/fonts', to: 'assets/fonts' },
-
-                { from: 'assets/audio/*.mp3', to: '' },
-                { from: 'assets/audio/*.ogg', to: '' },
-                { from: 'assets/img', to: 'assets/img' },
-                // { from: 'src/client/plugins/external', to: 'plugins' },
-                
-                //any other supporting files.
-                // { from: 'server', to: '.' },
-              
-              
-                //our JSON files, we want to strip comments essentially and convert to stadard json files (avoid mime type issues.)
-                { from: 'assets/json/content.jsonc', to: 'assets/json/content.json',
-                transform (content, path) {
-                    return Promise.resolve(prepareJSONFiles(content))
-                }
-                },
-
-                //settings file
-                { from: 'assets/json/settings.jsonc', to: 'assets/json/settings.json',
-                transform (content, path) {
-                    return Promise.resolve(prepareJSONFiles(content))
-                }
-                },
-
-             
-                //IMSManifest - required for valid LMS SCORM package.
-                { from: 'supporting/manifest.json', to: './manifest.json', flatten:true, 
-                transform (content, path) {
-                    return Promise.resolve(applyPackageVars(content));}
-                }
-                
-            ], {}
-    )
-    );
-}

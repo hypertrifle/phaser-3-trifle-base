@@ -1,12 +1,15 @@
 import BaseScene from "./BaseScene";
-
 import * as WebFont from "webfontloader";
 import Tools from "../plugins/global/HyperToolsPlugin";
+import json from "../../../assets/json/content.json";
+
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
 export default class Boot extends BaseScene {
   static debug: dat.GUI;
   public tools: Tools;
+
+
 
   /**
    *
@@ -70,8 +73,6 @@ export default class Boot extends BaseScene {
       progress.destroy();
     });
 
-    // load content.
-    this.load.json("content", "assets/json/content.json"); // required
   }
 
 
@@ -83,10 +84,10 @@ export default class Boot extends BaseScene {
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
     WebFont.load({
       custom: {
-        families: ["pixel", "porticovintage"]
+        families: []
       },
       google: {
-        families: ["Roboto+Mono","Share+Tech+Mono","Roboto:400,400i,500,500i,700","Roboto+Condensed:400,700"]
+        families: ["Roboto+Mono","Roboto:400,500,700"]
       },
       active: this.webFontsLoaded.bind(this),
       inactive: this.webFontsLoaded.bind(this, false)
@@ -117,15 +118,18 @@ export default class Boot extends BaseScene {
     //   this.scene.run(this.scene.manager.scenes[1].scene.key);
     // }  
 
-    this.addAndLoadState("UITestsScene");
-    this.addAndLoadState("PhysicsTestsScene");
+    this.lazyLoadPhaserScene("UITestsScene");
+    this.lazyLoadPhaserScene("PhysicsTestsScene", false);
   }
 
-  async addAndLoadState(sceneKey:string){
-    const Scene = await import(/* webpackChunkName: "game", webpackPreload: true */"./"+sceneKey); 
-    this.scene.manager.add(sceneKey,Scene.default);
+  async lazyLoadPhaserScene(sceneKey: string, start: boolean = true){
+    const Scene = await import(/* webpackChunkName: "scene", webpackPreload: true */"./"+sceneKey); 
+    this.scene.manager.add(sceneKey,Scene.default); //assume default export of module is an extenstion of Phaser.Scene.
 
-    this.scene.run(sceneKey);
+    //if we are to imediately start
+    if(start){
+      this.scene.run(sceneKey);
+    }
   }
 
   /**

@@ -1,0 +1,68 @@
+{"frames": [
+
+{
+	"filename": "blank.png",
+	"frame": {"x":1016,"y":2,"w":1,"h":1},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1,"h":1},
+	"sourceSize": {"w":1,"h":1}
+},
+{
+	"filename": "near-buildings-bg.png",
+	"frame": {"x":2,"y":68,"w":493,"h":209},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":493,"h":209},
+	"sourceSize": {"w":493,"h":209}
+},
+{
+	"filename": "test-sprite-2.png",
+	"frame": {"x":903,"y":2,"w":111,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":111,"h":104},
+	"sourceSize": {"w":111,"h":104}
+},
+{
+	"filename": "test-sprite-3.png",
+	"frame": {"x":643,"y":108,"w":132,"h":106},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":132,"h":106},
+	"sourceSize": {"w":132,"h":106}
+},
+{
+	"filename": "test-sprite.png",
+	"frame": {"x":497,"y":68,"w":144,"h":108},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":144,"h":108},
+	"sourceSize": {"w":144,"h":108}
+},
+{
+	"filename": "tiles.png",
+	"frame": {"x":2,"y":2,"w":640,"h":64},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":640,"h":64},
+	"sourceSize": {"w":640,"h":64}
+},
+{
+	"filename": "v-truck.png",
+	"frame": {"x":644,"y":2,"w":257,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":257,"h":104},
+	"sourceSize": {"w":257,"h":104}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "atlaspng.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:013090986240ff9b9d45a5e76759faee:de31558574b4337736b74cbb4d2c69eb:6e19d5344fcf9633293462ce49223046$"
+}
+}

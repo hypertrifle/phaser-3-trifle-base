@@ -15,6 +15,13 @@ export const DEBUG = false;
 
 // when the page is loaded, create our game instance (entry point, this is what will change per tech)
 window.onload = () => {
+// eslint-disable-next-line @typescript-eslint/no-use-before-define
+boot();
+}
+
+export async function boot(){
+
+  await import("phaser");
 
   // some development options, this console.clear resets a developer console on webpack refresh which I find handy.
 console.clear();
