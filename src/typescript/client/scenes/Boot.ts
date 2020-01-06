@@ -119,7 +119,7 @@ export default class Boot extends BaseScene {
     // }  
 
     this.lazyLoadPhaserScene("UITestsScene");
-    this.lazyLoadPhaserScene("PhysicsTestsScene", false);
+    // this.lazyLoadPhaserScene("PhysicsTestsScene", false);
   }
 
   async lazyLoadPhaserScene(sceneKey: string, start: boolean = true){

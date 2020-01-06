@@ -35,17 +35,17 @@ module.exports = {
     entry: ['@babel/polyfill','./src/typescript/client/index.ts'],
     devtool: "source-map",
 
-    // optimization: {
-    //     minimizer: [new TerserPlugin({
-    //         extractComments: true,
-    //         sourceMap:true,
-    //         terserOptions: {
-    //         compress: {
-    //             booleans_as_integers:true
-    //         }
-    //     }
-    //     })],
-    // },
+    optimization:(true) ? {
+        minimizer: [new TerserPlugin({
+            extractComments: true,
+            sourceMap:true,
+            terserOptions: {
+            compress: {
+                booleans_as_integers:true
+            }
+        }
+        })],
+    } : {},
 
     output: {
         path: path.resolve(__dirname, 'build'),
