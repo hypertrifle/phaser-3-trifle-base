@@ -11,31 +11,12 @@ const TerserPlugin = require('terser-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 
-//used to replace certain strings within out supporting files. (Title in html files, ID in imsmanafest.)
-const replacements = [
-    {from: "$title$", to:pkg.name},
-    {from: "$author$", to:pkg.author}
-]
-
-//this sessentially replaces the above replacements in supporting files such as index.html, imsmanefest etc.
-function applyPackageVars(content){
-    let string = content.toString('utf8');
-    for(let i in replacements){
-        string = string.replace(replacements[i].from, replacements[i].to);
-    }
-   return new Buffer(string);
-}
-
-function prepareJSONFiles(content) {
-    return strip(content.toString('utf8'));
-}
-
 module.exports = {
     // mode: 'production',
     entry: ['@babel/polyfill','./src/typescript/client/index.ts'],
     devtool: "source-map",
 
-    optimization:(true) ? {
+    optimization:(process.env.NODE_ENV !== 'production') ? {
         minimizer: [new TerserPlugin({
             extractComments: true,
             sourceMap:true,

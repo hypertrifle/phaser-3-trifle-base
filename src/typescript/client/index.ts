@@ -21,10 +21,7 @@ boot();
 }
 
 export async function boot(){
-
-  await import("phaser");
-
-  // some development options, this console.clear resets a developer console on webpack refresh which I find handy.
+// some development options, this console.clear resets a developer console on webpack refresh which I find handy.
 console.clear();
 const DEBUG: boolean = true;
 
