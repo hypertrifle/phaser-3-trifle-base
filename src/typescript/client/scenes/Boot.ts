@@ -3,7 +3,6 @@ import * as WebFont from "webfontloader";
 import Tools from "../plugins/global/HyperToolsPlugin";
 import contentJSON from "../../../assets/json/content.json";
 import settingsJSON from "../../../assets/json/settings.json";
-import { settings } from "cluster";
 
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
