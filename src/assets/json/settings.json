@@ -1,81 +1,37 @@
-
 {
-      "save": {
-            "identifier": "spygame",
-            "version": "0.0.2",
-            "shouldPersistData": false
-      },
-      "global": {
-            "debugMode":true
-      },
-
-      "titleScene": {
-            "backgroundColor": "0x450710"
-      },
-
-      "scaling": {
-            "resizeToParent": true,
-            "expandToParent": true,
-            "shouldForceOrientationOnMobile": true,
-            "shouldForceLandscaprOnMobile": true
-      },
-
-      "HUDOverlay": {
-            "shouldShowSettings": true,
-            "hideDelay": 1
-      },
-      
-      "debugOverlay": {
-            "showBrowserSpecificion": true,
-            "showLinksToStates": true,
-            "showScormDebugOptions": true,
-            "showAvailiblePopups": true,
-            "showExportSaveDataButton": true,
-            "toggleFPSCounter" : true,
-            "resetSaveModel":true
-      },
-      "userInterface": {
-            "settings": {
-                  "radius": 0,
-                  "colors": {
-                        "primary": "#F34939",
-                        "secondary": "#FEBD19",
-                        "hover":  "#F25F52",
-                        "disabled": "#AAAAAA"
-                  }
-            },
-            "buttons": {}
-      },
-      "test": {
-            "priority": "settings"
-      },
-      "fonts": {
-            "h1": {
-                  "font": "Arial, Helvetica, sans-serif",
-                  "fontSize": 46,
-                  "fill": "#000000",
-                  "align": "center",
-                  "fontWeight": "700",
-                  "wordWrap": true,
-                  "wordWrapWidth": 900
-            },
-            "h2": {
-                  "font": "Arial, Helvetica, sans-serif",
-                  "fontSize": 36,
-                  "fill": "#000000",
-                  "align": "center",
-                  "fontWeight": "700",
-                  "wordWrap": true,
-                  "wordWrapWidth": 900
-            },
-            "body": {
-                  "font": "Arial, Helvetica, sans-serif",
-                  "fontSize": 16,
-                  "fill": "#000000",
-                  "align": "left",
-                  "fontWeight": "700",
-                  "wordWrap": true,
-                  "wordWrapWidth": 900
-            }
+  "save": {
+    "identifier": "myGameId",
+    "version": "0.0.1",
+    "shouldPersistData": false
+  },
+  "scaling": {
+    "resizeToParent": true,
+    "expandToParent": true,
+    "shouldForceOrientationOnMobile": true,
+    "shouldForceLandscaprOnMobile": true
+  },
+  "ui": {
+    "settings": {
+      "radius": 0,
+      "colors": {
+        "primary": "#C65DD2",
+        "secondary": "#85F7BF",
+        "hover": "#1C005F",
+        "disabled": "#DDDDDD"
       }
+    },
+    "buttons": {},
+    "fonts": {
+      "h1": {
+        "fontFamily": "Arial, Helvetica, sans-serif",
+        "fontSize": "100px",
+        "color": "#ffffff",
+        "align": "center",
+        "fontStyle": "bold",
+        "wordWrap": {
+          "width": 900
+        }
+      }
+    }
+  }
 }

@@ -25,6 +25,7 @@ export default class HyperToolsPlugin extends Phaser.Plugins.BasePlugin {
 
   public postBoot(bootState: Boot) {
     this._boot = bootState;
+    this.data.loadFromCache();
 
     if (DEBUG) {
       console.log("setting up debug related tools");

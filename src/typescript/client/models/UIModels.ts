@@ -5,17 +5,36 @@ export class Corners {
   ne?: boolean;
 }
 
-export class UISettings {
-  radius: number = 0;
-  colors: ColorPalette;
+export class ColorPalette {
+  primary: string = "#C65DD2";
+  secondary: string = "#85F7BF";
+  hover: string = "#1C005F";
+  disabled: string = "#DDDDDD";
+
+  get primaryNumber(): number {
+    return this.toSignedNumber(this.primary);
+  }
+  get secondaryNumber(): number {
+    return this.toSignedNumber(this.secondary);
+  }
+  get hoverNumber(): number {
+    return this.toSignedNumber(this.hover);
+  }
+  get disabledNumber(): number {
+    return this.toSignedNumber(this.disabled);
+  }
+
+  toSignedNumber(hex: string) {
+    return (parseInt(hex.substr(1), 16) << 8) / 256;
+  }
+
 }
 
-export class ColorPalette {
-  primary: string;
-  secondary: string;
-  hover: string;
-  disabled: string;
+export class UISettings {
+  radius: number = 0;
+  colors: ColorPalette = new ColorPalette();
 }
+
 
 export class ButtonSettings {
   color_up: number;
@@ -27,8 +46,22 @@ export class ButtonSettings {
 }
 
 export default class UIModel {
-  settings: UISettings;
-  buttons: ButtonSettings;
+  settings: UISettings = new UISettings();
+  buttons: ButtonSettings = new ButtonSettings();
+  fonts: { [id: string]: Phaser.Types.GameObjects.Text.TextStyle } =
+    {
+      h1: {
+        fontFamily: "Arial, Helvetica, sans-serif",
+        fontSize: "46px",
+        color: "#ffffff",
+        align: "center",
+        fontStyle: "bold",
+        wordWrap: {
+          width: 900
+        }
+      }
+    }
+    ;
 }
 
 /* small so just whack it here */
