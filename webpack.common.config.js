@@ -7,6 +7,7 @@ const phaserModule = path.join(__dirname, "/node_modules/phaser/");
 const phaser = path.join(phaserModule, "src/phaser.js");
 const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const pkg = require("./package.json");
 
 module.exports = {
   // mode: 'production',
@@ -93,6 +94,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "src/html/index.ejs",
       filename: "./index.html",
+    }),
+    new HtmlWebpackPlugin({
+      template: "src/html/manifest.ejs",
+      filename: "./manifest.json",
+      inject: false,
+      organisation: pkg.organisation, //"sponge",
+      pkgname: pkg.package, //"com.wearesponge.testpackage",
+      title: pkg.title, // "Phaser 3 Compatability Test",
     }),
   ],
 };

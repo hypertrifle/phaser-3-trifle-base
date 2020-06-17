@@ -15,7 +15,6 @@ export const DEBUG = false;
 
 // when the page is loaded, create our game instance (entry point, this is what will change per tech)
 window.onload = () => {
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   boot();
 }
 
@@ -49,7 +48,7 @@ export async function boot() {
     type: Phaser.WEBGL,
     width: window.innerWidth,
     height: window.innerHeight,
-    scene: [new Boot/* new CustomSceneHere */], // we are going to use boot as our main controller, then an other states ew require after that.
+    scene: [new Boot], // we are going to use boot as our main controller, then an other states ew require after that.
     plugins: {
       global: [
         { key: 'tools', plugin: Tools, start: true },
@@ -107,4 +106,4 @@ export async function boot() {
 
 
   new Phaser.Game(config); // finally launch our game.
-};
+}

@@ -11,7 +11,16 @@
     "allowJs": true,
     "sourceMap": true
   },
-  "files": ["node_modules/phaser/types/phaser.d.ts", "node_modules/phaser/types/matter.d.ts", "src/custom.d.ts"],
+  "files": [
+    "node_modules/phaser/types/phaser.d.ts",
+    "node_modules/phaser/types/matter.d.ts",
+    "src/custom.d.ts"
+  ],
   "include": ["src/**/*.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts", "assets/*.*", "webpack.*.config.js"]
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "assets/*.*",
+    "webpack.*.config.js"
+  ]
 }

@@ -1,9 +1,0 @@
-{
-  "name": "$title$ - $version$",
-  "short_name": "$title$",
-    "start_url": ".",
-    "display": "fullscreen",
-    "background_color": "#000",
-    "description": "HyperTrifle - $title$ - $version$"
-
-  }
