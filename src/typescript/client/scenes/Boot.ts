@@ -33,7 +33,7 @@ export default class Boot extends BaseScene {
    *
    * @memberof Boot
    */
-  preload() {
+  preload(): void {
     super.preload();
     // this.scene.add("Background", Background, true); // false is to stop it launching now we'll choose to launch it when we need.
 
@@ -93,7 +93,7 @@ export default class Boot extends BaseScene {
 
 
 
-  create() {
+  create(): void {
     console.log("Boot::create::start");
 
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
@@ -114,7 +114,7 @@ export default class Boot extends BaseScene {
    *
    * @memberof Boot
    */
-  webFontsLoaded(success: boolean = true) {
+  webFontsLoaded(success: boolean = true): void {
     if (!success) {
       // we may need to look into font fallback at thes point
     }
@@ -137,7 +137,7 @@ export default class Boot extends BaseScene {
     // this.lazyLoadPhaserScene("PhysicsTestsScene", false);
   }
 
-  async lazyLoadPhaserScene(sceneKey: string, start: boolean = true) {
+  async lazyLoadPhaserScene(sceneKey: string, start: boolean = true): Promise<void> {
 
     const Scene = await import(/* webpackChunkName: "scene", webpackPreload: true */"./" + sceneKey);
     this.scene.manager.add(sceneKey, Scene.default); //assume default export of module is an extenstion of Phaser.Scene.
@@ -156,7 +156,7 @@ export default class Boot extends BaseScene {
    * @param {number} dt
    * @memberof Boot
    */
-  update(t: number, dt: number) {
+  update(t: number, dt: number): void {
     super.update(t, dt);
   }
 }

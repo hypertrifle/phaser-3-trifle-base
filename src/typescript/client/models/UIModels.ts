@@ -24,7 +24,7 @@ export class ColorPalette {
     return this.toSignedNumber(this.disabled);
   }
 
-  toSignedNumber(hex: string) {
+  toSignedNumber(hex: string): number {
     return (parseInt(hex.substr(1), 16) << 8) / 256;
   }
 

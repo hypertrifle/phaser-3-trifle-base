@@ -43,7 +43,7 @@ export default class UITestsScene extends BaseScene {
 
     }
 
-    create() {
+    create(): void {
         super.create();
         console.log("UITestsScene::Create");
 
@@ -60,7 +60,7 @@ export default class UITestsScene extends BaseScene {
         console.log(this.tools.data);
     }
 
-    update() {
+    update(): void {
         // super.update();
     }
 

@@ -23,13 +23,13 @@ export default class BaseScene extends Phaser.Scene {
     } catch (e) { }
   }
 
-  preload() {
+  preload(): void {
     console.log("BaseScene::preload");
 
     // TODO: setup preload bar
   }
 
-  create() {
+  create(): void {
     if (!this.tools) {
       this.tools = this.sys.plugins.get("tools") as Tools; // cast
     }
@@ -41,22 +41,22 @@ export default class BaseScene extends Phaser.Scene {
 
   }
 
-  update(time: number, delta: number) {
+  update(time: number, delta: number): void {
     super.update(time, delta);
   }
 
 
 
-  sleep() {
+  sleep(): void {
     //no global sleep functionallity.
   }
-  wake() {
+  wake(): void {
     if (!this.tools) {
       this.tools = this.sys.plugins.get("tools") as Tools; // cast
     }
   }
 
-  shutdown() {
+  shutdown(): void {
     // drop references to anything we have in create
     this.tools = null;
   }

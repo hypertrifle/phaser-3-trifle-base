@@ -23,7 +23,7 @@ export function hexToBase16Number(s: string): number {
   return parseInt(s.replace('#', ''), 16);
 }
 
-export function base16NumberToHex(num: number) {
+export function base16NumberToHex(num: number): string {
   return "#" + num.toString(16);
 }
 
@@ -81,14 +81,13 @@ export function MergeObjectRecursive(obj1: any, obj2: any): any {
 
 
 
-export function track(action: string, label: string) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+export function track(action: string, label: string): void {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-
   if (typeof gtag === 'function') {
     console.log('sending to google analytics', action, label);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-  // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     gtag('event', action, {
       'event_label': label
     });
@@ -98,7 +97,7 @@ export function track(action: string, label: string) {
 
 }
 
-export function domainCheck(hostname: string) {
+export function domainCheck(hostname: string): string {
   for (let i = 0; i < hostname.length; i++) {
     let char = parseInt(hostname[i]);
     if (!isNaN(char)) {
@@ -135,7 +134,7 @@ export function hextocolor(hex: string): number {
 
 }
 
-export function decode(message: string) {
+export function decode(message: string): string {
   for (let i = 0; i < message.length; i++) {
     let char = parseInt(message[i]);
     if (!isNaN(char)) {
@@ -151,7 +150,7 @@ export function decode(message: string) {
   return atob(message);
 }
 
-export function shuffle(array: any[]) {
+export function shuffle(array: any[]): any[] {
   let counter = array.length;
 
   // While there are elements in the array
@@ -172,7 +171,7 @@ export function shuffle(array: any[]) {
 
 }
 
-export function roundPosition(gameObject: Phaser.GameObjects.Text | Phaser.GameObjects.Image | Phaser.GameObjects.Sprite) {
+export function roundPosition(gameObject: Phaser.GameObjects.Text | Phaser.GameObjects.Image | Phaser.GameObjects.Sprite): void {
 
   // make sure position is a round number
   gameObject.x = Math.round(gameObject.x);
@@ -190,9 +189,9 @@ export function RoundedRect(gfx: Phaser.GameObjects.Graphics, x: number, y: numb
 export function debugSprite(scene: Phaser.Scene, x: number, y: number, w: number, h: number, color: number | string): Phaser.GameObjects.Graphics {
   // just gerneates a coloured box.
   const canvas = scene.add.graphics();
-  const col: number = (typeof(color) === "string") ? hexToBase16Number(color) : color;
-  canvas.fillStyle(col,1);
-  canvas.fillRect(0,0,w,h);
+  const col: number = (typeof (color) === "string") ? hexToBase16Number(color) : color;
+  canvas.fillStyle(col, 1);
+  canvas.fillRect(0, 0, w, h);
   return canvas;
 }
 
@@ -206,8 +205,8 @@ enum eCharType {
 }
 
 
-export function bestFit(currentWidth: number,currentHeight: number,maxWidth: number,maxHeight: number): number {
+export function bestFit(currentWidth: number, currentHeight: number, maxWidth: number, maxHeight: number): number {
   const wScale = maxWidth / currentWidth;
   const hScale = maxHeight / currentHeight;
-  return Math.min(wScale,hScale);
+  return Math.min(wScale, hScale);
 }
