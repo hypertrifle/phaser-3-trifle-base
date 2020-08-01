@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "help": "node scripts/help.js",
-    "dev": "webpack-dev-server --mode development --open-page webpack-dev-server/ --hot --inline --config webpack.common.config.js",
+    "dev": "webpack-dev-server --mode development --open-page webpack-dev-server/ --hot --inline --host 192.168.178.22  --config webpack.common.config.js",
     "build": "webpack --config webpack.common.config.js --mode production",
     "build:native": "npx cap copy",
     "lint": "eslint --fix src/**/*.ts",

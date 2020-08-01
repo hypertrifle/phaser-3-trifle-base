@@ -3,6 +3,7 @@ import * as WebFont from "webfontloader";
 import Tools from "../plugins/global/HyperToolsPlugin";
 import contentJSON from "../../../assets/json/content.json";
 import settingsJSON from "../../../assets/json/settings.json";
+import { DEBUG } from "..";
 
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
@@ -78,12 +79,12 @@ export default class Boot extends BaseScene {
     });
 
 
-    if (contentJSON) {
+    if (contentJSON && !DEBUG) {
       this.load.json("content", contentJSON);
     }
 
 
-    if (settingsJSON) {
+    if (settingsJSON && !DEBUG) {
       this.load.json("settings", settingsJSON);
     }
 
@@ -132,7 +133,7 @@ export default class Boot extends BaseScene {
       this.scene.run(this.scene.manager.scenes[1].scene.key);
     }
 
-    this.lazyLoadPhaserScene("UITestsScene");
+    this.lazyLoadPhaserScene("TestScene");
     // this.lazyLoadPhaserScene("PhysicsTestsScene", false);
   }
 

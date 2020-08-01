@@ -11,7 +11,7 @@ import Tools from "./plugins/global/HyperToolsPlugin";
 import '../../styles/index.scss';
 
 
-export const DEBUG = false;
+export const DEBUG = true;
 
 // when the page is loaded, create our game instance (entry point, this is what will change per tech)
 window.onload = () => {
@@ -30,10 +30,10 @@ export async function boot() {
     scale: {
       mode: Phaser.Scale.FIT,
       parent: 'container',
-      width: 1920,
-      height: 1080
+      // width: 1920,
+      // height: 1080
     },
-    // resolution: 1/window.devicePixelRatio,
+    resolution: 1, //window.devicePixelRatio,
     fps: {
       min: 30,
       target: 60
@@ -46,8 +46,8 @@ export async function boot() {
     },
 
     type: Phaser.WEBGL,
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: window.innerWidth, // / window.devicePixelRatio,
+    height: window.innerHeight, // / window.devicePixelRatio,
     scene: [new Boot], // we are going to use boot as our main controller, then an other states ew require after that.
     plugins: {
       global: [

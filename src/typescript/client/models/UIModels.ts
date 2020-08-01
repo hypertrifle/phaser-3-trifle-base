@@ -48,8 +48,18 @@ export class ButtonSettings {
 export default class UIModel {
   settings: UISettings = new UISettings();
   buttons: ButtonSettings = new ButtonSettings();
-  fonts: { [id: string]: Phaser.Types.GameObjects.Text.TextStyle } =
+  fonts: { [key: string]: Phaser.Types.GameObjects.Text.TextStyle } =
     {
+      debug: {
+        fontFamily: "Roboto Mono",
+        fontSize: "8px",
+        color: "#ffffff",
+        align: "left",
+        fontStyle: "normal",
+        wordWrap: {
+          width: 900
+        }
+      },
       h1: {
         fontFamily: "Arial, Helvetica, sans-serif",
         fontSize: "46px",
