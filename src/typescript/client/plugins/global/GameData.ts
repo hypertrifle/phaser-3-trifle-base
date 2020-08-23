@@ -41,7 +41,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
    *
    * @memberof GameData
    */
-  public init() {
+  public init(): void {
     this.persistantStorageLoad();
 
 
@@ -49,7 +49,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
 
 
-  loadFromCache() {
+  loadFromCache(): void {
     const content = this.game.cache.json.get('content');
     const settings = this.game.cache.json.get('settings');
 
@@ -71,7 +71,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
     * @memberof GameData
     */
   private persistantStorageLoad() {
-    let raw: string = "";
+    let raw = "";
 
     switch (this.trackingMode) {
       case TrackingMode.Off:

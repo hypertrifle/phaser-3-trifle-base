@@ -30,10 +30,10 @@ export default class TestScene extends BaseScene {
 
       console.log(this._polyTest);
 
-      const debug: string = this.debugString();
-
-
       this.add.text(55, 200, this.debugString(), this.tools.data.ui.fonts.debug);
+
+      this.tools._boot.lazyLoadPhaserScene("PhysicsTestsScene", false);
+
    }
 
    debugString(): string {

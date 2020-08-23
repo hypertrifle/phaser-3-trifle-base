@@ -12,7 +12,7 @@ export class WormSegment extends Phaser.GameObjects.GameObject {
     _outerBody: MatterJS.Body;
     _innerBody: MatterJS.Body;
 
-    constructor(scene: BaseScene, constraints: WormConstraints, isOdd: boolean, initalPosition: Phaser.Math.Vector2, radius: number = 50) {
+    constructor(scene: BaseScene, constraints: WormConstraints, isOdd: boolean, initalPosition: Phaser.Math.Vector2, radius = 50) {
 
         super(scene, "suasage-segment");
 
@@ -38,7 +38,7 @@ export default class PhysicsTestsScene extends BaseScene {
 
     }
 
-    create() {
+    create(): void {
         super.create();
         console.log("PhysicsTestScene::Create");
         // const bounds = new Phaser.Math.Vector2(this.game.config.width as number , this.game.config.height as number );
@@ -69,7 +69,7 @@ export default class PhysicsTestsScene extends BaseScene {
 
     }
 
-    update() {
+    update(): void {
         // super.update();
     }
 

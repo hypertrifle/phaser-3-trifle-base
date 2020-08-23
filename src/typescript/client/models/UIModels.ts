@@ -6,10 +6,10 @@ export class Corners {
 }
 
 export class ColorPalette {
-  primary: string = "#C65DD2";
-  secondary: string = "#85F7BF";
-  hover: string = "#1C005F";
-  disabled: string = "#DDDDDD";
+  primary = "#C65DD2";
+  secondary = "#85F7BF";
+  hover = "#1C005F";
+  disabled = "#DDDDDD";
 
   get primaryNumber(): number {
     return this.toSignedNumber(this.primary);
@@ -31,7 +31,7 @@ export class ColorPalette {
 }
 
 export class UISettings {
-  radius: number = 0;
+  radius = 0;
   colors: ColorPalette = new ColorPalette();
 }
 
@@ -76,10 +76,10 @@ export default class UIModel {
 
 /* small so just whack it here */
 export class ScalingModel {
-  resizeToParent: boolean = true; // priority.
-  expandToParent: boolean = true;
-  shouldForceOrientationOnMobile: boolean = true;
-  shouldForceLandscaprOnMobile: boolean = true;
+  resizeToParent = true; // priority.
+  expandToParent = true;
+  shouldForceOrientationOnMobile = true;
+  shouldForceLandscaprOnMobile = true;
   maxWidth: number = undefined;
   maxHeight: number = undefined;
 }

@@ -12,7 +12,7 @@ export default class SaveModel {
    * @type {string}
    * @memberof SaveModel
    */
-  identifier: string = "myGameId";
+  identifier = "myGameId";
   /**
    * Version string number of the format X.Y.
    * X = major, Y = minor, Z = bug fixes
@@ -20,7 +20,7 @@ export default class SaveModel {
    * @type {string}
    * @memberof SaveModel
    */
-  version: string = "0.0.1";
+  version = "0.0.1";
 
   /**
    * should this save data be persistent, IE - restore when re-visiting the experience.
@@ -28,6 +28,6 @@ export default class SaveModel {
    * @type {boolean}
    * @memberof SaveModel
    */
-  shouldPersistData: boolean = false;
+  shouldPersistData = false;
 
 }

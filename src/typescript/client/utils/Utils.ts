@@ -51,7 +51,7 @@ export function getToken(): string {
   return token;
 }
 
-export function getURLHashSegment(defaultValue: string = ''): string {
+export function getURLHashSegment(defaultValue = ''): string {
   let ret = defaultValue;
 
   if (window.location.hash.length > 1) {
@@ -62,12 +62,12 @@ export function getURLHashSegment(defaultValue: string = ''): string {
 }
 
 // merges two objects properties together, this will prioritise the second objects properties to the first.
-export function MergeObjectRecursive(obj1: any, obj2: any): any {
+export function MergeObjectRecursive(obj1: { [key: string]: unknown }, obj2: { [key: string]: unknown }): unknown {
   for (const p in obj2) {
     try {
       // Property in destination object set; update its value.
       if (obj2[p].constructor === Object) {
-        obj1[p] = MergeObjectRecursive(obj1[p], obj2[p]);
+        obj1[p] = MergeObjectRecursive(obj1[p] as { [key: string]: unknown }, obj2[p] as { [key: string]: unknown });
       } else {
         obj1[p] = obj2[p];
       }
@@ -150,7 +150,7 @@ export function decode(message: string): string {
   return atob(message);
 }
 
-export function shuffle(array: any[]): any[] {
+export function shuffle(array: unknown[]): unknown[] {
   let counter = array.length;
 
   // While there are elements in the array
@@ -182,9 +182,9 @@ export function roundPosition(gameObject: Phaser.GameObjects.Text | Phaser.GameO
 
 
 // draw a rounded corner rectangle
-export function RoundedRect(gfx: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number, r: number, color: string): Phaser.GameObjects.Graphics {
-  return gfx;
-}
+// export function RoundedRect(gfx: Phaser.GameObjects.Graphics, x: number, y: number, w: number, h: number, r: number, color: string): Phaser.GameObjects.Graphics {
+//   return gfx;
+// }
 
 export function debugSprite(scene: Phaser.Scene, x: number, y: number, w: number, h: number, color: number | string): Phaser.GameObjects.Graphics {
   // just gerneates a coloured box.
@@ -194,16 +194,6 @@ export function debugSprite(scene: Phaser.Scene, x: number, y: number, w: number
   canvas.fillRect(0, 0, w, h);
   return canvas;
 }
-
-
-enum eCharType {
-  UNDEFINED = -1,
-  SPACE = 1,
-  NEWLINE = 2,
-  CHARACTER = 3,
-  // SPECIAL = 4 // for future
-}
-
 
 export function bestFit(currentWidth: number, currentHeight: number, maxWidth: number, maxHeight: number): number {
   const wScale = maxWidth / currentWidth;

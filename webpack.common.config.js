@@ -11,24 +11,25 @@ const pkg = require("./package.json");
 
 module.exports = {
   // mode: 'production',
-  entry: ["@babel/polyfill", "./src/typescript/client/index.ts"],
+  entry: ["@babel/polyfill",
+    "./src/typescript/client/index.ts"],
   devtool: "source-map",
 
   optimization:
     process.env.NODE_ENV !== "production"
       ? {
-          minimizer: [
-            new TerserPlugin({
-              extractComments: true,
-              sourceMap: true,
-              terserOptions: {
-                compress: {
-                  booleans_as_integers: true,
-                },
+        minimizer: [
+          new TerserPlugin({
+            extractComments: true,
+            sourceMap: true,
+            terserOptions: {
+              compress: {
+                booleans_as_integers: true,
               },
-            }),
-          ],
-        }
+            },
+          }),
+        ],
+      }
       : {},
 
   output: {
@@ -99,9 +100,9 @@ module.exports = {
       template: "src/html/manifest.ejs",
       filename: "./manifest.json",
       inject: false,
-      organisation: pkg.organisation, //"sponge",
-      pkgname: pkg.package, //"com.wearesponge.testpackage",
-      title: pkg.title, // "Phaser 3 Compatability Test",
+      organisation: pkg.organisation,
+      pkgname: pkg.package,
+      title: pkg.title,
     }),
   ],
 };

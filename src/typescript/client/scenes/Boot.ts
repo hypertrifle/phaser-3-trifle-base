@@ -114,7 +114,7 @@ export default class Boot extends BaseScene {
    *
    * @memberof Boot
    */
-  webFontsLoaded(success: boolean = true): void {
+  webFontsLoaded(success = true): void {
     if (!success) {
       // we may need to look into font fallback at thes point
     }
@@ -134,13 +134,13 @@ export default class Boot extends BaseScene {
     }
 
     this.lazyLoadPhaserScene("TestScene");
-    // this.lazyLoadPhaserScene("PhysicsTestsScene", false);
   }
 
-  async lazyLoadPhaserScene(sceneKey: string, start: boolean = true): Promise<void> {
+  async lazyLoadPhaserScene(sceneKey: string, start = true): Promise<void> {
 
-    const Scene = await import(/* webpackChunkName: "scene", webpackPreload: true */"./" + sceneKey);
-    this.scene.manager.add(sceneKey, Scene.default); //assume default export of module is an extenstion of Phaser.Scene.
+
+    const { default: scene } = await import(/* webpackChunkName: "scene" */"./" + sceneKey);
+    this.scene.manager.add(sceneKey, scene); //assume default export of module is an extenstion of Phaser.Scene.
 
     //if we are to imediately start
     if (start) {

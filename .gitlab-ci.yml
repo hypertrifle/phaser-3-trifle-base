@@ -2,11 +2,10 @@
 image: node:lts
 
 before_script:
-- npm install
+  - npm install
 lint:
   script:
-  - npm run lint
+    - npm run lint
 build:
   script:
-  - npm run build-ci
-  
+    - npm run build

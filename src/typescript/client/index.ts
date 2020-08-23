@@ -21,7 +21,7 @@ window.onload = () => {
 export function boot(): void {
   // some development options, this console.clear resets a developer console on webpack refresh which I find handy.
   console.clear();
-  const DEBUG: boolean = true;
+  const DEBUG = true;
 
 
   const config: Phaser.Types.Core.GameConfig = {
