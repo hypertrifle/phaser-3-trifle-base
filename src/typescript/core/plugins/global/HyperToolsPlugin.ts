@@ -1,7 +1,7 @@
 import GameData from "./GameData";
 import Boot from "../../scenes/Boot";
 import { GUI } from "dat.gui";
-import { DEBUG } from "../..";
+import { DEBUG } from "../../index";
 
 
 export default class HyperToolsPlugin extends Phaser.Plugins.BasePlugin {

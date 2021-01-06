@@ -27,7 +27,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
 
   save: SaveModel;
   scaling: ScalingModel = new ScalingModel();
-  userInterface: UIModel = new UIModel();
+  ui: UIModel = new UIModel();
 
   fonts: Array<Phaser.GameObjects.TextStyle>;
 
@@ -96,7 +96,7 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
    *
    * @memberof GameData
    */
-  private persistantStorageSave() {
+  private commit() {
     const serilized =
       this.trackingMode === TrackingMode.Off ? "" : JSON.stringify(this.save);
 

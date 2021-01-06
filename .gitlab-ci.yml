@@ -8,5 +8,5 @@ lint:
   - npm run lint
 build:
   script:
-  - npm run build-ci
+  - npm run build
   

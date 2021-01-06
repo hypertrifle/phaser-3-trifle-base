@@ -123,7 +123,12 @@ export default class Boot extends BaseScene {
   }
 
   async lazyLoadPhaserScene(sceneKey: string, start: boolean = true){
-    const Scene = await import(/* webpackChunkName: "scene", webpackPreload: true */"./"+sceneKey); 
+
+
+    console.log(sceneKey);
+
+    // const Scene = await import(""); 
+    const Scene = await import(/* webpackChunkName: "scene", webpackPreload: true */"../../scenes/"+sceneKey); 
     this.scene.manager.add(sceneKey,Scene.default); //assume default export of module is an extenstion of Phaser.Scene.
 
     //if we are to imediately start

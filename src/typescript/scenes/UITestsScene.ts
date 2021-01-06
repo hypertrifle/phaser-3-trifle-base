@@ -1,4 +1,4 @@
-import BaseScene from "./BaseScene";
+import BaseScene from "../core/scenes/BaseScene";
 
 export interface TopDisplayConfig {
 
