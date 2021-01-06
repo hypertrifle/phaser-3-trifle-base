@@ -1,4 +1,4 @@
-import { ContentModel } from "../../models/GameModel";
+import ContentModel from "../../models/ContentModel";
 import SaveModel from "../../models/SaveModel";
 import UIModel, { ScalingModel } from "../../models/UIModels";
 
@@ -7,7 +7,7 @@ import UIModel, { ScalingModel } from "../../models/UIModels";
  *
  * @enum {number}
  */
-enum TrackingMode {
+export enum TrackingMode {
   Off = 0,
   OfflineStoage
 }
@@ -22,10 +22,10 @@ enum TrackingMode {
  */
 
 export default class GameData extends Phaser.Plugins.BasePlugin {
-  
+
   trackingMode: TrackingMode = TrackingMode.Off;
 
-  save: SaveModel;
+  save: SaveModel = new SaveModel();
   scaling: ScalingModel = new ScalingModel();
   ui: UIModel = new UIModel();
 
@@ -44,18 +44,37 @@ export default class GameData extends Phaser.Plugins.BasePlugin {
    *
    * @memberof GameData
    */
-  public init() {
+  public init(): void {
     this.persistantStorageLoad();
+
+
   }
 
 
- /**
-   * loads persistent save data from current tracking system.
-   *
-   * @memberof GameData
-   */
+
+  loadFromCache(): void {
+    const content = this.game.cache.json.get('content');
+    const settings = this.game.cache.json.get('settings');
+
+    if (content) {
+      console.log("dataPlugin::loadJSONContent", content);
+
+      Object.assign(this.content, content);
+    }
+
+    if (settings) {
+      console.log("dataPlugin::LoadJSONSettings", settings);
+      Object.assign(this, settings);
+    }
+
+  }
+  /**
+    * loads persistent save data from current tracking system.
+    *
+    * @memberof GameData
+    */
   private persistantStorageLoad() {
-    let raw: string = "";
+    let raw = "";
 
     switch (this.trackingMode) {
       case TrackingMode.Off:

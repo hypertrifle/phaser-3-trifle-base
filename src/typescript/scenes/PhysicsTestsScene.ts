@@ -4,20 +4,20 @@ export interface WormConstraints {
     oddCollisionGroup: number;
     evenCollisionGroup: number;
 
-    
+
 }
 
 export class WormSegment extends Phaser.GameObjects.GameObject {
 
-    _outerBody: Matter.Body;
-    _innerBody: Matter.Body;
+    _outerBody: MatterJS.Body;
+    _innerBody: MatterJS.Body;
 
-    constructor(scene: BaseScene,constraints: WormConstraints, isOdd: boolean, initalPosition: Phaser.Math.Vector2, radius: number = 50){
+    constructor(scene: BaseScene, constraints: WormConstraints, isOdd: boolean, initalPosition: Phaser.Math.Vector2, radius = 50) {
 
-        super(scene,"suasage-segment");
+        super(scene, "suasage-segment");
 
-        this._outerBody = scene.matter.add.circle(initalPosition.x, initalPosition.y,radius,{ restitution: 0.9 }) as Matter.Body; 
-        this._innerBody = scene.matter.add.circle(initalPosition.x, initalPosition.y, radius -10, { restitution: 0.9 }) as Matter.Body;
+        this._outerBody = scene.matter.add.circle(initalPosition.x, initalPosition.y, radius, { restitution: 0.9 }) as MatterJS.Body;
+        this._innerBody = scene.matter.add.circle(initalPosition.x, initalPosition.y, radius - 10, { restitution: 0.9 }) as MatterJS.Body;
 
 
 
@@ -30,15 +30,15 @@ export class WormSegment extends Phaser.GameObjects.GameObject {
 
 export default class PhysicsTestsScene extends BaseScene {
 
-    constructor(){
+    constructor() {
         super({
-            key:"PhysicsTestScene",
+            key: "PhysicsTestScene",
             active: true
         });
 
     }
 
-    create() {
+    create(): void {
         super.create();
         console.log("PhysicsTestScene::Create");
         // const bounds = new Phaser.Math.Vector2(this.game.config.width as number , this.game.config.height as number );
@@ -52,7 +52,7 @@ export default class PhysicsTestsScene extends BaseScene {
 
         // const outerCategory = this.matter.world.nextCategory();
         // circle1._outerBody.collisionFilter.group = outerCategory;
-        
+
         // const innerCategory = this.matter.world.nextCategory();
         // circle1._innerBody.collisionFilter.group = innerCategory;
 
@@ -69,7 +69,7 @@ export default class PhysicsTestsScene extends BaseScene {
 
     }
 
-    update(){
+    update(): void {
         // super.update();
     }
 

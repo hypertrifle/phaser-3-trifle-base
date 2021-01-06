@@ -6,24 +6,21 @@
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "strict": false,
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es6",
     "allowJs": true,
-    "sourceMap":true
+    "sourceMap": true
   },
   "files": [
     "node_modules/phaser/types/phaser.d.ts",
     "node_modules/phaser/types/matter.d.ts",
     "src/custom.d.ts"
   ],
-  "include": [
-    "src/**/*.ts"
-  ],
+  "include": ["src/**/*.ts"],
   "exclude": [
     "node_modules",
     "**/*.spec.ts",
-    "scripts/*.*",
     "assets/*.*",
-    "webpack.*.config.js",
+    "webpack.*.config.js"
   ]
 }

@@ -1,7 +1,9 @@
 import BaseScene from "./BaseScene";
 import * as WebFont from "webfontloader";
 import Tools from "../plugins/global/HyperToolsPlugin";
-import json from "../../../assets/json/content.json";
+import contentJSON from "../../../assets/json/content.json";
+import settingsJSON from "../../../assets/json/settings.json";
+import { DEBUG } from "..";
 
 // this is sort of an bootstate, there probably is a more elegant way that this, but examples seem to do simular.
 // its sort of a settings mediator, validation and initilisation of content. again could be done elsewhere. - maybe plugin?
@@ -31,18 +33,18 @@ export default class Boot extends BaseScene {
    *
    * @memberof Boot
    */
-  preload() {
+  preload(): void {
     super.preload();
     // this.scene.add("Background", Background, true); // false is to stop it launching now we'll choose to launch it when we need.
 
     if (!this.game.device.browser.ie) {
       const args = [
         "%c %c %c Tricky's Custom Phaser 1.0.0 - HYPERTRIFLE.COM %c %c ",
-        "font-size: 12px; background: #1C005F;",
-        "font-size: 12px; background: #85F7BF;",
-        "color: #000054; font-size: 12px; background: #C65DD2;",
-        "font-size: 12px; background: #85F7BF;",
-        "font-size: 12px; background: #1C005F;"
+        "background: #1C005F;",
+        "background: #85F7BF;",
+        "color: #000054; background: #C65DD2;",
+        "background: #85F7BF;",
+        "background: #1C005F;"
       ];
       console.log(...args);
     }
@@ -53,6 +55,9 @@ export default class Boot extends BaseScene {
 
     // a graphics element to track our load progress.
     const progress = this.add.graphics();
+
+
+
 
     // Register a load progress event to show a load bar
     this.load.on("progress", (value: number) => {
@@ -73,12 +78,22 @@ export default class Boot extends BaseScene {
       progress.destroy();
     });
 
+
+    if (contentJSON && !DEBUG) {
+      this.load.json("content", contentJSON);
+    }
+
+
+    if (settingsJSON && !DEBUG) {
+      this.load.json("settings", settingsJSON);
+    }
+
   }
 
 
 
 
-  create() {
+  create(): void {
     console.log("Boot::create::start");
 
     // https://github.com/typekit/webfontloader#custom todo: load custom from css file.
@@ -87,7 +102,7 @@ export default class Boot extends BaseScene {
         families: []
       },
       google: {
-        families: ["Roboto+Mono","Roboto:400,500,700"]
+        families: ["Roboto+Mono", "Roboto:400,500,700"]
       },
       active: this.webFontsLoaded.bind(this),
       inactive: this.webFontsLoaded.bind(this, false)
@@ -99,7 +114,7 @@ export default class Boot extends BaseScene {
    *
    * @memberof Boot
    */
-  webFontsLoaded(success: boolean = true) {
+  webFontsLoaded(success = true): void {
     if (!success) {
       // we may need to look into font fallback at thes point
     }
@@ -114,15 +129,14 @@ export default class Boot extends BaseScene {
     console.groupEnd();
 
     //run the second scene defined in out index config
-    // if(this.scene.manager.scenes[1]){
-    //   this.scene.run(this.scene.manager.scenes[1].scene.key);
-    // }  
+    if (this.scene.manager.scenes[1]) {
+      this.scene.run(this.scene.manager.scenes[1].scene.key);
+    }
 
-    this.lazyLoadPhaserScene("UITestsScene");
-    // this.lazyLoadPhaserScene("PhysicsTestsScene", false);
+    this.lazyLoadPhaserScene("TestScene");
   }
 
-  async lazyLoadPhaserScene(sceneKey: string, start: boolean = true){
+  async lazyLoadPhaserScene(sceneKey: string, start = true){
 
 
     console.log(sceneKey);
@@ -132,7 +146,7 @@ export default class Boot extends BaseScene {
     this.scene.manager.add(sceneKey,Scene.default); //assume default export of module is an extenstion of Phaser.Scene.
 
     //if we are to imediately start
-    if(start){
+    if (start) {
       this.scene.run(sceneKey);
     }
   }
@@ -145,7 +159,7 @@ export default class Boot extends BaseScene {
    * @param {number} dt
    * @memberof Boot
    */
-  update(t: number, dt: number) {
+  update(t: number, dt: number): void {
     super.update(t, dt);
   }
 }

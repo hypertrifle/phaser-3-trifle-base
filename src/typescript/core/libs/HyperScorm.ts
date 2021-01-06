@@ -72,13 +72,13 @@ export interface SCORMWindowTopInterface {
 
 export interface SCORMAPIInterface {
   LMSInitialize: () => boolean;
-  LMSFinish: (s: string) => {};
-  LMSGetValue: (key: any) => {};
+  LMSFinish: (s: string) => unknown;
+  LMSGetValue: (key: any) => unknown;
   LMSSetValue: (key: any, value: any) => boolean;
   LMSCommit: () => boolean;
-  LMSGetLastError: () => {};
-  LMSGetErrorString: () => {};
-  LMSGetDiagnostic: () => {};
+  LMSGetLastError: () => unknown;
+  LMSGetErrorString: () => unknown;
+  LMSGetDiagnostic: () => unknown;
   LMSStore: (force?: boolean) => void;
   LMSFetch: () => void;
   LMSClear: () => void;
@@ -94,20 +94,20 @@ export interface SCORMAPIInterface {
  */
 class Scorm {
   win: SCORMWindowInterface | Window = window;
-  version: string = "";
-  handleExitMode: boolean = true;
-  handleCompletionStatus: boolean = true;
-  isDebugActive: boolean = true;
+  version = "";
+  handleExitMode = true;
+  handleCompletionStatus = true;
+  isDebugActive = true;
   exitStatus: any;
   isActive = false;
   completionStatus: any;
 
   apiHandle: any = null;
-  isAPIFound: boolean = false;
+  isAPIFound = false;
 
   public constructor(
     win: SCORMWindowInterface | Window = window,
-    debug: boolean = true
+    debug = true
   ) {
     this.win = win;
     this.isDebugActive = debug;
@@ -153,7 +153,7 @@ class Scorm {
     }
   }
 
-  private find(win: any): {} | null {
+  private find(win: any): unknown | null {
     let API = null,
       findAttempts = 0;
 
@@ -714,7 +714,7 @@ export default class HyperSCORM {
    */
   constructor(
     win: SCORMWindowInterface | Window = window,
-    debug: boolean = false
+    debug = false
   ) {
     // console.warn( "A new HyperSCORM instance should not be created with new; please use HyperSCORM.Instance instead" );
 
@@ -837,7 +837,7 @@ export default class HyperSCORM {
    * @type {object}
    * @memberof HyperSCORM
    */
-  get suspendData(): any {
+  get suspendData(): unknown {
     const _s = this.get("cmi.suspend_data") || "{}";
 
     return JSON.parse(_s) || {};
@@ -848,7 +848,7 @@ export default class HyperSCORM {
    *
    * @memberof HyperSCORM
    */
-  set suspendData(o: any) {
+  set suspendData(o: unknown) {
     const s = JSON.stringify(o) || "{}";
     this.set("cmi.suspend_data", s);
   }

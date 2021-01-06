@@ -1,3 +1,19 @@
+//these are for webpack to correctly use the file loading in typescript files.
 declare module '*.png'
 declare module '*.jpg'
+declare module '*.jpeg'
+declare module '*.gif'
+declare module '*.svg'
 declare module "*.json"
+declare module '*.mp3'
+declare module '*.wav'
+declare module "*.ogg"
+declare module "*.mp4"
+declare module "*.webm"
+declare module "*.aac"
+declare module "*.m4a"
+declare module "*.ttf"
+declare module "*.woff"
+declare module "*.woff2"
+declare module "*.otf"
+declare module "*.xml"

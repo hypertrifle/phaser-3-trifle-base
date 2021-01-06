@@ -23,8 +23,9 @@ export default class HyperToolsPlugin extends Phaser.Plugins.BasePlugin {
 
   }
 
-  public postBoot(bootState: Boot) {
+  public postBoot(bootState: Boot): void {
     this._boot = bootState;
+    this.data.loadFromCache();
 
     if (DEBUG) {
       console.log("setting up debug related tools");
@@ -60,7 +61,7 @@ export default class HyperToolsPlugin extends Phaser.Plugins.BasePlugin {
 
   // private stats: Stat;
 
-  public test: boolean = false;
+  public test = false;
 
-  private _boot: Boot;
+  public _boot: Boot;
 }
